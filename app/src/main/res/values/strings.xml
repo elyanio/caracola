@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Caracola</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="reserva_titulo_hacer_reserva">Hacer reserva</string>
+    <string name="reserva_nota">Nota</string>
+    <string name="booking_price">Precio por noche</string>
+    <string name="chek_in">Noche de inicio</string>
+    <string name="chek_out">Noche de salida</string>
+    <string name="title_current_bookings">Reservas actuales</string>
+    <string name="action_back">Atrás</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>

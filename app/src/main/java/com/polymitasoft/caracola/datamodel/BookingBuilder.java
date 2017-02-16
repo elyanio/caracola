@@ -1,0 +1,80 @@
+package com.polymitasoft.caracola.datamodel;
+
+import org.threeten.bp.LocalDate;
+
+import java.math.BigDecimal;
+
+/**
+ * Created by rainermf on 13/2/2017.
+ */
+
+public class BookingBuilder {
+
+    private int id;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    private IBedroom bedroom;
+    private BigDecimal price;
+    private BookingState state;
+    private String note;
+    private String bookingNumber;
+    private String bookNumber;
+
+    public BookingBuilder setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public BookingBuilder setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
+        return this;
+    }
+
+    public BookingBuilder setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+        return this;
+    }
+
+    public BookingBuilder setBedroom(IBedroom bedroom) {
+        this.bedroom = bedroom;
+        return this;
+    }
+
+    public BookingBuilder setPrice(BigDecimal price) {
+        this.price = price;
+        return this;
+    }
+
+    public BookingBuilder setState(BookingState state) {
+        this.state = state;
+        return this;
+    }
+
+    public BookingBuilder setNote(String note) {
+        this.note = note;
+        return this;
+    }
+
+    public BookingBuilder setBookingNumber(String bookingNumber) {
+        this.bookingNumber = bookingNumber;
+        return this;
+    }
+
+    public BookingBuilder setBookNumber(String bookNumber) {
+        this.bookNumber = bookNumber;
+        return this;
+    }
+
+    public Booking build() {
+        Booking booking = new Booking();
+        booking.setState(state);
+        booking.setPrice(price);
+        booking.setBookingNumber(bookingNumber);
+        booking.setBookNumber(bookNumber);
+        booking.setCheckInDate(checkInDate);
+        booking.setCheckOutDate(checkOutDate);
+        booking.setNote(note);
+        booking.setBedroom(bedroom);
+        return booking;
+    }
+}

@@ -1,0 +1,68 @@
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/reserva_esenas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/reserva_layout_base"
+            android:layout_below="@+id/toolbar"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reserva_layout_base"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:measureWithLargestChild="false"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/reservar_bt_preReservar"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="PreR" />
+
+            <Button
+                android:id="@+id/reserva_bt_FisicaR"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="FisicaR" />
+
+            <Button
+                android:id="@+id/reserva_bt_eliminarR"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="EliminR" />
+
+            <Button
+                android:id="@+id/reserva_bt_edit"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="EditR" />
+
+            <Button
+                android:id="@+id/reserva_bt_limpiar"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="clean" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
