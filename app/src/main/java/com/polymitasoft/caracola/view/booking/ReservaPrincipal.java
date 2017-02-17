@@ -19,6 +19,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.polymitasoft.caracola.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
+import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
 import com.polymitasoft.caracola.view.supplier.ExternalServiceListActivity;
 import com.polymitasoft.caracola.view.service.ServiceListActivity;
@@ -207,6 +208,7 @@ public class ReservaPrincipal extends AppCompatActivity
                 startActivity(new Intent(this, BedroomListActivity.class));
                 break;
             case R.id.nav_send:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
 

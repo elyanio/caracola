@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.polymitasoft.caracola.view.booking;
+package com.polymitasoft.caracola.view.bedroom;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +23,7 @@ import android.view.MenuItem;
 
 import com.polymitasoft.caracola.DataStoreHolder;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 
 import io.requery.Persistable;
@@ -31,29 +32,29 @@ import io.requery.sql.EntityDataStore;
 /**
  * Simple activity allowing you to edit a Person entity using data binding.
  */
-public class BookingEditActivity extends AppCompatActivity {
+public class BedroomEditActivity extends AppCompatActivity {
 
-    static final String EXTRA_BOOKING_ID = "bookingId";
+    static final String EXTRA_BEDROOM_ID = "bedroomId";
 
     private EntityDataStore<Persistable> data;
-    private Booking booking;
-    private ActivityEditBookingBinding binding;
+    private Bedroom bedroom;
+    private BedroomBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_booking);
+        setContentView(R.layout.activity_edit_bedroom);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.title_edit_booking);
+            getSupportActionBar().setTitle(R.string.title_edit_bedroom);
         }
         data = DataStoreHolder.getInstance().getDataStore(this);
-        int bookingId = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
-        if (bookingId == -1) {
-            booking = new Booking(); // creating a new booking
+        int bedroomId = getIntent().getIntExtra(EXTRA_BEDROOM_ID, -1);
+        if (bedroomId == -1) {
+            bedroom = new Bedroom(); // creating a new bedroom
         } else {
-            booking = data.findByKey(Booking.class, bookingId);
+            bedroom = data.findByKey(Bedroom.class, bedroomId);
         }
-        binding = new ActivityEditBookingBinding(this, booking);
+        binding = new BedroomBinding(this, bedroom);
     }
 
     @Override
@@ -73,8 +74,8 @@ public class BookingEditActivity extends AppCompatActivity {
     }
 
     private void saveBooking() {
-        booking = binding.getBooking();
-        data.update(booking);
+        bedroom = binding.getBedroom();
+        data.update(bedroom);
         finish();
     }
 }

@@ -28,6 +28,8 @@ public class DateSpinner extends LinearLayout {
     private LocalDate date;
     private LocalDate maxDate = LocalDate.MAX;
     private LocalDate minDate = LocalDate.MIN;
+    private DateSpinner firstSpinner;
+    private DateSpinner secondSpinner;
 
     public DateSpinner(Context context) {
         super(context);
@@ -76,6 +78,11 @@ public class DateSpinner extends LinearLayout {
 
         this.date = date;
         dateText.setText(FormatUtils.formatDate(date));
+        if(firstSpinner != null) {
+            firstSpinner.setMaxDate(date);
+        } else if(secondSpinner != null) {
+            secondSpinner.setMinDate(date);
+        }
     }
 
     public LocalDate getDate() {
@@ -96,5 +103,14 @@ public class DateSpinner extends LinearLayout {
 
     public void setMinDate(LocalDate minDate) {
         this.minDate = minDate;
+    }
+
+    public void bindForRange(DateSpinner secondSpinner) {
+        this.secondSpinner = secondSpinner;
+        secondSpinner.setFirstSpinner(this);
+    }
+
+    private void setFirstSpinner(DateSpinner firstSpinner) {
+        this.firstSpinner = firstSpinner;
     }
 }

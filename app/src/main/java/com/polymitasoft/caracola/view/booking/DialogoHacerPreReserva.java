@@ -3,7 +3,9 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -46,8 +48,8 @@ public class DialogoHacerPreReserva extends Dialog {
         obtener_controles();
         eventos();
 
-        // TODO Cambiar con una preferencia
-        boolean highSeason = true;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean highSeason = preferences.getBoolean("high_season", false);
         Bedroom bedroom = reservaPanelHabitacionActual.getHabitacion();
         // TODO Encapsular esta lógica en una función
         BigDecimal price = (highSeason)? bedroom.getPriceInHighSeason() : bedroom.getPriceInLowSeason();

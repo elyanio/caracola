@@ -1,13 +1,15 @@
 package com.polymitasoft.caracola.view.bedroom;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
-import com.polymitasoft.caracola.datamodel.InternalService;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -24,6 +26,23 @@ public class BedroomListActivity extends ListActivity<Bedroom> {
     @Override
     protected QueryRecyclerAdapter<Bedroom, Holder> createAdapter() {
         return new BedroomAdapter();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.list_add_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_plus:
+                Intent intent = new Intent(this, BedroomEditActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -63,9 +82,9 @@ public class BedroomListActivity extends ListActivity<Bedroom> {
         public void onClick(View v) {
             Bedroom service = (Bedroom) v.getTag();
             if (service != null) {
-//                Intent intent = new Intent(ServiceListActivity.this, BookingEditActivity.class);
-//                intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, service.getId());
-//                startActivity(intent);
+                Intent intent = new Intent(BedroomListActivity.this, BedroomEditActivity.class);
+                intent.putExtra(BedroomEditActivity.EXTRA_BEDROOM_ID, service.getId());
+                startActivity(intent);
             }
         }
     }

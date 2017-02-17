@@ -3,7 +3,6 @@ package com.polymitasoft.caracola.view.service;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +15,6 @@ import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
 
-import butterknife.BindView;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 
@@ -41,7 +39,7 @@ public class ServiceListActivity extends ListActivity<InternalService> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.booking_menu_main, menu);
+        getMenuInflater().inflate(R.menu.list_add_menu, menu);
         return true;
     }
 

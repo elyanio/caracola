@@ -28,6 +28,15 @@
         <activity android:name=".view.supplier.ExternalServiceListActivity" />
         <activity android:name=".view.supplier.SupplierListActivity" />
         <activity android:name=".view.bedroom.BedroomListActivity" />
+        <activity android:name=".view.bedroom.BedroomEditActivity" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".view.booking.ReservaPrincipal">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.polymitasoft.caracola.view.booking.ReservaPrincipal" />
+        </activity>
     </application>
 
 </manifest>

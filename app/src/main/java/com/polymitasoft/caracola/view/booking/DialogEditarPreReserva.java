@@ -74,13 +74,12 @@ public class DialogEditarPreReserva extends Dialog {
             rb_confirmado.setChecked(false);
             rb_pendiente.setChecked(true);
         }
+        checkInDateSpinner.bindForRange(checkOutSpinner);
         checkInDateSpinner.setDate(preReserva.getCheckInDate());
         checkOutSpinner.setDate(preReserva.getCheckOutDate());
         LocalDate minDate = bookingDao.previousBookedDay(preReserva.getBedroom(), preReserva.getCheckInDate()).plusDays(1);
         LocalDate maxDate = bookingDao.nextBookedDay(preReserva.getBedroom(), preReserva.getCheckOutDate()).minusDays(1);
         checkInDateSpinner.setMinDate(minDate);
-        checkInDateSpinner.setMaxDate(maxDate);
-        checkOutSpinner.setMinDate(minDate);
         checkOutSpinner.setMaxDate(maxDate);
     }
 
