@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import org.threeten.bp.LocalDate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import io.requery.Column;
 import io.requery.Convert;

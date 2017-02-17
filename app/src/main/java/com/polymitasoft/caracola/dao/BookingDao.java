@@ -1,15 +1,22 @@
 package com.polymitasoft.caracola.dao;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.polymitasoft.caracola.datamodel.Client;
+import com.polymitasoft.caracola.datamodel.ClientStay;
 import com.polymitasoft.caracola.datamodel.IBedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.IClient;
 
 import org.threeten.bp.LocalDate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.requery.Persistable;
+import io.requery.query.Result;
+import io.requery.query.Tuple;
 import io.requery.sql.EntityDataStore;
 
 import static com.polymitasoft.caracola.datamodel.Booking.BEDROOM;
@@ -71,5 +78,15 @@ public class BookingDao {
         }
         Log.e(BookingDao.class.toString(), date.toString() + "-> " + booking.getCheckInDate());
         return booking.getCheckInDate();
+    }
+
+    public List<Client> getClients(@NonNull Booking booking) {
+        List<ClientStay> clientStays = dataStore.select(ClientStay.class)
+                .where(ClientStay.BOOKING.eq(booking)).get().toList();
+        List<Client> clients = new ArrayList<>(clientStays.size());
+        for (ClientStay stay: clientStays) {
+            clients.add((Client) stay.getClient());
+        }
+        return clients;
     }
 }

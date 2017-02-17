@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import com.polymitasoft.caracola.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.Client;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -31,7 +32,7 @@ import io.requery.sql.EntityDataStore;
 /**
  * Simple activity allowing you to edit a Person entity using data binding.
  */
-public class BookingEditActivity extends AppCompatActivity {
+public class BookingEditActivity extends AppCompatActivity implements ClientFragment.OnListFragmentInteractionListener {
 
     static final String EXTRA_BOOKING_ID = "bookingId";
 
@@ -54,6 +55,30 @@ public class BookingEditActivity extends AppCompatActivity {
             booking = data.findByKey(Booking.class, bookingId);
         }
         binding = new ActivityEditBookingBinding(this, booking);
+
+        // Check that the activity is using the layout version with
+        // the fragment_container FrameLayout
+        if (findViewById(R.id.client_fragment_container) != null) {
+
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            // Create a new Fragment to be placed in the activity layout
+            ClientFragment firstFragment = new ClientFragment().newInstance(booking);
+
+            // In case this activity was started with special instructions from an
+            // Intent, pass the Intent's extras to the fragment as arguments
+            firstFragment.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.client_fragment_container, firstFragment).commit();
+        }
+
     }
 
     @Override
@@ -76,5 +101,10 @@ public class BookingEditActivity extends AppCompatActivity {
         booking = binding.getBooking();
         data.update(booking);
         finish();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Client client) {
+
     }
 }

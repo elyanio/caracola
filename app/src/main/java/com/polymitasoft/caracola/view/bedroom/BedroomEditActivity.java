@@ -67,15 +67,15 @@ public class BedroomEditActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                saveBooking();
+                saveBedroom();
                 return true;
         }
         return false;
     }
 
-    private void saveBooking() {
+    private void saveBedroom() {
         bedroom = binding.getBedroom();
-        data.update(bedroom);
+        data.upsert(bedroom);
         finish();
     }
 }

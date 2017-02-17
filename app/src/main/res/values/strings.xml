@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Caracola</string>
     <string name="title_activity_main">Reservas</string>
 
@@ -94,4 +94,9 @@
     <string name="price_high_season">Precio (temporada alta)</string>
     <string name="bedroom_capacity">Capacidad (# de personas)</string>
     <string name="title_edit_bedroom">Editar habitación</string>
+    <string name="booking_clients_title">Clientes</string>
+    <string name="add_client">Agregar cliente</string>
+    <string name="person_full_name">
+        <xliff:g id="firstName" example="Rainer">%s</xliff:g> <xliff:g id="lastName" example="Martínez Fraga">%s</xliff:g>
+    </string>
 </resources>
