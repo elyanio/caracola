@@ -2,8 +2,8 @@ package com.polymitasoft.caracola.dao;
 
 import android.util.Log;
 
-import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.IBedroom;
+import com.polymitasoft.caracola.datamodel.Booking;
 
 import org.threeten.bp.LocalDate;
 

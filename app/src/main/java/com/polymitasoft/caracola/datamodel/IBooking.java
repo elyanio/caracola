@@ -13,7 +13,6 @@ import io.requery.Generated;
 import io.requery.Key;
 import io.requery.ManyToOne;
 import io.requery.Nullable;
-import io.requery.OneToOne;
 
 /**
  * Created by rainermf on 11/2/2017.

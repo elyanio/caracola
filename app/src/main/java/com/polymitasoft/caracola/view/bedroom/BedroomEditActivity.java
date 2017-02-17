@@ -24,7 +24,7 @@ import android.view.MenuItem;
 import com.polymitasoft.caracola.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
-import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.BedroomBuilder;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -50,7 +50,7 @@ public class BedroomEditActivity extends AppCompatActivity {
         data = DataStoreHolder.getInstance().getDataStore(this);
         int bedroomId = getIntent().getIntExtra(EXTRA_BEDROOM_ID, -1);
         if (bedroomId == -1) {
-            bedroom = new Bedroom(); // creating a new bedroom
+            bedroom = new BedroomBuilder().build(); // creating a new bedroom
         } else {
             bedroom = data.findByKey(Bedroom.class, bedroomId);
         }

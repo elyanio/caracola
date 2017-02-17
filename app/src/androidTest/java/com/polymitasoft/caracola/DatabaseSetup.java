@@ -3,6 +3,7 @@ package com.polymitasoft.caracola;
 import android.support.test.InstrumentationRegistry;
 
 import com.polymitasoft.caracola.datamodel.Bedroom;
+import com.polymitasoft.caracola.datamodel.BedroomBuilder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Client;
@@ -173,11 +174,12 @@ public class DatabaseSetup {
         List<Bedroom> bedrooms = new ArrayList<>(capacity.length);
 
         for (int i = 0; i < 4; i++) {
-            Bedroom bedroom = new Bedroom();
-            bedroom.setName("Habitación " + (i + 1));
-            bedroom.setCapacity(capacity[i]);
-            bedroom.setPriceInLowSeason(BigDecimal.valueOf(lowPrices[i]));
-            bedroom.setPriceInHighSeason(BigDecimal.valueOf(highPrices[i]));
+            Bedroom bedroom = new BedroomBuilder()
+                    .name("Habitación " + (i + 1))
+                    .capacity(capacity[i])
+                    .priceInLowSeason(BigDecimal.valueOf(lowPrices[i]))
+                    .priceInHighSeason(BigDecimal.valueOf(highPrices[i]))
+                    .build();
 
             bedrooms.add(bedroom);
         }
