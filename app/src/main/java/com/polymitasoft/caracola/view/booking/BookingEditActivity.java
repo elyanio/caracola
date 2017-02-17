@@ -44,7 +44,7 @@ public class BookingEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_person);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Edit Person");
+            getSupportActionBar().setTitle(R.string.title_edit_booking);
         }
         data = DataStoreHolder.getInstance().getDataStore(this);
         int personId = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
@@ -66,13 +66,13 @@ public class BookingEditActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                savePerson();
+                saveBooking();
                 return true;
         }
         return false;
     }
 
-    private void savePerson() {
+    private void saveBooking() {
         booking = binding.getBooking();
         data.update(booking);
         finish();

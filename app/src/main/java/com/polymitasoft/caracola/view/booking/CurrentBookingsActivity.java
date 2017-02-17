@@ -23,7 +23,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,8 +52,7 @@ import io.requery.sql.EntityDataStore;
  */
 public class CurrentBookingsActivity extends AppCompatActivity {
 
-    @BindView(R.id.bookingsRecyclerView)
-    RecyclerView recyclerView;
+    @BindView(R.id.bookingsRecyclerView) RecyclerView recyclerView;
     private EntityDataStore<Persistable> data;
     private ExecutorService executor;
     private BookingAdapter adapter;
@@ -74,12 +72,6 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.booking_menu_main, menu);
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -106,8 +98,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
     }
 
     static class BookingHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.name)
-        TextView name;
+        @BindView(R.id.name) TextView name;
         @BindView(R.id.picture)
         ImageView image;
 

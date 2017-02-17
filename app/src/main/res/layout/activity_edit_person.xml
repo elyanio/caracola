@@ -12,7 +12,7 @@
             android:id="@+id/booking_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="@string/booking_number" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -23,7 +23,7 @@
             android:id="@+id/book_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone" />
+            android:hint="@string/book_number" />
     </android.support.design.widget.TextInputLayout>
 
     <include layout="@layout/booking_data" />

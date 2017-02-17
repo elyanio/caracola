@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Caracola</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Reservas</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -14,4 +14,8 @@
     <string name="title_current_bookings">Reservas actuales</string>
     <string name="action_back">Atrás</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="book_number">Número del libro</string>
+    <string name="booking_number">Número de la reserva</string>
+    <string name="title_edit_booking">Editar reserva</string>
+    <string name="title_internal_services">Servicios</string>
 </resources>

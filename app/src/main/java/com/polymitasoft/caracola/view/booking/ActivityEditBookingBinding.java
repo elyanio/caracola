@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 
 public class ActivityEditBookingBinding {
 
-    Booking booking;
+    private Booking booking;
     @BindView(R.id.booking_check_in) DateSpinner checkInDate;
     @BindView(R.id.booking_check_out) DateSpinner checkOutDate;
     @BindView(R.id.book_number) EditText bookingNumber;

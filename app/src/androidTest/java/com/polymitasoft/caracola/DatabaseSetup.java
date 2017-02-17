@@ -1,7 +1,6 @@
 package com.polymitasoft.caracola;
 
 import android.support.test.InstrumentationRegistry;
-import android.util.Log;
 
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
@@ -19,7 +18,6 @@ import com.polymitasoft.caracola.datamodel.SupplierService;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
-import org.threeten.bp.format.DateTimeFormatterBuilder;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -52,11 +50,10 @@ import static org.threeten.bp.Month.SEPTEMBER;
 
 public class DatabaseSetup {
 
+    private static DateTimeFormatter format = DateTimeFormatter.ofPattern("y/M/d");
+    private final EntityDataStore<Persistable> data;
     private File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Hostel");
     private File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");
-    private static DateTimeFormatter format = DateTimeFormatter.ofPattern("y/M/d");
-
-    private final EntityDataStore<Persistable> data;
 
     public DatabaseSetup() {
         directory.mkdirs();
@@ -93,7 +90,7 @@ public class DatabaseSetup {
     }
 
     public void insertList(List<? extends Persistable> list) {
-        for (Persistable p: list) {
+        for (Persistable p : list) {
             data.insert(p);
         }
     }
@@ -171,17 +168,16 @@ public class DatabaseSetup {
 
     public List<Bedroom> getBedrooms() {
         int[] capacity = new int[]{4, 2, 6, 4};
-        BigDecimal[] prices = new BigDecimal[]{
-                BigDecimal.valueOf(25), BigDecimal.valueOf(20), BigDecimal.valueOf(25), BigDecimal.valueOf(30)
-        };
+        double[] lowPrices = new double[] {25, 20, 25, 30};
+        double[] highPrices = new double[] {30, 25, 30, 35};
         List<Bedroom> bedrooms = new ArrayList<>(capacity.length);
 
         for (int i = 0; i < 4; i++) {
             Bedroom bedroom = new Bedroom();
             bedroom.setName("Habitación " + (i + 1));
             bedroom.setCapacity(capacity[i]);
-            bedroom.setPriceInLowSeason(prices[i]);
-            bedroom.setPriceInHighSeason(prices[i].add(BigDecimal.valueOf(5)));
+            bedroom.setPriceInLowSeason(BigDecimal.valueOf(lowPrices[i]));
+            bedroom.setPriceInHighSeason(BigDecimal.valueOf(highPrices[i]));
 
             bedrooms.add(bedroom);
         }
@@ -197,7 +193,7 @@ public class DatabaseSetup {
         for (int i = 0; i < names.length; i++) {
             InternalService service = new InternalService();
             service.setName(names[i]);
-            service.setDefaultPrice(BigDecimal.valueOf(1));
+            service.setDefaultPrice(BigDecimal.valueOf(prices[i]));
             services.add(service);
         }
 

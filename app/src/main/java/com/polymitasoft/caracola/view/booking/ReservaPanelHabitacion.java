@@ -142,11 +142,11 @@ public class ReservaPanelHabitacion extends LinearLayout {
                     seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
                     if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
                         //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                        reservaPrincipal.getBt_fisicaR().setEnabled(true);
+                        reservaPrincipal.enableCheckIn();
                     }
                     animarprueba(1);
-                    reservaPrincipal.getBt_editR().setEnabled(true);
-                    reservaPrincipal.getBt_eliminaR().setEnabled(true);
+                    reservaPrincipal.enableEdit();
+                    reservaPrincipal.enableDelete();
                 } else {                                                                   // no es hay reserva
                     primerDiaSelec.seleccionar(CellLocation.ALONE);
                     preReservaSelecc = null;
@@ -164,11 +164,11 @@ public class ReservaPanelHabitacion extends LinearLayout {
                     } else {  //la segunda tiene reserva
                         preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                         seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color()); //seleccionar
-                        reservaPrincipal.getBt_editR().setEnabled(true);
-                        reservaPrincipal.getBt_eliminaR().setEnabled(true);
+                        reservaPrincipal.enableEdit();
+                        reservaPrincipal.enableDelete();
                         if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
                             //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                            reservaPrincipal.getBt_fisicaR().setEnabled(true);
+                            reservaPrincipal.enableCheckIn();
                         }
                     }
                     primerDiaSelec = segundoDiaSelec;
@@ -181,14 +181,14 @@ public class ReservaPanelHabitacion extends LinearLayout {
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
                                 if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
                                     //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                                    reservaPrincipal.getBt_fisicaR().setEnabled(true);
+                                    reservaPrincipal.enableCheckIn();
                                 }
                                 animarprueba(1);
                                 primerDiaSelec.deSeleccionar();
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
-                                reservaPrincipal.getBt_editR().setEnabled(true);
-                                reservaPrincipal.getBt_eliminaR().setEnabled(true);
+                                reservaPrincipal.enableEdit();
+                                reservaPrincipal.enableDelete();
                             } else {
                                 Toast toast = Toast.makeText(getContext(), "no se puede seleccionar", Toast.LENGTH_SHORT);
                                 toast.show();
@@ -229,14 +229,14 @@ public class ReservaPanelHabitacion extends LinearLayout {
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
                                 if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
                                     //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                                    reservaPrincipal.getBt_fisicaR().setEnabled(true);
+                                    reservaPrincipal.enableCheckIn();
                                 }
                                 animarprueba(1);
                                 primerDiaSelec.deSeleccionar();
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
-                                reservaPrincipal.getBt_editR().setEnabled(true);
-                                reservaPrincipal.getBt_eliminaR().setEnabled(true);
+                                reservaPrincipal.enableEdit();
+                                reservaPrincipal.enableDelete();
                             } else {
                                 Toast toast = Toast.makeText(getContext(), "no se puede seleccionar", Toast.LENGTH_SHORT);
                                 toast.show();
@@ -251,9 +251,9 @@ public class ReservaPanelHabitacion extends LinearLayout {
                             selecionadorRangoDiasTocadosModoH(CalendarState.SELECTED.color());
                             if (estaElDiaHoyEnRango(primerDiaSelec, segundoDiaSelec)) {                                     // si es el dia de hoy
                                 //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                                reservaPrincipal.getBt_fisicaR().setEnabled(true);
+                                reservaPrincipal.enableCheckIn();
                             }
-                            reservaPrincipal.getBt_preR().setEnabled(true);
+                            reservaPrincipal.enableBook();
                             preReservaSelecc = null;
                             break;
                         }

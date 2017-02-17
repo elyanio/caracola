@@ -1,38 +1,48 @@
 package com.polymitasoft.caracola.view.booking;
 
-//import android.app.Application;
-
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.ActionMenuItemView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.polymitasoft.caracola.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
+import com.polymitasoft.caracola.view.provider.ExternalServiceListActivity;
+import com.polymitasoft.caracola.view.service.ServiceListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
 
-public class ReservaPrincipal extends AppCompatActivity {
+public class ReservaPrincipal extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
     public final static int BEDROOM_AMOUNT = 10;  //debe ser seguro
 
     //controles
-    private Button bt_limpiar;
-    private Button bt_fisicaR;
-    private Button bt_preR;
-    private Button bt_eliminaR;
-    private Button bt_editR;
-    private LinearLayout esenas_frameLayout;
     private EntityDataStore<Persistable> dataStore;
+    @BindView(R.id.reserva_esenas) LinearLayout esenas_frameLayout;
+    @BindView(R.id.editButton) Button editButton;
+    @BindView(R.id.bookButton) Button bookButton;
+    @BindView(R.id.deleteButton) Button deleteButton;
+    @BindView(R.id.checkInButton) Button checkInButton;
 
     private List<Bedroom> bedrooms = new ArrayList<>();
 
@@ -43,25 +53,41 @@ public class ReservaPrincipal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reserva_principal_activity);
+        ButterKnife.bind(this);
+
+        Locale.setDefault(new Locale("es"));
+        AndroidThreeTen.init(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         loadData();
-        obtenerControles();
         configurarControles();
         eventos();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void loadData() {
         dataStore = DataStoreHolder.getInstance().getDataStore(getApplicationContext());
         bedrooms = dataStore.select(Bedroom.class).get().toList();
-    }
-
-    private void obtenerControles() {
-        esenas_frameLayout = (LinearLayout) findViewById(R.id.reserva_esenas);
-        bt_limpiar = (Button) findViewById(R.id.reserva_bt_limpiar);
-        bt_fisicaR = (Button) findViewById(R.id.reserva_bt_FisicaR);
-        bt_preR = (Button) findViewById(R.id.reservar_bt_preReservar);
-        bt_eliminaR = (Button) findViewById(R.id.reserva_bt_eliminarR);
-        bt_editR = (Button) findViewById(R.id.reserva_bt_edit);
     }
 
     private void configurarControles() {
@@ -70,25 +96,25 @@ public class ReservaPrincipal extends AppCompatActivity {
     }
 
     private void eventos() {
-        bt_preR.setOnClickListener(new View.OnClickListener() {
+        bookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickPreR();
             }
         });
-        bt_editR.setOnClickListener(new View.OnClickListener() {
+        editButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 clickEditR();
             }
         });
-        bt_eliminaR.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickEliminarR();
             }
         });
-        bt_fisicaR.setOnClickListener(new View.OnClickListener() {
+        checkInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 click_fisicaR();
@@ -114,10 +140,14 @@ public class ReservaPrincipal extends AppCompatActivity {
     }
 
     public void disableButtons() {
-        bt_preR.setEnabled(false);
-        bt_fisicaR.setEnabled(false);
-        bt_editR.setEnabled(false);
-        bt_eliminaR.setEnabled(false);
+//        editButton.setVisibility(INVISIBLE);
+//        bookButton.setVisibility(INVISIBLE);
+//        deleteButton.setVisibility(INVISIBLE);
+//        bookButton.setVisibility(INVISIBLE);
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+        checkInButton.setEnabled(false);
+        bookButton.setEnabled(false);
     }
 
     @Override
@@ -158,28 +188,55 @@ public class ReservaPrincipal extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.nav_camera:
+                startActivity(new Intent(this, ServiceListActivity.class));
+                break;
+            case R.id.nav_gallery:
+                startActivity(new Intent(this, ExternalServiceListActivity.class));
+                break;
+            case R.id.nav_slideshow:
+                startActivity(new Intent(this, CurrentBookingsActivity.class));
+                break;
+            case R.id.nav_manage:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     public ReservaEsenaPrincipal getReservaEsenaPrincipal() {
         return reservaEsenaPrincipal;
     }
 
-    public Button getBt_editR() {
-        return bt_editR;
+    public void enableEdit() {
+//        editButton.setVisibility(VISIBLE);
+        editButton.setEnabled(true);
     }
 
-    public Button getBt_eliminaR() {
-        return bt_eliminaR;
+    public void enableDelete() {
+//        deleteButton.setVisibility(VISIBLE);
+        deleteButton.setEnabled(true);
     }
 
-    public Button getBt_fisicaR() {
-        return bt_fisicaR;
+    public void enableCheckIn() {
+//        checkInButton.setVisibility(VISIBLE);
+        checkInButton.setEnabled(true);
     }
 
-    public Button getBt_limpiar() {
-        return bt_limpiar;
-    }
-
-    public Button getBt_preR() {
-        return bt_preR;
+    public void enableBook() {
+//        bookButton.setVisibility(VISIBLE);
+        bookButton.setEnabled(true);
     }
 
     public List<Bedroom> getBedrooms() {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,8 +22,8 @@ import butterknife.ButterKnife;
 
 public class DateSpinner extends LinearLayout {
 
-    @BindView(R.id.button_next) Button nextButton;
-    @BindView(R.id.button_previous) Button previousButton;
+    @BindView(R.id.button_next) ImageButton nextButton;
+    @BindView(R.id.button_previous) ImageButton previousButton;
     @BindView(R.id.text_date) TextView dateText;
     private LocalDate date;
     private LocalDate maxDate = LocalDate.MAX;
