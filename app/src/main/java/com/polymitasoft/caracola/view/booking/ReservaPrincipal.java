@@ -19,8 +19,10 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.polymitasoft.caracola.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
-import com.polymitasoft.caracola.view.provider.ExternalServiceListActivity;
+import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
+import com.polymitasoft.caracola.view.supplier.ExternalServiceListActivity;
 import com.polymitasoft.caracola.view.service.ServiceListActivity;
+import com.polymitasoft.caracola.view.supplier.SupplierListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,10 +142,6 @@ public class ReservaPrincipal extends AppCompatActivity
     }
 
     public void disableButtons() {
-//        editButton.setVisibility(INVISIBLE);
-//        bookButton.setVisibility(INVISIBLE);
-//        deleteButton.setVisibility(INVISIBLE);
-//        bookButton.setVisibility(INVISIBLE);
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
         checkInButton.setEnabled(false);
@@ -203,8 +201,10 @@ public class ReservaPrincipal extends AppCompatActivity
                 startActivity(new Intent(this, CurrentBookingsActivity.class));
                 break;
             case R.id.nav_manage:
+                startActivity(new Intent(this, SupplierListActivity.class));
                 break;
             case R.id.nav_share:
+                startActivity(new Intent(this, BedroomListActivity.class));
                 break;
             case R.id.nav_send:
                 break;
@@ -220,22 +220,18 @@ public class ReservaPrincipal extends AppCompatActivity
     }
 
     public void enableEdit() {
-//        editButton.setVisibility(VISIBLE);
         editButton.setEnabled(true);
     }
 
     public void enableDelete() {
-//        deleteButton.setVisibility(VISIBLE);
         deleteButton.setEnabled(true);
     }
 
     public void enableCheckIn() {
-//        checkInButton.setVisibility(VISIBLE);
         checkInButton.setEnabled(true);
     }
 
     public void enableBook() {
-//        bookButton.setVisibility(VISIBLE);
         bookButton.setEnabled(true);
     }
 

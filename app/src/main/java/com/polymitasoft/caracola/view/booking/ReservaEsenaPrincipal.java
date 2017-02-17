@@ -53,7 +53,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     private void configurarControles() {
         //poner dias de la semana encima
         List<String> list = Arrays.asList("L", "M", "M", "J", "V", "S", "D");
-        ArrayAdapter ada1 = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, list);
+        ArrayAdapter<String> ada1 = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, list);
         diasSemanasGrid.setAdapter(ada1);
         diasSemanasGrid.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
@@ -94,8 +94,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-
-            return view == ((LinearLayout) object);
+            return view == object;
         }
 
         @Override
