@@ -2,6 +2,7 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -37,7 +38,6 @@ import io.requery.sql.EntityDataStore;
 
 public class ReservaPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public final static int BEDROOM_AMOUNT = 10;  //debe ser seguro
 
     //controles
     private EntityDataStore<Persistable> dataStore;
@@ -188,7 +188,7 @@ public class ReservaPrincipal extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         switch (id) {

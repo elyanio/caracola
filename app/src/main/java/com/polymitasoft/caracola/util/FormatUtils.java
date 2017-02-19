@@ -10,9 +10,9 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 
 /**
- * Created by rainermf on 13/2/2017.
+ * @author rainermf
+ * @since 13/2/2017
  */
-
 public class FormatUtils {
 
     private static DecimalFormat decimalFormat;
@@ -27,7 +27,9 @@ public class FormatUtils {
         dateFormatter = DateTimeFormatter.ofPattern("d-MM-y");
     }
 
-    private FormatUtils() { };
+    private FormatUtils() throws InstantiationException {
+        throw new InstantiationException("FormatUtils is a utility class. It should not be instantiated.");
+    }
 
     public static String formatMoney(BigDecimal decimal) {
         return decimalFormat.format(decimal);
@@ -44,6 +46,10 @@ public class FormatUtils {
 
     public static String formatDate(LocalDate date) {
         return dateFormatter.format(date);
+    }
+
+    public static LocalDate parseDate(String date) {
+        return LocalDate.from(dateFormatter.parse(date));
     }
 
 }

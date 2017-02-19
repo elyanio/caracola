@@ -3,7 +3,6 @@ package com.polymitasoft.caracola.components;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,15 +16,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by rainermf on 14/2/2017.
+ * @author rainermf
+ * @since 14/2/2017
  */
-
 public class DateSpinner extends LinearLayout {
 
     @BindView(R.id.button_next) ImageButton nextButton;
     @BindView(R.id.button_previous) ImageButton previousButton;
     @BindView(R.id.text_date) TextView dateText;
-    private LocalDate date;
+    private LocalDate date = LocalDate.now();
     private LocalDate maxDate = LocalDate.MAX;
     private LocalDate minDate = LocalDate.MIN;
     private DateSpinner firstSpinner;
@@ -52,7 +51,6 @@ public class DateSpinner extends LinearLayout {
             return;
         }
         ButterKnife.bind(this);
-        setDate(LocalDate.now());
         previousButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +68,7 @@ public class DateSpinner extends LinearLayout {
     /**
      * La fecha pasada como parámetro tiene que estar en el rango (inclusivo) establecido
      * por setMinDate y setMaxDate
-     * @param date
+     * @param date La fecha que se seleccionará en el calendario.
      */
     public void setDate(LocalDate date) {
         previousButton.setEnabled(!date.equals(minDate));
@@ -99,10 +97,12 @@ public class DateSpinner extends LinearLayout {
 
     public void setMaxDate(LocalDate maxDate) {
         this.maxDate = maxDate;
+        nextButton.setEnabled(!date.equals(maxDate));
     }
 
     public void setMinDate(LocalDate minDate) {
         this.minDate = minDate;
+        previousButton.setEnabled(!date.equals(minDate));
     }
 
     public void bindForRange(DateSpinner secondSpinner) {

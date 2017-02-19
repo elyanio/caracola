@@ -2,6 +2,7 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.ViewPropertyAnimator;
@@ -116,11 +117,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 dialog.cancel();
             }
         });
-        dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        dialog.setNegativeButton("Cancelar", new DialogDismissClickListener());
         dialog.show();
     }
 
@@ -137,7 +134,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
             limpiarUltimaSeleccion(); // si hubo una seleccion valida y no se prereservo
             if (primerDiaSelec == null) {          //y si no hay una primera seleccion
                 primerDiaSelec = dia;
-                if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color() || primerDiaSelec.getColor() == CalendarState.PENDING.color()) { // y si ese cuarto ya tiene reserva
+                if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color() || primerDiaSelec.getColor() == CalendarState.PENDING.color() || primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) { // y si ese cuarto ya tiene reserva
                     preReservaSelecc = obtenerReservaModoH(primerDiaSelec);
                     seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
                     if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
@@ -154,10 +151,10 @@ public class ReservaPanelHabitacion extends LinearLayout {
             } else {                                // si ya hay una seleccion
                 // aqui no es necesario seleccionar reserva q lo hubiera hecho en el toque anterior,ah no tengo culpa
                 segundoDiaSelec = dia;
-                if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color() || primerDiaSelec.getColor() == CalendarState.PENDING.color()) { // si la primera seleccion esta en una reserva
+                if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color() || primerDiaSelec.getColor() == CalendarState.PENDING.color() || primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) { // si la primera seleccion esta en una reserva
                     Booking calendario_reserva = obtenerReservaModoH(primerDiaSelec);
                     seleccionadorDeReservaModoH(calendario_reserva, CalendarState.UNSELECTED.color()); //deseleccionar reserva anteriior
-                    if (segundoDiaSelec.getColor() != CalendarState.CONFIRMED.color() && segundoDiaSelec.getColor() != CalendarState.PENDING.color()) { // y la segunda no tiene reserv
+                    if (segundoDiaSelec.getColor() != CalendarState.CONFIRMED.color() && segundoDiaSelec.getColor() != CalendarState.PENDING.color() && segundoDiaSelec.getColor() != CalendarState.CHECKED_IN.color()) { // y la segunda no tiene reserv
                         segundoDiaSelec.seleccionar(CellLocation.ALONE);
                         preReservaSelecc = null;
                         animarprueba(0);
@@ -176,7 +173,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 } else {                                       // la primera seleccion no es una reserva
                     switch (sePuedeReservarModoH(primerDiaSelec, segundoDiaSelec)) {
                         case -1: {  // no se puede reservar
-                            if (segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color() || segundoDiaSelec.getColor() == CalendarState.PENDING.color()) {
+                            if (segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color() || segundoDiaSelec.getColor() == CalendarState.PENDING.color() || segundoDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) {
                                 preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
                                 if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
@@ -184,7 +181,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                                     reservaPrincipal.enableCheckIn();
                                 }
                                 animarprueba(1);
-                                primerDiaSelec.deSeleccionar();
+                                primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
                                 reservaPrincipal.enableEdit();
@@ -192,7 +189,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                             } else {
                                 Toast toast = Toast.makeText(getContext(), "no se puede seleccionar", Toast.LENGTH_SHORT);
                                 toast.show();
-                                primerDiaSelec.deSeleccionar();
+                                primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = null;
                                 segundoDiaSelec = null;
                                 preReservaSelecc = null;
@@ -223,7 +220,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                             //                                }
                             //                            });
                             //                            dialog.show();
-                            if (segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color() || segundoDiaSelec.getColor() == CalendarState.PENDING.color()) {
+                            if (segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color() || segundoDiaSelec.getColor() == CalendarState.PENDING.color() || segundoDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) {
                                 //                                no funciona el seleccionR UN PENDIENTE COMO SEGUNDO ELEMENTO
                                 preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
@@ -232,7 +229,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                                     reservaPrincipal.enableCheckIn();
                                 }
                                 animarprueba(1);
-                                primerDiaSelec.deSeleccionar();
+                                primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
                                 reservaPrincipal.enableEdit();
@@ -240,7 +237,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                             } else {
                                 Toast toast = Toast.makeText(getContext(), "no se puede seleccionar", Toast.LENGTH_SHORT);
                                 toast.show();
-                                primerDiaSelec.deSeleccionar();
+                                primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = null;
                                 segundoDiaSelec = null;
                                 preReservaSelecc = null;
@@ -400,7 +397,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     public void seleccionadorDeReservaModoH(Booking calendario_reserva, int color) {
         VistaDia diaIni = obtenerVistaDiaFict(calendario_reserva.getCheckInDate());
         VistaDia diaFin = obtenerVistaDiaFict(calendario_reserva.getCheckOutDate());
-        ;
+
         actualizarColorRangoModoH(diaIni, diaFin, color);
     }
 
@@ -457,11 +454,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         LocalDate diaMenor = calendario_reserva.getCheckInDate();
         LocalDate diaMayor = calendario_reserva.getCheckOutDate();
         LocalDate hoy = LocalDate.now();
-        if (diaMenor.compareTo(hoy) <= 0 && diaMayor.compareTo(hoy) >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return diaMenor.compareTo(hoy) <= 0 && diaMayor.compareTo(hoy) >= 0;
     }
 
     public boolean estaElDiaHoyEnRango(VistaDia dia1, VistaDia dia2) {
@@ -473,15 +466,10 @@ public class ReservaPanelHabitacion extends LinearLayout {
             diaMayor = dia1;
         }
         LocalDate hoy = LocalDate.now();
-        if (diaMenor.getCalendar().compareTo(hoy) <= 0 && diaMayor.getCalendar().compareTo(hoy) >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return diaMenor.getCalendar().compareTo(hoy) <= 0 && diaMayor.getCalendar().compareTo(hoy) >= 0;
     }
 
-    /*si no hay devuelve null*/
-    public Booking obtenerReservaModoH(VistaDia dia) {
+    public @Nullable Booking obtenerReservaModoH(VistaDia dia) {
         VistaMes vistaMes = mesDelDia(dia);
         for (Booking calendario_reserva : vistaMes.getPreReservas()) {
             //            Log.e("mes", "dia " + calendario_reserva.getFecha_inicio().getDay());
@@ -509,7 +497,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         animarprueba(0);
     }
 
-    public VistaMes mesDelDia(VistaDia dia) {
+    public @Nullable VistaMes mesDelDia(VistaDia dia) {
         for (VistaMes mes : meses) {
             if (mes.estaElDia(dia)) {
                 return mes;
@@ -568,6 +556,12 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public ReservaPanelHabitacion misma() {
         return this;
+    }
+
+    private static class DialogDismissClickListener implements DialogInterface.OnClickListener {
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+        }
     }
 
     public class cargarNuevoMesPrincipal implements InteractivoScrollView.CapturadorEventoMoverScroll {

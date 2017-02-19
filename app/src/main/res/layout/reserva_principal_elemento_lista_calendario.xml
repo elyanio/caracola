@@ -22,6 +22,6 @@
         android:layout_gravity="center"
         android:choiceMode="multipleChoice"
         android:numColumns="7"
-        android:verticalSpacing="1dp"/>
+        />
 
 </LinearLayout>

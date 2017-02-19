@@ -21,12 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.client.ClientEditActivity" />
         <activity android:name=".view.booking.CurrentBookingsActivity" />
         <activity android:name=".view.booking.BookingEditActivity" />
         <activity android:name=".view.service.ServiceListActivity" />
         <activity android:name=".view.supplier.ExternalServiceListActivity" />
         <activity android:name=".view.supplier.SupplierListActivity" />
+        <activity android:name=".view.client.ClientEditActivity" />
         <activity android:name=".view.bedroom.BedroomListActivity" />
         <activity android:name=".view.bedroom.BedroomEditActivity" />
         <activity

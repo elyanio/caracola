@@ -7,6 +7,7 @@ import com.polymitasoft.caracola.datamodel.BedroomBuilder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Client;
+import com.polymitasoft.caracola.datamodel.ClientBuilder;
 import com.polymitasoft.caracola.datamodel.ClientStay;
 import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.datamodel.Country;
@@ -46,9 +47,9 @@ import static org.threeten.bp.Month.NOVEMBER;
 import static org.threeten.bp.Month.SEPTEMBER;
 
 /**
- * Created by rainermf on 11/2/2017.
+ * @author rainermf
+ * @since 11/2/2017
  */
-
 public class DatabaseSetup {
 
     private static DateTimeFormatter format = DateTimeFormatter.ofPattern("y/M/d");
@@ -61,12 +62,12 @@ public class DatabaseSetup {
         if (dbFile.exists()) {
             dbFile.delete();
         }
-        String dbName = dbFile.getAbsolutePath().toString();
+        String dbName = dbFile.getAbsolutePath();
         DatabaseSource source = new DatabaseSource(InstrumentationRegistry.getTargetContext(), Models.DEFAULT, dbName, 1);
         source.setTableCreationMode(TableCreationMode.DROP_CREATE);
         source.setLoggingEnabled(true);
         Configuration configuration = source.getConfiguration();
-        data = new EntityDataStore<Persistable>(configuration);
+        data = new EntityDataStore<>(configuration);
     }
 
     public void start() {
@@ -100,7 +101,7 @@ public class DatabaseSetup {
         String[] firstNames = new String[]{"claudia", "Rainer", "Llilian", "Yadriel", "Yanier", "Asiel", "Alejandro"};
         String[] lastNames = new String[]{"Luque", "Martínez", "Martínez", "Miranda", "Alfonso", "Alonso", "Cabriales"};
         LocalDate[] birthdayDates = new LocalDate[]{
-                of(1990, JULY, 03), of(2003, JANUARY, 30), of(1989, APRIL, 16),
+                of(1990, JULY, 3), of(2003, JANUARY, 30), of(1989, APRIL, 16),
                 of(1990, SEPTEMBER, 12), of(1995, JUNE, 28), of(1989, NOVEMBER, 16), of(1970, APRIL, 16)
         };
         Country[] countries = new Country[]{
@@ -114,7 +115,7 @@ public class DatabaseSetup {
         List<Client> clients = new ArrayList<>(firstNames.length);
 
         for (int i = 0; i < 7; i++) {
-            Client client = new Client();
+            Client client = new ClientBuilder().build();
             client.setFirstName(firstNames[i]);
             client.setLastName(lastNames[i]);
             client.setBirthday(birthdayDates[i]);
@@ -249,7 +250,7 @@ public class DatabaseSetup {
         int[] amounts = new int[]{12, 34, 4, 5, 455, 6, 43};
         double[] prices = new double[]{23.3, 23.5, 65.3, 4.5, 23, 23, 33};
         String[] dates = new String[]{"2015/04/21", "2015/04/21", "2015/4/11", "2015/04/21", "2015/04/13", "2015/04/01", "2016/04/22"};
-        ;
+
         List<Consumption> consumptions = new ArrayList<>();
 
         for (int i = 0; i < amounts.length; i++) {

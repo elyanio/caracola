@@ -1,6 +1,8 @@
 package com.polymitasoft.caracola.view.booking;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +102,7 @@ public class VistaMes extends LinearLayout
         for(int i = 1; i <= cant_dias_mes; i++)
         {
             LocalDate dia = LocalDate.of(inicio_mes.getYear(), inicio_mes.getMonth(), i);
-            temp = new VistaDia(getContext(), dia, obtenerColorAlcrear(dia));
+            temp = new VistaDia(getContext(), dia, obtenerColorAlcrear(dia).first);
             dias.add(temp);
             temp.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
@@ -123,17 +125,17 @@ public class VistaMes extends LinearLayout
         {
             if(dia.getColor() != NO_DAY.color())
             {
-                // TODO Ver qué localización hay que poner aquí
-                dia.pintarColor(obtenerColorAlcrear(dia.getCalendar()), CellLocation.MIDDLE);
+                Pair<Integer, CellLocation> pair = obtenerColorAlcrear(dia.getCalendar());
+                dia.pintarColor(pair.first, pair.second);
             }
         }
     }
 
-    private int obtenerColorAlcrear(LocalDate dia)
+    private Pair<Integer, CellLocation> obtenerColorAlcrear(LocalDate dia)
     {
         if(reservaPanelHabitacion.esModoTodo())
         {
-            return obtenerColorModoTodoALcrear(dia);
+            return new Pair<>(obtenerColorModoTodoALcrear(dia), CellLocation.MIDDLE);
         }
         else
         {
@@ -144,10 +146,20 @@ public class VistaMes extends LinearLayout
                 if(booking.getCheckInDate().compareTo(dia) <= 0 && booking.getCheckOutDate().compareTo(dia) >= 0 &&
                         habitacion.getId() == reservaPanelHabitacion.getHabitacion().getId())
                 {
-                    return toCalendarState(booking.getState()).color();
+                    CellLocation location;
+                    if(booking.getCheckInDate().equals(booking.getCheckOutDate())){
+                        location = CellLocation.ALONE;
+                    } else if(booking.getCheckInDate().equals(dia)){
+                         location = CellLocation.BEGINING;
+                    } else if(booking.getCheckOutDate().equals(dia)){
+                        location = CellLocation.END;
+                    }else{
+                        location = CellLocation.MIDDLE;
+                    }
+                    return  new Pair<>(toCalendarState(booking.getState()).color(), location);
                 }
             }
-            return EMPTY.color();
+            return new Pair<>(EMPTY.color(), CellLocation.MIDDLE);
         }
     }
 
@@ -155,6 +167,8 @@ public class VistaMes extends LinearLayout
     {
         int repitenciaDelDia = 0;
         boolean repitentPendientes = false;
+        ReservaPrincipal reservaPrincipal = (ReservaPrincipal) getContext();
+        int cantCuarto = reservaPrincipal.getBedrooms().size();
         for(Booking calendario_reserva : preReservas)
         {
             if((calendario_reserva.getCheckInDate()).compareTo(dia) <= 0 && (calendario_reserva.getCheckOutDate()).compareTo(dia) >= 0)
@@ -166,33 +180,34 @@ public class VistaMes extends LinearLayout
                 }
             }
         }
+
         if(repitenciaDelDia == 0)
         {
             return EMPTY.color();
         }
-        else if(repitenciaDelDia < ReservaPrincipal.BEDROOM_AMOUNT)
+        else if(repitenciaDelDia < cantCuarto)
         {
-            if(repitentPendientes == true)
-            {
-                // return CalendarState.PARTIALLY_OCCUPIED.color()_Y_PENDIENTE;
-                return CalendarState.PARTIALLY_OCCUPIED.color();  // es para prueba
-            }
-            else
-            {
+//            if(repitentPendientes == true)
+//            {
+//                // return CalendarState.PARTIALLY_OCCUPIED.color()_Y_PENDIENTE;
+//                return CalendarState.PARTIALLY_OCCUPIED.color();  // es para prueba
+//            }
+//            else
+//            {
                 return CalendarState.PARTIALLY_OCCUPIED.color();
-            }
+//            }
         }
         else
         {
-            if(repitentPendientes == true)
-            {
-                //                return CalendarState.CONFIRMED.color()_Y_PENDIENTE;
-                return CalendarState.CONFIRMED.color();   // debe ser el de arriba,este es pa prueba
-            }
-            else
-            {
-                return CalendarState.CONFIRMED.color();
-            }
+//            if(repitentPendientes == true)
+//            {
+//                //                return CalendarState.CONFIRMED.color()_Y_PENDIENTE;
+//                return CalendarState.CONFIRMED.color();   // debe ser el de arriba,este es pa prueba
+//            }
+//            else
+//            {
+                return CalendarState.OCUPPIED.color();
+//            }
         }
     }
 
@@ -282,9 +297,18 @@ public class VistaMes extends LinearLayout
         }
         else
         {
-            for(int i = indexIni; i <= indexMayor; i++)
-            {
-                dias.get(i).deSeleccionar();
+            if(indexIni == indexMayor){
+                dias.get(indexIni).deSeleccionar(CellLocation.ALONE);
+            } else {
+                for (int i = indexIni; i <= indexMayor; i++) {
+                    if (i == indexIni && marcarIni) {
+                        dias.get(i).deSeleccionar(CellLocation.BEGINING);
+                    } else if (i == indexMayor && marcarFin) {
+                        dias.get(i).deSeleccionar(CellLocation.END);
+                    } else {
+                        dias.get(i).deSeleccionar(CellLocation.MIDDLE);
+                    }
+                }
             }
         }
     }
@@ -297,7 +321,7 @@ public class VistaMes extends LinearLayout
         boolean hayPendiente = false;
         for(int i = indexIni; i <= indexMayor; i++)
         {
-            if(dias.get(i).getColor() == CalendarState.CONFIRMED.color())
+            if(dias.get(i).getColor() == CalendarState.CONFIRMED.color() || dias.get(i).getColor() == CalendarState.CHECKED_IN.color())
             {
                 return -1;
             }
@@ -322,27 +346,30 @@ public class VistaMes extends LinearLayout
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        return inicio_mes.equals(((VistaMes) o).getInicio_mes());
+    public boolean equals(Object o) {
+        return o instanceof VistaMes && inicio_mes.equals(((VistaMes) o).getInicio_mes());
     }
 
+    @Override
+    public int hashCode() {
+        return inicio_mes.hashCode();
+    }
 
     public class AdaptadorGridMes extends ArrayAdapter
     {
 
-        public AdaptadorGridMes(Context context, int resource, List objects)
+        AdaptadorGridMes(Context context, int resource, List objects)
         {
             super(context, resource, objects);
         }
 
+        @NonNull
         @Override
-        public View getView(final int posision, View convertView, ViewGroup parent)
+        public View getView(final int posision, View convertView, @NonNull ViewGroup parent)
         {
             if(convertView == null)
             {
-                VistaDia vistaDia = dias.get(posision);
-                return vistaDia;
+                return dias.get(posision);
             }
             else
             {

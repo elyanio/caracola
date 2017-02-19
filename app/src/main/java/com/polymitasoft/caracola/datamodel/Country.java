@@ -3,15 +3,20 @@ package com.polymitasoft.caracola.datamodel;
 import java.util.Locale;
 
 /**
- * Created by rainermf on 11/2/2017.
+ * @author rainermf
+ * @since 11/2/2017
  */
-
 public class Country {
 
-    private Locale locale;
+    private final Locale locale;
 
     public Country(String code) {
         locale = new Locale("es", code);
+    }
+
+    public static Country fromCode(String code) {
+        // Here we can cache common countries
+        return new Country(code);
     }
 
     public String getCode() {

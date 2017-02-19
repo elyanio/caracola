@@ -16,15 +16,18 @@
 
 package com.polymitasoft.caracola.view.booking;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.polymitasoft.caracola.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
+import com.polymitasoft.caracola.view.client.ClientEditActivity;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -68,7 +71,7 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
             }
 
             // Create a new Fragment to be placed in the activity layout
-            ClientFragment firstFragment = new ClientFragment().newInstance(booking);
+            ClientFragment firstFragment = ClientFragment.newInstance(booking);
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
@@ -106,5 +109,11 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
     @Override
     public void onListFragmentInteraction(Client client) {
 
+    }
+
+    public void addClient(View view) {
+        Intent intent = new Intent(this, ClientEditActivity.class);
+        intent.putExtra(ClientEditActivity.EXTRA_BOOKING_ID, booking.getId());
+        startActivity(intent);
     }
 }

@@ -99,4 +99,12 @@
     <string name="person_full_name">
         <xliff:g id="firstName" example="Rainer">%s</xliff:g> <xliff:g id="lastName" example="Martínez Fraga">%s</xliff:g>
     </string>
+    <string name="title_edit_client">Editar cliente</string>
+    <string name="passport">Pasaporte</string>
+    <string name="person_name">Nombre</string>
+    <string name="person_first_name">Nombre</string>
+    <string name="person_last_name">Apellidos</string>
+    <string name="birthday_form_label">Fecha de nacimiento</string>
+    <string name="country">País</string>
+    <string name="gender">Género</string>
 </resources>

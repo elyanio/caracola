@@ -12,11 +12,13 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.polymitasoft.caracola.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class ReservaEsenaPrincipal extends LinearLayout {
 
@@ -27,7 +29,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     private FrameLayout layoutCabecera;
     private GridView diasSemanasGrid;
     private ViewPager deslizador;
-    private ArrayList<ReservaPanelHabitacion> panelesHabitaciones = new ArrayList<>(ReservaPrincipal.BEDROOM_AMOUNT + 1);
+    private ArrayList<ReservaPanelHabitacion> panelesHabitaciones = new ArrayList<>();
     private ReservaPanelHabitacion reservaPanelHabitacionActual;
 
     public ReservaEsenaPrincipal(Context context) {
