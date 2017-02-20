@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.view.ListActivity;
 
@@ -22,11 +21,11 @@ import io.requery.query.Result;
 public class SupplierListActivity extends ListActivity<Supplier> {
 
     @Override
-    protected QueryRecyclerAdapter<Supplier, Holder> createAdapter() {
+    protected QueryRecyclerAdapter<Supplier, SimpleViewHolder> createAdapter() {
         return new SupplierAdapter();
     }
 
-    class SupplierAdapter extends QueryRecyclerAdapter<Supplier, Holder> implements View.OnClickListener {
+    class SupplierAdapter extends QueryRecyclerAdapter<Supplier, SimpleViewHolder> implements View.OnClickListener {
 
         private final Random random = new Random();
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
@@ -41,17 +40,17 @@ public class SupplierListActivity extends ListActivity<Supplier> {
         }
 
         @Override
-        public void onBindViewHolder(Supplier item, Holder holder, int position) {
+        public void onBindViewHolder(Supplier item, SimpleViewHolder holder, int position) {
             holder.name.setText(item.getName());
             holder.image.setBackgroundColor(colors[random.nextInt(colors.length)]);
             holder.itemView.setTag(item);
         }
 
         @Override
-        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.booking_item, null);
-            Holder holder = new Holder(view);
+            SimpleViewHolder holder = new SimpleViewHolder(view);
             view.setOnClickListener(this);
             return holder;
         }

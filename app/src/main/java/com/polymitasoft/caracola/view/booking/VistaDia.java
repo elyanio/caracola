@@ -1,9 +1,11 @@
 package com.polymitasoft.caracola.view.booking;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
@@ -17,12 +19,18 @@ import static com.polymitasoft.caracola.view.booking.CalendarState.SELECTED;
 public class VistaDia extends Button implements Comparable<VistaDia> {
     private final LocalDate dia;
     private final int strokeWidth;
-    private int color;
+    @ColorInt private int color;
+    @ColorInt private int textColor;
 
     public VistaDia(Context context, LocalDate dia, int color) {
+        this(context, dia, color, Color.BLACK);
+    }
+
+    public VistaDia(Context context, LocalDate date, int bgColor, int textColor) {
         super(context);
-        this.dia = dia;
-        this.color = color;
+        this.dia = date;
+        this.color = bgColor;
+        this.textColor = textColor;
         strokeWidth = (int) (getContext().getResources().getDisplayMetrics().density * 2);
         configIni();
         eventos();
@@ -32,16 +40,21 @@ public class VistaDia extends Button implements Comparable<VistaDia> {
         return dia1.getCalendar().getYear() == dia2.getCalendar().getYear() && dia1.getCalendar().getMonth() == dia2.getCalendar().getMonth();
     }
 
-    public void pintarColor(int color, CellLocation cellLocation) {
-        this.color = color;
-        rellenarColor(color, cellLocation);
+    public void pintarColor(int bgColor, int textColor, CellLocation cellLocation) {
+        this.color = bgColor;
+        this.textColor = textColor;
+        rellenarColor(bgColor, textColor, cellLocation);
     }
 
-    private void rellenarColor(int color, CellLocation cellLocation) {
+    public void pintarColor(int color, CellLocation cellLocation) {
+        pintarColor(color, Color.BLACK, cellLocation);
+    }
+
+    private void rellenarColor(int bgColor, int textColor, CellLocation cellLocation) {
         ShapeDrawable drawable = new ShapeDrawable();
-        drawable.getPaint().setColor(color);
-//        setTextColor(Color.WHITE);
-        if (color != NO_DAY.color()) {
+        drawable.getPaint().setColor(bgColor);
+        setTextColor(textColor);
+        if (bgColor != NO_DAY.color()) {
             switch (cellLocation) {
                 case ALONE:
                     drawable.setShape(new OvalShape());
@@ -52,7 +65,7 @@ public class VistaDia extends Button implements Comparable<VistaDia> {
                     setBackground(drawable);
                     break;
                 case MIDDLE:
-                    setBackgroundColor(color);
+                    setBackgroundColor(bgColor);
                     break;
                 case END:
                     drawable.setShape(new RoundRectShape(new float[]{0, 0, 45, 45, 45, 45, 0, 0}, null, null));
@@ -63,12 +76,12 @@ public class VistaDia extends Button implements Comparable<VistaDia> {
     }
 
     public void seleccionar(CellLocation cellLocation) {
-        rellenarColor(SELECTED.color(), cellLocation);
+        rellenarColor(SELECTED.color(), Color.WHITE, cellLocation);
     }
 
     public void deSeleccionar(CellLocation cellLocation) {
         if (color != NO_DAY.color()) {
-            rellenarColor(color, cellLocation);
+            rellenarColor(color, textColor, cellLocation);
         }
     }
 
@@ -79,6 +92,7 @@ public class VistaDia extends Button implements Comparable<VistaDia> {
             setText(dia.getDayOfMonth() + "");
         }
         setBackgroundColor(color);
+        setTextColor(textColor);
         this.setGravity(TEXT_ALIGNMENT_CENTER);
     }
 

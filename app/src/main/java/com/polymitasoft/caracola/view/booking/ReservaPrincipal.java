@@ -22,8 +22,8 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
-import com.polymitasoft.caracola.view.supplier.ExternalServiceListActivity;
 import com.polymitasoft.caracola.view.service.ServiceListActivity;
+import com.polymitasoft.caracola.view.supplier.ExternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.SupplierListActivity;
 
 import java.util.ArrayList;
@@ -35,12 +35,16 @@ import butterknife.ButterKnife;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
+import static butterknife.ButterKnife.findById;
 
+/**
+ * @author yanier.alfonso
+ */
 public class ReservaPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    //controles
     private EntityDataStore<Persistable> dataStore;
+
     @BindView(R.id.reserva_esenas) LinearLayout esenas_frameLayout;
     @BindView(R.id.editButton) Button editButton;
     @BindView(R.id.bookButton) Button bookButton;
@@ -58,19 +62,16 @@ public class ReservaPrincipal extends AppCompatActivity
         setContentView(R.layout.reserva_principal_activity);
         ButterKnife.bind(this);
 
-        Locale.setDefault(new Locale("es"));
-        AndroidThreeTen.init(this);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findById(this, R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findById(this, R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         loadData();
@@ -80,7 +81,7 @@ public class ReservaPrincipal extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findById(this, R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -89,7 +90,7 @@ public class ReservaPrincipal extends AppCompatActivity
     }
 
     private void loadData() {
-        dataStore = DataStoreHolder.getInstance().getDataStore(getApplicationContext());
+        dataStore = DataStoreHolder.getInstance().getDataStore(this);
         bedrooms = dataStore.select(Bedroom.class).get().toList();
     }
 
@@ -153,7 +154,7 @@ public class ReservaPrincipal extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_reserva_todos, menu);
 
-        for(int i = 0; i < bedrooms.size(); i++) {
+        for (int i = 0; i < bedrooms.size(); i++) {
             menu.add(0, i, 0, bedrooms.get(i).getName());
         }
 
@@ -167,21 +168,17 @@ public class ReservaPrincipal extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(item.getItemId() != R.id.show_m)
-        {
-            if(item.getItemId() == R.id.all_m)
-            {  // todas las bedrooms
+        if (id != R.id.show_m) {
+            if (id == R.id.all_m) {  // todas las bedrooms
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().setHabitacion(null);
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().actualizarCambioHabitacion();
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().limpiarTodo();
-            }
-            else
-            {
+            } else {
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().setHabitacion(bedrooms.get(item.getItemId()));
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().actualizarCambioHabitacion();
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().limpiarTodo();
             }
-            ActionMenuItemView item1 = (ActionMenuItemView) findViewById(R.id.show_m);
+            ActionMenuItemView item1 = findById(this, R.id.show_m);
             item1.setTitle(item.getTitle().toString());
         }
         return super.onOptionsItemSelected(item);
@@ -212,7 +209,7 @@ public class ReservaPrincipal extends AppCompatActivity
                 break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findById(this, R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

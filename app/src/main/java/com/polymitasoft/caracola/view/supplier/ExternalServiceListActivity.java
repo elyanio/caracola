@@ -21,14 +21,14 @@ import io.requery.query.Result;
 public class ExternalServiceListActivity extends ListActivity<ExternalService> {
 
     @Override
-    protected QueryRecyclerAdapter<ExternalService, Holder> createAdapter() {
+    protected QueryRecyclerAdapter<ExternalService, SimpleViewHolder> createAdapter() {
         return new ServiceAdapter();
     }
 
     /**
      * Created by rainermf on 15/2/2017.
      */
-    class ServiceAdapter extends QueryRecyclerAdapter<ExternalService, Holder> implements View.OnClickListener {
+    class ServiceAdapter extends QueryRecyclerAdapter<ExternalService, SimpleViewHolder> implements View.OnClickListener {
 
         private final Random random = new Random();
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
@@ -43,17 +43,17 @@ public class ExternalServiceListActivity extends ListActivity<ExternalService> {
         }
 
         @Override
-        public void onBindViewHolder(ExternalService item, Holder holder, int position) {
+        public void onBindViewHolder(ExternalService item, SimpleViewHolder holder, int position) {
             holder.name.setText(item.getName());
             holder.image.setBackgroundColor(colors[random.nextInt(colors.length)]);
             holder.itemView.setTag(item);
         }
 
         @Override
-        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.booking_item, null);
-            Holder holder = new Holder(view);
+            SimpleViewHolder holder = new SimpleViewHolder(view);
             view.setOnClickListener(this);
             return holder;
         }

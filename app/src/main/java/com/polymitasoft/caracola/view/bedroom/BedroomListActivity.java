@@ -24,7 +24,7 @@ import io.requery.query.Result;
 public class BedroomListActivity extends ListActivity<Bedroom> {
 
     @Override
-    protected QueryRecyclerAdapter<Bedroom, Holder> createAdapter() {
+    protected QueryRecyclerAdapter<Bedroom, SimpleViewHolder> createAdapter() {
         return new BedroomAdapter();
     }
 
@@ -48,7 +48,7 @@ public class BedroomListActivity extends ListActivity<Bedroom> {
     /**
      * Created by rainermf on 15/2/2017.
      */
-    class BedroomAdapter extends QueryRecyclerAdapter<Bedroom, Holder> implements View.OnClickListener {
+    class BedroomAdapter extends QueryRecyclerAdapter<Bedroom, SimpleViewHolder> implements View.OnClickListener {
 
         private final Random random = new Random();
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
@@ -63,17 +63,17 @@ public class BedroomListActivity extends ListActivity<Bedroom> {
         }
 
         @Override
-        public void onBindViewHolder(Bedroom item, Holder holder, int position) {
+        public void onBindViewHolder(Bedroom item, SimpleViewHolder holder, int position) {
             holder.name.setText(item.getName());
             holder.image.setBackgroundColor(colors[random.nextInt(colors.length)]);
             holder.itemView.setTag(item);
         }
 
         @Override
-        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.booking_item, null);
-            Holder holder = new Holder(view);
+            SimpleViewHolder holder = new SimpleViewHolder(view);
             view.setOnClickListener(this);
             return holder;
         }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.polymitasoft.caracola.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.DateSpinner;
-import com.polymitasoft.caracola.dao.BookingDao;
+import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.util.FormatUtils;

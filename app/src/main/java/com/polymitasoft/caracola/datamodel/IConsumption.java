@@ -42,7 +42,7 @@ public interface IConsumption {
     int getAmount();
 
     @NonNull
-    @Column(nullable = false)
+    @Column(nullable = false, name = "consumptionDate")
     @Convert(LocalDateConverter.class)
     LocalDate getDate();
 }
