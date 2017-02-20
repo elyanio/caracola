@@ -21,7 +21,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
-import com.polymitasoft.caracola.view.service.ServiceListActivity;
+import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.ExternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.SupplierListActivity;
 
@@ -188,7 +188,7 @@ public class ReservaPrincipal extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_camera:
-                startActivity(new Intent(this, ServiceListActivity.class));
+                startActivity(new Intent(this, InternalServiceListActivity.class));
                 break;
             case R.id.nav_gallery:
                 startActivity(new Intent(this, ExternalServiceListActivity.class));

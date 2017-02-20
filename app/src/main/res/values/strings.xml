@@ -107,4 +107,6 @@
     <string name="birthday_form_label">Fecha de nacimiento</string>
     <string name="country">País</string>
     <string name="gender">Género</string>
+    <string name="service_name">Nombre</string>
+    <string name="price">Precio</string>
 </resources>

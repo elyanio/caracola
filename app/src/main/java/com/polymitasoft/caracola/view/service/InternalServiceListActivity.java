@@ -1,5 +1,6 @@
 package com.polymitasoft.caracola.view.service;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,10 +20,10 @@ import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 
 /**
- * Created by rainermf on 16/2/2017.
+ * @author rainermf
+ * @since 16/2/2017
  */
-
-public class ServiceListActivity extends ListActivity<InternalService> {
+public class InternalServiceListActivity extends ListActivity<InternalService> {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,8 +48,8 @@ public class ServiceListActivity extends ListActivity<InternalService> {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_plus:
-//                Intent intent = new Intent(this, BookingEditActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(this, InternalServiceEditActivity.class);
+                startActivity(intent);
                 return true;
         }
         return false;
@@ -91,9 +92,9 @@ public class ServiceListActivity extends ListActivity<InternalService> {
         public void onClick(View v) {
             InternalService service = (InternalService) v.getTag();
             if (service != null) {
-//                Intent intent = new Intent(ServiceListActivity.this, BookingEditActivity.class);
-//                intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, service.getId());
-//                startActivity(intent);
+                Intent intent = new Intent(InternalServiceListActivity.this, InternalServiceEditActivity.class);
+                intent.putExtra(InternalServiceEditActivity.EXTRA_SERVICE_ID, service.getId());
+                startActivity(intent);
             }
         }
     }
