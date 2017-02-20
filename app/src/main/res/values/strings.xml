@@ -109,4 +109,5 @@
     <string name="gender">Género</string>
     <string name="service_name">Nombre</string>
     <string name="price">Precio</string>
+    <string name="title_edit_external_service">Editar servicio externo</string>
 </resources>

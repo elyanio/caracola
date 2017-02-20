@@ -18,17 +18,4 @@
                   android:hint="@string/service_name"/>
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/layout_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText android:id="@+id/service_price"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:inputType="numberDecimal"
-                  android:text="@string/price"
-                  android:hint="@string/price"/>
-    </android.support.design.widget.TextInputLayout>
-
 </LinearLayout>

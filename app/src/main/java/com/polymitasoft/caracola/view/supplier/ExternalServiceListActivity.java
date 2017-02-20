@@ -1,7 +1,10 @@
 package com.polymitasoft.caracola.view.supplier;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,14 +18,31 @@ import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 
 /**
- * Created by rainermf on 16/2/2017.
+ * @author rainermf
+ * @since 16/2/2017
  */
-
 public class ExternalServiceListActivity extends ListActivity<ExternalService> {
 
     @Override
     protected QueryRecyclerAdapter<ExternalService, SimpleViewHolder> createAdapter() {
         return new ServiceAdapter();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.list_add_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_plus:
+                Intent intent = new Intent(this, ExternalServiceEditActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -62,9 +82,9 @@ public class ExternalServiceListActivity extends ListActivity<ExternalService> {
         public void onClick(View v) {
             ExternalService service = (ExternalService) v.getTag();
             if (service != null) {
-//                Intent intent = new Intent(ServiceListActivity.this, BookingEditActivity.class);
-//                intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, service.getId());
-//                startActivity(intent);
+                Intent intent = new Intent(ExternalServiceListActivity.this, ExternalServiceEditActivity.class);
+                intent.putExtra(ExternalServiceEditActivity.EXTRA_SERVICE_ID, service.getId());
+                startActivity(intent);
             }
         }
     }
