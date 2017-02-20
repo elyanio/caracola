@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.InternalService;
+import com.polymitasoft.caracola.datamodel.InternalServiceEntity;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -64,7 +65,7 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
 
         ServiceAdapter() {
-            super(InternalService.$TYPE);
+//            super(InternalServiceEntity.$TYPE);
         }
 
         @Override

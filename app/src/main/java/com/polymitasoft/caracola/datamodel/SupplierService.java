@@ -9,13 +9,14 @@ import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import io.requery.ManyToOne;
+import io.requery.Persistable;
 
 /**
  * @author rainermf
  * @since 11/2/2017
  */
 @Entity
-public interface ISupplierService {
+public interface SupplierService extends Persistable {
     @Key
     @Generated
     int getId();
@@ -23,18 +24,22 @@ public interface ISupplierService {
     @NonNull
     @Column(nullable = false)
     @ManyToOne
-    ISupplier getSupplier();
+    Supplier getSupplier();
+    void setSupplier(Supplier supplier);
 
     @NonNull
     @Column(nullable = false)
     @ManyToOne
-    IExternalService getService();
+    ExternalService getService();
+    void setService(ExternalService service);
 
     @NonNull
     @Column(nullable = false)
     BigDecimal getPrice();
+    void setPrice(BigDecimal price);
 
     @NonNull
     @Column(nullable = false)
     BigDecimal getComission();
+    void setComission(BigDecimal comission);
 }

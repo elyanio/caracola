@@ -15,6 +15,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.InteractivoScrollView;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.BookingEntity;
 import com.polymitasoft.caracola.datamodel.BookingState;
 
 import org.threeten.bp.LocalDate;
@@ -418,7 +419,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
             diaMayor = primerDiaSelec;
         }
 
-        Booking booking = new Booking();
+        Booking booking = new BookingEntity();
         booking.setCheckInDate(diaMenor.getCalendar());
         booking.setCheckOutDate(diaMayor.getCalendar());
         booking.setState(estado);

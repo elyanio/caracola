@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.BookingEntity;
 
 import org.threeten.bp.LocalDate;
 
@@ -118,7 +119,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         private EntityDataStore<Persistable> data;
 
         BookingAdapter(EntityDataStore<Persistable> dataStore) {
-            super(Booking.$TYPE);
+//            super(BookingEntity.$TYPE);
             data = dataStore;
         }
 
@@ -129,8 +130,8 @@ public class CurrentBookingsActivity extends AppCompatActivity {
             // (Alternatively RxJava w/ RxBinding could be used)
             LocalDate today = LocalDate.now();
             return data.select(Booking.class)
-                    .where(Booking.CHECK_IN_DATE.lessThanOrEqual(today))
-                    .and(Booking.CHECK_OUT_DATE.greaterThanOrEqual(today))
+                    .where(BookingEntity.CHECK_IN_DATE.lessThanOrEqual(today))
+                    .and(BookingEntity.CHECK_OUT_DATE.greaterThanOrEqual(today))
                     .get();
         }
 

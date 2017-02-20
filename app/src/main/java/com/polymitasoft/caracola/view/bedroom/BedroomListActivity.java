@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
+import com.polymitasoft.caracola.datamodel.BedroomEntity;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -53,9 +54,9 @@ public class BedroomListActivity extends ListActivity<Bedroom> {
         private final Random random = new Random();
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
 
-        BedroomAdapter() {
-            super(Bedroom.$TYPE);
-        }
+//        BedroomAdapter() {
+//            super(BedroomEntity.$TYPE);
+//        }
 
         @Override
         public Result<Bedroom> performQuery() {

@@ -13,7 +13,7 @@ public class BookingBuilder {
     private int id;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private IBedroom bedroom;
+    private Bedroom bedroom;
     private BigDecimal price;
     private BookingState state;
     private String note;
@@ -35,7 +35,7 @@ public class BookingBuilder {
         return this;
     }
 
-    public BookingBuilder setBedroom(IBedroom bedroom) {
+    public BookingBuilder setBedroom(Bedroom bedroom) {
         this.bedroom = bedroom;
         return this;
     }
@@ -66,7 +66,7 @@ public class BookingBuilder {
     }
 
     public Booking build() {
-        Booking booking = new Booking();
+        Booking booking = new BookingEntity();
         booking.setState(state);
         booking.setPrice(price);
         booking.setBookingNumber(bookingNumber);

@@ -17,7 +17,6 @@ import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
-import com.polymitasoft.caracola.datamodel.IBedroom;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
@@ -141,7 +140,7 @@ public class VistaMes extends LinearLayout
         {
             for(Booking booking : preReservas)
             {
-                IBedroom habitacion = booking.getBedroom();
+                Bedroom habitacion = booking.getBedroom();
 
                 if(booking.getCheckInDate().compareTo(dia) <= 0 && booking.getCheckOutDate().compareTo(dia) >= 0 &&
                         habitacion.getId() == reservaPanelHabitacion.getHabitacion().getId())
@@ -219,7 +218,7 @@ public class VistaMes extends LinearLayout
 
     public List<Bedroom> disponibilidadModoTodos(VistaDia diaMenor, VistaDia diaMayor)
     {
-            List<IBedroom> ocupadas = new ArrayList<>();
+            List<Bedroom> ocupadas = new ArrayList<>();
             for(Booking booking : preReservas)
             {
                 if(((booking.getCheckInDate()).compareTo(diaMenor.getCalendar()) >= 0 && (booking.getCheckInDate()).compareTo(diaMayor.getCalendar()) <= 0) ||

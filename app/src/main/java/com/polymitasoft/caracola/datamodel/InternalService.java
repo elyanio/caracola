@@ -2,33 +2,31 @@ package com.polymitasoft.caracola.datamodel;
 
 import android.support.annotation.NonNull;
 
+import java.math.BigDecimal;
+
 import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
-import io.requery.ManyToOne;
+import io.requery.Persistable;
 
 /**
  * @author rainermf
  * @since 11/2/2017
  */
 @Entity
-public interface IClientStay {
+public interface InternalService extends Persistable {
     @Key
     @Generated
     int getId();
 
     @NonNull
     @Column(nullable = false)
-    @ManyToOne
-    IClient getClient();
+    String getName();
+    void setName(String name);
 
     @NonNull
     @Column(nullable = false)
-    @ManyToOne
-    IBooking getBooking();
-
-    @NonNull
-    @Column(nullable = false)
-    boolean isHolder();
+    BigDecimal getDefaultPrice();
+    void setDefaultPrice(BigDecimal price);
 }

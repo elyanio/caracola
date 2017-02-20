@@ -8,13 +8,14 @@ import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
+import io.requery.Persistable;
 
 /**
  * @author rainermf
  * @since 11/2/2017
  */
 @Entity
-public interface IInternalService {
+public interface Bedroom extends Persistable {
     @Key
     @Generated
     int getId();
@@ -22,8 +23,20 @@ public interface IInternalService {
     @NonNull
     @Column(nullable = false)
     String getName();
+    void setName(String name);
 
     @NonNull
     @Column(nullable = false)
-    BigDecimal getDefaultPrice();
+    int getCapacity();
+    void setCapacity(int capacity);
+
+    @NonNull
+    @Column(nullable = false)
+    BigDecimal getPriceInLowSeason();
+    void setPriceInLowSeason(BigDecimal price);
+
+    @NonNull
+    @Column(nullable = false)
+    BigDecimal getPriceInHighSeason();
+    void setPriceInHighSeason(BigDecimal price);
 }

@@ -29,7 +29,7 @@ public class BedroomBuilder {
     }
 
     public Bedroom build() {
-        Bedroom bedroom = new Bedroom();
+        Bedroom bedroom = new BedroomEntity();
         bedroom.setName(name);
         bedroom.setCapacity(capacity);
         bedroom.setPriceInHighSeason(priceInHighSeason);

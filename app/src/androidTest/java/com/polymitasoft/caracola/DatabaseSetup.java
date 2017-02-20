@@ -4,18 +4,25 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.BedroomBuilder;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.BookingEntity;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.ClientBuilder;
 import com.polymitasoft.caracola.datamodel.ClientStay;
+import com.polymitasoft.caracola.datamodel.ClientStayEntity;
 import com.polymitasoft.caracola.datamodel.Consumption;
+import com.polymitasoft.caracola.datamodel.ConsumptionEntity;
 import com.polymitasoft.caracola.datamodel.Country;
 import com.polymitasoft.caracola.datamodel.ExternalService;
+import com.polymitasoft.caracola.datamodel.ExternalServiceEntity;
 import com.polymitasoft.caracola.datamodel.Gender;
 import com.polymitasoft.caracola.datamodel.InternalService;
+import com.polymitasoft.caracola.datamodel.InternalServiceEntity;
 import com.polymitasoft.caracola.datamodel.Models;
 import com.polymitasoft.caracola.datamodel.Supplier;
+import com.polymitasoft.caracola.datamodel.SupplierEntity;
 import com.polymitasoft.caracola.datamodel.SupplierService;
+import com.polymitasoft.caracola.datamodel.SupplierServiceEntity;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -151,7 +158,7 @@ public class DatabaseSetup {
         List<Supplier> suppliers = new ArrayList<>(names.length);
 
         for (int i = 0; i < 7; i++) {
-            Supplier client = new Supplier();
+            Supplier client = new SupplierEntity();
             client.setName(names[i]);
             client.setAddress(addresses[i]);
             client.setEmailAddress(emailAdresses[i]);
@@ -190,7 +197,7 @@ public class DatabaseSetup {
         List<InternalService> services = new ArrayList<>(names.length);
 
         for (int i = 0; i < names.length; i++) {
-            InternalService service = new InternalService();
+            InternalService service = new InternalServiceEntity();
             service.setName(names[i]);
             service.setDefaultPrice(BigDecimal.valueOf(prices[i]));
             services.add(service);
@@ -211,7 +218,7 @@ public class DatabaseSetup {
 
         int length = bedrooms.size();
         for (int i = 0; i < bookingNumbers.length; i++) {
-            Booking booking = new Booking();
+            Booking booking = new BookingEntity();
             booking.setBedroom(bedrooms.get(i % length));
             booking.setBookingNumber(bookingNumbers[i]);
             booking.setBookNumber(bookNumbers[i]);
@@ -232,7 +239,7 @@ public class DatabaseSetup {
         List<ClientStay> stays = new ArrayList<>(holders.length);
 
         for (int i = 0; i < holders.length; i++) {
-            ClientStay stay = new ClientStay();
+            ClientStay stay = new ClientStayEntity();
             stay.setBooking(bookings.get(i % bookings.size()));
             stay.setClient(clients.get(i % clients.size()));
             stay.setHolder(holders[i]);
@@ -250,7 +257,7 @@ public class DatabaseSetup {
         List<Consumption> consumptions = new ArrayList<>();
 
         for (int i = 0; i < amounts.length; i++) {
-            Consumption consumption = new Consumption();
+            Consumption consumption = new ConsumptionEntity();
             consumption.setBooking(bookings.get(i % bookings.size()));
             consumption.setInternalService(services.get(i % services.size()));
             consumption.setAmount(amounts[i]);
@@ -269,7 +276,7 @@ public class DatabaseSetup {
         List<ExternalService> services = new ArrayList<>(names.length);
 
         for (int i = 0; i < names.length; i++) {
-            ExternalService service = new ExternalService();
+            ExternalService service = new ExternalServiceEntity();
             service.setName(names[i]);
             services.add(service);
         }
@@ -284,7 +291,7 @@ public class DatabaseSetup {
         List<SupplierService> supplierServices = new ArrayList<>();
 
         for (int i = 0; i < prices.length; i++) {
-            SupplierService supplierService = new SupplierService();
+            SupplierService supplierService = new SupplierServiceEntity();
             supplierService.setSupplier(suppliers.get(i % suppliers.size()));
             supplierService.setService(services.get(i % services.size()));
             supplierService.setPrice(BigDecimal.valueOf(prices[i]));

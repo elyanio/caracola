@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.ExternalService;
+import com.polymitasoft.caracola.datamodel.ExternalServiceEntity;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -54,7 +55,7 @@ public class ExternalServiceListActivity extends ListActivity<ExternalService> {
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
 
         ServiceAdapter() {
-            super(ExternalService.$TYPE);
+//            super(ExternalServiceEntity.$TYPE);
         }
 
         @Override

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Supplier;
+import com.polymitasoft.caracola.datamodel.SupplierEntity;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -31,7 +32,7 @@ public class SupplierListActivity extends ListActivity<Supplier> {
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
 
         SupplierAdapter() {
-            super(Supplier.$TYPE);
+//            super(SupplierEntity.$TYPE);
         }
 
         @Override

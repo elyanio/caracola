@@ -41,7 +41,7 @@ public class ClientBuilder {
     }
 
     public Client build() {
-        Client client = new Client();
+        Client client = new ClientEntity();
         client.setPassport(passport);
         client.setFirstName(firstName);
         client.setLastName(lastName);

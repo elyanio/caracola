@@ -5,8 +5,9 @@ import android.util.Log;
 
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.ClientStay;
-import com.polymitasoft.caracola.datamodel.IBedroom;
+import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.ClientStayEntity;
 
 import org.threeten.bp.LocalDate;
 
@@ -16,9 +17,9 @@ import java.util.List;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
-import static com.polymitasoft.caracola.datamodel.Booking.BEDROOM;
-import static com.polymitasoft.caracola.datamodel.Booking.CHECK_IN_DATE;
-import static com.polymitasoft.caracola.datamodel.Booking.CHECK_OUT_DATE;
+import static com.polymitasoft.caracola.datamodel.BookingEntity.BEDROOM;
+import static com.polymitasoft.caracola.datamodel.BookingEntity.CHECK_IN_DATE;
+import static com.polymitasoft.caracola.datamodel.BookingEntity.CHECK_OUT_DATE;
 
 /**
  * @author rainermf
@@ -49,7 +50,7 @@ public class BookingDao {
                 .get().toList();
     }
 
-    public LocalDate previousBookedDay(IBedroom bedroom, LocalDate date) {
+    public LocalDate previousBookedDay(Bedroom bedroom, LocalDate date) {
         Booking booking = dataStore.select(Booking.class)
                 .where(BEDROOM.eq(bedroom))
                 .and(CHECK_OUT_DATE.lessThanOrEqual(date))
@@ -63,7 +64,7 @@ public class BookingDao {
         return booking.getCheckOutDate();
     }
 
-    public LocalDate nextBookedDay(IBedroom bedroom, LocalDate date) {
+    public LocalDate nextBookedDay(Bedroom bedroom, LocalDate date) {
         Booking booking = dataStore.select(Booking.class)
                 .where(BEDROOM.eq(bedroom))
                 .and(CHECK_IN_DATE.greaterThanOrEqual(date))
@@ -79,10 +80,10 @@ public class BookingDao {
 
     public List<Client> getClients(@NonNull Booking booking) {
         List<ClientStay> clientStays = dataStore.select(ClientStay.class)
-                .where(ClientStay.BOOKING.eq(booking)).get().toList();
+                .where(ClientStayEntity.BOOKING.eq(booking)).get().toList();
         List<Client> clients = new ArrayList<>(clientStays.size());
         for (ClientStay stay: clientStays) {
-            clients.add((Client) stay.getClient());
+            clients.add(stay.getClient());
         }
         return clients;
     }
