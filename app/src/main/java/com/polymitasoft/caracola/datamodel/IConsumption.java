@@ -14,9 +14,9 @@ import io.requery.Key;
 import io.requery.ManyToOne;
 
 /**
- * Created by rainermf on 11/2/2017.
+ * @author rainermf
+ * @since 11/2/2017
  */
-
 @Entity
 public interface IConsumption {
     @Key

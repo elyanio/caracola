@@ -1,7 +1,6 @@
 package com.polymitasoft.caracola;
 
-import android.support.test.InstrumentationRegistry;
-
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.BedroomBuilder;
 import com.polymitasoft.caracola.datamodel.Booking;
@@ -27,12 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.requery.Persistable;
-import io.requery.android.sqlite.DatabaseSource;
+import io.requery.android.sqlcipher.SqlCipherDatabaseSource;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 import io.requery.sql.TableCreationMode;
 
 import static android.os.Environment.getExternalStorageDirectory;
+import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static com.polymitasoft.caracola.datamodel.Gender.FEMININE;
 import static com.polymitasoft.caracola.datamodel.Gender.MASCULINE;
 import static java.util.Arrays.asList;
@@ -62,12 +62,7 @@ public class DatabaseSetup {
         if (dbFile.exists()) {
             dbFile.delete();
         }
-        String dbName = dbFile.getAbsolutePath();
-        DatabaseSource source = new DatabaseSource(InstrumentationRegistry.getTargetContext(), Models.DEFAULT, dbName, 1);
-        source.setTableCreationMode(TableCreationMode.DROP_CREATE);
-        source.setLoggingEnabled(true);
-        Configuration configuration = source.getConfiguration();
-        data = new EntityDataStore<>(configuration);
+        data = DataStoreHolder.getInstance().getDataStore(getTargetContext());
     }
 
     public void start() {
@@ -89,6 +84,7 @@ public class DatabaseSetup {
         insertList(externalServices);
         List<SupplierService> supplierServices = getSupplierServices(suppliers, externalServices);
         insertList(supplierServices);
+        data.close();
     }
 
     public void insertList(List<? extends Persistable> list) {

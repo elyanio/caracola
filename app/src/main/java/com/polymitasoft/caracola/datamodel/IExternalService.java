@@ -8,7 +8,8 @@ import io.requery.Generated;
 import io.requery.Key;
 
 /**
- * Created by rainermf on 11/2/2017.
+ * @author rainermf
+ * @since 11/2/2017
  */
 @Entity
 public interface IExternalService {
@@ -17,6 +18,6 @@ public interface IExternalService {
     int getId();
 
     @NonNull
-    @Column(nullable = false, collate = "LOCALIZED")
+    @Column(nullable = false)
     String getName();
 }

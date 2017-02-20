@@ -11,9 +11,9 @@ import io.requery.Generated;
 import io.requery.Key;
 
 /**
- * Created by rainermf on 11/2/2017.
+ * @author rainermf
+ * @since 11/2/2017
  */
-
 @Entity
 public interface IClient {
     @Key
@@ -25,11 +25,11 @@ public interface IClient {
     String getPassport();
 
     @NonNull
-    @Column(nullable = false, collate = "LOCALIZED")
+    @Column(nullable = false)
     String getFirstName();
 
     @NonNull
-    @Column(nullable = false, collate = "LOCALIZED")
+    @Column(nullable = false)
     String getLastName();
 
     @NonNull

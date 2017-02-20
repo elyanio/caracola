@@ -1,6 +1,5 @@
-package com.polymitasoft.caracola;
+package com.polymitasoft.caracola.dataaccess;
 
-import android.app.Application;
 import android.content.Context;
 
 import com.polymitasoft.caracola.datamodel.Models;
@@ -8,6 +7,7 @@ import com.polymitasoft.caracola.datamodel.Models;
 import java.io.File;
 
 import io.requery.Persistable;
+import io.requery.android.sqlcipher.SqlCipherDatabaseSource;
 import io.requery.android.sqlite.DatabaseSource;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
@@ -15,9 +15,9 @@ import io.requery.sql.EntityDataStore;
 import static android.os.Environment.getExternalStorageDirectory;
 
 /**
- * Created by rainermf on 12/2/2017.
+ * @author rainermf
+ * @since 12/2/2017
  */
-
 public class DataStoreHolder {
 
     private EntityDataStore<Persistable> entityDataStore;
@@ -36,9 +36,11 @@ public class DataStoreHolder {
 
     public EntityDataStore<Persistable> getDataStore(Context context) {
         if(entityDataStore == null) {
-            String dbName = dbFile.getAbsolutePath().toString();
-            DatabaseSource source = new DatabaseSource(context, Models.DEFAULT, dbName, 1);
+            String dbName = dbFile.getAbsolutePath();
+            SqlCipherDatabaseSource source =
+                    new SqlCipherDatabaseSource(context, Models.DEFAULT, dbName, "PasswordParaPruebas", 1);
             Configuration configuration = source.getConfiguration();
+
             entityDataStore = new EntityDataStore<>(configuration);
         }
         return entityDataStore;

@@ -21,14 +21,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.polymitasoft.caracola.DataStoreHolder;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.BedroomBuilder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.ClientBuilder;
 import com.polymitasoft.caracola.datamodel.ClientStay;
-import com.polymitasoft.caracola.view.bedroom.BedroomBinding;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;

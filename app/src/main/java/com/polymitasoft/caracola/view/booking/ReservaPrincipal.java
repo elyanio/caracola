@@ -16,8 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.jakewharton.threetenabp.AndroidThreeTen;
-import com.polymitasoft.caracola.DataStoreHolder;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.settings.SettingsActivity;
@@ -28,7 +27,6 @@ import com.polymitasoft.caracola.view.supplier.SupplierListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
