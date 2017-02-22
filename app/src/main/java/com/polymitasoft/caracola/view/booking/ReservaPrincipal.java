@@ -42,11 +42,11 @@ public class ReservaPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.reserva_esenas) LinearLayout esenas_frameLayout;
-    @BindView(R.id.editButton) Button editButton;
-    @BindView(R.id.bookButton) Button bookButton;
-    @BindView(R.id.deleteButton) Button deleteButton;
-    @BindView(R.id.checkInButton) Button checkInButton;
-
+//    @BindView(R.id.editButton) Button editButton;
+//    @BindView(R.id.bookButton) Button bookButton;
+//    @BindView(R.id.deleteButton) Button deleteButton;
+//    @BindView(R.id.checkInButton) Button checkInButton;
+        @BindView(R.id.reserva_layout_base) BookingButtonBar bookingButtonBar;
     private List<Bedroom> bedrooms = new ArrayList<>();
 
     //escenas
@@ -72,7 +72,6 @@ public class ReservaPrincipal extends AppCompatActivity
 
         loadData();
         configurarControles();
-        eventos();
     }
 
     @Override
@@ -93,57 +92,25 @@ public class ReservaPrincipal extends AppCompatActivity
     private void configurarControles() {
         reservaEsenaPrincipal = new ReservaEsenaPrincipal(this);
         esenas_frameLayout.addView(reservaEsenaPrincipal);
+        bookingButtonBar.setReservaPrincipal(this);
     }
 
-    private void eventos() {
-        bookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickPreR();
-            }
-        });
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickEditR();
-            }
-        });
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickEliminarR();
-            }
-        });
-        checkInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                click_fisicaR();
-            }
-        });
+
+    public void click_fisicaR() {
     }
 
-    private void click_fisicaR() {
-    }
-
-    private void clickEliminarR() {
+    public void clickEliminarR() {
         reservaEsenaPrincipal.clickEliminarR();
     }
 
-    private void clickEditR() {
+    public void clickEditR() {
         DialogEditarPreReserva dialog = new DialogEditarPreReserva(this);
         dialog.show();
     }
 
-    private void clickPreR() {
+    public void clickPreR() {
         DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this);
         dialog.show();
-    }
-
-    public void disableButtons() {
-        editButton.setEnabled(false);
-        deleteButton.setEnabled(false);
-        checkInButton.setEnabled(false);
-        bookButton.setEnabled(false);
     }
 
     @Override
@@ -214,23 +181,12 @@ public class ReservaPrincipal extends AppCompatActivity
         return reservaEsenaPrincipal;
     }
 
-    public void enableEdit() {
-        editButton.setEnabled(true);
-    }
-
-    public void enableDelete() {
-        deleteButton.setEnabled(true);
-    }
-
-    public void enableCheckIn() {
-        checkInButton.setEnabled(true);
-    }
-
-    public void enableBook() {
-        bookButton.setEnabled(true);
-    }
 
     public List<Bedroom> getBedrooms() {
         return bedrooms;
+    }
+
+    public BookingButtonBar getBookingButtonBar() {
+        return bookingButtonBar;
     }
 }

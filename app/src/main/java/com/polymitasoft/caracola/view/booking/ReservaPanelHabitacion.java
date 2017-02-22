@@ -10,14 +10,14 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.InteractivoScrollView;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
-import com.polymitasoft.caracola.datamodel.IBedroom;
-import com.polymitasoft.caracola.datamodel.IBooking;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
+import com.polymitasoft.caracola.datamodel.IBedroom;
+import com.polymitasoft.caracola.datamodel.IBooking;
 
 import org.threeten.bp.LocalDate;
 
@@ -70,7 +70,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     private void configurarControles() {
         scroll_meses.setOnBottomReachedListener(new cargarNuevoMesPrincipal());
         scroll_meses.moverScrollMesActual();
-        scroll_meses.scrollTo(0,1000);
+        scroll_meses.scrollTo(0, 1000);
     }
 
     public void crearMeses() {
@@ -128,25 +128,32 @@ public class ReservaPanelHabitacion extends LinearLayout {
     }
 
     public void clickDia(VistaDia dia) {
+        ArrayList<ActionType> actionTypes = new ArrayList<>();
         if (esModoTodo()) { // el habitacionSeleccionada es todos
-            reservaPrincipal.disableButtons();
-
+//            reservaPrincipal.disableButtons();
+            reservaPrincipal.getBookingButtonBar().hide();
         } else {            // si hay una habitacion seleccionada
-            reservaPrincipal.disableButtons();
+//            reservaPrincipal.disableButtons();
+            //            reservaPrincipal.getBookingButtonBar().hide();
             limpiarUltimaSeleccion(); // si hubo una seleccion valida y no se prereservo
             if (primerDiaSelec == null) {          //y si no hay una primera seleccion
                 primerDiaSelec = dia;
                 if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color() || primerDiaSelec.getColor() == CalendarState.PENDING.color() || primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) { // y si ese cuarto ya tiene reserva
                     preReservaSelecc = obtenerReservaModoH(primerDiaSelec);
                     seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
-                    if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
+                    if (true) {                                     // si es el dia de hoy
                         //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                        reservaPrincipal.enableCheckIn();
+//                        reservaPrincipal.enableCheckIn();
+                        actionTypes.add(ActionType.CREATE_CHECK_IN);
                     }
-                    animarprueba(1);
-                    reservaPrincipal.enableEdit();
-                    reservaPrincipal.enableDelete();
+//                    animarprueba(1);
+//                    reservaPrincipal.enableEdit();
+                    actionTypes.add(ActionType.EDIT_BOOKING);
+//                    reservaPrincipal.enableDelete();
+                    actionTypes.add(ActionType.DELETE_BOOKING);
+                    reservaPrincipal.getBookingButtonBar().show(actionTypes);
                 } else {                                                                   // no es hay reserva
+                    reservaPrincipal.getBookingButtonBar().hide();
                     primerDiaSelec.seleccionar(CellLocation.ALONE);
                     preReservaSelecc = null;
                 }
@@ -159,16 +166,21 @@ public class ReservaPanelHabitacion extends LinearLayout {
                     if (segundoDiaSelec.getColor() != CalendarState.CONFIRMED.color() && segundoDiaSelec.getColor() != CalendarState.PENDING.color() && segundoDiaSelec.getColor() != CalendarState.CHECKED_IN.color()) { // y la segunda no tiene reserv
                         segundoDiaSelec.seleccionar(CellLocation.ALONE);
                         preReservaSelecc = null;
-                        animarprueba(0);
+//                        animarprueba(0);
+                        reservaPrincipal.getBookingButtonBar().hide();
                     } else {  //la segunda tiene reserva
                         preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                         seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color()); //seleccionar
-                        reservaPrincipal.enableEdit();
-                        reservaPrincipal.enableDelete();
-                        if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
+                        if (true) {                                     // si es el dia de hoy
                             //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                            reservaPrincipal.enableCheckIn();
+//                            reservaPrincipal.enableCheckIn();
+                            actionTypes.add(ActionType.CREATE_CHECK_IN);
                         }
+//                        reservaPrincipal.enableEdit();
+                        actionTypes.add(ActionType.EDIT_BOOKING);
+//                        reservaPrincipal.enableDelete();
+                        actionTypes.add(ActionType.DELETE_BOOKING);
+                        reservaPrincipal.getBookingButtonBar().show(actionTypes);
                     }
                     primerDiaSelec = segundoDiaSelec;
                     segundoDiaSelec = null;
@@ -178,16 +190,20 @@ public class ReservaPanelHabitacion extends LinearLayout {
                             if (segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color() || segundoDiaSelec.getColor() == CalendarState.PENDING.color() || segundoDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) {
                                 preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
-                                if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
+                                if (true) {                                     // si es el dia de hoy
                                     //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                                    reservaPrincipal.enableCheckIn();
+//                                    reservaPrincipal.enableCheckIn();
+                                    actionTypes.add(ActionType.CREATE_CHECK_IN);
                                 }
-                                animarprueba(1);
+//                                animarprueba(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
-                                reservaPrincipal.enableEdit();
-                                reservaPrincipal.enableDelete();
+//                                reservaPrincipal.enableEdit();
+                                actionTypes.add(ActionType.CREATE_BOOKING);
+//                                reservaPrincipal.enableDelete();
+                                actionTypes.add(ActionType.DELETE_BOOKING);
+                                reservaPrincipal.getBookingButtonBar().show(actionTypes);
                             } else {
                                 Toast toast = Toast.makeText(getContext(), "no se puede seleccionar", Toast.LENGTH_SHORT);
                                 toast.show();
@@ -226,16 +242,20 @@ public class ReservaPanelHabitacion extends LinearLayout {
                                 //                                no funciona el seleccionR UN PENDIENTE COMO SEGUNDO ELEMENTO
                                 preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
-                                if (estaElDiaHoyEnReserva(preReservaSelecc)) {                                     // si es el dia de hoy
+                                if (true) {                                     // si es el dia de hoy
                                     //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                                    reservaPrincipal.enableCheckIn();
+//                                    reservaPrincipal.enableCheckIn();
+                                    actionTypes.add(ActionType.CREATE_CHECK_IN);
                                 }
-                                animarprueba(1);
+//                                animarprueba(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
-                                reservaPrincipal.enableEdit();
-                                reservaPrincipal.enableDelete();
+//                                reservaPrincipal.getBt_editR().setEnabled(true);
+                                actionTypes.add(ActionType.EDIT_BOOKING);
+//                                reservaPrincipal.getBt_eliminaR().setEnabled(true);
+                                actionTypes.add(ActionType.DELETE_BOOKING);
+                                reservaPrincipal.getBookingButtonBar().show(actionTypes);
                             } else {
                                 Toast toast = Toast.makeText(getContext(), "no se puede seleccionar", Toast.LENGTH_SHORT);
                                 toast.show();
@@ -248,11 +268,14 @@ public class ReservaPanelHabitacion extends LinearLayout {
                         }
                         case 1: { // se puede reservar
                             selecionadorRangoDiasTocadosModoH(CalendarState.SELECTED.color());
-                            if (estaElDiaHoyEnRango(primerDiaSelec, segundoDiaSelec)) {                                     // si es el dia de hoy
+                            if (true) {                                     // si es el dia de hoy
                                 //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-                                reservaPrincipal.enableCheckIn();
+//                                reservaPrincipal.enableCheckIn();
+                                actionTypes.add(ActionType.CREATE_CHECK_IN);
                             }
-                            reservaPrincipal.enableBook();
+//                            reservaPrincipal.enableBook();
+                            actionTypes.add(ActionType.CREATE_BOOKING);
+                            reservaPrincipal.getBookingButtonBar().show(actionTypes);
                             preReservaSelecc = null;
                             break;
                         }
@@ -471,7 +494,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
         return diaMenor.getCalendar().compareTo(hoy) <= 0 && diaMayor.getCalendar().compareTo(hoy) >= 0;
     }
 
-    public @Nullable
+    public
+    @Nullable
     Booking obtenerReservaModoH(VistaDia dia) {
         VistaMes vistaMes = mesDelDia(dia);
         for (Booking calendario_reserva : vistaMes.getPreReservas()) {
@@ -493,14 +517,16 @@ public class ReservaPanelHabitacion extends LinearLayout {
     }
 
     public void limpiarTodo() {
-        reservaPrincipal.disableButtons();
+//        reservaPrincipal.disableButtons();
         primerDiaSelec = null;
         segundoDiaSelec = null;
         preReservaSelecc = null;
         animarprueba(0);
     }
 
-    public @Nullable VistaMes mesDelDia(VistaDia dia) {
+    public
+    @Nullable
+    VistaMes mesDelDia(VistaDia dia) {
         for (VistaMes mes : meses) {
             if (mes.estaElDia(dia)) {
                 return mes;
@@ -525,8 +551,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
         LocalDate ultimoMes = meses.get(0).getInicio_mes();
         LocalDate calendar = LocalDate.of(ultimoMes.getYear(), ultimoMes.getMonth(), 1).minusMonths(1);
         VistaMes mes = new VistaMes(getContext(), misma(), calendar);
-        linearLayoutMeses.addView(mes,0);
-        meses.add(0,mes);
+        linearLayoutMeses.addView(mes, 0);
+        meses.add(0, mes);
     }
 
     public void crearNuevoMesAbajo() {

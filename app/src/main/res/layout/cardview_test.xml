@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2015 Ngewi Fet <ngewif@gmail.com>
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:minHeight="@dimen/card_min_height">
+
+    <View
+        android:id="@+id/color_strip"
+        android:layout_width="@dimen/strip_width"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:minHeight="@dimen/card_min_height"/>
+
+    <include
+        layout="@layout/list_item_2_lines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/edge_padding"
+        android:layout_marginRight="@dimen/edge_padding"
+        android:layout_marginTop="@dimen/edge_padding"
+        android:layout_toEndOf="@id/color_strip"
+        android:paddingTop="6dp"/>
+
+    <ImageView
+        android:id="@+id/options_menu"
+        app:srcCompat="@drawable/ic_more_vert_black_24dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:paddingBottom="4dp"
+        android:paddingStart="24dp"
+        android:paddingTop="20dp"
+        android:scaleType="centerInside"
+        tools:ignore="ContentDescription"/>
+
+    <ImageView
+        android:id="@+id/create_transaction"
+        app:srcCompat="@drawable/ic_add_black_24dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@id/options_menu"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:paddingBottom="4dp"
+        android:paddingStart="24dp"
+        android:paddingTop="20dp"
+        android:scaleType="centerInside"
+        tools:ignore="ContentDescription"/>
+
+    <ImageView
+        android:id="@+id/favorite_status"
+        app:srcCompat="@drawable/ic_star_border_black_24dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:paddingBottom="22dp"
+        android:paddingEnd="6dp"
+        android:paddingStart="22dp"
+        android:paddingTop="6dp"
+        tools:ignore="ContentDescription"/>
+
+    <TextView
+        android:id="@+id/account_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/options_menu"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/edge_padding"
+        android:layout_toStartOf="@id/create_transaction"
+        android:maxLines="1"
+        android:paddingBottom="4dp"
+        android:textSize="18sp"
+        tools:text="$ 2000.00"/>
+
+    <ProgressBar
+        android:id="@+id/budget_indicator"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="100dp"
+        android:layout_height="8dp"
+        android:layout_alignBottom="@id/options_menu"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="@dimen/edge_padding"
+        android:layout_marginStart="@dimen/strip_width"
+        android:background="@android:color/transparent"
+        android:indeterminate="false"
+        android:max="100"
+        android:paddingBottom="4dp"
+        android:progressDrawable="@drawable/budget_progress_indicator"
+        android:visibility="gone"
+        tools:progress="50"/>
+</RelativeLayout>

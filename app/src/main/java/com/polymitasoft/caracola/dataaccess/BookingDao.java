@@ -11,6 +11,7 @@ import com.polymitasoft.caracola.datamodel.Consumption;
 
 import org.threeten.bp.LocalDate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import io.requery.Persistable;
@@ -62,7 +63,6 @@ public class BookingDao {
         if (booking == null) {
             return LocalDate.MIN;
         }
-        Log.e(BookingDao.class.toString(), date.toString() + "<- " + booking.getCheckOutDate());
         return booking.getCheckOutDate();
     }
 
@@ -76,7 +76,6 @@ public class BookingDao {
         if (booking == null) {
             return LocalDate.MAX;
         }
-        Log.e(BookingDao.class.toString(), date.toString() + "-> " + booking.getCheckInDate());
         return booking.getCheckInDate();
     }
 
@@ -92,5 +91,9 @@ public class BookingDao {
         return dataStore.select(Consumption.class)
                 .where(Consumption.BOOKING_ID.equal(booking.getId()))
                 .get();
+    }
+
+    public BigDecimal getConsumptionPrice(@NonNull Booking booking) {
+        return Consumptions.price(getConsumptions(booking));
     }
 }

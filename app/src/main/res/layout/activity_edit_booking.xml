@@ -90,13 +90,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:onClick="addClient"
-                    android:text="@string/add_consumption"/>
-
                 <FrameLayout
                     android:id="@+id/consumption_fragment_container"
                     android:layout_width="match_parent"

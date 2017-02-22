@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.polymitasoft.caracola.view.client;
+package com.polymitasoft.caracola.view.consumption;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +26,9 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.datamodel.ConsumptionBuilder;
+import com.polymitasoft.caracola.datamodel.InternalService;
+
+import java.math.BigDecimal;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -45,7 +48,7 @@ public class ConsumptionEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_client);
+        setContentView(R.layout.activity_edit_consumption);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_edit_client);
         }
@@ -57,7 +60,10 @@ public class ConsumptionEditActivity extends AppCompatActivity {
             if(idBooking != -1) {
                 booking = data.findByKey(Booking.class, idBooking);
             }
-            consumption = new ConsumptionBuilder().booking(booking).build();
+            consumption = new ConsumptionBuilder()
+//                    .service(new InternalService().setName("").setDefaultPrice(BigDecimal.ZERO))
+                    .booking(booking)
+                    .build();
         } else {
             consumption = data.findByKey(Consumption.class, consumptionId);
         }
@@ -74,13 +80,13 @@ public class ConsumptionEditActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                saveClient();
+                save();
                 return true;
         }
         return false;
     }
 
-    private void saveClient() {
+    private void save() {
         consumption = binding.getConsumption();
         data.upsert(consumption);
 

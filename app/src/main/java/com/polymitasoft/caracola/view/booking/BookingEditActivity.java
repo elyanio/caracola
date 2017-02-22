@@ -29,7 +29,8 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.Consumption;
-import com.polymitasoft.caracola.view.client.ConsumptionEditActivity;
+import com.polymitasoft.caracola.view.client.ClientEditActivity;
+import com.polymitasoft.caracola.view.consumption.ConsumptionEditActivity;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -141,6 +142,12 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
     }
 
     public void addClient(View view) {
+        Intent intent = new Intent(this, ClientEditActivity.class);
+        intent.putExtra(ClientEditActivity.EXTRA_BOOKING_ID, booking.getId());
+        startActivity(intent);
+    }
+
+    public void addConsumption(View view) {
         Intent intent = new Intent(this, ConsumptionEditActivity.class);
         intent.putExtra(ConsumptionEditActivity.EXTRA_BOOKING_ID, booking.getId());
         startActivity(intent);

@@ -14,55 +14,65 @@
         android:id="@+id/reserva_esenas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/reserva_layout_base"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
     </LinearLayout>
 
-    <LinearLayout
+    <com.polymitasoft.caracola.view.booking.BookingButtonBar
         android:id="@+id/reserva_layout_base"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:padding="0dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:measureWithLargestChild="false"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
-        <Button
-            android:id="@+id/bookButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="PreR" />
+    </com.polymitasoft.caracola.view.booking.BookingButtonBar>
+    <!--<LinearLayout-->
+        <!--android:id="@+id/reserva_layout_base"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:measureWithLargestChild="false"-->
+        <!--android:orientation="horizontal">-->
 
-        <Button
-            android:id="@+id/checkInButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="FisicaR" />
+        <!--<Button-->
+            <!--android:id="@+id/bookButton"-->
+            <!--style="?android:attr/buttonStyleSmall"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:enabled="false"-->
+            <!--android:text="PreR" />-->
 
-        <Button
-            android:id="@+id/deleteButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="EliminR" />
+        <!--<Button-->
+            <!--android:id="@+id/checkInButton"-->
+            <!--style="?android:attr/buttonStyleSmall"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:enabled="false"-->
+            <!--android:text="FisicaR" />-->
 
-        <Button
-            android:id="@+id/editButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="EditR" />
+        <!--<Button-->
+            <!--android:id="@+id/deleteButton"-->
+            <!--style="?android:attr/buttonStyleSmall"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:enabled="false"-->
+            <!--android:text="EliminR" />-->
 
-    </LinearLayout>
+        <!--<Button-->
+            <!--android:id="@+id/editButton"-->
+            <!--style="?android:attr/buttonStyleSmall"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:enabled="false"-->
+            <!--android:text="EditR" />-->
+
+    <!--</LinearLayout>-->
 
 
 </RelativeLayout>

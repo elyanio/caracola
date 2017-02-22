@@ -41,7 +41,7 @@ public class ConsumptionRecyclerViewAdapter extends QueryRecyclerAdapter<Consump
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_client, parent, false);
+                .inflate(R.layout.fragment_consumption, parent, false);
         return new ViewHolder(view);
     }
 

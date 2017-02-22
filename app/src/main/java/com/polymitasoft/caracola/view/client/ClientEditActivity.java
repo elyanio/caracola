@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.polymitasoft.caracola.view.consumption;
+package com.polymitasoft.caracola.view.client;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,10 +25,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
-import com.polymitasoft.caracola.datamodel.IBooking;
-import com.polymitasoft.caracola.datamodel.IClient;
 import com.polymitasoft.caracola.datamodel.ClientBuilder;
-import com.polymitasoft.caracola.datamodel.IClientStay;
 import com.polymitasoft.caracola.datamodel.ClientStay;
 
 import io.requery.Persistable;
