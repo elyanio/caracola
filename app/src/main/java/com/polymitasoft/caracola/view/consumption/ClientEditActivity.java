@@ -25,9 +25,11 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
+import com.polymitasoft.caracola.datamodel.IBooking;
+import com.polymitasoft.caracola.datamodel.IClient;
 import com.polymitasoft.caracola.datamodel.ClientBuilder;
+import com.polymitasoft.caracola.datamodel.IClientStay;
 import com.polymitasoft.caracola.datamodel.ClientStay;
-import com.polymitasoft.caracola.datamodel.ClientStayEntity;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -84,12 +86,12 @@ public class ClientEditActivity extends AppCompatActivity {
         int idBooking = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
         if(idBooking != -1) {
             ClientStay stay = data.select(ClientStay.class)
-                    .where(ClientStayEntity.CLIENT_ID.eq(client.getId()))
-                    .and(ClientStayEntity.BOOKING_ID.eq(idBooking))
+                    .where(ClientStay.CLIENT_ID.eq(client.getId()))
+                    .and(ClientStay.BOOKING_ID.eq(idBooking))
                     .get().firstOrNull();
             Booking booking = data.findByKey(Booking.class, idBooking);
             if(stay == null && booking != null) {
-                stay = new ClientStayEntity();
+                stay = new ClientStay();
                 stay.setClient(client);
                 stay.setBooking(booking);
                 data.insert(stay);

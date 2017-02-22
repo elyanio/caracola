@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.ExternalService;
+import com.polymitasoft.caracola.datamodel.IExternalService;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -21,10 +21,10 @@ import io.requery.query.Result;
  * @author rainermf
  * @since 16/2/2017
  */
-public class ExternalServiceListActivity extends ListActivity<ExternalService> {
+public class ExternalServiceListActivity extends ListActivity<IExternalService> {
 
     @Override
-    protected QueryRecyclerAdapter<ExternalService, SimpleViewHolder> createAdapter() {
+    protected QueryRecyclerAdapter<IExternalService, SimpleViewHolder> createAdapter() {
         return new ServiceAdapter();
     }
 
@@ -48,7 +48,7 @@ public class ExternalServiceListActivity extends ListActivity<ExternalService> {
     /**
      * Created by rainermf on 15/2/2017.
      */
-    class ServiceAdapter extends QueryRecyclerAdapter<ExternalService, SimpleViewHolder> implements View.OnClickListener {
+    class ServiceAdapter extends QueryRecyclerAdapter<IExternalService, SimpleViewHolder> implements View.OnClickListener {
 
         private final Random random = new Random();
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
@@ -58,12 +58,12 @@ public class ExternalServiceListActivity extends ListActivity<ExternalService> {
         }
 
         @Override
-        public Result<ExternalService> performQuery() {
-            return data.select(ExternalService.class).get();
+        public Result<IExternalService> performQuery() {
+            return data.select(IExternalService.class).get();
         }
 
         @Override
-        public void onBindViewHolder(ExternalService item, SimpleViewHolder holder, int position) {
+        public void onBindViewHolder(IExternalService item, SimpleViewHolder holder, int position) {
             holder.primaryText.setText(item.getName());
             holder.colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
             holder.itemView.setTag(item);
@@ -80,7 +80,7 @@ public class ExternalServiceListActivity extends ListActivity<ExternalService> {
 
         @Override
         public void onClick(View v) {
-            ExternalService service = (ExternalService) v.getTag();
+            IExternalService service = (IExternalService) v.getTag();
             if (service != null) {
                 Intent intent = new Intent(ExternalServiceListActivity.this, ExternalServiceEditActivity.class);
                 intent.putExtra(ExternalServiceEditActivity.EXTRA_SERVICE_ID, service.getId());

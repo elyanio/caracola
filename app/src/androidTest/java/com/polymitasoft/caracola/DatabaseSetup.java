@@ -4,25 +4,16 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.BedroomBuilder;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.BookingEntity;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Client;
-import com.polymitasoft.caracola.datamodel.ClientBuilder;
 import com.polymitasoft.caracola.datamodel.ClientStay;
-import com.polymitasoft.caracola.datamodel.ClientStayEntity;
 import com.polymitasoft.caracola.datamodel.Consumption;
-import com.polymitasoft.caracola.datamodel.ConsumptionEntity;
 import com.polymitasoft.caracola.datamodel.Country;
 import com.polymitasoft.caracola.datamodel.ExternalService;
-import com.polymitasoft.caracola.datamodel.ExternalServiceEntity;
 import com.polymitasoft.caracola.datamodel.Gender;
 import com.polymitasoft.caracola.datamodel.InternalService;
-import com.polymitasoft.caracola.datamodel.InternalServiceEntity;
-import com.polymitasoft.caracola.datamodel.Models;
 import com.polymitasoft.caracola.datamodel.Supplier;
-import com.polymitasoft.caracola.datamodel.SupplierEntity;
 import com.polymitasoft.caracola.datamodel.SupplierService;
-import com.polymitasoft.caracola.datamodel.SupplierServiceEntity;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -33,10 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.requery.Persistable;
-import io.requery.android.sqlcipher.SqlCipherDatabaseSource;
-import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
-import io.requery.sql.TableCreationMode;
 
 import static android.os.Environment.getExternalStorageDirectory;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
@@ -118,13 +106,13 @@ public class DatabaseSetup {
         List<Client> clients = new ArrayList<>(firstNames.length);
 
         for (int i = 0; i < 7; i++) {
-            Client client = new ClientBuilder().build();
-            client.setFirstName(firstNames[i]);
-            client.setLastName(lastNames[i]);
-            client.setBirthday(birthdayDates[i]);
-            client.setGender(genders[i]);
-            client.setCountry(countries[i]);
-            client.setPassport(passports[i]);
+            Client client = new Client()
+                    .setFirstName(firstNames[i])
+                    .setLastName(lastNames[i])
+                    .setBirthday(birthdayDates[i])
+                    .setGender(genders[i])
+                    .setCountry(countries[i])
+                    .setPassport(passports[i]);
 
             clients.add(client);
         }
@@ -158,7 +146,7 @@ public class DatabaseSetup {
         List<Supplier> suppliers = new ArrayList<>(names.length);
 
         for (int i = 0; i < 7; i++) {
-            Supplier client = new SupplierEntity();
+            Supplier client = new Supplier();
             client.setName(names[i]);
             client.setAddress(addresses[i]);
             client.setEmailAddress(emailAdresses[i]);
@@ -173,17 +161,16 @@ public class DatabaseSetup {
 
     public List<Bedroom> getBedrooms() {
         int[] capacity = new int[]{4, 2, 6, 4};
-        double[] lowPrices = new double[] {25, 20, 25, 30};
-        double[] highPrices = new double[] {30, 25, 30, 35};
+        double[] lowPrices = new double[]{25, 20, 25, 30};
+        double[] highPrices = new double[]{30, 25, 30, 35};
         List<Bedroom> bedrooms = new ArrayList<>(capacity.length);
 
         for (int i = 0; i < 4; i++) {
-            Bedroom bedroom = new BedroomBuilder()
-                    .name("Habitación " + (i + 1))
-                    .capacity(capacity[i])
-                    .priceInLowSeason(BigDecimal.valueOf(lowPrices[i]))
-                    .priceInHighSeason(BigDecimal.valueOf(highPrices[i]))
-                    .build();
+            Bedroom bedroom = new Bedroom()
+                    .setName("Habitación " + (i + 1))
+                    .setCapacity(capacity[i])
+                    .setPriceInLowSeason(BigDecimal.valueOf(lowPrices[i]))
+                    .setPriceInHighSeason(BigDecimal.valueOf(highPrices[i]));
 
             bedrooms.add(bedroom);
         }
@@ -197,7 +184,7 @@ public class DatabaseSetup {
         List<InternalService> services = new ArrayList<>(names.length);
 
         for (int i = 0; i < names.length; i++) {
-            InternalService service = new InternalServiceEntity();
+            InternalService service = new InternalService();
             service.setName(names[i]);
             service.setDefaultPrice(BigDecimal.valueOf(prices[i]));
             services.add(service);
@@ -218,7 +205,7 @@ public class DatabaseSetup {
 
         int length = bedrooms.size();
         for (int i = 0; i < bookingNumbers.length; i++) {
-            Booking booking = new BookingEntity();
+            Booking booking = new Booking();
             booking.setBedroom(bedrooms.get(i % length));
             booking.setBookingNumber(bookingNumbers[i]);
             booking.setBookNumber(bookNumbers[i]);
@@ -239,7 +226,7 @@ public class DatabaseSetup {
         List<ClientStay> stays = new ArrayList<>(holders.length);
 
         for (int i = 0; i < holders.length; i++) {
-            ClientStay stay = new ClientStayEntity();
+            ClientStay stay = new ClientStay();
             stay.setBooking(bookings.get(i % bookings.size()));
             stay.setClient(clients.get(i % clients.size()));
             stay.setHolder(holders[i]);
@@ -257,11 +244,11 @@ public class DatabaseSetup {
         List<Consumption> consumptions = new ArrayList<>();
 
         for (int i = 0; i < amounts.length; i++) {
-            Consumption consumption = new ConsumptionEntity();
+            Consumption consumption = new Consumption();
             consumption.setBooking(bookings.get(i % bookings.size()));
             consumption.setInternalService(services.get(i % services.size()));
             consumption.setAmount(amounts[i]);
-            consumption.setDefaultPrice(BigDecimal.valueOf(prices[i]));
+            consumption.setPrice(BigDecimal.valueOf(prices[i]));
             consumption.setDate(LocalDate.parse(dates[i], format));
 
             consumptions.add(consumption);
@@ -276,7 +263,7 @@ public class DatabaseSetup {
         List<ExternalService> services = new ArrayList<>(names.length);
 
         for (int i = 0; i < names.length; i++) {
-            ExternalService service = new ExternalServiceEntity();
+            ExternalService service = new ExternalService();
             service.setName(names[i]);
             services.add(service);
         }
@@ -291,7 +278,7 @@ public class DatabaseSetup {
         List<SupplierService> supplierServices = new ArrayList<>();
 
         for (int i = 0; i < prices.length; i++) {
-            SupplierService supplierService = new SupplierServiceEntity();
+            SupplierService supplierService = new SupplierService();
             supplierService.setSupplier(suppliers.get(i % suppliers.size()));
             supplierService.setService(services.get(i % services.size()));
             supplierService.setPrice(BigDecimal.valueOf(prices[i]));

@@ -27,7 +27,6 @@ import android.widget.TabHost;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.BookingEntity;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.view.client.ConsumptionEditActivity;
@@ -56,7 +55,7 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
         data = DataStoreHolder.getInstance().getDataStore(this);
         int bookingId = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
         if (bookingId == -1) {
-            booking = new BookingEntity(); // creating a new booking
+            booking = new Booking(); // creating a new booking
         } else {
             booking = data.findByKey(Booking.class, bookingId);
         }

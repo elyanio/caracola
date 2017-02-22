@@ -5,6 +5,7 @@ import android.widget.EditText;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Consumption;
+import com.polymitasoft.caracola.datamodel.IConsumption;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import butterknife.BindView;

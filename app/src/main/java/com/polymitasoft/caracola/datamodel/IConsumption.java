@@ -2,21 +2,26 @@ package com.polymitasoft.caracola.datamodel;
 
 import android.support.annotation.NonNull;
 
+import org.threeten.bp.LocalDate;
+
 import java.math.BigDecimal;
 
 import io.requery.Column;
+import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import io.requery.ManyToOne;
 import io.requery.Persistable;
 
+import static io.requery.PropertyNameStyle.FLUENT_BEAN;
+
 /**
  * @author rainermf
  * @since 11/2/2017
  */
-@Entity
-public interface SupplierService extends Persistable {
+@Entity(propertyNameStyle = FLUENT_BEAN)
+public interface IConsumption extends Persistable {
     @Key
     @Generated
     int getId();
@@ -24,22 +29,23 @@ public interface SupplierService extends Persistable {
     @NonNull
     @Column(nullable = false)
     @ManyToOne
-    Supplier getSupplier();
-    void setSupplier(Supplier supplier);
+    InternalService getInternalService();
 
     @NonNull
     @Column(nullable = false)
     @ManyToOne
-    ExternalService getService();
-    void setService(ExternalService service);
+    Booking getBooking();
 
     @NonNull
     @Column(nullable = false)
     BigDecimal getPrice();
-    void setPrice(BigDecimal price);
 
     @NonNull
     @Column(nullable = false)
-    BigDecimal getComission();
-    void setComission(BigDecimal comission);
+    int getAmount();
+
+    @NonNull
+    @Column(nullable = false, name = "consumptionDate")
+    @Convert(LocalDateConverter.class)
+    LocalDate getDate();
 }

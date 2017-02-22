@@ -11,6 +11,7 @@ import io.requery.Persistable;
 import io.requery.android.sqlcipher.SqlCipherDatabaseSource;
 import io.requery.android.sqlite.DatabaseSource;
 import io.requery.sql.Configuration;
+import io.requery.sql.ConfigurationBuilder;
 import io.requery.sql.EntityDataStore;
 
 import static android.os.Environment.getExternalStorageDirectory;

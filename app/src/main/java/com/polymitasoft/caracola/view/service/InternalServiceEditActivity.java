@@ -24,7 +24,7 @@ import android.view.MenuItem;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.InternalService;
-import com.polymitasoft.caracola.datamodel.InternalServiceEntity;
+import com.polymitasoft.caracola.datamodel.InternalService;
 
 import java.math.BigDecimal;
 
@@ -52,9 +52,7 @@ public class InternalServiceEditActivity extends AppCompatActivity {
         data = DataStoreHolder.getInstance().getDataStore(this);
         int clientId = getIntent().getIntExtra(EXTRA_SERVICE_ID, -1);
         if (clientId == -1) {
-            service = new InternalServiceEntity();
-            service.setName("");
-            service.setDefaultPrice(BigDecimal.ZERO);
+            service = new InternalService().setName("").setDefaultPrice(BigDecimal.ZERO);
         } else {
             service = data.findByKey(InternalService.class, clientId);
         }

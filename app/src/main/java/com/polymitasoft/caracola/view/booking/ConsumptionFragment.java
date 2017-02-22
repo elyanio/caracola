@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.Consumption;
 
 import io.requery.Persistable;

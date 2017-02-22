@@ -10,6 +10,8 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
+import com.polymitasoft.caracola.datamodel.IBooking;
+import com.polymitasoft.caracola.datamodel.IClient;
 import com.polymitasoft.caracola.view.booking.ClientFragment.OnListInteractionListener;
 
 import butterknife.BindView;
@@ -20,7 +22,7 @@ import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Client} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link IClient} and makes a call to the
  * specified {@link OnListInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */

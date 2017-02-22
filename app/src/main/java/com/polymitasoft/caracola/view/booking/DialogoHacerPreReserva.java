@@ -12,7 +12,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.Bedroom;
+import com.polymitasoft.caracola.datamodel.IBedroom;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.util.FormatUtils;
 
@@ -50,7 +50,7 @@ public class DialogoHacerPreReserva extends Dialog {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         boolean highSeason = preferences.getBoolean("high_season", false);
-        Bedroom bedroom = reservaPanelHabitacionActual.getHabitacion();
+        IBedroom bedroom = reservaPanelHabitacionActual.getHabitacion();
         // TODO Encapsular esta lógica en una función
         BigDecimal price = (highSeason)? bedroom.getPriceInHighSeason() : bedroom.getPriceInLowSeason();
         text_price.setText(FormatUtils.formatMoney(price));

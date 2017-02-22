@@ -5,12 +5,9 @@ import android.util.Log;
 
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.BookingEntity;
 import com.polymitasoft.caracola.datamodel.Client;
-import com.polymitasoft.caracola.datamodel.ClientEntity;
 import com.polymitasoft.caracola.datamodel.ClientStay;
 import com.polymitasoft.caracola.datamodel.Consumption;
-import com.polymitasoft.caracola.datamodel.ConsumptionEntity;
 
 import org.threeten.bp.LocalDate;
 
@@ -20,11 +17,11 @@ import io.requery.Persistable;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
-import static com.polymitasoft.caracola.datamodel.BookingEntity.BEDROOM;
-import static com.polymitasoft.caracola.datamodel.BookingEntity.CHECK_IN_DATE;
-import static com.polymitasoft.caracola.datamodel.BookingEntity.CHECK_OUT_DATE;
-import static com.polymitasoft.caracola.datamodel.ClientStayEntity.BOOKING_ID;
-import static com.polymitasoft.caracola.datamodel.ClientStayEntity.CLIENT_ID;
+import static com.polymitasoft.caracola.datamodel.Booking.BEDROOM;
+import static com.polymitasoft.caracola.datamodel.Booking.CHECK_IN_DATE;
+import static com.polymitasoft.caracola.datamodel.Booking.CHECK_OUT_DATE;
+import static com.polymitasoft.caracola.datamodel.ClientStay.BOOKING_ID;
+import static com.polymitasoft.caracola.datamodel.ClientStay.CLIENT_ID;
 
 /**
  * @author rainermf
@@ -62,7 +59,7 @@ public class BookingDao {
                 .orderBy(CHECK_OUT_DATE.desc())
                 .get()
                 .firstOrNull();
-        if(booking == null) {
+        if (booking == null) {
             return LocalDate.MIN;
         }
         Log.e(BookingDao.class.toString(), date.toString() + "<- " + booking.getCheckOutDate());
@@ -76,7 +73,7 @@ public class BookingDao {
                 .orderBy(CHECK_IN_DATE.asc())
                 .get()
                 .firstOrNull();
-        if(booking == null) {
+        if (booking == null) {
             return LocalDate.MAX;
         }
         Log.e(BookingDao.class.toString(), date.toString() + "-> " + booking.getCheckInDate());
@@ -85,15 +82,15 @@ public class BookingDao {
 
     public Result<Client> getClients(@NonNull Booking booking) {
         return dataStore.select(Client.class)
-                .join(ClientStay.class).on(ClientEntity.ID.equal(CLIENT_ID))
-                .join(Booking.class).on(BOOKING_ID.equal(BookingEntity.ID))
-                .where(BookingEntity.ID.equal(booking.getId()))
+                .join(ClientStay.class).on(Client.ID.equal(CLIENT_ID))
+                .join(Booking.class).on(BOOKING_ID.equal(Booking.ID))
+                .where(Booking.ID.equal(booking.getId()))
                 .get();
     }
 
     public Result<Consumption> getConsumptions(@NonNull Booking booking) {
         return dataStore.select(Consumption.class)
-                .where(ConsumptionEntity.BOOKING_ID.equal(booking.getId()))
+                .where(Consumption.BOOKING_ID.equal(booking.getId()))
                 .get();
     }
 }

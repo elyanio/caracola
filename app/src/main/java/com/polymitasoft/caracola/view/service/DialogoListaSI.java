@@ -1,28 +1,5 @@
 package com.polymitasoft.caracola.view.service;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-
-import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.InternalService;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import io.requery.Persistable;
-import io.requery.sql.EntityDataStore;
-
 /**
  * @author yanio
  * @since 04/01/2017
@@ -30,15 +7,12 @@ import io.requery.sql.EntityDataStore;
 public class DialogoListaSI {
 
 //    private final String MARCA_LETRA = "#";
-//    private Context context;
-//
-//    private ArrayList<String> iniciales;
 //    ArrayList<InternalService> datos;
 //    ArrayList<String> buscar;
-//
+//    private Context context;
+//    private ArrayList<String> iniciales;
 //    // controles
-//    private ListView lista_letras;
-//    private ListView lista_SI;
+//    private ListView servicesList;
 //    private AutoCompleteTextView text_buscar;
 //    private Button bt_buscar;
 //
@@ -50,8 +24,7 @@ public class DialogoListaSI {
 //    }
 //
 //    @Override
-//    protected void onCreate(Bundle savedInstanceState)
-//    {
+//    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.cliente_dialogo_pais);
 //        iniciales = new ArrayList<Inicial>();
@@ -63,10 +36,8 @@ public class DialogoListaSI {
 //        evento();
 //    }
 //
-//    private void obtener_controles()
-//    {
-//        lista_letras = (ListView) findViewById(R.id.cliente_lista_letras);
-//        lista_SI = (ListView) findViewById(R.id.cliente_lista_pais);
+//    private void obtener_controles() {
+//        servicesList = (ListView) findViewById(R.id.cliente_lista_pais);
 //        text_buscar = (AutoCompleteTextView) findViewById(R.id.cliente_text_buscar);
 //        bt_buscar = (Button) findViewById(R.id.cliente_bt_buscar_pais);
 //    }
@@ -83,13 +54,12 @@ public class DialogoListaSI {
 //        buscar = new ArrayList<String>();
 //        datos = new ArrayList<Servicio_Interno>();
 //        datos = dataStore.obtener_todos_servicios_internos();
-//        for(Servicio_Interno servicio_interno: datos){
+//        for (Servicio_Interno servicio_interno : datos) {
 //            buscar.add(servicio_interno.getNombre());
 //        }
 //    }
 //
-//    private void configurar_controles()
-//    {
+//    private void configurar_controles() {
 //
 //        configurar_iniciales_y_datos();
 //        configurar_lista_SI();
@@ -102,39 +72,32 @@ public class DialogoListaSI {
 //
 //    }
 //
-//    private void configurar_iniciales_y_datos()
-//    {
+//    private void configurar_iniciales_y_datos() {
 //        int cant = 0;
 //        Inicial temp;
-//        for(int i = 0; i < datos.size(); i++)
-//        {
+//        for (int i = 0; i < datos.size(); i++) {
 //            String s = datos.get(i).getNombre().substring(0, 1).toUpperCase();
 //            temp = new Inicial(s);
-//            if(!iniciales.contains(temp))
-//            {
+//            if (!iniciales.contains(temp)) {
 //                cant = 1;
 //                temp.setCantidad(cant);
 //                iniciales.add(temp);
 //                Servicio_Interno servicio_interno = new Servicio_Interno(s + "#", 0.0);
 //                datos.add(i, servicio_interno);
 //                i++;
-//            }
-//            else
-//            {
+//            } else {
 //                cant++;
 //                iniciales.get(iniciales.size() - 1).setCantidad(cant);
 //            }
 //        }
 //    }
 //
-//    private void configurar_lista_SI()
-//    {
+//    private void configurar_lista_SI() {
 //        AdaptadorSI adaptador = new AdaptadorSI((Activity) context, android.R.layout.simple_list_item_1, datos);
-//        lista_SI.setAdapter(adaptador);
+//        servicesList.setAdapter(adaptador);
 //    }
 //
-//    private void configurar_lista_letras()
-//    {
+//    private void configurar_lista_letras() {
 //        Adaptador_Lista_Letras adaptador = new Adaptador_Lista_Letras((Activity) context, iniciales);
 //        lista_letras.setAdapter(adaptador);
 //        lista_letras.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -145,41 +108,35 @@ public class DialogoListaSI {
 //        });
 //    }
 //
-//    private void click_elemento_lista_letras(AdapterView<?> parent, View view, int position, long id)
-//    {
-//        //lista_SI.setSelection(secciones_indice.get(lista_secciones.get(position)));
-//        //        lista_SI.smoothScrollToPositionFromTop(secciones_indice.get(lista_secciones.get(position)), 0, 500);
-//        // lista_SI.smoothScrollToPosition(secciones_indice.get(lista_secciones.get(position)));
+//    private void click_elemento_lista_letras(AdapterView<?> parent, View view, int position, long id) {
+//        //servicesList.setSelection(secciones_indice.get(lista_secciones.get(position)));
+//        //        servicesList.smoothScrollToPositionFromTop(secciones_indice.get(lista_secciones.get(position)), 0, 500);
+//        // servicesList.smoothScrollToPosition(secciones_indice.get(lista_secciones.get(position)));
 //        Inicial inicial = iniciales.get(position);
 //        int index = datos.indexOf(inicial.getLetra() + "#");
-//        lista_SI.smoothScrollToPositionFromTop(index, 0, 500);
+//        servicesList.smoothScrollToPositionFromTop(index, 0, 500);
 //    }
 //
-//    private void evento()
-//    {
-//        lista_SI.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//    private void evento() {
+//        servicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                click_elemento_lista_SI(parent, view, position, id);
 //            }
 //        });
-//        text_buscar.addTextChangedListener(new TextWatcher()
-//        {
+//        text_buscar.addTextChangedListener(new TextWatcher() {
 //            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-//            {
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 //
 //            }
 //
 //            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count)
-//            {
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
 //
 //            }
 //
 //            @Override
-//            public void afterTextChanged(Editable s)
-//            {
+//            public void afterTextChanged(Editable s) {
 //                evento_cambiar_texto_buscar(s);
 //            }
 //        });
@@ -197,11 +154,10 @@ public class DialogoListaSI {
 //        });
 //    }
 //
-//    private void click_bt_buscar()
-//    {
+//    private void click_bt_buscar() {
 //        ConsumoPrincipal consumoPrincipal = (ConsumoPrincipal) context;
-//        for(Servicio_Interno servicio_interno: datos){
-//            if(servicio_interno.getNombre().equals(text_buscar.getText().toString())){
+//        for (Servicio_Interno servicio_interno : datos) {
+//            if (servicio_interno.getNombre().equals(text_buscar.getText().toString())) {
 //                consumoPrincipal.ponerSIDialogInsertar(servicio_interno);
 //                dismiss();
 //                return;
@@ -210,32 +166,25 @@ public class DialogoListaSI {
 //        dismiss();
 //    }
 //
-//    private void click_elemento_lista_SI(AdapterView<?> parent, View view, int position, long id)
-//    {
-//        if(!datos.get(position).getNombre().contains(MARCA_LETRA))
-//        {
+//    private void click_elemento_lista_SI(AdapterView<?> parent, View view, int position, long id) {
+//        if (!datos.get(position).getNombre().contains(MARCA_LETRA)) {
 //            ConsumoPrincipal consumoPrincipal = (ConsumoPrincipal) context;
 //            consumoPrincipal.ponerSIDialogInsertar(datos.get(position));
 //            dismiss();
 //        }
 //    }
 //
-//    private void evento_selec_SI_bt_buscar(int pos)
-//    {
+//    private void evento_selec_SI_bt_buscar(int pos) {
 //        ListAdapter adaptador = text_buscar.getAdapter();
 //        String nombre = (String) adaptador.getItem(pos);
 //        int indice = datos.indexOf(nombre);
-//        lista_SI.smoothScrollToPositionFromTop(indice, 0, 500);
+//        servicesList.smoothScrollToPositionFromTop(indice, 0, 500);
 //    }
 //
-//    private void evento_cambiar_texto_buscar(Editable s)
-//    {
-//        if(s.length() == 0)
-//        {
+//    private void evento_cambiar_texto_buscar(Editable s) {
+//        if (s.length() == 0) {
 //            bt_buscar.setEnabled(false);
-//        }
-//        else
-//        {
+//        } else {
 //            bt_buscar.setEnabled(true);
 //        }
 //    }

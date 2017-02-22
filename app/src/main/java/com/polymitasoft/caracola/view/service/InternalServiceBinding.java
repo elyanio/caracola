@@ -4,13 +4,9 @@ import android.app.Activity;
 import android.widget.EditText;
 
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.Client;
-import com.polymitasoft.caracola.datamodel.Country;
-import com.polymitasoft.caracola.datamodel.Gender;
+import com.polymitasoft.caracola.datamodel.IInternalService;
 import com.polymitasoft.caracola.datamodel.InternalService;
 import com.polymitasoft.caracola.util.FormatUtils;
-
-import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

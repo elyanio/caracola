@@ -11,7 +11,7 @@ public class ConsumptionBuilder {
     private int amount = 1;
     private Booking booking;
 
-    public ConsumptionBuilder name(InternalService service) {
+    public ConsumptionBuilder service(InternalService service) {
         this.service = service;
         return this;
     }
@@ -37,12 +37,11 @@ public class ConsumptionBuilder {
     }
 
     public Consumption build() {
-        Consumption consumption = new ConsumptionEntity();
-        consumption.setInternalService(service);
-        consumption.setDate(date);
-        consumption.setAmount(amount);
-        consumption.setBooking(booking);
-        consumption.setPrice(price);
-        return consumption;
+        return new Consumption()
+        .setInternalService(service)
+        .setDate(date)
+        .setAmount(amount)
+        .setBooking(booking)
+        .setPrice(price);
     }
 }

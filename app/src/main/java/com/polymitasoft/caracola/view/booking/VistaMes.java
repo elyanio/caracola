@@ -14,8 +14,9 @@ import android.widget.TextView;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
-import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.IBedroom;
+import com.polymitasoft.caracola.datamodel.IBooking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 
 import org.threeten.bp.DayOfWeek;
@@ -138,9 +139,9 @@ public class VistaMes extends LinearLayout
         }
         else
         {
-            for(Booking booking : preReservas)
+            for(IBooking booking : preReservas)
             {
-                Bedroom habitacion = booking.getBedroom();
+                IBedroom habitacion = booking.getBedroom();
 
                 if(booking.getCheckInDate().compareTo(dia) <= 0 && booking.getCheckOutDate().compareTo(dia) >= 0 &&
                         habitacion.getId() == reservaPanelHabitacion.getHabitacion().getId())
@@ -168,7 +169,7 @@ public class VistaMes extends LinearLayout
         boolean repitentPendientes = false;
         ReservaPrincipal reservaPrincipal = (ReservaPrincipal) getContext();
         int cantCuarto = reservaPrincipal.getBedrooms().size();
-        for(Booking calendario_reserva : preReservas)
+        for(IBooking calendario_reserva : preReservas)
         {
             if((calendario_reserva.getCheckInDate()).compareTo(dia) <= 0 && (calendario_reserva.getCheckOutDate()).compareTo(dia) >= 0)
             {
@@ -216,10 +217,10 @@ public class VistaMes extends LinearLayout
         textMes.setText(inicio_mes.format(DateTimeFormatter.ofPattern("MMMM - y")).toUpperCase());
     }
 
-    public List<Bedroom> disponibilidadModoTodos(VistaDia diaMenor, VistaDia diaMayor)
+    public List<IBedroom> disponibilidadModoTodos(VistaDia diaMenor, VistaDia diaMayor)
     {
-            List<Bedroom> ocupadas = new ArrayList<>();
-            for(Booking booking : preReservas)
+            List<IBedroom> ocupadas = new ArrayList<>();
+            for(IBooking booking : preReservas)
             {
                 if(((booking.getCheckInDate()).compareTo(diaMenor.getCalendar()) >= 0 && (booking.getCheckInDate()).compareTo(diaMayor.getCalendar()) <= 0) ||
                         ((booking.getCheckOutDate()).compareTo(diaMenor.getCalendar()) >= 0 && (booking.getCheckOutDate()).compareTo(diaMayor.getCalendar()) <= 0) ||
@@ -229,7 +230,7 @@ public class VistaMes extends LinearLayout
                 }
 
             }
-            List<Bedroom> habitacions = dataStore.select(Bedroom.class).get().toList();
+            List<IBedroom> habitacions = dataStore.select(IBedroom.class).get().toList();
             habitacions.removeAll(ocupadas);
             return habitacions;
     }

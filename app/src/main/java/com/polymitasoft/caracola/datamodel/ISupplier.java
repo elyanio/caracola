@@ -11,12 +11,14 @@ import io.requery.Generated;
 import io.requery.Key;
 import io.requery.Persistable;
 
+import static io.requery.PropertyNameStyle.FLUENT_BEAN;
+
 /**
  * @author rainermf
  * @since 11/2/2017
  */
-@Entity
-public interface Supplier extends Persistable {
+@Entity(propertyNameStyle = FLUENT_BEAN)
+public interface ISupplier extends Persistable {
     @Key
     @Generated
     int getId();
@@ -24,26 +26,21 @@ public interface Supplier extends Persistable {
     @NonNull
     @Column(nullable = false)
     String getName();
-    void setName(String name);
 
     @NonNull
     @Column(nullable = false, value = "")
     String getAddress();
-    void setAddress(String address);
 
     @NonNull
     @Column(nullable = false, value = "")
     @Convert(PhoneListConverter.class)
     List<String> getPhoneNumbers();
-    void setPhoneNumbers(List<String> numbers);
 
     @NonNull
     @Column(nullable = false, value = "")
     String getEmailAddress();
-    void setEmailAddress(String emailAddress);
 
     @Column(nullable = false, value = "")
     @NonNull
     String getDescription();
-    void setDescription(String description);
 }

@@ -41,8 +41,6 @@ import static butterknife.ButterKnife.findById;
 public class ReservaPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private EntityDataStore<Persistable> dataStore;
-
     @BindView(R.id.reserva_esenas) LinearLayout esenas_frameLayout;
     @BindView(R.id.editButton) Button editButton;
     @BindView(R.id.bookButton) Button bookButton;
@@ -88,7 +86,7 @@ public class ReservaPrincipal extends AppCompatActivity
     }
 
     private void loadData() {
-        dataStore = DataStoreHolder.getInstance().getDataStore(this);
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(this);
         bedrooms = dataStore.select(Bedroom.class).get().toList();
     }
 

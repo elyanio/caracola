@@ -29,11 +29,10 @@ public class BedroomBuilder {
     }
 
     public Bedroom build() {
-        Bedroom bedroom = new BedroomEntity();
-        bedroom.setName(name);
-        bedroom.setCapacity(capacity);
-        bedroom.setPriceInHighSeason(priceInHighSeason);
-        bedroom.setPriceInLowSeason(priceInLowSeason);
-        return bedroom;
+        return new Bedroom()
+                .setName(name)
+                .setCapacity(capacity)
+                .setPriceInHighSeason(priceInHighSeason)
+                .setPriceInLowSeason(priceInLowSeason);
     }
 }

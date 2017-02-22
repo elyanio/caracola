@@ -41,14 +41,12 @@ public class ClientBuilder {
     }
 
     public Client build() {
-        Client client = new ClientEntity();
-        client.setPassport(passport);
-        client.setFirstName(firstName);
-        client.setLastName(lastName);
-        client.setGender(gender);
-        client.setCountry(country);
-        client.setBirthday(birthday);
-
-        return client;
+        return new Client()
+                .setPassport(passport)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setGender(gender)
+                .setCountry(country)
+                .setBirthday(birthday);
     }
 }

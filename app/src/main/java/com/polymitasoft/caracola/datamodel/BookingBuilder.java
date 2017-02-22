@@ -66,15 +66,14 @@ public class BookingBuilder {
     }
 
     public Booking build() {
-        Booking booking = new BookingEntity();
-        booking.setState(state);
-        booking.setPrice(price);
-        booking.setBookingNumber(bookingNumber);
-        booking.setBookNumber(bookNumber);
-        booking.setCheckInDate(checkInDate);
-        booking.setCheckOutDate(checkOutDate);
-        booking.setNote(note);
-        booking.setBedroom(bedroom);
-        return booking;
+        return new Booking()
+                .setState(state)
+                .setPrice(price)
+                .setBookingNumber(bookingNumber)
+                .setBookNumber(bookNumber)
+                .setCheckInDate(checkInDate)
+                .setCheckOutDate(checkOutDate)
+                .setNote(note)
+                .setBedroom(bedroom);
     }
 }

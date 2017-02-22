@@ -24,7 +24,7 @@ import android.view.MenuItem;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.ExternalService;
-import com.polymitasoft.caracola.datamodel.ExternalServiceEntity;
+import com.polymitasoft.caracola.datamodel.ExternalService;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -50,7 +50,7 @@ public class ExternalServiceEditActivity extends AppCompatActivity {
         data = DataStoreHolder.getInstance().getDataStore(this);
         int serviceId = getIntent().getIntExtra(EXTRA_SERVICE_ID, -1);
         if (serviceId == -1) {
-            service = new ExternalServiceEntity();
+            service = new ExternalService();
             service.setName("");
         } else {
             service = data.findByKey(ExternalService.class, serviceId);

@@ -14,8 +14,9 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.InteractivoScrollView;
 import com.polymitasoft.caracola.datamodel.Bedroom;
+import com.polymitasoft.caracola.datamodel.IBedroom;
+import com.polymitasoft.caracola.datamodel.IBooking;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.BookingEntity;
 import com.polymitasoft.caracola.datamodel.BookingState;
 
 import org.threeten.bp.LocalDate;
@@ -153,7 +154,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 // aqui no es necesario seleccionar reserva q lo hubiera hecho en el toque anterior,ah no tengo culpa
                 segundoDiaSelec = dia;
                 if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color() || primerDiaSelec.getColor() == CalendarState.PENDING.color() || primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) { // si la primera seleccion esta en una reserva
-                    Booking calendario_reserva = obtenerReservaModoH(primerDiaSelec);
+                    IBooking calendario_reserva = obtenerReservaModoH(primerDiaSelec);
                     seleccionadorDeReservaModoH(calendario_reserva, CalendarState.UNSELECTED.color()); //deseleccionar reserva anteriior
                     if (segundoDiaSelec.getColor() != CalendarState.CONFIRMED.color() && segundoDiaSelec.getColor() != CalendarState.PENDING.color() && segundoDiaSelec.getColor() != CalendarState.CHECKED_IN.color()) { // y la segunda no tiene reserv
                         segundoDiaSelec.seleccionar(CellLocation.ALONE);
@@ -382,7 +383,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
-    public void eliminarCalendarioReservaAMeses(Booking calendario_reserva) {
+    public void eliminarCalendarioReservaAMeses(IBooking calendario_reserva) {
         VistaDia fechaIniC = obtenerVistaDiaFict(calendario_reserva.getCheckInDate());
         VistaDia fechaFinC = obtenerVistaDiaFict(calendario_reserva.getCheckOutDate());
         VistaMes mesMenor = mesDelDia(fechaIniC);
@@ -395,7 +396,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
-    public void seleccionadorDeReservaModoH(Booking calendario_reserva, int color) {
+    public void seleccionadorDeReservaModoH(IBooking calendario_reserva, int color) {
         VistaDia diaIni = obtenerVistaDiaFict(calendario_reserva.getCheckInDate());
         VistaDia diaFin = obtenerVistaDiaFict(calendario_reserva.getCheckOutDate());
 
@@ -419,7 +420,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
             diaMayor = primerDiaSelec;
         }
 
-        Booking booking = new BookingEntity();
+        Booking booking = new Booking();
         booking.setCheckInDate(diaMenor.getCalendar());
         booking.setCheckOutDate(diaMayor.getCalendar());
         booking.setState(estado);
@@ -451,7 +452,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
-    public boolean estaElDiaHoyEnReserva(Booking calendario_reserva) {
+    public boolean estaElDiaHoyEnReserva(IBooking calendario_reserva) {
         LocalDate diaMenor = calendario_reserva.getCheckInDate();
         LocalDate diaMayor = calendario_reserva.getCheckOutDate();
         LocalDate hoy = LocalDate.now();
@@ -470,7 +471,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
         return diaMenor.getCalendar().compareTo(hoy) <= 0 && diaMayor.getCalendar().compareTo(hoy) >= 0;
     }
 
-    public @Nullable Booking obtenerReservaModoH(VistaDia dia) {
+    public @Nullable
+    Booking obtenerReservaModoH(VistaDia dia) {
         VistaMes vistaMes = mesDelDia(dia);
         for (Booking calendario_reserva : vistaMes.getPreReservas()) {
             //            Log.e("mes", "dia " + calendario_reserva.getFecha_inicio().getDay());
@@ -547,7 +549,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         return segundoDiaSelec;
     }
 
-    public Bedroom getHabitacion() {
+    public IBedroom getHabitacion() {
         return habitacion;
     }
 

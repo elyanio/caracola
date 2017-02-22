@@ -1,12 +1,12 @@
 package com.polymitasoft.caracola.view.booking;
 
 import android.app.Activity;
-import android.view.View;
 import android.widget.EditText;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.DateSpinner;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.IBooking;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import butterknife.BindView;

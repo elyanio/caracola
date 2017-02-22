@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
-import com.polymitasoft.caracola.datamodel.InternalService;
+import com.polymitasoft.caracola.datamodel.IInternalService;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -27,7 +27,7 @@ import io.requery.sql.EntityDataStore;
  * @author rainermf
  * @since 16/2/2017
  */
-public class InternalServiceListActivity extends ListActivity<InternalService> {
+public class InternalServiceListActivity extends ListActivity<IInternalService> {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
     }
 
     @Override
-    protected QueryRecyclerAdapter<InternalService, SimpleViewHolder> createAdapter() {
+    protected QueryRecyclerAdapter<IInternalService, SimpleViewHolder> createAdapter() {
         return new ServiceAdapter(this);
     }
 
@@ -62,7 +62,7 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
     /**
      * Created by rainermf on 15/2/2017.
      */
-    static class ServiceAdapter extends QueryRecyclerAdapter<InternalService, SimpleViewHolder> implements View.OnClickListener {
+    static class ServiceAdapter extends QueryRecyclerAdapter<IInternalService, SimpleViewHolder> implements View.OnClickListener {
 
         private final Random random = new Random();
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
@@ -75,12 +75,12 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
         }
 
         @Override
-        public Result<InternalService> performQuery() {
-            return dataStore.select(InternalService.class).get();
+        public Result<IInternalService> performQuery() {
+            return dataStore.select(IInternalService.class).get();
         }
 
         @Override
-        public void onBindViewHolder(InternalService item, SimpleViewHolder holder, int position) {
+        public void onBindViewHolder(IInternalService item, SimpleViewHolder holder, int position) {
             holder.primaryText.setText(item.getName());
             holder.colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
             holder.itemView.setTag(item);
@@ -97,7 +97,7 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
 
         @Override
         public void onClick(View v) {
-            InternalService service = (InternalService) v.getTag();
+            IInternalService service = (IInternalService) v.getTag();
             if (service != null) {
                 Intent intent = new Intent(context, InternalServiceEditActivity.class);
                 intent.putExtra(InternalServiceEditActivity.EXTRA_SERVICE_ID, service.getId());

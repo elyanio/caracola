@@ -11,12 +11,14 @@ import io.requery.Generated;
 import io.requery.Key;
 import io.requery.Persistable;
 
+import static io.requery.PropertyNameStyle.FLUENT_BEAN;
+
 /**
  * @author rainermf
  * @since 11/2/2017
  */
-@Entity
-public interface Client extends Persistable {
+@Entity(propertyNameStyle = FLUENT_BEAN)
+public interface IClient extends Persistable {
     @Key
     @Generated
     int getId();
@@ -24,33 +26,27 @@ public interface Client extends Persistable {
     @NonNull
     @Column(nullable = false)
     String getPassport();
-    void setPassport(String passport);
 
     @NonNull
     @Column(nullable = false)
     String getFirstName();
-    void setFirstName(String firstName);
 
     @NonNull
     @Column(nullable = false)
     String getLastName();
-    void setLastName(String lastName);
 
     @NonNull
     @Column(nullable = false)
     @Convert(LocalDateConverter.class)
     LocalDate getBirthday();
-    void setBirthday(LocalDate birthday);
 
     @NonNull
     @Column(nullable = false)
     @Convert(CountryConverter.class)
     Country getCountry();
-    void setCountry(Country country);
 
     @NonNull
     @Column(nullable = false)
     @Convert(GenderConverter.class)
     Gender getGender();
-    void setGender(Gender gender);
 }

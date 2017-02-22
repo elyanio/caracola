@@ -10,12 +10,14 @@ import io.requery.Generated;
 import io.requery.Key;
 import io.requery.Persistable;
 
+import static io.requery.PropertyNameStyle.FLUENT_BEAN;
+
 /**
  * @author rainermf
  * @since 11/2/2017
  */
-@Entity
-public interface Bedroom extends Persistable {
+@Entity(propertyNameStyle = FLUENT_BEAN)
+public interface IInternalService extends Persistable {
     @Key
     @Generated
     int getId();
@@ -23,20 +25,8 @@ public interface Bedroom extends Persistable {
     @NonNull
     @Column(nullable = false)
     String getName();
-    void setName(String name);
 
     @NonNull
     @Column(nullable = false)
-    int getCapacity();
-    void setCapacity(int capacity);
-
-    @NonNull
-    @Column(nullable = false)
-    BigDecimal getPriceInLowSeason();
-    void setPriceInLowSeason(BigDecimal price);
-
-    @NonNull
-    @Column(nullable = false)
-    BigDecimal getPriceInHighSeason();
-    void setPriceInHighSeason(BigDecimal price);
+    BigDecimal getDefaultPrice();
 }

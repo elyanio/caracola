@@ -5,6 +5,7 @@ import android.widget.EditText;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Client;
+import com.polymitasoft.caracola.datamodel.IClient;
 import com.polymitasoft.caracola.datamodel.Country;
 import com.polymitasoft.caracola.datamodel.Gender;
 import com.polymitasoft.caracola.util.FormatUtils;
