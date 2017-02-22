@@ -1,4 +1,4 @@
-package com.polymitasoft.caracola.view.client;
+package com.polymitasoft.caracola.view.consumption;
 
 import android.app.Activity;
 import android.widget.EditText;

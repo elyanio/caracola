@@ -13,6 +13,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
+import com.polymitasoft.caracola.datamodel.Consumption;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -23,22 +24,22 @@ import io.requery.sql.EntityDataStore;
  * Activities containing this fragment MUST implement the {@link OnListInteractionListener}
  * interface.
  */
-public class ClientFragment extends Fragment {
+public class ConsumptionFragment extends Fragment {
 
-    private static final String ARG_BOOKING_ID = "booking-id";
+    private static final String ARG_CONSUMPTION_ID = "consumptionId";
     private Booking booking = null;
     private OnListInteractionListener mListener;
-    private ClientRecyclerViewAdapter adapter;
+    private ConsumptionRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ClientFragment() {
+    public ConsumptionFragment() {
     }
 
-    public static ClientFragment newInstance(Booking booking) {
-        ClientFragment fragment = new ClientFragment();
+    public static ConsumptionFragment newInstance(Booking booking) {
+        ConsumptionFragment fragment = new ConsumptionFragment();
         fragment.booking = booking;
         return fragment;
     }
@@ -60,7 +61,7 @@ public class ClientFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
             EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
-            adapter = new ClientRecyclerViewAdapter(dataStore, booking, mListener);
+            adapter = new ConsumptionRecyclerViewAdapter(dataStore, booking, mListener);
             recyclerView.setAdapter(adapter);
         }
         return view;
@@ -89,17 +90,7 @@ public class ClientFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListInteractionListener {
-        void onClientListInteraction(Client client);
+        void onConsumptionListInteraction(Consumption consumption);
     }
 }

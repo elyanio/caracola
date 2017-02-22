@@ -1,65 +1,108 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            xmlns:tools="http://schemas.android.com/tools"
-            tools:context=".view.booking.BookingEditActivity">
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+         android:id="@android:id/tabhost"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
+        <TabWidget
+            android:id="@android:id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"/>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/booking_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/booking_number"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/book_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/book_number"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <include layout="@layout/booking_data"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/booking_clients_title"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            />
-
-        <!--<fragment-->
-            <!--android:id="@+id/client_fragment"-->
-            <!--android:name="com.polymitasoft.caracola.view.booking.ClientFragment"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"/>-->
         <FrameLayout
-            android:id="@+id/client_fragment_container"
+            android:id="@android:id/tabcontent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
+            <ScrollView
+                        android:id="@+id/tab1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/booking_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/booking_number"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/book_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/book_number"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <include layout="@layout/booking_data"/>
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/tab2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/booking_clients_title"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    />
+
+                <FrameLayout
+                    android:id="@+id/client_fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </FrameLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="addClient"
+                    android:text="@string/add_client"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tab3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="addClient"
+                    android:text="@string/add_consumption"/>
+
+                <FrameLayout
+                    android:id="@+id/consumption_fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </FrameLayout>
+            </LinearLayout>
         </FrameLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_client"
-            android:layout_gravity="center_horizontal"
-            android:onClick="addClient"/>
-
     </LinearLayout>
-</ScrollView>
+</TabHost>

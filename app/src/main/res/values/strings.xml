@@ -110,4 +110,8 @@
     <string name="service_name">Nombre</string>
     <string name="price">Precio</string>
     <string name="title_edit_external_service">Editar servicio externo</string>
+    <string name="booking_general_tab_title">General</string>
+    <string name="booking_clients_tab_title">Clientes</string>
+    <string name="booking_consumption_tab_title">Consumo</string>
+    <string name="add_consumption">Añadir consumo</string>
 </resources>

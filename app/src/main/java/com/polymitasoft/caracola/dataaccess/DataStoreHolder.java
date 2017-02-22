@@ -1,5 +1,6 @@
 package com.polymitasoft.caracola.dataaccess;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.polymitasoft.caracola.datamodel.Models;

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Bedroom;
-import com.polymitasoft.caracola.datamodel.BedroomEntity;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -65,18 +64,17 @@ public class BedroomListActivity extends ListActivity<Bedroom> {
 
         @Override
         public void onBindViewHolder(Bedroom item, SimpleViewHolder holder, int position) {
-            holder.name.setText(item.getName());
-            holder.image.setBackgroundColor(colors[random.nextInt(colors.length)]);
+            holder.primaryText.setText(item.getName());
+            holder.colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
             holder.itemView.setTag(item);
+            holder.itemView.setOnClickListener(this);
         }
 
         @Override
         public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.booking_item, null);
-            SimpleViewHolder holder = new SimpleViewHolder(view);
-            view.setOnClickListener(this);
-            return holder;
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.booking_item, parent, false);
+            return new SimpleViewHolder(view);
         }
 
         @Override

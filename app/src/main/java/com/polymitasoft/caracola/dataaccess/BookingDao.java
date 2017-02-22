@@ -3,23 +3,28 @@ package com.polymitasoft.caracola.dataaccess;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.polymitasoft.caracola.datamodel.Client;
-import com.polymitasoft.caracola.datamodel.ClientStay;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.ClientStayEntity;
+import com.polymitasoft.caracola.datamodel.BookingEntity;
+import com.polymitasoft.caracola.datamodel.Client;
+import com.polymitasoft.caracola.datamodel.ClientEntity;
+import com.polymitasoft.caracola.datamodel.ClientStay;
+import com.polymitasoft.caracola.datamodel.Consumption;
+import com.polymitasoft.caracola.datamodel.ConsumptionEntity;
 
 import org.threeten.bp.LocalDate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.requery.Persistable;
+import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
 import static com.polymitasoft.caracola.datamodel.BookingEntity.BEDROOM;
 import static com.polymitasoft.caracola.datamodel.BookingEntity.CHECK_IN_DATE;
 import static com.polymitasoft.caracola.datamodel.BookingEntity.CHECK_OUT_DATE;
+import static com.polymitasoft.caracola.datamodel.ClientStayEntity.BOOKING_ID;
+import static com.polymitasoft.caracola.datamodel.ClientStayEntity.CLIENT_ID;
 
 /**
  * @author rainermf
@@ -78,13 +83,17 @@ public class BookingDao {
         return booking.getCheckInDate();
     }
 
-    public List<Client> getClients(@NonNull Booking booking) {
-        List<ClientStay> clientStays = dataStore.select(ClientStay.class)
-                .where(ClientStayEntity.BOOKING.eq(booking)).get().toList();
-        List<Client> clients = new ArrayList<>(clientStays.size());
-        for (ClientStay stay: clientStays) {
-            clients.add(stay.getClient());
-        }
-        return clients;
+    public Result<Client> getClients(@NonNull Booking booking) {
+        return dataStore.select(Client.class)
+                .join(ClientStay.class).on(ClientEntity.ID.equal(CLIENT_ID))
+                .join(Booking.class).on(BOOKING_ID.equal(BookingEntity.ID))
+                .where(BookingEntity.ID.equal(booking.getId()))
+                .get();
+    }
+
+    public Result<Consumption> getConsumptions(@NonNull Booking booking) {
+        return dataStore.select(Consumption.class)
+                .where(ConsumptionEntity.BOOKING_ID.equal(booking.getId()))
+                .get();
     }
 }

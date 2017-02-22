@@ -99,9 +99,8 @@ public class CurrentBookingsActivity extends AppCompatActivity {
     }
 
     static class BookingHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.name) TextView name;
-        @BindView(R.id.picture)
-        ImageView image;
+        @BindView(R.id.primary_text) TextView name;
+        @BindView(R.id.color_strip) View image;
 
         BookingHolder(View itemView) {
             super(itemView);

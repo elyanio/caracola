@@ -38,8 +38,8 @@ public interface Consumption extends Persistable {
 
     @NonNull
     @Column(nullable = false)
-    BigDecimal getDefaultPrice();
-    void setDefaultPrice(BigDecimal price);
+    BigDecimal getPrice();
+    void setPrice(BigDecimal price);
 
     @NonNull
     @Column(nullable = false)

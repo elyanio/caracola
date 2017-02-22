@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
@@ -62,8 +61,8 @@ public abstract class ListActivity<T> extends AppCompatActivity {
     }
 
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.name) public TextView name;
-        @BindView(R.id.picture) public ImageView image;
+        @BindView(R.id.primary_text) public TextView primaryText;
+        @BindView(R.id.color_strip) public View colorStrip;
 
         public SimpleViewHolder(View itemView) {
             super(itemView);

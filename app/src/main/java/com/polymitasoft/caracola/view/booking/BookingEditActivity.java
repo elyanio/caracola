@@ -22,13 +22,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TabHost;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingEntity;
 import com.polymitasoft.caracola.datamodel.Client;
-import com.polymitasoft.caracola.view.client.ClientEditActivity;
+import com.polymitasoft.caracola.datamodel.Consumption;
+import com.polymitasoft.caracola.view.client.ConsumptionEditActivity;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -36,7 +38,7 @@ import io.requery.sql.EntityDataStore;
 /**
  * Simple activity allowing you to edit a Person entity using data binding.
  */
-public class BookingEditActivity extends AppCompatActivity implements ClientFragment.OnListFragmentInteractionListener {
+public class BookingEditActivity extends AppCompatActivity implements ClientFragment.OnListInteractionListener, ConsumptionFragment.OnListInteractionListener {
 
     static final String EXTRA_BOOKING_ID = "bookingId";
 
@@ -60,29 +62,51 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
         }
         binding = new ActivityEditBookingBinding(this, booking);
 
-        // Check that the activity is using the layout version with
-        // the fragment_container FrameLayout
         if (findViewById(R.id.client_fragment_container) != null) {
-
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
             if (savedInstanceState != null) {
                 return;
             }
-
-            // Create a new Fragment to be placed in the activity layout
             ClientFragment firstFragment = ClientFragment.newInstance(booking);
-
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
             firstFragment.setArguments(getIntent().getExtras());
 
-            // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.client_fragment_container, firstFragment).commit();
         }
 
+        if (findViewById(R.id.consumption_fragment_container) != null) {
+            if (savedInstanceState != null) {
+                return;
+            }
+            ConsumptionFragment firstFragment = ConsumptionFragment.newInstance(booking);
+            firstFragment.setArguments(getIntent().getExtras());
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.consumption_fragment_container, firstFragment).commit();
+        }
+
+        initTabs();
+
+    }
+
+    private void initTabs() {
+        TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
+        tabs.setup();
+        TabHost.TabSpec spec = tabs.newTabSpec("booking_general_tab");
+        spec.setContent(R.id.tab1);
+        spec.setIndicator(getString(R.string.booking_general_tab_title));
+        tabs.addTab(spec);
+
+        spec = tabs.newTabSpec("booking_clients_tab");
+        spec.setContent(R.id.tab2);
+        spec.setIndicator(getString(R.string.booking_clients_tab_title));
+        tabs.addTab(spec);
+
+        spec = tabs.newTabSpec("booking_consumption_tab");
+        spec.setContent(R.id.tab3);
+        spec.setIndicator(getString(R.string.booking_consumption_tab_title));
+        tabs.addTab(spec);
+
+        tabs.setCurrentTab(0);
     }
 
     @Override
@@ -108,13 +132,18 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
     }
 
     @Override
-    public void onListFragmentInteraction(Client client) {
+    public void onClientListInteraction(Client client) {
+
+    }
+
+    @Override
+    public void onConsumptionListInteraction(Consumption consumption) {
 
     }
 
     public void addClient(View view) {
-        Intent intent = new Intent(this, ClientEditActivity.class);
-        intent.putExtra(ClientEditActivity.EXTRA_BOOKING_ID, booking.getId());
+        Intent intent = new Intent(this, ConsumptionEditActivity.class);
+        intent.putExtra(ConsumptionEditActivity.EXTRA_BOOKING_ID, booking.getId());
         startActivity(intent);
     }
 }

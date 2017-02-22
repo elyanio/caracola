@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Supplier;
-import com.polymitasoft.caracola.datamodel.SupplierEntity;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -42,8 +41,8 @@ public class SupplierListActivity extends ListActivity<Supplier> {
 
         @Override
         public void onBindViewHolder(Supplier item, SimpleViewHolder holder, int position) {
-            holder.name.setText(item.getName());
-            holder.image.setBackgroundColor(colors[random.nextInt(colors.length)]);
+            holder.primaryText.setText(item.getName());
+            holder.colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
             holder.itemView.setTag(item);
         }
 

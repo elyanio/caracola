@@ -21,13 +21,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.Client;
-import com.polymitasoft.caracola.datamodel.ClientBuilder;
-import com.polymitasoft.caracola.datamodel.ClientStay;
-import com.polymitasoft.caracola.datamodel.ClientStayEntity;
+import com.polymitasoft.caracola.datamodel.Consumption;
+import com.polymitasoft.caracola.datamodel.ConsumptionBuilder;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -35,14 +33,14 @@ import io.requery.sql.EntityDataStore;
 /**
  * Simple activity allowing you to edit a Person entity using data binding.
  */
-public class ClientEditActivity extends AppCompatActivity {
+public class ConsumptionEditActivity extends AppCompatActivity {
 
     public static final String EXTRA_CLIENT_ID = "clientId";
     public static final String EXTRA_BOOKING_ID = "bookingId";
 
     private EntityDataStore<Persistable> data;
-    private Client client;
-    private ClientBinding binding;
+    private Consumption consumption;
+    private ConsumptionBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +50,18 @@ public class ClientEditActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.title_edit_client);
         }
         data = DataStoreHolder.getInstance().getDataStore(this);
-        int clientId = getIntent().getIntExtra(EXTRA_CLIENT_ID, -1);
-        if (clientId == -1) {
-            client = new ClientBuilder().build(); // creating a new client
+        int consumptionId = getIntent().getIntExtra(EXTRA_CLIENT_ID, -1);
+        if (consumptionId == -1) {
+            int idBooking = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
+            Booking booking = null;
+            if(idBooking != -1) {
+                booking = data.findByKey(Booking.class, idBooking);
+            }
+            consumption = new ConsumptionBuilder().booking(booking).build();
         } else {
-            client = data.findByKey(Client.class, clientId);
+            consumption = data.findByKey(Consumption.class, consumptionId);
         }
-        binding = new ClientBinding(this, client);
+        binding = new ConsumptionBinding(this, consumption);
     }
 
     @Override
@@ -78,23 +81,9 @@ public class ClientEditActivity extends AppCompatActivity {
     }
 
     private void saveClient() {
-        client = binding.getClient();
-        data.upsert(client);
+        consumption = binding.getConsumption();
+        data.upsert(consumption);
 
-        int idBooking = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
-        if(idBooking != -1) {
-            ClientStay stay = data.select(ClientStay.class)
-                    .where(ClientStayEntity.CLIENT_ID.eq(client.getId()))
-                    .and(ClientStayEntity.BOOKING_ID.eq(idBooking))
-                    .get().firstOrNull();
-            Booking booking = data.findByKey(Booking.class, idBooking);
-            if(stay == null && booking != null) {
-                stay = new ClientStayEntity();
-                stay.setClient(client);
-                stay.setBooking(booking);
-                data.insert(stay);
-            }
-        }
         finish();
     }
 }

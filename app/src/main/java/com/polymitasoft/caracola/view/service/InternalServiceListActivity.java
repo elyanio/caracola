@@ -1,5 +1,6 @@
 package com.polymitasoft.caracola.view.service;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,14 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.InternalService;
-import com.polymitasoft.caracola.datamodel.InternalServiceEntity;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
 
+import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
+import io.requery.sql.EntityDataStore;
 
 /**
  * @author rainermf
@@ -36,7 +39,7 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
 
     @Override
     protected QueryRecyclerAdapter<InternalService, SimpleViewHolder> createAdapter() {
-        return new ServiceAdapter();
+        return new ServiceAdapter(this);
     }
 
     @Override
@@ -59,31 +62,34 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
     /**
      * Created by rainermf on 15/2/2017.
      */
-    class ServiceAdapter extends QueryRecyclerAdapter<InternalService, SimpleViewHolder> implements View.OnClickListener {
+    static class ServiceAdapter extends QueryRecyclerAdapter<InternalService, SimpleViewHolder> implements View.OnClickListener {
 
         private final Random random = new Random();
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
+        private EntityDataStore<Persistable> dataStore;
+        private Context context;
 
-        ServiceAdapter() {
-//            super(InternalServiceEntity.$TYPE);
+        ServiceAdapter(Context context) {
+            this.context = context;
+            dataStore = DataStoreHolder.getInstance().getDataStore(context);
         }
 
         @Override
         public Result<InternalService> performQuery() {
-            return data.select(InternalService.class).get();
+            return dataStore.select(InternalService.class).get();
         }
 
         @Override
         public void onBindViewHolder(InternalService item, SimpleViewHolder holder, int position) {
-            holder.name.setText(item.getName());
-            holder.image.setBackgroundColor(colors[random.nextInt(colors.length)]);
+            holder.primaryText.setText(item.getName());
+            holder.colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
             holder.itemView.setTag(item);
         }
 
         @Override
         public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.booking_item, null);
+            View view = inflater.inflate(R.layout.booking_item, parent, false);
             SimpleViewHolder holder = new SimpleViewHolder(view);
             view.setOnClickListener(this);
             return holder;
@@ -93,9 +99,9 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
         public void onClick(View v) {
             InternalService service = (InternalService) v.getTag();
             if (service != null) {
-                Intent intent = new Intent(InternalServiceListActivity.this, InternalServiceEditActivity.class);
+                Intent intent = new Intent(context, InternalServiceEditActivity.class);
                 intent.putExtra(InternalServiceEditActivity.EXTRA_SERVICE_ID, service.getId());
-                startActivity(intent);
+                context.startActivity(intent);
             }
         }
     }
