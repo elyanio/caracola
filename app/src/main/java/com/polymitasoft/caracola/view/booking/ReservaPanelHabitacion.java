@@ -175,7 +175,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                            reservaPrincipal.enableCheckIn();
                             actionTypes.add(ActionType.CREATE_CHECK_IN);
                         }
-                        animarprueba(1,preReservaSelecc);
+                        animarprueba(1, preReservaSelecc);
 //                        reservaPrincipal.enableEdit();
                         actionTypes.add(ActionType.EDIT_BOOKING);
 //                        reservaPrincipal.enableDelete();
@@ -195,7 +195,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                                    reservaPrincipal.enableCheckIn();
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                 }
-                                animarprueba(1,preReservaSelecc);
+                                animarprueba(1, preReservaSelecc);
 //                                animarprueba(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
@@ -248,7 +248,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                                    reservaPrincipal.enableCheckIn();
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                 }
-                                animarprueba(1,preReservaSelecc);
+                                animarprueba(1, preReservaSelecc);
 //                                animarprueba(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
@@ -405,12 +405,12 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
         } else {  // alargar
 
-                TextView nota_deslizante = reservaPrincipal.getReservaEsenaPrincipal().getNotaDeslizante();
-                if (booking.getNote().equals("") || booking.getNote() == null) {
-                    nota_deslizante.setText("(sin nota)");
-                } else {
-                    nota_deslizante.setText(booking.getNote());
-                }
+            TextView nota_deslizante = reservaPrincipal.getReservaEsenaPrincipal().getNotaDeslizante();
+            if (booking.getNote().equals("") || booking.getNote() == null) {
+                nota_deslizante.setText("(sin nota)");
+            } else {
+                nota_deslizante.setText(booking.getNote());
+            }
             if (!visibleTextNota) {
                 ViewPropertyAnimator vpa = reservaPrincipal.getReservaEsenaPrincipal().getLayoutCabecera().animate();
                 vpa.translationY(0);
@@ -560,7 +560,32 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 return mes;
             }
         }
-        return null;
+        return cargarMesesHastaElDia(dia);
+    }
+
+    public VistaMes cargarMesesHastaElDia(VistaDia dia) {
+        if (dia.getCalendar().isAfter(meses.get(meses.size() - 1).getInicio_mes())) { // se incrementan al final de la lista
+            LocalDate diaIniDelUltimoMes = meses.get(meses.size() - 1).getInicio_mes();
+            LocalDate localDatei = diaIniDelUltimoMes;
+            while (dia.getCalendar().getYear() != localDatei.getYear() || dia.getCalendar().getMonthValue() != localDatei.getMonthValue()) {
+                localDatei = localDatei.plusMonths(1);
+                VistaMes mes = new VistaMes(getContext(), this, localDatei);
+                linearLayoutMeses.addView(mes);
+                meses.add(mes);
+            }
+            return meses.get(meses.size() - 1);
+        }else{
+            LocalDate diaIniDelPrimerMes = meses.get(0).getInicio_mes();
+            LocalDate localDatei = diaIniDelPrimerMes;
+            while (dia.getCalendar().getYear() != localDatei.getYear() || dia.getCalendar().getMonthValue() != localDatei.getMonthValue()) {
+                localDatei = localDatei.minusMonths(1);
+                VistaMes mes = new VistaMes(getContext(), this, localDatei);
+                linearLayoutMeses.addView(mes,0);
+                meses.add(0,mes);
+            }
+            return meses.get(0);
+        }
+
     }
 
     public VistaDia obtenerDiaFinalMes(LocalDate dia) {
@@ -615,24 +640,24 @@ public class ReservaPanelHabitacion extends LinearLayout {
         return this;
     }
 
-    private static class DialogDismissClickListener implements DialogInterface.OnClickListener {
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.cancel();
-        }
+private static class DialogDismissClickListener implements DialogInterface.OnClickListener {
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.cancel();
     }
+}
 
-    public class cargarNuevoMesPrincipal implements InteractivoScrollView.CapturadorEventoMoverScroll {
+public class cargarNuevoMesPrincipal implements InteractivoScrollView.CapturadorEventoMoverScroll {
 
-        @Override
-        public void onMover(int sentido) {
-            if (sentido == SENTIDO_SCROLL_ABAJO) {
-                crearNuevoMesAbajo();
-            } else {
-                crearNuevoMesArriba();
-            }
-
+    @Override
+    public void onMover(int sentido) {
+        if (sentido == SENTIDO_SCROLL_ABAJO) {
+            crearNuevoMesAbajo();
+        } else {
+            crearNuevoMesArriba();
         }
+
     }
+}
 }
 
 
