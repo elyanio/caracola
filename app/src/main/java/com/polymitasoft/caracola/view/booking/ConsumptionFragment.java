@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -63,13 +64,13 @@ public class ConsumptionFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_consumption_list, container, false);
 
         // Set the adapter
-        if (view instanceof LinearLayout) {
+        if (view instanceof FrameLayout) {
             ButterKnife.bind(this, view);
             Context context = view.getContext();
             RecyclerView recyclerView = findById(view, R.id.list);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+            EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
             adapter = new ConsumptionRecyclerViewAdapter(dataStore, booking, mListener);
             recyclerView.setAdapter(adapter);
 

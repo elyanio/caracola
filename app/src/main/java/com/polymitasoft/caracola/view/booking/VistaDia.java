@@ -18,21 +18,25 @@ import static com.polymitasoft.caracola.view.booking.CalendarState.SELECTED;
 
 public class VistaDia extends Button implements Comparable<VistaDia> {
     private final LocalDate dia;
-    private final int strokeWidth;
     @ColorInt private int color;
     @ColorInt private int textColor;
 
     public VistaDia(Context context, LocalDate dia, int color) {
-        this(context, dia, color, Color.BLACK);
+        this(context, dia, color, Color.BLACK, CellLocation.MIDDLE);
+
     }
 
-    public VistaDia(Context context, LocalDate date, int bgColor, int textColor) {
+    public VistaDia(Context context, LocalDate dia, int color, CellLocation cellLocation) {
+        this(context, dia, color, Color.BLACK, cellLocation);
+
+    }
+
+    public VistaDia(Context context, LocalDate date, int bgColor, int textColor, CellLocation cellLocation) {
         super(context);
         this.dia = date;
         this.color = bgColor;
         this.textColor = textColor;
-        strokeWidth = (int) (getContext().getResources().getDisplayMetrics().density * 2);
-        configIni();
+        configIni(cellLocation);
         eventos();
     }
 
@@ -85,15 +89,15 @@ public class VistaDia extends Button implements Comparable<VistaDia> {
         }
     }
 
-    private void configIni() {
+    private void configIni(CellLocation cellLocation) {
         if (color == NO_DAY.color()) {
             setText("");
+            setBackgroundColor(color);
         } else {
             setText(dia.getDayOfMonth() + "");
+            pintarColor(color, textColor, cellLocation);
         }
-        setBackgroundColor(color);
-        setTextColor(textColor);
-        this.setGravity(TEXT_ALIGNMENT_CENTER);
+        this.setTextAlignment(TEXT_ALIGNMENT_CENTER);
     }
 
     private void eventos() {

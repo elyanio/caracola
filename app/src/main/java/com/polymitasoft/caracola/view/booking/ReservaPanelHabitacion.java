@@ -200,7 +200,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
 //                                reservaPrincipal.enableEdit();
-                                actionTypes.add(ActionType.CREATE_BOOKING);
+                                actionTypes.add(ActionType.EDIT_BOOKING);
 //                                reservaPrincipal.enableDelete();
                                 actionTypes.add(ActionType.DELETE_BOOKING);
                                 reservaPrincipal.getBookingButtonBar().show(actionTypes);
@@ -473,6 +473,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         for (VistaMes mes : meses) {
             mes.actualizarCambioHabitacion();
         }
+        animarprueba(0);
     }
 
     public boolean estaElDiaHoyEnReserva(IBooking calendario_reserva) {
@@ -517,6 +518,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     }
 
     public void limpiarTodo() {
+        reservaPrincipal.getBookingButtonBar().hide();
 //        reservaPrincipal.disableButtons();
         primerDiaSelec = null;
         segundoDiaSelec = null;

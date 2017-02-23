@@ -3,6 +3,7 @@ package com.polymitasoft.caracola.view.booking;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,13 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.IBedroom;
 import com.polymitasoft.caracola.datamodel.IBooking;
-import com.polymitasoft.caracola.datamodel.BookingState;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
@@ -37,8 +38,7 @@ import static com.polymitasoft.caracola.view.booking.CalendarState.SELECTED;
 import static com.polymitasoft.caracola.view.booking.CalendarState.toCalendarState;
 
 
-public class VistaMes extends LinearLayout
-{
+public class VistaMes extends LinearLayout {
     private final ReservaPanelHabitacion reservaPanelHabitacion;
     private final LocalDate inicio_mes;
     private List<VistaDia> dias;
@@ -51,8 +51,7 @@ public class VistaMes extends LinearLayout
     private EntityDataStore<Persistable> dataStore;
     private BookingDao bookingDao;
 
-    public VistaMes(Context context, ReservaPanelHabitacion reservaPanelHabitacion, LocalDate inicio_mes)
-    {
+    public VistaMes(Context context, ReservaPanelHabitacion reservaPanelHabitacion, LocalDate inicio_mes) {
         super(context);
         this.reservaPanelHabitacion = reservaPanelHabitacion;
         this.inicio_mes = inicio_mes;
@@ -66,43 +65,39 @@ public class VistaMes extends LinearLayout
         configurarControles();
     }
 
-    private void inicializar()
-    {
+    private void inicializar() {
         String infladorServicio = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater asioInflador = (LayoutInflater) getContext().getSystemService(infladorServicio);
         asioInflador.inflate(R.layout.reserva_principal_elemento_lista_calendario, this, true);
     }
 
-    private void obtenerControles()
-    {
+    private void obtenerControles() {
         textMes = (TextView) findViewById(R.id.reserva_text_mes);
         gridVista = (GridView) findViewById(R.id.reserva_gridView);
     }
 
-    private void cargarCalendarioReservas()
-    {
+    private void cargarCalendarioReservas() {
         LocalDate finMes = LocalDate.of(inicio_mes.getYear(), inicio_mes.getMonth(), inicio_mes.lengthOfMonth());
         preReservas = new ArrayList<>(bookingDao.bookingsBetween(inicio_mes, finMes));
     }
 
-    private void crearDias()
-    {
+    private void crearDias() {
         int cant_dias_mes = inicio_mes.lengthOfMonth();
         VistaDia temp;
         //poner los no dias
         ponerNoDias();
 
         dias = new ArrayList<>(cantNoDias + cant_dias_mes);
-        for(int i = 1; i <= cantNoDias; i++)
-        {
+        for (int i = 1; i <= cantNoDias; i++) {
             LocalDate defecto = LocalDate.of(2000, Month.JANUARY, i);
             dias.add(new VistaDia(getContext(), defecto, NO_DAY.color()));
         }
+
         // poner los dias
-        for(int i = 1; i <= cant_dias_mes; i++)
-        {
+        for (int i = 1; i <= cant_dias_mes; i++) {
             LocalDate dia = LocalDate.of(inicio_mes.getYear(), inicio_mes.getMonth(), i);
-            temp = new VistaDia(getContext(), dia, obtenerColorAlcrear(dia).first);
+            Pair<Integer, CellLocation> pair = obtenerColorAlcrear(dia);
+            temp = new VistaDia(getContext(), dia, pair.first, pair.second);
             dias.add(temp);
             temp.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
@@ -112,81 +107,66 @@ public class VistaMes extends LinearLayout
         DayOfWeek primerDiaSemana = DayOfWeek.MONDAY;
         DayOfWeek dia_semana = inicio_mes.getDayOfWeek();
         int cont = dia_semana.getValue() - primerDiaSemana.getValue();
-        if(cont < 0)
-        {
+        if (cont < 0) {
             cont += 7;
         }
         cantNoDias = cont;
     }
 
-    public void actualizarCambioHabitacion()
-    {
-        for(VistaDia dia : dias)
-        {
-            if(dia.getColor() != NO_DAY.color())
-            {
+    public void actualizarCambioHabitacion() {
+        for (VistaDia dia : dias) {
+            if (dia.getColor() != NO_DAY.color()) {
                 Pair<Integer, CellLocation> pair = obtenerColorAlcrear(dia.getCalendar());
                 dia.pintarColor(pair.first, pair.second);
             }
         }
     }
 
-    private Pair<Integer, CellLocation> obtenerColorAlcrear(LocalDate dia)
-    {
-        if(reservaPanelHabitacion.esModoTodo())
-        {
+    private Pair<Integer, CellLocation> obtenerColorAlcrear(LocalDate dia) {
+        if (reservaPanelHabitacion.esModoTodo()) {
             return new Pair<>(obtenerColorModoTodoALcrear(dia), CellLocation.MIDDLE);
-        }
-        else
-        {
-            for(IBooking booking : preReservas)
-            {
+        } else {
+            for (IBooking booking : preReservas) {
                 IBedroom habitacion = booking.getBedroom();
 
-                if(booking.getCheckInDate().compareTo(dia) <= 0 && booking.getCheckOutDate().compareTo(dia) >= 0 &&
-                        habitacion.getId() == reservaPanelHabitacion.getHabitacion().getId())
-                {
+                if (booking.getCheckInDate().compareTo(dia) <= 0 && booking.getCheckOutDate().compareTo(dia) >= 0 &&
+                        habitacion.getId() == reservaPanelHabitacion.getHabitacion().getId()) {
                     CellLocation location;
-                    if(booking.getCheckInDate().equals(booking.getCheckOutDate())){
+                    if (booking.getCheckInDate().equals(booking.getCheckOutDate())) {
                         location = CellLocation.ALONE;
-                    } else if(booking.getCheckInDate().equals(dia)){
-                         location = CellLocation.BEGINING;
-                    } else if(booking.getCheckOutDate().equals(dia)){
+                    } else if (booking.getCheckInDate().equals(dia)) {
+                        location = CellLocation.BEGINING;
+                    } else if (booking.getCheckOutDate().equals(dia)) {
                         location = CellLocation.END;
-                    }else{
+                    } else {
                         location = CellLocation.MIDDLE;
+
                     }
-                    return  new Pair<>(toCalendarState(booking.getState()).color(), location);
+                    Log.e("d"," " + location);
+                    return new Pair<>(toCalendarState(booking.getState()).color(), location);
                 }
             }
             return new Pair<>(EMPTY.color(), CellLocation.MIDDLE);
         }
     }
 
-    public int obtenerColorModoTodoALcrear(LocalDate dia)
-    {
+    public int obtenerColorModoTodoALcrear(LocalDate dia) {
         int repitenciaDelDia = 0;
         boolean repitentPendientes = false;
         ReservaPrincipal reservaPrincipal = (ReservaPrincipal) getContext();
         int cantCuarto = reservaPrincipal.getBedrooms().size();
-        for(IBooking calendario_reserva : preReservas)
-        {
-            if((calendario_reserva.getCheckInDate()).compareTo(dia) <= 0 && (calendario_reserva.getCheckOutDate()).compareTo(dia) >= 0)
-            {
+        for (IBooking calendario_reserva : preReservas) {
+            if ((calendario_reserva.getCheckInDate()).compareTo(dia) <= 0 && (calendario_reserva.getCheckOutDate()).compareTo(dia) >= 0) {
                 repitenciaDelDia++;
-                if(calendario_reserva.getState() == BookingState.PENDING)
-                {
+                if (calendario_reserva.getState() == BookingState.PENDING) {
                     repitentPendientes = true;
                 }
             }
         }
 
-        if(repitenciaDelDia == 0)
-        {
+        if (repitenciaDelDia == 0) {
             return EMPTY.color();
-        }
-        else if(repitenciaDelDia < cantCuarto)
-        {
+        } else if (repitenciaDelDia < cantCuarto) {
 //            if(repitentPendientes == true)
 //            {
 //                // return CalendarState.PARTIALLY_OCCUPIED.color()_Y_PENDIENTE;
@@ -194,11 +174,9 @@ public class VistaMes extends LinearLayout
 //            }
 //            else
 //            {
-                return CalendarState.PARTIALLY_OCCUPIED.color();
+            return CalendarState.PARTIALLY_OCCUPIED.color();
 //            }
-        }
-        else
-        {
+        } else {
 //            if(repitentPendientes == true)
 //            {
 //                //                return CalendarState.CONFIRMED.color()_Y_PENDIENTE;
@@ -206,65 +184,62 @@ public class VistaMes extends LinearLayout
 //            }
 //            else
 //            {
-                return CalendarState.OCUPPIED.color();
+            return CalendarState.OCUPPIED.color();
 //            }
         }
     }
 
-    private void configurarControles()
-    {
+    private void configurarControles() {
         gridVista.setAdapter(adaptadorGrid);
         textMes.setText(inicio_mes.format(DateTimeFormatter.ofPattern("MMMM - y")).toUpperCase());
     }
 
-    public List<IBedroom> disponibilidadModoTodos(VistaDia diaMenor, VistaDia diaMayor)
-    {
-            List<IBedroom> ocupadas = new ArrayList<>();
-            for(IBooking booking : preReservas)
-            {
-                if(((booking.getCheckInDate()).compareTo(diaMenor.getCalendar()) >= 0 && (booking.getCheckInDate()).compareTo(diaMayor.getCalendar()) <= 0) ||
-                        ((booking.getCheckOutDate()).compareTo(diaMenor.getCalendar()) >= 0 && (booking.getCheckOutDate()).compareTo(diaMayor.getCalendar()) <= 0) ||
-                        (((booking.getCheckInDate()).compareTo(diaMenor.getCalendar()) <= 0 && (booking.getCheckOutDate()).compareTo(diaMayor.getCalendar()) >= 0)))
-                {
-                    ocupadas.add(booking.getBedroom());
-                }
-
+    public List<IBedroom> disponibilidadModoTodos(VistaDia diaMenor, VistaDia diaMayor) {
+        List<IBedroom> ocupadas = new ArrayList<>();
+        for (IBooking booking : preReservas) {
+            if (((booking.getCheckInDate()).compareTo(diaMenor.getCalendar()) >= 0 && (booking.getCheckInDate()).compareTo(diaMayor.getCalendar()) <= 0) ||
+                    ((booking.getCheckOutDate()).compareTo(diaMenor.getCalendar()) >= 0 && (booking.getCheckOutDate()).compareTo(diaMayor.getCalendar()) <= 0) ||
+                    (((booking.getCheckInDate()).compareTo(diaMenor.getCalendar()) <= 0 && (booking.getCheckOutDate()).compareTo(diaMayor.getCalendar()) >= 0))) {
+                ocupadas.add(booking.getBedroom());
             }
-            List<IBedroom> habitacions = dataStore.select(IBedroom.class).get().toList();
-            habitacions.removeAll(ocupadas);
-            return habitacions;
+
+        }
+        List<IBedroom> habitacions = dataStore.select(IBedroom.class).get().toList();
+        habitacions.removeAll(ocupadas);
+        return habitacions;
     }
 
-    public boolean estaElDia(VistaDia vistaDia)
-    {
+    public boolean estaElDia(VistaDia vistaDia) {
         LocalDate date = vistaDia.getCalendar();
         return inicio_mes.getMonth() == date.getMonth() && inicio_mes.getYear() == date.getYear();
     }
 
-    public boolean estaElDiaHoy()
-    {
+    public boolean estaElDiaHoy() {
         return inicio_mes.isEqual(LocalDate.now());
     }
 
-    public LocalDate getInicio_mes()
-    {
+    public LocalDate getInicio_mes() {
         return inicio_mes;
     }
 
-    public void actualizarColorRangoModoH(VistaDia diaMenor, VistaDia diaMayor, int color, boolean marcarIni, boolean marcarFin)
-    {
+    public void actualizarColorRangoModoH(VistaDia diaMenor, VistaDia diaMayor, int color, boolean marcarIni, boolean marcarFin) {
         int indexIni = Collections.binarySearch(dias, diaMenor);
         int indexMayor = Collections.binarySearch(dias, diaMayor);
-        if(indexIni == indexMayor){
-            dias.get(indexIni).pintarColor(color, CellLocation.ALONE);
+        if (indexIni == indexMayor) {
+            if (marcarIni && marcarFin) {
+                dias.get(indexIni).pintarColor(color, CellLocation.ALONE);
+            } else if (marcarIni) {
+                dias.get(indexIni).pintarColor(color, CellLocation.BEGINING);
+            } else {
+                dias.get(indexMayor).pintarColor(color, CellLocation.END);
+            }
         } else {
-            for(int i = indexIni; i <= indexMayor; i++)
-            {
-                if(i == indexIni && marcarIni){
+            for (int i = indexIni; i <= indexMayor; i++) {
+                if (i == indexIni && marcarIni) {
                     dias.get(i).pintarColor(color, CellLocation.BEGINING);
-                }else if(i == indexMayor && marcarFin){
+                } else if (i == indexMayor && marcarFin) {
                     dias.get(i).pintarColor(color, CellLocation.END);
-                }else{
+                } else {
                     dias.get(i).pintarColor(color, CellLocation.MIDDLE);
                 }
             }
@@ -272,33 +247,40 @@ public class VistaMes extends LinearLayout
     }
 
     /*no actualiza el color en los dias solo los selecciona*/
-    public void seleccionadorRangoModoH(VistaDia diaMenor, VistaDia diaMayor, int color, boolean marcarIni, boolean marcarFin)
-    {
+    public void seleccionadorRangoModoH(VistaDia diaMenor, VistaDia diaMayor, int color, boolean marcarIni, boolean marcarFin) {
         int indexIni = Collections.binarySearch(dias, diaMenor);
         int indexMayor = Collections.binarySearch(dias, diaMayor);
-        if(color == SELECTED.color())
-        {
-            if(indexIni == indexMayor){
-                dias.get(indexIni).seleccionar(CellLocation.ALONE);
+        if (color == SELECTED.color()) {
+            if (indexIni == indexMayor) {
+                if (marcarIni && marcarFin) {
+                    dias.get(indexIni).seleccionar(CellLocation.ALONE);
+                } else if (marcarIni) {
+                    dias.get(indexIni).seleccionar(CellLocation.BEGINING);
+                } else {
+                    dias.get(indexMayor).seleccionar(CellLocation.END);
+                }
             } else {
-                for(int i = indexIni; i <= indexMayor; i++)
-                {
-                    if(i == indexIni && marcarIni){
+                for (int i = indexIni; i <= indexMayor; i++) {
+                    if (i == indexIni && marcarIni) {
                         dias.get(i).seleccionar(CellLocation.BEGINING);
-                    }else if(i == indexMayor && marcarFin){
+                    } else if (i == indexMayor && marcarFin) {
                         dias.get(i).seleccionar(CellLocation.END);
-                    }else{
+                    } else {
                         dias.get(i).seleccionar(CellLocation.MIDDLE);
                     }
 
                 }
             }
 
-        }
-        else
-        {
-            if(indexIni == indexMayor){
-                dias.get(indexIni).deSeleccionar(CellLocation.ALONE);
+        } else {
+            if (indexIni == indexMayor) {
+                if (marcarIni && marcarFin) {
+                    dias.get(indexIni).deSeleccionar(CellLocation.ALONE);
+                } else if (marcarIni) {
+                    dias.get(indexIni).deSeleccionar(CellLocation.BEGINING);
+                } else {
+                    dias.get(indexMayor).deSeleccionar(CellLocation.END);
+                }
             } else {
                 for (int i = indexIni; i <= indexMayor; i++) {
                     if (i == indexIni && marcarIni) {
@@ -314,34 +296,26 @@ public class VistaMes extends LinearLayout
     }
 
     /*-1 si no se puede reservar, 0 si solo existen pendientes, 1 si se puede reservar*/
-    public int sePuedeReservarModoHabitacion(VistaDia diaMenor, VistaDia diaMayor)
-    {
+    public int sePuedeReservarModoHabitacion(VistaDia diaMenor, VistaDia diaMayor) {
         int indexIni = Collections.binarySearch(dias, diaMenor);
         int indexMayor = Collections.binarySearch(dias, diaMayor);
         boolean hayPendiente = false;
-        for(int i = indexIni; i <= indexMayor; i++)
-        {
-            if(dias.get(i).getColor() == CalendarState.CONFIRMED.color() || dias.get(i).getColor() == CalendarState.CHECKED_IN.color())
-            {
+        for (int i = indexIni; i <= indexMayor; i++) {
+            if (dias.get(i).getColor() == CalendarState.CONFIRMED.color() || dias.get(i).getColor() == CalendarState.CHECKED_IN.color()) {
                 return -1;
             }
-            if(dias.get(i).getColor() == CalendarState.PENDING.color())
-            {
+            if (dias.get(i).getColor() == CalendarState.PENDING.color()) {
                 hayPendiente = true;
             }
         }
-        if(hayPendiente)
-        {
+        if (hayPendiente) {
             return 0;
-        }
-        else
-        {
+        } else {
             return 1;
         }
     }
 
-    public List<Booking> getPreReservas()
-    {
+    public List<Booking> getPreReservas() {
         return preReservas;
     }
 
@@ -355,24 +329,18 @@ public class VistaMes extends LinearLayout
         return inicio_mes.hashCode();
     }
 
-    public class AdaptadorGridMes extends ArrayAdapter
-    {
+    public class AdaptadorGridMes extends ArrayAdapter {
 
-        AdaptadorGridMes(Context context, int resource, List objects)
-        {
+        AdaptadorGridMes(Context context, int resource, List objects) {
             super(context, resource, objects);
         }
 
         @NonNull
         @Override
-        public View getView(final int posision, View convertView, @NonNull ViewGroup parent)
-        {
-            if(convertView == null)
-            {
+        public View getView(final int posision, View convertView, @NonNull ViewGroup parent) {
+            if (convertView == null) {
                 return dias.get(posision);
-            }
-            else
-            {
+            } else {
                 return convertView;
             }
         }

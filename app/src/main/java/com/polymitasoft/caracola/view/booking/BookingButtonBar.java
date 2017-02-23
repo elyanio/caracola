@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
@@ -12,10 +13,14 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.polymitasoft.caracola.R;
+
 import java.util.List;
 
+import static com.polymitasoft.caracola.util.Metrics.dp;
+
 public class BookingButtonBar extends LinearLayout {
-    private final int HIDE_CALUE = 200;
+    private final int HIDE_VALUE = dp(getContext(), 60);
     private ReservaPrincipal reservaPrincipal;
     private boolean visible = false;
 
@@ -40,7 +45,7 @@ public class BookingButtonBar extends LinearLayout {
     }
 
     public void init() {
-        this.setY(getY() + HIDE_CALUE);
+        this.setY(getY() + HIDE_VALUE);
     }
 
     public void show(List<ActionType> types) {
@@ -61,14 +66,17 @@ public class BookingButtonBar extends LinearLayout {
     }
 
     public Button createButtonInvisible(ActionType actionType) {
+        Context ctx = getContext();
         ShapeDrawable drawable = new ShapeDrawable();
         drawable.getPaint().setColor(Color.parseColor("#607d8b"));
         drawable.setShape(new OvalShape());
-        Button button = new Button(getContext());
+        Button button = new Button(ctx);
         button.setBackground(drawable);
-        button.setWidth(60);
-        button.setHeight(60);
+
+        button.setWidth(dp(ctx, 60));
+        button.setHeight(dp(ctx, 60));
         button.setVisibility(INVISIBLE);
+
         switch (actionType) {
             case CREATE_BOOKING: {
                 button.setText("+");
@@ -143,15 +151,15 @@ public class BookingButtonBar extends LinearLayout {
     private void upAnimate(View view) {
         ViewPropertyAnimator vpa = view.animate();
         vpa.translationY(0);
-        vpa.setDuration(500);
+        vpa.setDuration(200);
         vpa.setInterpolator(new AccelerateDecelerateInterpolator());
         vpa.start();
     }
 
     private void downAnimate(View view) {
         ViewPropertyAnimator vpa = view.animate();
-        vpa.translationY(HIDE_CALUE);
-        vpa.setDuration(500);
+        vpa.translationY(HIDE_VALUE);
+        vpa.setDuration(200);
         vpa.setInterpolator(new AccelerateDecelerateInterpolator());
         vpa.start();
     }
