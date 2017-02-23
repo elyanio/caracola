@@ -4,15 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/reserva_cabecera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="false"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/reserva_cabecera_contextual" />
+        android:background="@color/colorAccent"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/reserva_nota_deslizante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_margin="5dp"
+            android:textColor="#ffffff" />
+    </LinearLayout>
 
     <GridView
         android:id="@+id/reserva_dia_semanas"

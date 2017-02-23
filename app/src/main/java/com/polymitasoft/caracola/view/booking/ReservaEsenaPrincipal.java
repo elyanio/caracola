@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.polymitasoft.caracola.R;
@@ -26,11 +27,12 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     private final ReservaPrincipal reservaPrincipal;
 
     //controles
-    private FrameLayout layoutCabecera;
+    private LinearLayout layoutCabecera;
     private GridView diasSemanasGrid;
     private ViewPager deslizador;
     private ArrayList<ReservaPanelHabitacion> panelesHabitaciones = new ArrayList<>();
     private ReservaPanelHabitacion reservaPanelHabitacionActual;
+    private TextView notaDeslizante;
 
     public ReservaEsenaPrincipal(Context context) {
         super(context);
@@ -47,7 +49,8 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     }
 
     private void obtenerControles() {
-        layoutCabecera = (FrameLayout) findViewById(R.id.reserva_cabecera);
+        notaDeslizante = (TextView) findViewById(R.id.reserva_nota_deslizante);
+        layoutCabecera = (LinearLayout) findViewById(R.id.reserva_cabecera);
         deslizador = (ViewPager) findViewById(R.id.reserva_panel_deslizador);
         diasSemanasGrid = (GridView) findViewById(R.id.reserva_dia_semanas);
     }
@@ -60,6 +63,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
         diasSemanasGrid.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         deslizador.setAdapter(new Adaptador_Pag_Vista());
+        layoutCabecera.setY(getY() - 60);
     }
 
     public void seleccionarPanelManual(int pos) {
@@ -77,12 +81,16 @@ public class ReservaEsenaPrincipal extends LinearLayout {
         reservaPanelHabitacionActual.clickEliminarR();
     }
 
-    public FrameLayout getLayoutCabecera() {
+    public LinearLayout getLayoutCabecera() {
         return layoutCabecera;
     }
 
     public ReservaPanelHabitacion getReservaPanelHabitacionActual() {
         return reservaPanelHabitacionActual;
+    }
+
+    public TextView getNotaDeslizante() {
+        return notaDeslizante;
     }
 
     public class Adaptador_Pag_Vista extends PagerAdapter

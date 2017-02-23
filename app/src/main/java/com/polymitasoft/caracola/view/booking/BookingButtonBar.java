@@ -58,8 +58,10 @@ public class BookingButtonBar extends LinearLayout {
     }
 
     public void hide() {
-        downAnimate(reservaPrincipal.getBookingButtonBar());
-        visible = false;
+        if (visible == true) {
+            downAnimate(reservaPrincipal.getBookingButtonBar());
+            visible = false;
+        }
     }
 
     public FloatingActionButton createButtonInvisible(ActionType actionType) {

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
@@ -40,6 +41,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     private List<VistaMes> meses;
     private EntityDataStore<Persistable> dataStore;
 
+    private boolean visibleTextNota = false;
     //controles
     private LinearLayout linearLayoutMeses;
     private InteractivoScrollView scroll_meses;
@@ -146,6 +148,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                        reservaPrincipal.enableCheckIn();
                         actionTypes.add(ActionType.CREATE_CHECK_IN);
                     }
+                    animarprueba(1, preReservaSelecc);
 //                    animarprueba(1);
 //                    reservaPrincipal.enableEdit();
                     actionTypes.add(ActionType.EDIT_BOOKING);
@@ -167,15 +170,18 @@ public class ReservaPanelHabitacion extends LinearLayout {
                         segundoDiaSelec.seleccionar(CellLocation.ALONE);
                         preReservaSelecc = null;
 //                        animarprueba(0);
+                        animarprueba(0, null);
                         reservaPrincipal.getBookingButtonBar().hide();
                     } else {  //la segunda tiene reserva
                         preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
+                        actualizarNotaDeslizante(preReservaSelecc);
                         seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color()); //seleccionar
                         if (true) {                                     // si es el dia de hoy
                             //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
 //                            reservaPrincipal.enableCheckIn();
                             actionTypes.add(ActionType.CREATE_CHECK_IN);
                         }
+                        animarprueba(1,preReservaSelecc);
 //                        reservaPrincipal.enableEdit();
                         actionTypes.add(ActionType.EDIT_BOOKING);
 //                        reservaPrincipal.enableDelete();
@@ -195,6 +201,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                                    reservaPrincipal.enableCheckIn();
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                 }
+                                animarprueba(1,preReservaSelecc);
 //                                animarprueba(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
@@ -247,6 +254,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                                    reservaPrincipal.enableCheckIn();
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                 }
+                                animarprueba(1,preReservaSelecc);
 //                                animarprueba(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
@@ -390,19 +398,43 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
-    private void animarprueba(int modo) {
+    private void animarprueba(int modo, Booking booking) {
         if (modo == 0) { //encoger
-            ViewPropertyAnimator vpa = reservaPrincipal.getReservaEsenaPrincipal().getLayoutCabecera().animate();
-            vpa.scaleY(2);
-            vpa.setDuration(500); //2 secs
-            vpa.setInterpolator(new AccelerateDecelerateInterpolator());
-            vpa.start();
+            if (visibleTextNota) {
+                ViewPropertyAnimator vpa = reservaPrincipal.getReservaEsenaPrincipal().getLayoutCabecera().animate();
+                vpa.translationY(-60);
+                vpa.setDuration(200);
+                vpa.setInterpolator(new AccelerateDecelerateInterpolator());
+                vpa.start();
+                visibleTextNota = false;
+            }
+
         } else {  // alargar
-            ViewPropertyAnimator vpa = reservaPrincipal.getReservaEsenaPrincipal().getLayoutCabecera().animate();
-            vpa.scaleY(20);
-            vpa.setDuration(500); //2 secs
-            vpa.setInterpolator(new AccelerateDecelerateInterpolator());
-            vpa.start();
+
+                TextView nota_deslizante = reservaPrincipal.getReservaEsenaPrincipal().getNotaDeslizante();
+                if (booking.getNote().equals("") || booking.getNote() == null) {
+                    nota_deslizante.setText("(sin nota)");
+                } else {
+                    nota_deslizante.setText(booking.getNote());
+                }
+            if (!visibleTextNota) {
+                ViewPropertyAnimator vpa = reservaPrincipal.getReservaEsenaPrincipal().getLayoutCabecera().animate();
+                vpa.translationY(0);
+                vpa.setDuration(200);
+                vpa.setInterpolator(new AccelerateDecelerateInterpolator());
+                vpa.start();
+                visibleTextNota = true;
+            }
+
+        }
+    }
+
+    public void actualizarNotaDeslizante(Booking booking) {
+        TextView nota_deslizante = reservaPrincipal.getReservaEsenaPrincipal().getNotaDeslizante();
+        if (booking.getNote().equals("") || booking.getNote() == null) {
+            nota_deslizante.setText("(sin nota)");
+        } else {
+            nota_deslizante.setText(booking.getNote());
         }
     }
 
@@ -473,7 +505,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         for (VistaMes mes : meses) {
             mes.actualizarCambioHabitacion();
         }
-        animarprueba(0);
+        animarprueba(0, null);
     }
 
     public boolean estaElDiaHoyEnReserva(IBooking calendario_reserva) {
@@ -523,7 +555,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         primerDiaSelec = null;
         segundoDiaSelec = null;
         preReservaSelecc = null;
-        animarprueba(0);
+        animarprueba(0, null);
     }
 
     public
