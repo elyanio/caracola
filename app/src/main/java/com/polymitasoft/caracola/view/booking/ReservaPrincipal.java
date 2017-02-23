@@ -114,9 +114,8 @@ public class ReservaPrincipal extends AppCompatActivity
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        EditBookingDialogFragment newFragment = new EditBookingDialogFragment();
-        newFragment.setBooking(getReservaEsenaPrincipal()
-                .getReservaPanelHabitacionActual().getPreReservaSelecc());
+        EditBookingDialogFragment newFragment = EditBookingDialogFragment.newInstance(
+                getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getPreReservaSelecc());
         newFragment.show(ft, "edit_booking_dialog");
     }
 

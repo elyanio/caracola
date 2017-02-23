@@ -2,26 +2,22 @@ package com.polymitasoft.caracola.view.booking;
 
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.polymitasoft.caracola.R;
 
 import java.util.List;
 
+import static android.view.LayoutInflater.from;
 import static com.polymitasoft.caracola.util.Metrics.dp;
 
 public class BookingButtonBar extends LinearLayout {
-    private final int HIDE_VALUE = dp(getContext(), 60);
+    private final int HIDE_VALUE = dp(getContext(), 80);
     private ReservaPrincipal reservaPrincipal;
     private boolean visible = false;
 
@@ -52,7 +48,7 @@ public class BookingButtonBar extends LinearLayout {
     public void show(List<ActionType> types) {
         this.removeAllViews();
         for (ActionType actionType : types) {
-            View button = createButtonInvisible(actionType);
+            FloatingActionButton button = createButtonInvisible(actionType);
             button.setVisibility(VISIBLE);
         }
         if (visible == false) {
@@ -66,24 +62,16 @@ public class BookingButtonBar extends LinearLayout {
         visible = false;
     }
 
-    public View createButtonInvisible(ActionType actionType) {
+    public FloatingActionButton createButtonInvisible(ActionType actionType) {
         Context ctx = getContext();
-//        ShapeDrawable drawable = new ShapeDrawable();
-//        drawable.getPaint().setColor(Color.parseColor("#607d8b"));
-//        drawable.setShape(new OvalShape());
 
-        FloatingActionButton button = new FloatingActionButton(ctx);
-        button.setImageResource(R.drawable.ic_add_black_24dp);
-//        Button button = new Button(ctx);
-//        button.setBackground(drawable);
-
-//        button.setWidth(dp(ctx, 60));
-//        button.setHeight(dp(ctx, 60));
+        FloatingActionButton button = (FloatingActionButton) from(ctx).inflate(R.layout.round_button, null);
+//        button.setSize(FloatingActionButton.SIZE_MINI);
         button.setVisibility(INVISIBLE);
 
         switch (actionType) {
             case CREATE_BOOKING: {
-//                button.setText("+");
+                button.setImageResource(R.drawable.ic_add_black_24dp);
                 button.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -94,7 +82,7 @@ public class BookingButtonBar extends LinearLayout {
                 break;
             }
             case EDIT_BOOKING: {
-//                button.setText("!");
+                button.setImageResource(R.drawable.ic_edit_black_24dp);
                 button.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -105,7 +93,7 @@ public class BookingButtonBar extends LinearLayout {
                 break;
             }
             case DELETE_BOOKING: {
-//                button.setText("-");
+                button.setImageResource(R.drawable.ic_clear_black_24dp);
                 button.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -116,7 +104,7 @@ public class BookingButtonBar extends LinearLayout {
                 break;
             }
             case CREATE_CHECK_IN: {
-//                button.setText("+C");
+                button.setImageResource(R.drawable.ic_check_in_bell);
                 button.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -127,7 +115,7 @@ public class BookingButtonBar extends LinearLayout {
                 break;
             }
             case EDIT_CHECK_IN: {
-//                button.setText("!CHECK");
+                button.setImageResource(R.drawable.ic_edit_black_24dp);
                 button.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -138,7 +126,7 @@ public class BookingButtonBar extends LinearLayout {
                 break;
             }
             case DELETE_CHECK_IN: {
-//                button.setText("-CHECK");
+                button.setImageResource(R.drawable.ic_clear_black_24dp);
                 button.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -149,6 +137,7 @@ public class BookingButtonBar extends LinearLayout {
                 break;
             }
         }
+
         return button;
     }
 

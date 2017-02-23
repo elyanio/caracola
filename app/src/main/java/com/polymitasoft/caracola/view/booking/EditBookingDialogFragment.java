@@ -42,6 +42,12 @@ public class EditBookingDialogFragment extends DialogFragment {
     private EntityDataStore<Persistable> dataStore;
     private BookingDao bookingDao;
 
+    public static EditBookingDialogFragment newInstance(Booking booking) {
+        EditBookingDialogFragment fragment = new EditBookingDialogFragment();
+        fragment.setBooking(booking);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
