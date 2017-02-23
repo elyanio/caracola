@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,13 +14,12 @@ import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
+import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
 import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
@@ -34,12 +35,13 @@ import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
 import static butterknife.ButterKnife.findById;
+import static com.polymitasoft.caracola.view.booking.CalendarState.toCalendarState;
 
 /**
  * @author yanier.alfonso
  */
 public class ReservaPrincipal extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, EditBookingDialogFragment.OnBookingEditListener {
 
     @BindView(R.id.reserva_esenas) LinearLayout esenas_frameLayout;
 //    @BindView(R.id.editButton) Button editButton;
@@ -104,8 +106,18 @@ public class ReservaPrincipal extends AppCompatActivity
     }
 
     public void clickEditR() {
-        DialogEditarPreReserva dialog = new DialogEditarPreReserva(this);
-        dialog.show();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag("edit_booking_dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        EditBookingDialogFragment newFragment = new EditBookingDialogFragment();
+        newFragment.setBooking(getReservaEsenaPrincipal()
+                .getReservaPanelHabitacionActual().getPreReservaSelecc());
+        newFragment.show(ft, "edit_booking_dialog");
     }
 
     public void clickPreR() {
@@ -188,5 +200,19 @@ public class ReservaPrincipal extends AppCompatActivity
 
     public BookingButtonBar getBookingButtonBar() {
         return bookingButtonBar;
+    }
+
+    @Override
+    public void onBookingEdit(Booking oldBooking, Booking newBooking) {
+        ReservaPanelHabitacion reservaPanelHabitacionActual = getReservaEsenaPrincipal().getReservaPanelHabitacionActual();
+        VistaDia vistaDiaFictIni = reservaPanelHabitacionActual.obtenerVistaDiaFict(oldBooking.getCheckInDate());
+        VistaDia vistaDiaFictFin = reservaPanelHabitacionActual.obtenerVistaDiaFict(oldBooking.getCheckOutDate());
+        VistaDia vistaDiaFictIniNew = reservaPanelHabitacionActual.obtenerVistaDiaFict(newBooking.getCheckInDate());
+        VistaDia vistaDiaFictFinNew = reservaPanelHabitacionActual.obtenerVistaDiaFict(newBooking.getCheckOutDate());
+
+
+        reservaPanelHabitacionActual.actualizarColorRangoModoH(vistaDiaFictIni, vistaDiaFictFin, CalendarState.EMPTY.color());
+        reservaPanelHabitacionActual.actualizarColorRangoModoH(vistaDiaFictIniNew, vistaDiaFictFinNew, toCalendarState(newBooking.getState()).color());
+        reservaPanelHabitacionActual.limpiarTodo();
     }
 }

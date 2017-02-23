@@ -15,7 +15,6 @@ import org.threeten.bp.LocalDate;
 import static com.polymitasoft.caracola.view.booking.CalendarState.NO_DAY;
 import static com.polymitasoft.caracola.view.booking.CalendarState.SELECTED;
 
-
 public class VistaDia extends Button implements Comparable<VistaDia> {
     private final LocalDate dia;
     @ColorInt private int color;

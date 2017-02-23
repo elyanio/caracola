@@ -5,7 +5,8 @@
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/fragment_edit_booking">
 
     <LinearLayout
         android:layout_width="match_parent"

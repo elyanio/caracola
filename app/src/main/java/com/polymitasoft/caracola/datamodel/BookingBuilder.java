@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 
 public class BookingBuilder {
 
-    private int id;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private Bedroom bedroom;
@@ -20,8 +19,15 @@ public class BookingBuilder {
     private String bookingNumber;
     private String bookNumber;
 
-    public BookingBuilder setId(int id) {
-        this.id = id;
+    public BookingBuilder with(Booking booking) {
+        checkInDate = booking.getCheckInDate();
+        checkOutDate = booking.getCheckOutDate();
+        bedroom = booking.getBedroom();
+        price = booking.getPrice();
+        state = booking.getState();
+        note = booking.getNote();
+        bookingNumber = booking.getBookingNumber();
+        bookNumber = booking.getBookNumber();
         return this;
     }
 
