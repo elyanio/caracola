@@ -1,6 +1,7 @@
 package com.polymitasoft.caracola.view.booking;
 
 import android.app.Activity;
+import android.view.View;
 import android.widget.EditText;
 
 import com.polymitasoft.caracola.R;
@@ -16,7 +17,7 @@ import butterknife.ButterKnife;
  * Created by rainermf on 16/2/2017.
  */
 
-public class ActivityEditBookingBinding {
+public class EditBookingBinding {
 
     private Booking booking;
     @BindView(R.id.booking_check_in) DateSpinner checkInDate;
@@ -26,8 +27,8 @@ public class ActivityEditBookingBinding {
     @BindView(R.id.booking_price) EditText price;
     @BindView(R.id.booking_note) EditText note;
 
-    public ActivityEditBookingBinding(Activity activity, Booking booking) {
-        ButterKnife.bind(this, activity);
+    public EditBookingBinding(View view, Booking booking) {
+        ButterKnife.bind(this, view);
         setBooking(booking);
     }
 

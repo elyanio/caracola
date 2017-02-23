@@ -18,7 +18,14 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,75 +45,50 @@ import io.requery.sql.EntityDataStore;
 /**
  * Simple activity allowing you to edit a Person entity using data binding.
  */
-public class BookingEditActivity extends AppCompatActivity implements ClientFragment.OnListInteractionListener, ConsumptionFragment.OnListInteractionListener {
+public class BookingEditActivity extends AppCompatActivity implements ClientFragment.OnListInteractionListener, ConsumptionFragment.OnListInteractionListener, BookingEditFragment.OnBookingEdited {
 
     static final String EXTRA_BOOKING_ID = "bookingId";
-
-    private EntityDataStore<Persistable> data;
     private Booking booking;
-    private ActivityEditBookingBinding binding;
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_booking);
+
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_edit_booking);
         }
-        data = DataStoreHolder.getInstance().getDataStore(this);
+        EntityDataStore<Persistable> data = DataStoreHolder.getInstance().getDataStore(this);
         int bookingId = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
         if (bookingId == -1) {
             booking = new Booking(); // creating a new booking
         } else {
             booking = data.findByKey(Booking.class, bookingId);
         }
-        binding = new ActivityEditBookingBinding(this, booking);
 
-        if (findViewById(R.id.client_fragment_container) != null) {
-            if (savedInstanceState != null) {
-                return;
-            }
-            ClientFragment firstFragment = ClientFragment.newInstance(booking);
-            firstFragment.setArguments(getIntent().getExtras());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.client_fragment_container, firstFragment).commit();
-        }
-
-        if (findViewById(R.id.consumption_fragment_container) != null) {
-            if (savedInstanceState != null) {
-                return;
-            }
-            ConsumptionFragment firstFragment = ConsumptionFragment.newInstance(booking);
-            firstFragment.setArguments(getIntent().getExtras());
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.consumption_fragment_container, firstFragment).commit();
-        }
-
-        initTabs();
-
-    }
-
-    private void initTabs() {
-        TabHost tabs = (TabHost) findViewById(android.R.id.tabhost);
-        tabs.setup();
-        TabHost.TabSpec spec = tabs.newTabSpec("booking_general_tab");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator(getString(R.string.booking_general_tab_title));
-        tabs.addTab(spec);
-
-        spec = tabs.newTabSpec("booking_clients_tab");
-        spec.setContent(R.id.tab2);
-        spec.setIndicator(getString(R.string.booking_clients_tab_title));
-        tabs.addTab(spec);
-
-        spec = tabs.newTabSpec("booking_consumption_tab");
-        spec.setContent(R.id.tab3);
-        spec.setIndicator(getString(R.string.booking_consumption_tab_title));
-        tabs.addTab(spec);
-
-        tabs.setCurrentTab(0);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -119,15 +101,17 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                saveBooking();
+                // TODO make this work
+//                BookingEditFragment fragment = (BookingEditFragment) getSupportFragmentManager()
+//                        .findFragmentById((int) mSectionsPagerAdapter.getItemId(1));
+//                fragment.saveBooking();
                 return true;
         }
         return false;
     }
 
-    private void saveBooking() {
-        booking = binding.getBooking();
-        data.update(booking);
+    @Override
+    public void onBookingEdited(Booking booking) {
         finish();
     }
 
@@ -151,5 +135,48 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
         Intent intent = new Intent(this, ConsumptionEditActivity.class);
         intent.putExtra(ConsumptionEditActivity.EXTRA_BOOKING_ID, booking.getId());
         startActivity(intent);
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return BookingEditFragment.newInstance(booking.getId());
+                case 1:
+                    return ClientFragment.newInstance(booking.getId());
+                case 2:
+                    return ConsumptionFragment.newInstance(booking.getId());
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getString(R.string.booking_general_tab_title);
+                case 1:
+                    return getString(R.string.booking_clients_tab_title);
+                case 2:
+                    return getString(R.string.booking_consumption_tab_title);
+            }
+            return null;
+        }
     }
 }

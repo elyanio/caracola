@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
@@ -34,8 +33,7 @@ import static butterknife.ButterKnife.findById;
  */
 public class ConsumptionFragment extends Fragment {
 
-    private static final String ARG_CONSUMPTION_ID = "consumptionId";
-    private Booking booking = null;
+    private static final String ARG_BOOKING_ID = "bookingId";
     private OnListInteractionListener mListener;
     private ConsumptionRecyclerViewAdapter adapter;
     @BindView(R.id.consumptionPriceText) TextView consumptionPriceText;
@@ -47,9 +45,11 @@ public class ConsumptionFragment extends Fragment {
     public ConsumptionFragment() {
     }
 
-    public static ConsumptionFragment newInstance(Booking booking) {
+    public static ConsumptionFragment newInstance(int bookingId) {
         ConsumptionFragment fragment = new ConsumptionFragment();
-        fragment.booking = booking;
+        Bundle args = new Bundle();
+        args.putInt(ARG_BOOKING_ID, bookingId);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -71,12 +71,12 @@ public class ConsumptionFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
             EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
+            int idBooking = getArguments().getInt(ARG_BOOKING_ID);
+            Booking booking = dataStore.findByKey(Booking.class, idBooking);
             adapter = new ConsumptionRecyclerViewAdapter(dataStore, booking, mListener);
             recyclerView.setAdapter(adapter);
 
-            if(booking != null) {
-                consumptionPriceText.setText(FormatUtils.formatMoney(Bookings.lodgingPrice(booking)));
-            }
+            consumptionPriceText.setText(FormatUtils.formatMoney(Bookings.lodgingPrice(booking)));
         }
         return view;
     }

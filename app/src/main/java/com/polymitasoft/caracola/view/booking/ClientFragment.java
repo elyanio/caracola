@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
@@ -16,6 +17,8 @@ import com.polymitasoft.caracola.datamodel.Client;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
+
+import static butterknife.ButterKnife.findById;
 
 /**
  * A fragment representing a list of Items.
@@ -26,7 +29,6 @@ import io.requery.sql.EntityDataStore;
 public class ClientFragment extends Fragment {
 
     private static final String ARG_BOOKING_ID = "booking-id";
-    private Booking booking = null;
     private OnListInteractionListener mListener;
     private ClientRecyclerViewAdapter adapter;
 
@@ -37,9 +39,11 @@ public class ClientFragment extends Fragment {
     public ClientFragment() {
     }
 
-    public static ClientFragment newInstance(Booking booking) {
+    public static ClientFragment newInstance(int bookingId) {
         ClientFragment fragment = new ClientFragment();
-        fragment.booking = booking;
+        Bundle args = new Bundle();
+        args.putInt(ARG_BOOKING_ID, bookingId);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -54,12 +58,14 @@ public class ClientFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_client_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view instanceof FrameLayout) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = findById(view, R.id.list);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
             EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+            int idBooking = getArguments().getInt(ARG_BOOKING_ID);
+            Booking booking = dataStore.findByKey(Booking.class, idBooking);
             adapter = new ClientRecyclerViewAdapter(dataStore, booking, mListener);
             recyclerView.setAdapter(adapter);
         }
