@@ -3,7 +3,7 @@ package com.polymitasoft.caracola.view.booking;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +15,8 @@ import android.widget.TextView;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
+import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.BookingState;
-import com.polymitasoft.caracola.datamodel.IBedroom;
-import com.polymitasoft.caracola.datamodel.IBooking;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
@@ -32,11 +30,11 @@ import java.util.List;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
+import static com.polymitasoft.caracola.util.FormatUtils.capitalize;
 import static com.polymitasoft.caracola.view.booking.CalendarState.EMPTY;
 import static com.polymitasoft.caracola.view.booking.CalendarState.NO_DAY;
 import static com.polymitasoft.caracola.view.booking.CalendarState.SELECTED;
 import static com.polymitasoft.caracola.view.booking.CalendarState.toCalendarState;
-
 
 public class VistaMes extends LinearLayout {
     private final ReservaPanelHabitacion reservaPanelHabitacion;
@@ -48,14 +46,13 @@ public class VistaMes extends LinearLayout {
     private TextView textMes;
     private GridView gridVista;
     private int cantNoDias;
-    private EntityDataStore<Persistable> dataStore;
     private BookingDao bookingDao;
 
     public VistaMes(Context context, ReservaPanelHabitacion reservaPanelHabitacion, LocalDate inicio_mes) {
         super(context);
         this.reservaPanelHabitacion = reservaPanelHabitacion;
         this.inicio_mes = inicio_mes;
-        dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
         bookingDao = new BookingDao(dataStore);
         inicializar();
         cargarCalendarioReservas();
@@ -126,8 +123,8 @@ public class VistaMes extends LinearLayout {
         if (reservaPanelHabitacion.esModoTodo()) {
             return new Pair<>(obtenerColorModoTodoALcrear(dia), CellLocation.MIDDLE);
         } else {
-            for (IBooking booking : preReservas) {
-                IBedroom habitacion = booking.getBedroom();
+            for (Booking booking : preReservas) {
+                Bedroom habitacion = booking.getBedroom();
 
                 if (booking.getCheckInDate().compareTo(dia) <= 0 && booking.getCheckOutDate().compareTo(dia) >= 0 &&
                         habitacion.getId() == reservaPanelHabitacion.getHabitacion().getId()) {
@@ -140,9 +137,7 @@ public class VistaMes extends LinearLayout {
                         location = CellLocation.END;
                     } else {
                         location = CellLocation.MIDDLE;
-
                     }
-                    Log.e("d"," " + location);
                     return new Pair<>(toCalendarState(booking.getState()).color(), location);
                 }
             }
@@ -152,61 +147,28 @@ public class VistaMes extends LinearLayout {
 
     public int obtenerColorModoTodoALcrear(LocalDate dia) {
         int repitenciaDelDia = 0;
-        boolean repitentPendientes = false;
         ReservaPrincipal reservaPrincipal = (ReservaPrincipal) getContext();
         int cantCuarto = reservaPrincipal.getBedrooms().size();
-        for (IBooking calendario_reserva : preReservas) {
+        for (Booking calendario_reserva : preReservas) {
             if ((calendario_reserva.getCheckInDate()).compareTo(dia) <= 0 && (calendario_reserva.getCheckOutDate()).compareTo(dia) >= 0) {
                 repitenciaDelDia++;
-                if (calendario_reserva.getState() == BookingState.PENDING) {
-                    repitentPendientes = true;
-                }
             }
         }
 
         if (repitenciaDelDia == 0) {
             return EMPTY.color();
         } else if (repitenciaDelDia < cantCuarto) {
-//            if(repitentPendientes == true)
-//            {
-//                // return CalendarState.PARTIALLY_OCCUPIED.color()_Y_PENDIENTE;
-//                return CalendarState.PARTIALLY_OCCUPIED.color();  // es para prueba
-//            }
-//            else
-//            {
             return CalendarState.PARTIALLY_OCCUPIED.color();
-//            }
         } else {
-//            if(repitentPendientes == true)
-//            {
-//                //                return CalendarState.CONFIRMED.color()_Y_PENDIENTE;
-//                return CalendarState.CONFIRMED.color();   // debe ser el de arriba,este es pa prueba
-//            }
-//            else
-//            {
             return CalendarState.OCUPPIED.color();
-//            }
         }
     }
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM 'de' y");
 
     private void configurarControles() {
         gridVista.setAdapter(adaptadorGrid);
-        textMes.setText(inicio_mes.format(DateTimeFormatter.ofPattern("MMMM - y")).toUpperCase());
-    }
-
-    public List<IBedroom> disponibilidadModoTodos(VistaDia diaMenor, VistaDia diaMayor) {
-        List<IBedroom> ocupadas = new ArrayList<>();
-        for (IBooking booking : preReservas) {
-            if (((booking.getCheckInDate()).compareTo(diaMenor.getCalendar()) >= 0 && (booking.getCheckInDate()).compareTo(diaMayor.getCalendar()) <= 0) ||
-                    ((booking.getCheckOutDate()).compareTo(diaMenor.getCalendar()) >= 0 && (booking.getCheckOutDate()).compareTo(diaMayor.getCalendar()) <= 0) ||
-                    (((booking.getCheckInDate()).compareTo(diaMenor.getCalendar()) <= 0 && (booking.getCheckOutDate()).compareTo(diaMayor.getCalendar()) >= 0))) {
-                ocupadas.add(booking.getBedroom());
-            }
-
-        }
-        List<IBedroom> habitacions = dataStore.select(IBedroom.class).get().toList();
-        habitacions.removeAll(ocupadas);
-        return habitacions;
+        textMes.setText(capitalize(inicio_mes.format(formatter)));
     }
 
     public boolean estaElDia(VistaDia vistaDia) {
@@ -329,9 +291,11 @@ public class VistaMes extends LinearLayout {
         return inicio_mes.hashCode();
     }
 
-    public class AdaptadorGridMes extends ArrayAdapter {
+    public class AdaptadorGridMes extends ArrayAdapter<VistaDia> {
 
-        AdaptadorGridMes(Context context, int resource, List objects) {
+        int size;
+
+        AdaptadorGridMes(Context context, int resource, List<VistaDia> objects) {
             super(context, resource, objects);
         }
 
@@ -339,7 +303,11 @@ public class VistaMes extends LinearLayout {
         @Override
         public View getView(final int posision, View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
-                return dias.get(posision);
+                if(size == 0) size = getWidth() / 7;
+                VistaDia vistaDia = dias.get(posision);
+                vistaDia.setLayoutParams(new GridView.LayoutParams(size, size));
+                vistaDia.setGravity(Gravity.CENTER);
+                return vistaDia;
             } else {
                 return convertView;
             }

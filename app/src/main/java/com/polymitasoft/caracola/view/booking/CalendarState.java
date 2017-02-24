@@ -43,12 +43,14 @@ enum CalendarState {
         }
     }
 
-    public static CalendarState toCalendarState(BookingState state) {
+    @NonNull
+    public static CalendarState toCalendarState(@NonNull BookingState state) {
         switch (state) {
             case CONFIRMED: return CalendarState.CONFIRMED;
             case PENDING: return CalendarState.PENDING;
-            case CHECKED_IN: return CalendarState.CHECKED_IN;
-            default: return null;
+            case CHECKED_IN:
+            default:
+                return CalendarState.CHECKED_IN;
         }
     }
 }

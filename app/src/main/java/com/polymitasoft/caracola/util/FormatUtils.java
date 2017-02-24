@@ -52,4 +52,11 @@ public class FormatUtils {
         return LocalDate.from(dateFormatter.parse(date));
     }
 
+    public static String capitalize(String string) {
+        if (!string.isEmpty() && !Character.isUpperCase(string.charAt(0))) {
+            return string.substring(0, 1).toUpperCase() + string.substring(1);
+        }
+        return string;
+    }
+
 }
