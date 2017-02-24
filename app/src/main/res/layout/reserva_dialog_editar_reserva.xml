@@ -1,56 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:id="@+id/fragment_edit_booking">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:id="@+id/fragment_edit_booking">
 
-        <RadioGroup
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
 
-
-            <RadioButton
-                android:id="@+id/reserva_rb_confirmada"
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:checked="true"
-                android:text="Confirmada" />
-
-            <RadioButton
-                android:id="@+id/reserva_rb_pendiente"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:checked="false"
-                android:text="Pendiente" />
+                android:gravity="center"
+                android:orientation="horizontal">
 
 
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/reserva_rb_confirmada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:checked="true"
+                    android:text="Confirmada" />
+
+                <RadioButton
+                    android:id="@+id/reserva_rb_pendiente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:checked="false"
+                    android:text="Pendiente" />
+
+
+            </RadioGroup>
+        </LinearLayout>
+
+        <include layout="@layout/booking_data"/>
+
+        <Button
+            android:id="@+id/reserva_bt_hacer_pre_R"
+            style="?android:attr/actionButtonStyle"
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Aceptar" />
+
     </LinearLayout>
-
-    <include layout="@layout/booking_data"/>
-
-    <Button
-        android:id="@+id/reserva_bt_hacer_pre_R"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="listo" />
-
-</LinearLayout>
+</ScrollView>

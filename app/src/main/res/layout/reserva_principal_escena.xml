@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -12,14 +13,15 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:background="@color/colorAccent"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:elevation="0dp"
+        >
 
         <TextView
             android:id="@+id/reserva_nota_deslizante"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_margin="5dp"
             android:textColor="#ffffff" />
@@ -30,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
         android:layout_below="@+id/toolbar"
         android:layout_gravity="center_vertical"
         android:numColumns="7" />
@@ -38,8 +41,8 @@
         android:id="@+id/reserva_panel_deslizador"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/reserva_dia_semanas"
         android:layout_gravity="center"
-        android:animateFirstView="true"
-        android:paddingTop="20dp" />
+        android:animateFirstView="true"/>
 
-</LinearLayout>
+</RelativeLayout>

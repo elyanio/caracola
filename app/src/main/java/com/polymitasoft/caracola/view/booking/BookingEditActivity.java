@@ -18,18 +18,16 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TabHost;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
@@ -101,10 +99,13 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                // TODO make this work
-//                BookingEditFragment fragment = (BookingEditFragment) getSupportFragmentManager()
-//                        .findFragmentById((int) mSectionsPagerAdapter.getItemId(1));
-//                fragment.saveBooking();
+                // TODO Use findById or findByTag
+                // By tag: android:switcher:{R.id.container}:0
+                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                    if (fragment instanceof BookingEditFragment) {
+                        ((BookingEditFragment) fragment).saveBooking();
+                    }
+                }
                 return true;
         }
         return false;
@@ -149,6 +150,7 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
 
         @Override
         public Fragment getItem(int position) {
+            Log.e("here", "creating");
             switch (position) {
                 case 0:
                     return BookingEditFragment.newInstance(booking.getId());
