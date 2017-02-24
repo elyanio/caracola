@@ -22,7 +22,7 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             app:layoutManager="LinearLayoutManager"
-            tools:context="com.polymitasoft.caracola.view.booking.ClientFragment"
+            tools:context="com.polymitasoft.caracola.view.client.ClientFragment"
             tools:listitem="@layout/fragment_client"
             android:layout_above="@+id/linearLayout"/>
 

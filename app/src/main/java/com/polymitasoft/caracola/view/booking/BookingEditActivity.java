@@ -36,7 +36,9 @@ import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.view.client.ClientEditActivity;
+import com.polymitasoft.caracola.view.client.ClientFragment;
 import com.polymitasoft.caracola.view.consumption.ConsumptionEditActivity;
+import com.polymitasoft.caracola.view.consumption.ConsumptionFragment;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;

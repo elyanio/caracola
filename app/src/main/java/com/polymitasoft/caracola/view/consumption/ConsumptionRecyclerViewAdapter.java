@@ -1,7 +1,6 @@
-package com.polymitasoft.caracola.view.booking;
+package com.polymitasoft.caracola.view.consumption;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,10 @@ import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
-import com.polymitasoft.caracola.dataaccess.Consumptions;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.util.FormatUtils;
-import com.polymitasoft.caracola.view.booking.ClientFragment.OnListInteractionListener;
+import com.polymitasoft.caracola.view.client.ClientFragment.OnListInteractionListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

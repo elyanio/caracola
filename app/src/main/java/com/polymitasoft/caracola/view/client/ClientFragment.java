@@ -1,4 +1,4 @@
-package com.polymitasoft.caracola.view.booking;
+package com.polymitasoft.caracola.view.client;
 
 import android.content.Context;
 import android.os.Bundle;
