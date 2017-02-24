@@ -25,7 +25,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -121,7 +120,7 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
 
     @Override
     public void onClientListInteraction(Client client) {
-
+        upsertClient(client);
     }
 
     @Override
@@ -130,22 +129,29 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
     }
 
     public void addClient(View view) {
-        Intent intent = new Intent(this, ClientEditActivity.class);
-        intent.putExtra(ClientEditActivity.EXTRA_BOOKING_ID, booking.getId());
-        startActivity(intent);
+        upsertClient(null);
     }
 
     public void addConsumption(View view) {
         upsertConsumption(null);
     }
 
+    private void upsertClient(@Nullable Client client) {
+        Intent intent = new Intent(this, ClientEditActivity.class);
+        if(client != null) {
+            intent.putExtra(ClientEditActivity.EXTRA_CLIENT_ID, client.getId());
+        }
+        intent.putExtra(ClientEditActivity.EXTRA_BOOKING_ID, booking.getId());
+
+        startActivity(intent);
+    }
+
     private void upsertConsumption(@Nullable Consumption consumption) {
         Intent intent = new Intent(this, ConsumptionEditActivity.class);
-        if(consumption == null) {
-            intent.putExtra(ConsumptionEditActivity.EXTRA_BOOKING_ID, booking.getId());
-        } else {
+        if(consumption != null) {
             intent.putExtra(ConsumptionEditActivity.EXTRA_CONSUMPTION_ID, consumption.getId());
         }
+        intent.putExtra(ConsumptionEditActivity.EXTRA_BOOKING_ID, booking.getId());
         startActivity(intent);
     }
 
@@ -155,13 +161,12 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            Log.e("here", "creating");
             switch (position) {
                 case 0:
                     return BookingEditFragment.newInstance(booking.getId());

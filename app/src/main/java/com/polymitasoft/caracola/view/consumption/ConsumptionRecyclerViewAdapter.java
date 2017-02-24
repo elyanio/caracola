@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
@@ -32,12 +33,14 @@ public class ConsumptionRecyclerViewAdapter
     private final ConsumptionFragment.OnListInteractionListener mListener;
     private final BookingDao bookingDao;
     private final Booking booking;
+    private final EntityDataStore<Persistable> dataStore;
 
     public ConsumptionRecyclerViewAdapter(EntityDataStore<Persistable> dataStore, Booking booking, ConsumptionFragment.OnListInteractionListener listener) {
         this.booking = booking;
         mListener = listener;
 
-        bookingDao = new BookingDao(dataStore);
+        this.dataStore = dataStore;
+        bookingDao = new BookingDao(this.dataStore);
     }
 
     @Override
@@ -66,11 +69,19 @@ public class ConsumptionRecyclerViewAdapter
                 }
             }
         });
+        holder.removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataStore.delete(consumption);
+                queryAsync();
+            }
+        });
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.primary_text) TextView primaryText;
         @BindView(R.id.secondary_text) TextView secondaryText;
+        @BindView(R.id.contextual_remove) ImageView removeButton;
 
         ViewHolder(View view) {
             super(view);

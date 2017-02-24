@@ -64,7 +64,7 @@
             tools:ignore="ContentDescription" />
 
         <ImageView
-            android:id="@+id/create_transaction"
+            android:id="@+id/contextual_remove"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
@@ -74,7 +74,7 @@
             android:paddingBottom="4dp"
             android:paddingStart="24dp"
             android:scaleType="centerInside"
-            cardview:srcCompat="@drawable/ic_add_black_24dp"
+            cardview:srcCompat="@drawable/ic_clear_black_24dp"
             tools:ignore="ContentDescription" />
 
         <ImageView
