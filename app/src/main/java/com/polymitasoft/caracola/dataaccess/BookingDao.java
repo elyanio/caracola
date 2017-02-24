@@ -1,7 +1,6 @@
 package com.polymitasoft.caracola.dataaccess;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
@@ -93,7 +92,7 @@ public class BookingDao {
                 .get();
     }
 
-    public BigDecimal getConsumptionPrice(@NonNull Booking booking) {
-        return Consumptions.price(getConsumptions(booking));
+    public BigDecimal getConsumptionCost(@NonNull Booking booking) {
+        return Consumptions.cost(getConsumptions(booking));
     }
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
+import com.polymitasoft.caracola.dataaccess.Consumptions;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.util.FormatUtils;
@@ -20,6 +21,8 @@ import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
+
+import static com.polymitasoft.caracola.dataaccess.Consumptions.cost;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Consumption} and makes a call to the
@@ -52,17 +55,16 @@ public class ConsumptionRecyclerViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(final Consumption item, ViewHolder holder, int position) {
+    public void onBindViewHolder(final Consumption consumption, ViewHolder holder, int position) {
 
-        holder.primaryText.setText(item.getInternalService().getName());
-        holder.secondaryText.setText(FormatUtils.formatMoney(item.getPrice()));
+        holder.primaryText.setText(consumption.getInternalService().getName());
+        holder.secondaryText.setText(FormatUtils.formatMoney(cost(consumption)));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Consumption", item.getInternalService().getName() + item.getPrice());
                 if (null != mListener) {
-                    mListener.onConsumptionListInteraction(item);
+                    mListener.onConsumptionListInteraction(consumption);
                 }
             }
         });

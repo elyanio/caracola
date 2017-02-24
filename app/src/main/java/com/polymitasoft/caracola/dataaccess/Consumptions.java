@@ -17,7 +17,7 @@ public class Consumptions {
         throw new AssertionError();
     }
 
-    public static BigDecimal price(@NonNull Iterable<Consumption> consumptions) {
+    public static BigDecimal cost(@NonNull Iterable<Consumption> consumptions) {
         BigDecimal sum = BigDecimal.ZERO;
         for (Consumption c: consumptions) {
             sum = sum.add(c.getPrice().multiply(BigDecimal.valueOf(c.getAmount())));
@@ -25,7 +25,7 @@ public class Consumptions {
         return sum;
     }
 
-    public static BigDecimal price(Consumption consumption) {
+    public static BigDecimal cost(Consumption consumption) {
         return consumption.getPrice().multiply(BigDecimal.valueOf(consumption.getAmount()));
     }
 }
