@@ -1,6 +1,7 @@
 package com.polymitasoft.caracola.view.booking;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Consumption;
-import com.polymitasoft.caracola.datamodel.IClient;
 import com.polymitasoft.caracola.util.FormatUtils;
 import com.polymitasoft.caracola.view.booking.ClientFragment.OnListInteractionListener;
 
@@ -22,10 +22,11 @@ import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link IClient} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Consumption} and makes a call to the
  * specified {@link OnListInteractionListener}.
  */
-public class ConsumptionRecyclerViewAdapter extends QueryRecyclerAdapter<Consumption, ConsumptionRecyclerViewAdapter.ViewHolder> {
+public class ConsumptionRecyclerViewAdapter
+        extends QueryRecyclerAdapter<Consumption, ConsumptionRecyclerViewAdapter.ViewHolder> {
 
     private final ConsumptionFragment.OnListInteractionListener mListener;
     private final BookingDao bookingDao;
@@ -59,6 +60,7 @@ public class ConsumptionRecyclerViewAdapter extends QueryRecyclerAdapter<Consump
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("Consumption", item.getInternalService().getName() + item.getPrice());
                 if (null != mListener) {
                     mListener.onConsumptionListInteraction(item);
                 }

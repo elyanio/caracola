@@ -23,8 +23,8 @@
                 android:id="@+id/amountText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/person_first_name"
-                android:text="@string/person_first_name"/>
+                android:hint="@string/amount"
+                android:text="@string/amount"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -36,8 +36,8 @@
                 android:id="@+id/priceText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/person_last_name"
-                android:text="@string/person_last_name"/>
+                android:hint="@string/price"
+                android:text="@string/price"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -49,9 +49,9 @@
                 android:id="@+id/dateText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/birthday_form_label"
                 android:inputType="date"
-                android:text="@string/birthday_form_label"/>
+                android:hint="@string/date_of_consumption"
+                android:text="@string/date_of_consumption"/>
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>

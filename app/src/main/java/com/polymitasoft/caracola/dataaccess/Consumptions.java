@@ -24,4 +24,8 @@ public class Consumptions {
         }
         return sum;
     }
+
+    public static BigDecimal price(Consumption consumption) {
+        return consumption.getPrice().multiply(BigDecimal.valueOf(consumption.getAmount()));
+    }
 }

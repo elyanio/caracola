@@ -18,6 +18,7 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -123,7 +124,7 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
 
     @Override
     public void onConsumptionListInteraction(Consumption consumption) {
-
+        upsertConsumption(consumption);
     }
 
     public void addClient(View view) {
@@ -133,8 +134,16 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
     }
 
     public void addConsumption(View view) {
+        upsertConsumption(null);
+    }
+
+    private void upsertConsumption(@Nullable Consumption consumption) {
         Intent intent = new Intent(this, ConsumptionEditActivity.class);
-        intent.putExtra(ConsumptionEditActivity.EXTRA_BOOKING_ID, booking.getId());
+        if(consumption == null) {
+            intent.putExtra(ConsumptionEditActivity.EXTRA_BOOKING_ID, booking.getId());
+        } else {
+            intent.putExtra(ConsumptionEditActivity.EXTRA_CONSUMPTION_ID, consumption.getId());
+        }
         startActivity(intent);
     }
 

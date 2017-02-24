@@ -26,9 +26,6 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.datamodel.ConsumptionBuilder;
-import com.polymitasoft.caracola.datamodel.InternalService;
-
-import java.math.BigDecimal;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -38,7 +35,7 @@ import io.requery.sql.EntityDataStore;
  */
 public class ConsumptionEditActivity extends AppCompatActivity {
 
-    public static final String EXTRA_CLIENT_ID = "clientId";
+    public static final String EXTRA_CONSUMPTION_ID = "consumptionId";
     public static final String EXTRA_BOOKING_ID = "bookingId";
 
     private EntityDataStore<Persistable> data;
@@ -50,10 +47,10 @@ public class ConsumptionEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_consumption);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.title_edit_client);
+            getSupportActionBar().setTitle(R.string.title_edit_consumption);
         }
         data = DataStoreHolder.getInstance().getDataStore(this);
-        int consumptionId = getIntent().getIntExtra(EXTRA_CLIENT_ID, -1);
+        int consumptionId = getIntent().getIntExtra(EXTRA_CONSUMPTION_ID, -1);
         if (consumptionId == -1) {
             int idBooking = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
             Booking booking = null;
@@ -61,7 +58,6 @@ public class ConsumptionEditActivity extends AppCompatActivity {
                 booking = data.findByKey(Booking.class, idBooking);
             }
             consumption = new ConsumptionBuilder()
-//                    .service(new InternalService().setName("").setDefaultPrice(BigDecimal.ZERO))
                     .booking(booking)
                     .build();
         } else {
