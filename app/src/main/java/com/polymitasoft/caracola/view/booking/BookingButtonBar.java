@@ -68,7 +68,6 @@ public class BookingButtonBar extends LinearLayout {
         Context ctx = getContext();
 
         FloatingActionButton button = (FloatingActionButton) from(ctx).inflate(R.layout.round_button, null);
-//        button.setSize(FloatingActionButton.SIZE_MINI);
         button.setVisibility(INVISIBLE);
 
         switch (actionType) {
@@ -110,7 +109,7 @@ public class BookingButtonBar extends LinearLayout {
                 button.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        reservaPrincipal.click_fisicaR();
                     }
                 });
                 this.addView(button);

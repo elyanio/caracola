@@ -99,6 +99,7 @@ public class ReservaPrincipal extends AppCompatActivity
 
 
     public void click_fisicaR() {
+        reservaEsenaPrincipal.click_fisicaR();
     }
 
     public void clickEliminarR() {

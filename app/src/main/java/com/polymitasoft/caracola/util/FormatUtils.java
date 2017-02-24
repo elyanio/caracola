@@ -1,5 +1,6 @@
 package com.polymitasoft.caracola.util;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.threeten.bp.LocalDate;
@@ -8,6 +9,8 @@ import org.threeten.bp.format.DateTimeFormatter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+
+import static java.lang.Character.isLowerCase;
 
 /**
  * @author rainermf
@@ -52,8 +55,9 @@ public class FormatUtils {
         return LocalDate.from(dateFormatter.parse(date));
     }
 
-    public static String capitalize(String string) {
-        if (!string.isEmpty() && !Character.isUpperCase(string.charAt(0))) {
+    @NonNull
+    public static String capitalize(@NonNull String string) {
+        if (!string.isEmpty() && isLowerCase(string.charAt(0))) {
             return string.substring(0, 1).toUpperCase() + string.substring(1);
         }
         return string;

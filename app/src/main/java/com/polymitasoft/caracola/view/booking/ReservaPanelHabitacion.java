@@ -2,6 +2,7 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -90,19 +91,12 @@ public class ReservaPanelHabitacion extends LinearLayout {
     }
 
     public void click_fisicaR() {
-//        Intent intent = new Intent(getContext(), Reserva_Fisica.class);
-//        intent.putExtra(Habitacion.NOMBRE_TABLA, habitacion.getId_auto());
-//
-//        if (preReservaSelecc == null) {
-//            intent.putExtra(Reserva.FECHA_INICIO, primerDiaSelec.getCalendar().getTimeInMillis());
-//            intent.putExtra(Reserva.FECHA_FIN, segundoDiaSelec.getCalendar().getTimeInMillis());
-//            intent.putExtra(Reserva_Fisica.PRERESERVA, Reserva_Fisica.DE_RESERVA);
-//        } else {
-//            intent.putExtra(Reserva.FECHA_INICIO, preReservaSelecc.getFecha_inicio().getTime());
-//            intent.putExtra(Reserva.FECHA_FIN, preReservaSelecc.getFecha_inicio().getTime());
-//            intent.putExtra(Reserva_Fisica.PRERESERVA, Reserva_Fisica.DE_PRERESERVA);
-//        }
-//        getContext().startActivity(intent);
+        Context context = getContext();
+        Intent intent = new Intent(context, BookingEditActivity.class);
+        if(preReservaSelecc != null) {
+            intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, preReservaSelecc.getId());
+        }
+        context.startActivity(intent);
     }
 
     public void clickEliminarR() {
