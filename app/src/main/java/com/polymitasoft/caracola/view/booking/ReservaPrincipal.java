@@ -26,6 +26,8 @@ import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.ExternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.SupplierListActivity;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,7 @@ import static com.polymitasoft.caracola.view.booking.CalendarState.toCalendarSta
  * @author yanier.alfonso
  */
 public class ReservaPrincipal extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, EditBookingDialogFragment.OnBookingEditListener {
+        implements NavigationView.OnNavigationItemSelectedListener, EditBookingDialogFragment.OnBookingEditListener, DisponibilidadDialogFragment.OnDisponibilidadListener {
 
     @BindView(R.id.reserva_esenas) LinearLayout esenas_frameLayout;
 //    @BindView(R.id.editButton) Button editButton;
@@ -118,6 +120,27 @@ public class ReservaPrincipal extends AppCompatActivity
         EditBookingDialogFragment newFragment = EditBookingDialogFragment.newInstance(
                 getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getPreReservaSelecc().getId());
         newFragment.show(ft, "edit_booking_dialog");
+    }
+
+    public void showDisponibilidad() {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag("show_disponibilidad");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        VistaDia primerDiaSelec = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getPrimerDiaSelec();
+        VistaDia segundoDiaSelec = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getSegundoDiaSelec();
+        DisponibilidadDialogFragment newFragment = DisponibilidadDialogFragment.newInstance(primerDiaSelec.getCalendar(),segundoDiaSelec.getCalendar());
+        newFragment.show(ft, "show_disponibilidad");
+    }
+
+    public List<Bedroom> obtenerDisponibilidad(LocalDate dia1, LocalDate dia2){
+        List<Bedroom> bedrooms = DataStoreHolder.getInstance().getDataStore(this).select(Bedroom.class).get().toList();
+        return  bedrooms;
     }
 
     public void clickPreR() {

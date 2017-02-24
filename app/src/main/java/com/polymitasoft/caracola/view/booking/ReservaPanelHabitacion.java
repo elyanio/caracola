@@ -128,10 +128,19 @@ public class ReservaPanelHabitacion extends LinearLayout {
         ArrayList<ActionType> actionTypes = new ArrayList<>();
         if (esModoTodo()) { // el habitacionSeleccionada es todos
 //            reservaPrincipal.disableButtons();
-            EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
-            List<Bedroom> bedrooms = dataStore.select(Bedroom.class).get().toList();
-            reservaPrincipal.getReservaEsenaPrincipal().getLayoutDisponibilidad().showDisponibilidad(bedrooms);
             reservaPrincipal.getBookingButtonBar().hide();
+            if (primerDiaSelec == null) {          //y si no hay una primera seleccion en vista todos
+                primerDiaSelec = dia;
+                primerDiaSelec.seleccionar(CellLocation.ALONE);
+
+            }else{                                //y si hay una primera seleccion en vista todos
+                segundoDiaSelec = dia;
+                selecionadorRangoDiasTocadosModoH(CalendarState.SELECTED.color());
+                reservaPrincipal.showDisponibilidad();
+                primerDiaSelec = null;
+                segundoDiaSelec = null;
+            }
+
         } else {            // si hay una habitacion seleccionada
 //            reservaPrincipal.disableButtons();
             //            reservaPrincipal.getBookingButtonBar().hide();
