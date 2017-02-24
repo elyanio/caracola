@@ -405,6 +405,57 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
+    public void actualizarColorRangoModoTodos(VistaDia dia1, VistaDia dia2, int color) {
+        VistaDia diaMenor = dia1;
+        VistaDia diaMayor = dia2;
+        // para si se seleciona de atras pa alante
+        if (dia1.getCalendar().isAfter(dia2.getCalendar())) {
+            diaMenor = dia2;
+            diaMayor = dia1;
+        }
+
+        if (VistaDia.mismoMes(diaMenor, diaMayor)) {
+            VistaMes actualMes = mesDelDia(diaMenor);
+            if (color == CalendarState.SELECTED.color() || color == CalendarState.UNSELECTED.color()) {
+                actualMes.seleccionadorRangoModoH(diaMenor, diaMayor, color, false, false);
+            } else {
+                actualMes.actualizarColorRangoModoH(diaMenor, diaMayor, color, false, false);
+            }
+        } else {
+            //pintar mes menor
+            VistaMes mesMenor = mesDelDia(diaMenor);
+            VistaDia fictDiaFinal = obtenerDiaFinalMes(diaMenor.getCalendar());
+            if (color == CalendarState.SELECTED.color() || color == CalendarState.UNSELECTED.color()) {
+                mesMenor.seleccionadorRangoModoH(diaMenor, fictDiaFinal, color, false, false);
+            } else {
+                mesMenor.actualizarColorRangoModoH(diaMenor, fictDiaFinal, color, false, false);
+            }
+
+            // pintar mes mayor
+            VistaMes mesMayor = mesDelDia(diaMayor);
+            VistaDia fictDiaIni = obtenerDiaIniMes(diaMayor.getCalendar());
+            if (color == CalendarState.SELECTED.color() || color == CalendarState.UNSELECTED.color()) {
+                mesMayor.seleccionadorRangoModoH(fictDiaIni, diaMayor, color, false, false);
+            } else {
+                mesMayor.actualizarColorRangoModoH(fictDiaIni, diaMayor, color, false, false);
+            }
+
+            // pintar meses
+            int indexMesMenor = meses.indexOf(mesMenor);
+            int indexMesMayor = meses.indexOf(mesMayor);
+            for (int i = indexMesMenor + 1; i < indexMesMayor; i++) {
+                VistaMes mesActual = meses.get(i);
+                VistaDia fictDiaInii = obtenerDiaIniMes(mesActual.getInicio_mes());
+                VistaDia fictDiaFinali = obtenerDiaFinalMes(mesActual.getInicio_mes());
+                if (color == CalendarState.SELECTED.color() || color == CalendarState.UNSELECTED.color()) {
+                    mesActual.seleccionadorRangoModoH(fictDiaInii, fictDiaFinali, color, false, false);
+                } else {
+                    mesActual.actualizarColorRangoModoH(fictDiaInii, fictDiaFinali, color, false, false);
+                }
+            }
+        }
+    }
+
     private void animateNote(int modo, Booking booking) {
         if (modo == 0) { //encoger
             if (visibleTextNota) {
@@ -535,9 +586,9 @@ public class ReservaPanelHabitacion extends LinearLayout {
         return diaMenor.getCalendar().compareTo(hoy) <= 0 && diaMayor.getCalendar().compareTo(hoy) >= 0;
     }
 
-    public
+
     @Nullable
-    Booking obtenerReservaModoH(VistaDia dia) {
+    public Booking obtenerReservaModoH(VistaDia dia) {
         VistaMes vistaMes = mesDelDia(dia);
         for (Booking calendario_reserva : vistaMes.getPreReservas()) {
             //            Log.e("mes", "dia " + calendario_reserva.getFecha_inicio().getDay());
@@ -673,15 +724,3 @@ public class cargarNuevoMesPrincipal implements InteractivoScrollView.Capturador
     }
 }
 }
-
-
-
-
-
-
-
-
-
-
-
-

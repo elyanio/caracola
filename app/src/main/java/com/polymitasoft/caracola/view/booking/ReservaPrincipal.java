@@ -145,6 +145,12 @@ public class ReservaPrincipal extends AppCompatActivity
         return  bedrooms;
     }
 
+    @Override
+    public void actualizarSeleccionEnCalendaio(LocalDate dia1, LocalDate dia2) {
+        ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
+        panelHabitacionActual.actualizarColorRangoModoTodos(panelHabitacionActual.obtenerVistaDiaFict(dia1), panelHabitacionActual.obtenerVistaDiaFict(dia2), CalendarState.UNSELECTED.color());;
+    }
+
     public void clickPreR() {
         DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this);
         dialog.show();

@@ -39,9 +39,9 @@ public class DisponibilidadDialogFragment extends DialogFragment {
         args.putInt("dia1", dia1.getDayOfMonth());
         args.putInt("mes1", dia1.getMonthValue());
         args.putInt("anno1", dia1.getYear());
-        args.putInt("dia2", dia1.getDayOfMonth());
-        args.putInt("mes2", dia1.getMonthValue());
-        args.putInt("anno2", dia1.getYear());
+        args.putInt("dia2", dia2.getDayOfMonth());
+        args.putInt("mes2", dia2.getMonthValue());
+        args.putInt("anno2", dia2.getYear());
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,9 +59,20 @@ public class DisponibilidadDialogFragment extends DialogFragment {
         dia1 = LocalDate.of(getArguments().getInt("anno1"), getArguments().getInt("mes1"), getArguments().getInt("dia1"));
         dia2 = LocalDate.of(getArguments().getInt("anno2"), getArguments().getInt("mes2"), getArguments().getInt("dia2"));
         addDisponibilidad();
+        listDisponibilidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         return view;
     }
 
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        mCallback.actualizarSeleccionEnCalendaio(dia1,dia2);
+    }
 //    public void showDisponibilidad(List<Bedroom> bedrooms) {
 //        addDisponibilidad(bedrooms);
 //        showAnimate(1);
@@ -106,6 +117,7 @@ public class DisponibilidadDialogFragment extends DialogFragment {
     // Container Activity must implement this interface
     public interface OnDisponibilidadListener {
         public List<Bedroom> obtenerDisponibilidad(LocalDate dia1, LocalDate dia2);
+        public void actualizarSeleccionEnCalendaio(LocalDate dia1, LocalDate dia2);
     }
 
     OnDisponibilidadListener mCallback;
