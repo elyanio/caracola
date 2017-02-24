@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.polymitasoft.caracola.view.booking.Disponibilidad
+        android:id="@+id/reserva_panel_disponibilidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+    </com.polymitasoft.caracola.view.booking.Disponibilidad>
+
     <LinearLayout
         android:id="@+id/reserva_cabecera"
         android:layout_width="match_parent"

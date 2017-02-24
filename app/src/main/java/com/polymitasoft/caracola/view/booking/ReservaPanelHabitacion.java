@@ -25,6 +25,7 @@ import org.threeten.bp.LocalDate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.requery.Persistable;
@@ -127,6 +128,9 @@ public class ReservaPanelHabitacion extends LinearLayout {
         ArrayList<ActionType> actionTypes = new ArrayList<>();
         if (esModoTodo()) { // el habitacionSeleccionada es todos
 //            reservaPrincipal.disableButtons();
+            EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
+            List<Bedroom> bedrooms = dataStore.select(Bedroom.class).get().toList();
+            reservaPrincipal.getReservaEsenaPrincipal().getLayoutDisponibilidad().showDisponibilidad(bedrooms);
             reservaPrincipal.getBookingButtonBar().hide();
         } else {            // si hay una habitacion seleccionada
 //            reservaPrincipal.disableButtons();
@@ -142,8 +146,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                        reservaPrincipal.enableCheckIn();
                         actionTypes.add(ActionType.CREATE_CHECK_IN);
                     }
-                    animarprueba(1, preReservaSelecc);
-//                    animarprueba(1);
+                    animateNote(1, preReservaSelecc);
+//                    animateNote(1);
 //                    reservaPrincipal.enableEdit();
                     actionTypes.add(ActionType.EDIT_BOOKING);
 //                    reservaPrincipal.enableDelete();
@@ -163,8 +167,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
                     if (segundoDiaSelec.getColor() != CalendarState.CONFIRMED.color() && segundoDiaSelec.getColor() != CalendarState.PENDING.color() && segundoDiaSelec.getColor() != CalendarState.CHECKED_IN.color()) { // y la segunda no tiene reserv
                         segundoDiaSelec.seleccionar(CellLocation.ALONE);
                         preReservaSelecc = null;
-//                        animarprueba(0);
-                        animarprueba(0, null);
+//                        animateNote(0);
+                        animateNote(0, null);
                         reservaPrincipal.getBookingButtonBar().hide();
                     } else {  //la segunda tiene reserva
                         preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
@@ -175,7 +179,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                            reservaPrincipal.enableCheckIn();
                             actionTypes.add(ActionType.CREATE_CHECK_IN);
                         }
-                        animarprueba(1, preReservaSelecc);
+                        animateNote(1, preReservaSelecc);
 //                        reservaPrincipal.enableEdit();
                         actionTypes.add(ActionType.EDIT_BOOKING);
 //                        reservaPrincipal.enableDelete();
@@ -195,8 +199,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                                    reservaPrincipal.enableCheckIn();
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                 }
-                                animarprueba(1, preReservaSelecc);
-//                                animarprueba(1);
+                                animateNote(1, preReservaSelecc);
+//                                animateNote(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
@@ -248,8 +252,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
 //                                    reservaPrincipal.enableCheckIn();
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                 }
-                                animarprueba(1, preReservaSelecc);
-//                                animarprueba(1);
+                                animateNote(1, preReservaSelecc);
+//                                animateNote(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
@@ -392,7 +396,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
-    private void animarprueba(int modo, Booking booking) {
+    private void animateNote(int modo, Booking booking) {
         if (modo == 0) { //encoger
             if (visibleTextNota) {
                 ViewPropertyAnimator vpa = reservaPrincipal.getReservaEsenaPrincipal().getLayoutCabecera().animate();
@@ -499,7 +503,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
         for (VistaMes mes : meses) {
             mes.actualizarCambioHabitacion();
         }
-        animarprueba(0, null);
+        animateNote(0, null);
+        reservaPrincipal.getBookingButtonBar().hide();
     }
 
     public boolean estaElDiaHoyEnReserva(IBooking calendario_reserva) {
@@ -549,7 +554,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         primerDiaSelec = null;
         segundoDiaSelec = null;
         preReservaSelecc = null;
-        animarprueba(0, null);
+        animateNote(0, null);
     }
 
     public

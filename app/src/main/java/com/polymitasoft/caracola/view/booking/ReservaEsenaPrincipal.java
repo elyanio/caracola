@@ -27,6 +27,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     private final ReservaPrincipal reservaPrincipal;
 
     //controles
+    private Disponibilidad layoutDisponibilidad;
     private LinearLayout layoutCabecera;
     private GridView diasSemanasGrid;
     private ViewPager deslizador;
@@ -49,6 +50,8 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     }
 
     private void obtenerControles() {
+
+        layoutDisponibilidad = (Disponibilidad) findViewById(R.id.reserva_panel_disponibilidad);
         notaDeslizante = (TextView) findViewById(R.id.reserva_nota_deslizante);
         layoutCabecera = (LinearLayout) findViewById(R.id.reserva_cabecera);
         deslizador = (ViewPager) findViewById(R.id.reserva_panel_deslizador);
@@ -93,8 +96,11 @@ public class ReservaEsenaPrincipal extends LinearLayout {
         return notaDeslizante;
     }
 
-    public class Adaptador_Pag_Vista extends PagerAdapter
-    {
+    public Disponibilidad getLayoutDisponibilidad() {
+        return layoutDisponibilidad;
+    }
+
+    public class Adaptador_Pag_Vista extends PagerAdapter {
 
         @Override
         public int getCount() {
