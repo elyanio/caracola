@@ -94,6 +94,7 @@
     <string name="price_high_season">Precio (temporada alta)</string>
     <string name="bedroom_capacity">Capacidad (# de personas)</string>
     <string name="title_edit_bedroom">Editar habitación</string>
+    <string name="title_insert_bedroom">Insertar habitación</string>
     <string name="booking_clients_title">Clientes</string>
     <string name="add_client">Agregar cliente</string>
     <string name="person_full_name">

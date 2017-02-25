@@ -72,7 +72,7 @@ public class BedroomHostelAdapter extends BaseAdapter {
         return item;
     }
 
-    public void actualizarListaManager() {
+    public void actualizarLista() {
         Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
         bedrooms = dataStore.select(Bedroom.class).where(Bedroom.HOSTEL.eq(hostel)).get().toList();
     }

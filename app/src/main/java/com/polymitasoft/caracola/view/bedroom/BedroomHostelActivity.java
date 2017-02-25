@@ -1,5 +1,6 @@
 package com.polymitasoft.caracola.view.bedroom;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -39,13 +40,20 @@ public class BedroomHostelActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
+        int id = item.getItemId();
         switch (id) {
             case R.id.action_plus:
-//                abrirDialog();
+                startActivity(new Intent(BedroomHostelActivity.this, BedroomInsertActivity.class).putExtra("CODE", codeHostel));
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bedroomHostelAdapter.actualizarLista();
+        bedroomHostelAdapter.notifyDataSetChanged();
     }
 }
