@@ -18,7 +18,7 @@
             android:layout_margin="10dp">
 
             <EditText
-                android:id="@+id/gestor_editText_nombre"
+                android:id="@+id/manager_editText_nombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nombre"
@@ -33,7 +33,7 @@
             android:layout_margin="10dp">
 
             <EditText
-                android:id="@+id/gestor_editText_numero"
+                android:id="@+id/manager_editText_numero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Número Teléfono"

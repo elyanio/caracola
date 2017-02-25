@@ -45,6 +45,13 @@
         <activity android:name=".view.client.ClientEditActivity" />
         <activity android:name=".view.bedroom.BedroomListActivity" />
         <activity android:name=".view.bedroom.BedroomEditActivity" />
+
+        <activity
+            android:name=".view.gestor.ManagerActivity"
+            android:label="Manager" />
+        <activity
+            android:name=".view.hostel.HostelActivity"
+            android:label="Hostel" />
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"

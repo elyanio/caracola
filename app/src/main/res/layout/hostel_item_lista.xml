@@ -22,20 +22,12 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/number_hostal"
+        android:id="@+id/code_hostal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name_hostal"
         android:layout_toRightOf="@+id/hostal_image"
         android:text="54520426"
         android:textSize="12sp" />
-
-    <CheckBox
-        android:id="@+id/checkBox_hostal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/number_hostal"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp" />
 
 </RelativeLayout>

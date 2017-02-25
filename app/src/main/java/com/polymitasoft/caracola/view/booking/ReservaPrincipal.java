@@ -22,6 +22,8 @@ import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
+import com.polymitasoft.caracola.view.gestor.ManagerActivity;
+import com.polymitasoft.caracola.view.hostel.HostelActivity;
 import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.ExternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.SupplierListActivity;
@@ -205,6 +207,8 @@ public class ReservaPrincipal extends AppCompatActivity
             case R.id.nav_send:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            case R.id.nav_gestor:
+                startActivity(new Intent(this, HostelActivity.class));
         }
 
         DrawerLayout drawer = findById(this, R.id.drawer_layout);
