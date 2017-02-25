@@ -63,6 +63,7 @@ public class ReservaPrincipal extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reserva_principal_activity);
+        setTitle("");
         ButterKnife.bind(this);
 
         Toolbar toolbar = findById(this, R.id.toolbar);
