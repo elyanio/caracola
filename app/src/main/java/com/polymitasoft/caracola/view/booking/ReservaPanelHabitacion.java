@@ -705,7 +705,15 @@ public class ReservaPanelHabitacion extends LinearLayout {
         return this;
     }
 
-private static class DialogDismissClickListener implements DialogInterface.OnClickListener {
+    public void setPrimerDiaSelec(VistaDia primerDiaSelec) {
+        this.primerDiaSelec = primerDiaSelec;
+    }
+
+    public void setSegundoDiaSelec(VistaDia segundoDiaSelec) {
+        this.segundoDiaSelec = segundoDiaSelec;
+    }
+
+    private static class DialogDismissClickListener implements DialogInterface.OnClickListener {
     public void onClick(DialogInterface dialog, int which) {
         dialog.cancel();
     }

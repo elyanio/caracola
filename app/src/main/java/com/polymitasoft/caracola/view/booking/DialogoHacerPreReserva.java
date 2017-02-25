@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.IBedroom;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.util.FormatUtils;
@@ -23,6 +24,7 @@ import static com.polymitasoft.caracola.view.booking.CalendarState.toCalendarSta
 
 public class DialogoHacerPreReserva extends Dialog {
 
+    private final Bedroom bedroom;
     private Context context;
     private Button bt_preReservar;
     private RadioButton rb_confirmado;
@@ -31,10 +33,12 @@ public class DialogoHacerPreReserva extends Dialog {
     private TextView text_price;
     private ReservaPrincipal reservaPrincipal;
     private ReservaPanelHabitacion reservaPanelHabitacionActual;
+    private boolean llamadoModoTodos = false;
 
-    public DialogoHacerPreReserva(Context context) {
+    public DialogoHacerPreReserva(Context context, Bedroom bedroom) {
         super(context);
         this.context = context;
+        this.bedroom = bedroom;
     }
 
     @Override
@@ -50,7 +54,7 @@ public class DialogoHacerPreReserva extends Dialog {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         boolean highSeason = preferences.getBoolean("high_season", false);
-        IBedroom bedroom = reservaPanelHabitacionActual.getHabitacion();
+//        IBedroom bedroom = reservaPanelHabitacionActual.getHabitacion();
         // TODO Encapsular esta lógica en una función
         BigDecimal price = (highSeason)? bedroom.getPriceInHighSeason() : bedroom.getPriceInLowSeason();
         text_price.setText(FormatUtils.formatMoney(price));
@@ -73,19 +77,37 @@ public class DialogoHacerPreReserva extends Dialog {
         });
     }
 
+    public void setLlamadoModoTodos(boolean llamadoModoTodos) {
+        this.llamadoModoTodos = llamadoModoTodos;
+    }
+
     private void clickPreR() {
-        String nota = text_nota.getText().toString();
-        BookingState estado;
-        estado = rb_confirmado.isChecked() ? BookingState.CONFIRMED : BookingState.PENDING;
-        VistaDia primerDiaSelec = reservaPanelHabitacionActual.getPrimerDiaSelec();
-        VistaDia segundoDiaSelec = reservaPanelHabitacionActual.getSegundoDiaSelec();
-        BigDecimal price = FormatUtils.parseMoney(text_price.getText().toString());
-        reservaPanelHabitacionActual.salvarPreReservaYadicionarALosMeses(primerDiaSelec, segundoDiaSelec, estado, nota, price);
+        if(!llamadoModoTodos){
+            String nota = text_nota.getText().toString();
+            BookingState estado;
+            estado = rb_confirmado.isChecked() ? BookingState.CONFIRMED : BookingState.PENDING;
+            VistaDia primerDiaSelec = reservaPanelHabitacionActual.getPrimerDiaSelec();
+            VistaDia segundoDiaSelec = reservaPanelHabitacionActual.getSegundoDiaSelec();
+            BigDecimal price = FormatUtils.parseMoney(text_price.getText().toString());
+            reservaPanelHabitacionActual.salvarPreReservaYadicionarALosMeses(primerDiaSelec, segundoDiaSelec, estado, nota, price);
 
-        reservaPanelHabitacionActual.actualizarColorRangoModoH(primerDiaSelec, segundoDiaSelec, toCalendarState(estado).color());
-        reservaPanelHabitacionActual.limpiarTodo();
+            reservaPanelHabitacionActual.actualizarColorRangoModoH(primerDiaSelec, segundoDiaSelec, toCalendarState(estado).color());
+            reservaPanelHabitacionActual.limpiarTodo();
+            dismiss();
+        }else{
+            String nota = text_nota.getText().toString();
+            BookingState estado;
+            estado = rb_confirmado.isChecked() ? BookingState.CONFIRMED : BookingState.PENDING;
+            VistaDia primerDiaSelec = reservaPanelHabitacionActual.getPrimerDiaSelec();
+            VistaDia segundoDiaSelec = reservaPanelHabitacionActual.getSegundoDiaSelec();
+            BigDecimal price = FormatUtils.parseMoney(text_price.getText().toString());
+            reservaPanelHabitacionActual.salvarPreReservaYadicionarALosMeses(primerDiaSelec, segundoDiaSelec, estado, nota, price);
+            reservaPanelHabitacionActual.limpiarTodo();
+            reservaPanelHabitacionActual.setHabitacion(null);
+            reservaPanelHabitacionActual.actualizarCambioHabitacion();
+            dismiss();
+        }
 
-        dismiss();
     }
 }
 

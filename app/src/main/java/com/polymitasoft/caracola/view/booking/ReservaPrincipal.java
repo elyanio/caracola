@@ -151,8 +151,20 @@ public class ReservaPrincipal extends AppCompatActivity
         panelHabitacionActual.actualizarColorRangoModoTodos(panelHabitacionActual.obtenerVistaDiaFict(dia1), panelHabitacionActual.obtenerVistaDiaFict(dia2), CalendarState.UNSELECTED.color());;
     }
 
+    @Override
+    public void clickEnListaDisponibilidad(LocalDate dia1, LocalDate dia2, Bedroom bedroom) {
+        ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
+        panelHabitacionActual.setPrimerDiaSelec(panelHabitacionActual.obtenerVistaDiaFict(dia1));
+        panelHabitacionActual.setSegundoDiaSelec(panelHabitacionActual.obtenerVistaDiaFict(dia2));
+        panelHabitacionActual.setHabitacion(bedroom);
+        DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this,bedroom);
+        dialog.setLlamadoModoTodos(true);
+        dialog.show();
+    }
+
     public void clickPreR() {
-        DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this);
+        ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
+        DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this, (Bedroom) panelHabitacionActual.getHabitacion());
         dialog.show();
     }
 
