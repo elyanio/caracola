@@ -140,7 +140,7 @@ public class ReservaPrincipal extends AppCompatActivity
     }
 
     public List<Bedroom> obtenerDisponibilidad(LocalDate dia1, LocalDate dia2){
-        List<Bedroom> bedrooms = DataStoreHolder.getInstance().getDataStore(this).select(Bedroom.class).get().toList();
+        List<Bedroom> bedrooms = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().disponibilidad(dia1,dia2);
         return  bedrooms;
     }
 

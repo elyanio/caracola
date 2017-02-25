@@ -15,9 +15,12 @@ import android.widget.Toast;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.communication.ManageSmsBooking;
 import com.polymitasoft.caracola.components.InteractivoScrollView;
+import com.polymitasoft.caracola.dataaccess.BookingDao;
+import com.polymitasoft.caracola.dataaccess.Bookings;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.BookingBuilder;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.IBedroom;
 import com.polymitasoft.caracola.datamodel.IBooking;
@@ -37,6 +40,7 @@ import io.requery.sql.EntityDataStore;
 public class ReservaPanelHabitacion extends LinearLayout {
     //contexto casteado
     private final ReservaPrincipal reservaPrincipal;
+    private final BookingDao bookingDao;
 
     private Bedroom habitacion;
     private VistaDia primerDiaSelec = null;
@@ -60,6 +64,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
         crearMeses();
         configurarControles();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
+        bookingDao = new BookingDao(dataStore);
     }
 
     private void inicializar() {
@@ -136,6 +142,35 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public boolean esModoTodo() {
         return habitacion == null;
+    }
+
+    public List<Bedroom> disponibilidad(LocalDate dia1, LocalDate dia2) {
+        LocalDate diaMenor = dia1;
+        LocalDate diaMayor = dia2;
+        // para si se seleciona de atras pa alante
+        if (dia1.isAfter(dia2)) {
+            diaMenor = dia2;
+            diaMayor = dia1;
+        }
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
+        List<Bedroom> bedrooms = dataStore.select(Bedroom.class).get().toList();
+        List<Bedroom> disponibles = new ArrayList<>();
+        for(Bedroom bedroom: bedrooms){
+            disponibles.add(bedroom);
+        }
+        // TODO mostrar cuando solo hay pendientes en el rango seleccionado
+        List<Booking> bookings = bookingDao.bookingsBetween(diaMenor, diaMayor);
+        LocalDate diaActual = diaMenor;
+        while(diaActual.compareTo(diaMayor) <= 0){
+            for(Booking booking: bookings){
+                if(booking.getCheckInDate().compareTo(diaActual) <= 0 && booking.getCheckOutDate().compareTo(diaActual) >= 0){
+                    Bedroom bedroom = booking.getBedroom();
+                    disponibles.remove(bedroom);
+                }
+            }
+            diaActual = diaActual.plusDays(1);
+        }
+        return  disponibles;
     }
 
     public void clickDia(VistaDia dia) {
@@ -762,6 +797,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     public void setSegundoDiaSelec(VistaDia segundoDiaSelec) {
         this.segundoDiaSelec = segundoDiaSelec;
     }
+
 
     private static class DialogDismissClickListener implements DialogInterface.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {

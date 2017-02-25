@@ -132,7 +132,8 @@ public class DisponibilidadDialogFragment extends DialogFragment {
             String textoMostrado = habitacion.getName();
             primaryText.setText(textoMostrado);
 
-
+            TextView secondaryText = (TextView) elemento.findViewById(R.id.secondary_text);
+            secondaryText.setText("Capacidad " + habitacion.getCapacity());
 
             elemento.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -164,7 +165,7 @@ public class DisponibilidadDialogFragment extends DialogFragment {
         }
 
         public void addHabitacion(Bedroom bedroom) {
-            add(bedroom);
+//            add(bedroom);
             habitaciones.add(bedroom);
         }
     }
