@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.RecyclerListActivity;
+import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.datamodel.ISupplier;
-import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
 
@@ -18,7 +19,7 @@ import io.requery.query.Result;
  * Created by rainermf on 16/2/2017.
  */
 
-public class SupplierListActivity extends ListActivity<ISupplier> {
+public class SupplierListActivity extends RecyclerListActivity<ISupplier> {
 
     @Override
     protected QueryRecyclerAdapter<ISupplier, SimpleViewHolder> createAdapter() {

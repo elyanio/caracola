@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.RecyclerListActivity;
+import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.datamodel.IExternalService;
-import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
 
@@ -21,7 +22,7 @@ import io.requery.query.Result;
  * @author rainermf
  * @since 16/2/2017
  */
-public class ExternalServiceListActivity extends ListActivity<IExternalService> {
+public class ExternalServiceListActivity extends RecyclerListActivity<IExternalService> {
 
     @Override
     protected QueryRecyclerAdapter<IExternalService, SimpleViewHolder> createAdapter() {

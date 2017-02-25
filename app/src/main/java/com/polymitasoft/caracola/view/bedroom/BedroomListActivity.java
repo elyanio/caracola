@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
-import com.polymitasoft.caracola.view.ListActivity;
+import com.polymitasoft.caracola.components.RecyclerListActivity;
 
 import java.util.Random;
 
@@ -21,7 +22,7 @@ import io.requery.query.Result;
  * @author rainermf
  * @since 16/2/2017
  */
-public class BedroomListActivity extends ListActivity<Bedroom> {
+public class BedroomListActivity extends RecyclerListActivity<Bedroom> {
 
     @Override
     protected QueryRecyclerAdapter<Bedroom, SimpleViewHolder> createAdapter() {
