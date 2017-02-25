@@ -50,6 +50,9 @@
             android:name=".view.gestor.ManagerActivity"
             android:label="Manager" />
         <activity
+            android:name=".view.bedroom.BedroomHostelActivity"
+            android:label="Habitacion" />
+        <activity
             android:name=".view.hostel.HostelActivity"
             android:label="Hostel" />
         <activity
