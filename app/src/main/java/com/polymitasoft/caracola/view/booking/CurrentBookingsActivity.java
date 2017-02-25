@@ -52,7 +52,7 @@ import io.requery.sql.EntityDataStore;
  */
 public class CurrentBookingsActivity extends AppCompatActivity {
 
-    @BindView(R.id.bookingsRecyclerView) RecyclerView recyclerView;
+    @BindView(R.id.listRecyclerView) RecyclerView recyclerView;
     private EntityDataStore<Persistable> data;
     private ExecutorService executor;
     private BookingAdapter adapter;
@@ -63,7 +63,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_current_bookings);
         }
-        setContentView(R.layout.activity_current_bookings);
+        setContentView(R.layout.list_items);
         ButterKnife.bind(this);
         data = DataStoreHolder.getInstance().getDataStore(this);
         executor = Executors.newSingleThreadExecutor();

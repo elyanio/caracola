@@ -2,7 +2,6 @@ package com.polymitasoft.caracola.view.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,12 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.InternalService;
 import com.polymitasoft.caracola.util.FormatUtils;
 import com.polymitasoft.caracola.view.ListActivity;
-
-import java.util.Random;
 
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
@@ -65,8 +63,6 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
      */
     static class ServiceAdapter extends QueryRecyclerAdapter<InternalService, SimpleViewHolder> implements View.OnClickListener {
 
-        private final Random random = new Random();
-        private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
         private EntityDataStore<Persistable> dataStore;
         private Context context;
 
@@ -82,10 +78,18 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
         }
 
         @Override
-        public void onBindViewHolder(InternalService item, SimpleViewHolder holder, int position) {
+        public void onBindViewHolder(final InternalService item, final SimpleViewHolder holder, int position) {
             holder.primaryText.setText(item.getName());
             holder.secondaryText.setText(FormatUtils.formatMoneyWithCurrency(item.getDefaultPrice()));
-            holder.colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
+            holder.colorStrip.setBackgroundColor(Colors.INSTANCE.getColor(item.getId()));
+
+            holder.editMenu.setOnClickListener(this);
+            holder.deleteMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteService(item);
+                }
+            });
             holder.itemView.setTag(item);
         }
 
@@ -106,6 +110,11 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
                 intent.putExtra(InternalServiceEditActivity.EXTRA_SERVICE_ID, service.getId());
                 context.startActivity(intent);
             }
+        }
+
+        public void deleteService(InternalService service) {
+            dataStore.delete(service);
+            queryAsync();
         }
     }
 }

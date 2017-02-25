@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 
-import org.w3c.dom.Text;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,7 +27,7 @@ import io.requery.sql.EntityDataStore;
  */
 public abstract class ListActivity<T> extends AppCompatActivity {
 
-    @BindView(R.id.bookingsRecyclerView) RecyclerView recyclerView;
+    @BindView(R.id.listRecyclerView) RecyclerView recyclerView;
     protected EntityDataStore<Persistable> data;
     private ExecutorService executor;
     private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
@@ -37,7 +35,7 @@ public abstract class ListActivity<T> extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_bookings);
+        setContentView(R.layout.list_items);
         ButterKnife.bind(this);
 
         data = DataStoreHolder.getInstance().getDataStore(this);
