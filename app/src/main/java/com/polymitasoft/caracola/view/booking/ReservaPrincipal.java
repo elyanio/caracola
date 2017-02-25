@@ -20,6 +20,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.IBedroom;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
 import com.polymitasoft.caracola.view.hostel.HostelActivity;
@@ -56,6 +57,7 @@ public class ReservaPrincipal extends AppCompatActivity
 
     //escenas
     private ReservaEsenaPrincipal reservaEsenaPrincipal;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,11 +170,10 @@ public class ReservaPrincipal extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_reserva_todos, menu);
-
+        this.menu = menu;
         for (int i = 0; i < bedrooms.size(); i++) {
             menu.add(0, i, 0, bedrooms.get(i).getName());
         }
-
         return true;
     }
 
@@ -182,14 +183,13 @@ public class ReservaPrincipal extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specFify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         if (id != R.id.show_m) {
             if (id == R.id.all_m) {  // todas las bedrooms
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().setHabitacion(null);
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().actualizarCambioHabitacion();
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().limpiarTodo();
             } else {
-                reservaEsenaPrincipal.getReservaPanelHabitacionActual().setHabitacion(bedrooms.get(item.getItemId()));
+                reservaEsenaPrincipal.getReservaPanelHabitacionActual().setHabitacion(bedrooms.get(id));
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().actualizarCambioHabitacion();
                 reservaEsenaPrincipal.getReservaPanelHabitacionActual().limpiarTodo();
             }
@@ -256,5 +256,29 @@ public class ReservaPrincipal extends AppCompatActivity
         reservaPanelHabitacionActual.actualizarColorRangoModoH(vistaDiaFictIni, vistaDiaFictFin, CalendarState.EMPTY.color());
         reservaPanelHabitacionActual.actualizarColorRangoModoH(vistaDiaFictIniNew, vistaDiaFictFinNew, toCalendarState(newBooking.getState()).color());
         reservaPanelHabitacionActual.limpiarTodo();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(this);
+
+        if(menu != null){
+
+            for(int i = 0; i<bedrooms.size() ;i++){
+                menu.removeItem(i);
+            }
+            bedrooms = dataStore.select(Bedroom.class).get().toList();
+            for(int i = 0; i < bedrooms.size(); i++ ){
+                Bedroom bedroom = bedrooms.get(i);
+                menu.add(0, i, 0, bedroom.getName());
+            }
+            Bedroom habitacion = (Bedroom) reservaEsenaPrincipal.getReservaPanelHabitacionActual().getHabitacion();
+
+            ActionMenuItemView item1 = findById(this, R.id.show_m);
+            if(item1 != null){
+                item1.setTitle(habitacion.getName());
+            }
+        }
     }
 }
