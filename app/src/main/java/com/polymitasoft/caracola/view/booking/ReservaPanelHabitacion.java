@@ -545,7 +545,27 @@ public class ReservaPanelHabitacion extends LinearLayout {
         // adicionar en los meses necesarios
         adicionarCalendarioReservaAMeses(booking);
     }
+    public void salvarPreReservaYadicionarALosMesesModoTodos(Bedroom bedroom, VistaDia primerDiaSelecc, VistaDia segundoDiaSelecc, BookingState estado, String nota, BigDecimal price) {
+        VistaDia diaMenor = primerDiaSelecc;
+        VistaDia diaMayor = segundoDiaSelecc;
+        // para si se seleciona de atras pa alante
+        if (primerDiaSelecc.getCalendar().isAfter(segundoDiaSelecc.getCalendar())) {
+            diaMenor = segundoDiaSelecc;
+            diaMayor = primerDiaSelecc;
+        }
 
+        Booking booking = new Booking();
+        booking.setCheckInDate(diaMenor.getCalendar());
+        booking.setCheckOutDate(diaMayor.getCalendar());
+        booking.setState(estado);
+        booking.setBedroom(bedroom);
+        booking.setNote(nota);
+        booking.setPrice(price);
+        dataStore.insert(booking);
+
+        // adicionar en los meses necesarios
+        adicionarCalendarioReservaAMeses(booking);
+    }
     public void adicionarCalendarioReservaAMeses(Booking calendario_reserva) {
         VistaDia fechaIniC = obtenerVistaDiaFict(calendario_reserva.getCheckInDate());
         VistaDia fechaFinC = obtenerVistaDiaFict(calendario_reserva.getCheckOutDate());

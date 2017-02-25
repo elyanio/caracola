@@ -1,6 +1,7 @@
 package com.polymitasoft.caracola.view.booking;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -24,6 +25,7 @@ import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,7 +78,6 @@ public class DisponibilidadDialogFragment extends DialogFragment {
         for (Bedroom bedroom : bedrooms) {
             adaptador.addHabitacion(bedroom);
         }
-        adaptador.notifyDataSetInvalidated();
     }
 
 
@@ -112,8 +113,9 @@ public class DisponibilidadDialogFragment extends DialogFragment {
 
 
     class ListDisponibilidadAdapter extends ArrayAdapter<Bedroom> {
-
+        private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
         List<Bedroom> habitaciones = new ArrayList<>();
+        private final Random random = new Random();
 
         public ListDisponibilidadAdapter(Context context, int resource, List<Bedroom> objects) {
             super(context, resource, objects);
@@ -155,7 +157,8 @@ public class DisponibilidadDialogFragment extends DialogFragment {
                     adaptador.remove(habitaciones.get(posision));
                 }
             });
-
+            View colorStrip = (View) elemento.findViewById(R.id.color_strip);
+            colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
 
             return (elemento);
         }
