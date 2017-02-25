@@ -94,7 +94,7 @@ public class ReservaPrincipal extends AppCompatActivity
 
     private void loadData() {
         EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(this);
-        bedrooms = dataStore.select(Bedroom.class).get().toList();
+        bedrooms = dataStore.select(Bedroom.class).orderBy(Bedroom.NAME).get().toList();
     }
 
     private void configurarControles() {
@@ -269,7 +269,7 @@ public class ReservaPrincipal extends AppCompatActivity
             for(int i = 0; i<bedrooms.size() ;i++){
                 menu.removeItem(i);
             }
-            bedrooms = dataStore.select(Bedroom.class).get().toList();
+            bedrooms = dataStore.select(Bedroom.class).orderBy(Bedroom.NAME).get().toList();
             for(int i = 0; i < bedrooms.size(); i++ ){
                 Bedroom bedroom = bedrooms.get(i);
                 menu.add(0, i, 0, bedroom.getName());
@@ -278,8 +278,11 @@ public class ReservaPrincipal extends AppCompatActivity
 
             ActionMenuItemView item1 = findById(this, R.id.show_m);
             if(item1 != null){
-                item1.setTitle(habitacion.getName());
+                if(habitacion != null){
+                    item1.setTitle(habitacion.getName());
+                }
             }
         }
     }
+
 }
