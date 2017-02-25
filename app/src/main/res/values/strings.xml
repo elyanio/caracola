@@ -117,4 +117,5 @@
     <string name="amount">Cantidad</string>
     <string name="date_of_consumption">Fecha</string>
     <string name="title_edit_consumption">Editar consumo</string>
+    <string name="title_external_services">Servicios externos</string>
 </resources>
