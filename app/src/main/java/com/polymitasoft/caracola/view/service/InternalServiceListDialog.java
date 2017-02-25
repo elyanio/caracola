@@ -3,8 +3,6 @@ package com.polymitasoft.caracola.view.service;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -20,17 +18,17 @@ import butterknife.ButterKnife;
  * @since 22/2/2017
  */
 
-public class ServiceListDialog extends Dialog {
+public class InternalServiceListDialog extends Dialog {
 
     @BindView(R.id.service_list) ListView serviceListView;
-    private ServiceListAdapter listAdapter;
+    private InternalServiceListAdapter listAdapter;
     private ServiceClickListener serviceClickListener;
 
-    public ServiceListDialog(Context context) {
+    public InternalServiceListDialog(Context context) {
         super(context);
     }
 
-    public ServiceListDialog(Context context, int theme) {
+    public InternalServiceListDialog(Context context, int theme) {
         super(context, theme);
     }
 
@@ -40,7 +38,7 @@ public class ServiceListDialog extends Dialog {
         setContentView(R.layout.dialog_service_list);
         ButterKnife.bind(this);
 
-        listAdapter = new ServiceListAdapter(this.getContext());
+        listAdapter = new InternalServiceListAdapter(this.getContext());
         serviceListView.setAdapter(listAdapter);
         listAdapter.queryAsync();
 

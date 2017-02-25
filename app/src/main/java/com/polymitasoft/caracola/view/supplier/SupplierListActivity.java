@@ -49,7 +49,7 @@ public class SupplierListActivity extends ListActivity<ISupplier> {
         @Override
         public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.booking_item, null);
+            View view = inflater.inflate(R.layout.simple_list_item, null);
             SimpleViewHolder holder = new SimpleViewHolder(view);
             view.setOnClickListener(this);
             return holder;

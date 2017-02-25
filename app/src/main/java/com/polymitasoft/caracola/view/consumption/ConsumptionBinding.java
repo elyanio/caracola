@@ -5,9 +5,8 @@ import android.widget.EditText;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Consumption;
-import com.polymitasoft.caracola.datamodel.IConsumption;
 import com.polymitasoft.caracola.util.FormatUtils;
-import com.polymitasoft.caracola.view.service.ServiceSelectorView;
+import com.polymitasoft.caracola.view.service.InternalServiceSelectorView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +20,7 @@ class ConsumptionBinding {
     @BindView(R.id.amountText) EditText amount;
     @BindView(R.id.priceText) EditText price;
     @BindView(R.id.dateText) EditText date;
-    @BindView(R.id.service_selector) ServiceSelectorView service;
+    @BindView(R.id.service_selector) InternalServiceSelectorView service;
     private Consumption consumption;
 
     ConsumptionBinding(Activity activity, Consumption consumption) {

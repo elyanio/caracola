@@ -38,6 +38,10 @@ public class FormatUtils {
         return decimalFormat.format(decimal);
     }
 
+    public static String formatMoneyWithCurrency(BigDecimal decimal) {
+        return "$ " + decimalFormat.format(decimal);
+    }
+
     public static BigDecimal parseMoney(String money) {
         try {
             return (BigDecimal) decimalFormat.parse(money);

@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
-import com.polymitasoft.caracola.datamodel.IInternalService;
 import com.polymitasoft.caracola.datamodel.InternalService;
+import com.polymitasoft.caracola.util.FormatUtils;
 import com.polymitasoft.caracola.view.ListActivity;
 
 import java.util.Random;
@@ -84,6 +84,7 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
         @Override
         public void onBindViewHolder(InternalService item, SimpleViewHolder holder, int position) {
             holder.primaryText.setText(item.getName());
+            holder.secondaryText.setText(FormatUtils.formatMoneyWithCurrency(item.getDefaultPrice()));
             holder.colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
             holder.itemView.setTag(item);
         }
@@ -91,7 +92,7 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
         @Override
         public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.booking_item, parent, false);
+            View view = inflater.inflate(R.layout.simple_list_item, parent, false);
             SimpleViewHolder holder = new SimpleViewHolder(view);
             view.setOnClickListener(this);
             return holder;
@@ -99,7 +100,7 @@ public class InternalServiceListActivity extends ListActivity<InternalService> {
 
         @Override
         public void onClick(View v) {
-            IInternalService service = (IInternalService) v.getTag();
+            InternalService service = (InternalService) v.getTag();
             if (service != null) {
                 Intent intent = new Intent(context, InternalServiceEditActivity.class);
                 intent.putExtra(InternalServiceEditActivity.EXTRA_SERVICE_ID, service.getId());

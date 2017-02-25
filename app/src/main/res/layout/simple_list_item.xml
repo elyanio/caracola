@@ -50,7 +50,7 @@
                     android:layout_marginRight="@dimen/edge_padding"/>
 
                 <ImageView
-                    android:id="@+id/options_menu"
+                    android:id="@+id/delete_menu"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_alignParentBottom="true"
@@ -60,11 +60,11 @@
                     android:paddingBottom="4dp"
                     android:paddingStart="24dp"
                     android:scaleType="centerInside"
-                    cardview:srcCompat="@drawable/ic_more_vert_black_24dp"
+                    cardview:srcCompat="@drawable/ic_clear_black_24dp"
                     tools:ignore="ContentDescription" />
 
                 <ImageView
-                    android:id="@+id/create_transaction"
+                    android:id="@+id/edit_menu"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_alignParentBottom="true"
@@ -74,24 +74,11 @@
                     android:paddingBottom="4dp"
                     android:paddingStart="24dp"
                     android:scaleType="centerInside"
-                    cardview:srcCompat="@drawable/ic_add_black_24dp"
-                    tools:ignore="ContentDescription" />
-
-                <ImageView
-                    android:id="@+id/favorite_status"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentEnd="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:paddingTop="6dp"
-                    android:paddingEnd="6dp"
-                    android:paddingStart="22dp"
-                    android:paddingBottom="22dp"
-                    cardview:srcCompat="@drawable/ic_star_border_black_24dp"
+                    cardview:srcCompat="@drawable/ic_edit_black_24dp"
                     tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:id="@+id/account_balance"
+                    android:id="@+id/tertiary_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
@@ -101,24 +88,6 @@
                     tools:text="$ 2000.00"
                     android:layout_alignBottom="@id/options_menu"
                     android:layout_toStartOf="@id/create_transaction"
-                    android:layout_marginEnd="@dimen/edge_padding"/>
-
-                <ProgressBar
-                    android:id="@+id/budget_indicator"
-                    style="@android:style/Widget.ProgressBar.Horizontal"
-                    android:progressDrawable="@drawable/budget_progress_indicator"
-                    android:layout_width="100dp"
-                    android:layout_height="8dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="@dimen/strip_width"
-                    android:max="100"
-                    tools:progress="50"
-                    android:indeterminate="false"
-                    android:paddingBottom="4dp"
-                    android:background="@android:color/transparent"
-                    android:visibility="gone"
-                    android:layout_alignBottom="@id/options_menu"
                     android:layout_marginEnd="@dimen/edge_padding"/>
         </RelativeLayout>
 

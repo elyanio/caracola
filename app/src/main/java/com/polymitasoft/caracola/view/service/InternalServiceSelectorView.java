@@ -12,21 +12,21 @@ import com.polymitasoft.caracola.datamodel.InternalService;
  * @since 22/2/2017
  */
 
-public class ServiceSelectorView extends TextView implements View.OnClickListener {
+public class InternalServiceSelectorView extends TextView implements View.OnClickListener {
 
     InternalService service;
 
-    public ServiceSelectorView(Context context) {
+    public InternalServiceSelectorView(Context context) {
         super(context);
         init();
     }
 
-    public ServiceSelectorView(Context context, AttributeSet attrs) {
+    public InternalServiceSelectorView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ServiceSelectorView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public InternalServiceSelectorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -50,8 +50,8 @@ public class ServiceSelectorView extends TextView implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        ServiceListDialog dialog = new ServiceListDialog(getContext());
-        dialog.setServiceClickListener(new ServiceListDialog.ServiceClickListener() {
+        InternalServiceListDialog dialog = new InternalServiceListDialog(getContext());
+        dialog.setServiceClickListener(new InternalServiceListDialog.ServiceClickListener() {
             @Override
             public void onClick(InternalService service) {
                 setService(service);

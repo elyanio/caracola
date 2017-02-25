@@ -4,6 +4,6 @@
       tools:context=".MainActivity">
     <item android:id="@+id/action_save"
           android:title="Save"
-          android:icon="@android:drawable/ic_menu_save"
+          android:icon="@drawable/ic_save_black_24dp"
           app:showAsAction="always"/>
 </menu>
