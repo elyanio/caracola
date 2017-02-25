@@ -90,6 +90,7 @@ public class ManagerActivity extends AppCompatActivity {
 
     private void eventos() {
         managers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -125,6 +126,8 @@ public class ManagerActivity extends AppCompatActivity {
                 manager.setHostel(hostel.first());
 
                 dataStore.upsert(manager);
+
+                manager_adapter.actualizarListaManager();
             }
         }).setNegativeButton("Cancelar", null);
         adb.setCancelable(false);

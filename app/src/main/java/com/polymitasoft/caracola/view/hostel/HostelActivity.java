@@ -7,6 +7,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,8 +17,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.Manager;
+import com.polymitasoft.caracola.view.bedroom.BedroomHostelActivity;
 import com.polymitasoft.caracola.view.gestor.ManagerActivity;
 
 import java.sql.SQLException;
@@ -49,17 +52,39 @@ public class HostelActivity extends AppCompatActivity {
 
         hostels.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
 
-                Hostel hostel = (Hostel) hostelAdapter.getItem(i);
-                startActivity(new Intent(HostelActivity.this, ManagerActivity.class).putExtra("CODE", hostel.getCode()));
+
+                final Hostel hostel = (Hostel) hostelAdapter.getItem(i);
+
+                final PopupMenu popupMenu = new PopupMenu(HostelActivity.this, view);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        int id = item.getItemId();
+                        switch (id) {
+                            case R.id.menu_hostel_proveedor:
+                                startActivity(new Intent(HostelActivity.this, ManagerActivity.class).putExtra("CODE", hostel.getCode()));
+                                break;
+                            case R.id.menu_hostel_habitacion:
+                                startActivity(new Intent(HostelActivity.this, BedroomHostelActivity.class).putExtra("CODE", hostel.getCode()));
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
             }
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_manager, menu);
+        getMenuInflater().inflate(R.menu.list_add_menu, menu);
         return true;
     }
 
@@ -68,12 +93,9 @@ public class HostelActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_hg_add:
+            case R.id.action_plus:
                 abrirDialog();
                 break;
-            case R.id.action_hg_done:
-//                insertarManager();
-//                break;
         }
         return super.onOptionsItemSelected(item);
     }
