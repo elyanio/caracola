@@ -110,7 +110,10 @@ public class ReservaPanelHabitacion extends LinearLayout {
             public void onClick(DialogInterface dialog, int which) {
 
                 dataStore.delete(preReservaSelecc);
+
                 //todo mensaje eliminar asere ....
+                sendMessage(preReservaSelecc);
+
                 VistaDia vistaDiaFictIni = obtenerVistaDiaFict(preReservaSelecc.getCheckInDate());
                 VistaDia vistaDiaFictFin = obtenerVistaDiaFict(preReservaSelecc.getCheckOutDate());
                 actualizarColorRangoModoH(vistaDiaFictIni, vistaDiaFictFin, CalendarState.EMPTY.color());
@@ -121,6 +124,14 @@ public class ReservaPanelHabitacion extends LinearLayout {
         });
         dialog.setNegativeButton("Cancelar", new DialogDismissClickListener());
         dialog.show();
+    }
+
+    private void sendMessage(Booking newBooking) {
+
+        ManageSmsBooking manageSmsBooking = new ManageSmsBooking(newBooking, getContext());
+        manageSmsBooking.buildDeleteMessage();
+        //manageSmsBooking.enviar_mensaje();
+
     }
 
     public boolean esModoTodo() {
@@ -559,7 +570,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         manageSmsBooking.findBedroom();
         manageSmsBooking.findManager();
         manageSmsBooking.buildMessage();
-//        manageSmsBooking.enviar_mensaje("asas","asasassa");
+//        manageSmsBooking.enviar_mensaje();
         //bedroom.setPriceInHighSeason(FormatUtils.parseMoney(priceInHighSeason.getText().toString()));
     }
 

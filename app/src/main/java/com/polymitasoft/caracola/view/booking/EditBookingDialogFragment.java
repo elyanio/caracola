@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.communication.ManageSmsBooking;
 import com.polymitasoft.caracola.components.DateSpinner;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
@@ -160,11 +161,23 @@ public class EditBookingDialogFragment extends DialogFragment {
                 .setNote(nota);
 
         dataStore.update(preReserva);
+
         //todo enviar mensaje editadra
+        sendMessage(oldBooking, preReserva);
 
         mCallback.onBookingEdit(oldBooking, preReserva);
 
         dismiss();
+    }
+
+    private void sendMessage(Booking oldBooking, Booking newBooking) {
+
+        ManageSmsBooking manageSmsBooking = new ManageSmsBooking(oldBooking, newBooking, getContext());
+        manageSmsBooking.findBedroom();
+        manageSmsBooking.findManager();
+        manageSmsBooking.buildUpdateMessage();
+//        manageSmsBooking.enviar_mensaje();
+
     }
 
     // Container Activity must implement this interface

@@ -7,10 +7,12 @@ import android.widget.Toast;
 
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
+import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.LocalDateConverter;
 import com.polymitasoft.caracola.datamodel.Manager;
+import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -39,7 +41,7 @@ public class ManageSmsBooking {
     private static final String MENSAJE_CONFIRMACION = "Mensaje Prerreserva Recibido";
 
     private String mensaje;
-
+    private LocalDate oldFecha_inicio;
     private LocalDate fecha_inicio;
     private LocalDate fecha_fin;
     private BookingState estado;
@@ -63,7 +65,32 @@ public class ManageSmsBooking {
         this.nota = nota;
         this.price = price;
         this.roomCode = roomCode;
+
         dataStore = DataStoreHolder.getInstance().getDataStore(context);
+    }
+
+    public ManageSmsBooking(Booking booking, Context context) {
+
+        this.context = context;
+        this.fecha_inicio = booking.getCheckInDate();
+        this.fecha_fin = booking.getCheckOutDate();
+        this.estado = booking.getState();
+        this.nota = booking.getNote();
+        this.price = FormatUtils.formatMoney(booking.getPrice());
+        this.roomCode = booking.getBedroom().getCode();
+    }
+
+    public ManageSmsBooking(Booking oldBooking, Booking newBooking, Context context) {
+
+        this.context = context;
+        this.fecha_inicio = newBooking.getCheckInDate();
+        this.fecha_fin = newBooking.getCheckOutDate();
+        this.estado = newBooking.getState();
+        this.nota = newBooking.getNote();
+        this.price = FormatUtils.formatMoney(newBooking.getPrice());
+        this.roomCode = oldBooking.getBedroom().getCode();
+        oldFecha_inicio = oldBooking.getCheckInDate();
+
     }
 
     public LocalDate getFechaInicio() {
@@ -95,6 +122,48 @@ public class ManageSmsBooking {
 
         LocalDateConverter localDateConverter = new LocalDateConverter();
         mensaje = "<$#" + localDateConverter.convertToPersisted(fecha_inicio) + "#" + localDateConverter.convertToPersisted(fecha_fin) + "#" + price + "#" + state + "#" + roomCode + "#" + nota;
+//        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
+//        Log.e("asio", "                          ddsfdsfsdfsdfsfsfsfsfsfsfsfsfsfsfwefffghrfksdjskdfhsfkhskdhk"+mensaje);
+    }
+
+    public void buildUpdateMessage() {
+        //  mensaje = "<$#17-01-30#17-02-05#1#1#Aqui va una notica de prerreserva. Esto esta de pinga asere, estoy loco por irme y no me dejaaaannn";
+        int state = 0;
+        switch (estado) {
+            case PENDING:
+                state = PENDING;
+                break;
+            case CONFIRMED:
+                state = CONFIRMED;
+                break;
+            case CHECKED_IN:
+                state = CHECKED_IN;
+                break;
+        }
+
+        LocalDateConverter localDateConverter = new LocalDateConverter();
+        mensaje = ">$#" + localDateConverter.convertToPersisted(oldFecha_inicio) + "#" + localDateConverter.convertToPersisted(fecha_inicio) + "#" + localDateConverter.convertToPersisted(fecha_fin) + "#" + price + "#" + state + "#" + roomCode + "#" + nota;
+//        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
+//        Log.e("asio", "                          ddsfdsfsdfsdfsfsfsfsfsfsfsfsfsfsfwefffghrfksdjskdfhsfkhskdhk"+mensaje);
+    }
+
+    public void buildDeleteMessage() {
+        //  mensaje = "<$#17-01-30#17-02-05#1#1#Aqui va una notica de prerreserva. Esto esta de pinga asere, estoy loco por irme y no me dejaaaannn";
+        int state = 0;
+        switch (estado) {
+            case PENDING:
+                state = PENDING;
+                break;
+            case CONFIRMED:
+                state = CONFIRMED;
+                break;
+            case CHECKED_IN:
+                state = CHECKED_IN;
+                break;
+        }
+
+        LocalDateConverter localDateConverter = new LocalDateConverter();
+        mensaje = "$$#" + localDateConverter.convertToPersisted(fecha_inicio) + "#" + roomCode;
 //        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
 //        Log.e("asio", "                          ddsfdsfsdfsdfsfsfsfsfsfsfsfsfsfsfwefffghrfksdjskdfhsfkhskdhk"+mensaje);
     }

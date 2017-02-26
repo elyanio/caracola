@@ -143,7 +143,6 @@ public class BedroomLonlyActivity extends AppCompatActivity {
                     showDialogCode();
                 }
             });
-
             return item;
         }
 

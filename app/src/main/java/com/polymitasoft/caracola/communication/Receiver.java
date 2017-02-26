@@ -2,10 +2,7 @@ package com.polymitasoft.caracola.communication;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.telephony.SmsMessage;
 
 import com.polymitasoft.caracola.CaracolaApplication;
@@ -15,7 +12,6 @@ import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Hostel;
-import com.polymitasoft.caracola.datamodel.LocalDateConverter;
 import com.polymitasoft.caracola.datamodel.Manager;
 import com.polymitasoft.caracola.util.FormatUtils;
 
@@ -23,12 +19,9 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
-
-import static android.provider.Telephony.Sms.Intents.getMessagesFromIntent;
 
 /**
  * Created by asio on 2/24/2017.
@@ -67,16 +60,42 @@ public class Receiver extends BroadcastReceiver {
                     String showState = parssearBookingState(valores[4]);
                     if (chequearFidelidadMensaje(context, valores[5], number_manager)) {
 
-                        actualizarCalendario(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], context);
+                        insertarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], context);
                         StateBar stateBar = new StateBar();
                         stateBar.notificar(context, CaracolaApplication.class, "Nueva Prerreserva", "Hay vejoooooo", "Info", "Tickerrrr", "Notaaaaa");
                     }
                 } else if (valores[0].equals(">$")) // este simbolo significa que es reserva
                 {
-                    //mensaje = ">$#17-01-30#17-02-05#1#1#10#20#Asiel&Alonso Chaviano&90062538346&Cuba&90-06-25&1#Oscar&Alonso Rodriguez&$90062538347&Cuba&56-06-25&1#Magdiel&Alonso Chaviano&90062538348&Cuba&56-06-25&1";
+                    //>$#2017-01-10#2017-02-16#2017-02-24#30,00#2#0#Holaaaaaaaaa
+                    if (chequearFidelidadMensaje(context, valores[6], number_manager)) {
+
+                        actualizarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], valores[7], context);
+
+                        StateBar stateBar = new StateBar();
+                        stateBar.notificar(context, CaracolaApplication.class, "Nueva Prerreserva", "Hay vejoooooo", "Info", "Tickerrrr", "Notaaaaa");
+                    }
+                } else if (valores[0].equals("$$")) {
+                    if (chequearFidelidadMensaje(context, valores[2], number_manager)) {
+
+                        borrarBooking(valores[1], valores[2], context);
+
+                        StateBar stateBar = new StateBar();
+                        stateBar.notificar(context, CaracolaApplication.class, "Nueva Prerreserva", "Hay vejoooooo", "Info", "Tickerrrr", "Notaaaaa");
+                    }
                 }
             }
         }
+    }
+
+    private void borrarBooking(String fechaInicio, String roomCode, Context context) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+
+        LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
+        int code = Integer.parseInt(roomCode);
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).get().first();
+        Booking booking = dataStore.select(Booking.class).where(Booking.BEDROOM.eq(bedroom).and(Booking.CHECK_IN_DATE.eq(localDateInicio))).get().first();
+        dataStore.delete(booking);
     }
 
     private boolean chequearFidelidadMensaje(Context context, String valor, String number_manager) {
@@ -94,7 +113,7 @@ public class Receiver extends BroadcastReceiver {
         }
     }
 
-    private void actualizarCalendario(String fechaInicio, String fechaFin, String precio, String estado, String codigo, String comentario, Context context) {
+    private void insertarBooking(String fechaInicio, String fechaFin, String precio, String estado, String codigo, String comentario, Context context) {
 
         int state = Integer.parseInt(estado);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
@@ -117,6 +136,32 @@ public class Receiver extends BroadcastReceiver {
         booking.setPrice(price);
 
         dataStore.insert(booking);
+    }
+
+    private void actualizarBooking(String fechaInicioVieja, String fechaInicio, String fechaFin, String precio, String estado, String codigo, String comentario, Context context) {
+
+        int state = Integer.parseInt(estado);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+
+        LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
+        LocalDate localDateInicioVieja = LocalDate.parse(fechaInicioVieja, formatter);
+        LocalDate localDateFin = LocalDate.parse(fechaFin, formatter);
+        BigDecimal price = FormatUtils.parseMoney(precio);
+        BookingState bookingState = BookingState.values()[state];
+        int roomCode = Integer.parseInt(codigo);
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
+        String comment = comentario;
+
+        Booking booking = dataStore.select(Booking.class).where(Booking.BEDROOM.eq(bedroom).and(Booking.CHECK_IN_DATE.eq(localDateInicioVieja))).get().first();
+        booking.setCheckInDate(localDateInicio);
+        booking.setCheckOutDate(localDateFin);
+        booking.setState(bookingState);
+        booking.setBedroom(bedroom);
+        booking.setNote(comment);
+        booking.setPrice(price);
+
+        dataStore.update(booking);
     }
 
     private String parssearBookingState(String valor) {
