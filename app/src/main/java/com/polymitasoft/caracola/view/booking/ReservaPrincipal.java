@@ -20,7 +20,6 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.IBedroom;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
 import com.polymitasoft.caracola.view.hostel.HostelActivity;
@@ -205,13 +204,13 @@ public class ReservaPrincipal extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         switch (id) {
-            case R.id.nav_camera:
+            case R.id.nav_internal_service:
                 startActivity(new Intent(this, InternalServiceListActivity.class));
                 break;
-            case R.id.nav_gallery:
+            case R.id.nav_contacts:
                 startActivity(new Intent(this, ExternalServiceListActivity.class));
                 break;
-            case R.id.nav_slideshow:
+            case R.id.nav_current_bookings:
                 startActivity(new Intent(this, CurrentBookingsActivity.class));
                 break;
             case R.id.nav_manage:
@@ -220,7 +219,7 @@ public class ReservaPrincipal extends AppCompatActivity
             case R.id.nav_share:
                 startActivity(new Intent(this, BedroomListActivity.class));
                 break;
-            case R.id.nav_send:
+            case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.nav_gestor:
