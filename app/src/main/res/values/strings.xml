@@ -120,4 +120,5 @@
     <string name="title_edit_consumption">Editar consumo</string>
     <string name="title_external_services">Servicios externos</string>
     <string name="title_bedrooms">Habitaciones</string>
+    <string name="title_edit_internal_service">Editar servicio</string>
 </resources>

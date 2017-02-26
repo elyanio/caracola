@@ -47,7 +47,7 @@ public class InternalServiceEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_internal_service);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.title_edit_client);
+            getSupportActionBar().setTitle(R.string.title_edit_internal_service);
         }
         data = DataStoreHolder.getInstance().getDataStore(this);
         int clientId = getIntent().getIntExtra(EXTRA_SERVICE_ID, -1);
