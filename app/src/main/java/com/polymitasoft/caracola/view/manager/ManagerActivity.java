@@ -1,7 +1,6 @@
-package com.polymitasoft.caracola.view.gestor;
+package com.polymitasoft.caracola.view.manager;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.Manager;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import io.requery.Persistable;

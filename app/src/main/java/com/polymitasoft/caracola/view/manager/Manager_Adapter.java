@@ -1,4 +1,4 @@
-package com.polymitasoft.caracola.view.gestor;
+package com.polymitasoft.caracola.view.manager;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,12 +14,9 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.Manager;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import io.requery.Persistable;
-import io.requery.query.Result;
-import io.requery.query.WhereAndOr;
 import io.requery.sql.EntityDataStore;
 
 

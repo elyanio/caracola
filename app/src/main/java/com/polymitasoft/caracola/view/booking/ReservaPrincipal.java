@@ -22,7 +22,6 @@ import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
-import com.polymitasoft.caracola.view.gestor.ManagerActivity;
 import com.polymitasoft.caracola.view.hostel.HostelActivity;
 import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.ExternalServiceListActivity;

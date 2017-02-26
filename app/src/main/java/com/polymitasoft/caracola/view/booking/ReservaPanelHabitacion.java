@@ -108,6 +108,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
             public void onClick(DialogInterface dialog, int which) {
 
                 dataStore.delete(preReservaSelecc);
+                //todo mensaje eliminar asere ....
                 VistaDia vistaDiaFictIni = obtenerVistaDiaFict(preReservaSelecc.getCheckInDate());
                 VistaDia vistaDiaFictFin = obtenerVistaDiaFict(preReservaSelecc.getCheckOutDate());
                 actualizarColorRangoModoH(vistaDiaFictIni, vistaDiaFictFin, CalendarState.EMPTY.color());
@@ -541,6 +542,12 @@ public class ReservaPanelHabitacion extends LinearLayout {
         booking.setNote(nota);
         booking.setPrice(price);
         dataStore.insert(booking);
+
+
+
+
+//        todo enviar menssaje
+
 
         // adicionar en los meses necesarios
         adicionarCalendarioReservaAMeses(booking);

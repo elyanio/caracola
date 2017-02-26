@@ -3,12 +3,10 @@ package com.polymitasoft.caracola.view.hostel;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +15,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.Manager;
 import com.polymitasoft.caracola.view.bedroom.BedroomHostelActivity;
-import com.polymitasoft.caracola.view.gestor.ManagerActivity;
+import com.polymitasoft.caracola.view.manager.ManagerActivity;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import io.requery.Persistable;

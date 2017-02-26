@@ -48,7 +48,7 @@
         <activity android:name=".view.bedroom.BedroomInsertActivity" />
 
         <activity
-            android:name=".view.gestor.ManagerActivity"
+            android:name=".view.manager.ManagerActivity"
             android:label="Manager" />
         <activity
             android:name=".view.bedroom.BedroomHostelActivity"

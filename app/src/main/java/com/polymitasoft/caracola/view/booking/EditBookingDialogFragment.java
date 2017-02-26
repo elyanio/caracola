@@ -37,13 +37,20 @@ public class EditBookingDialogFragment extends DialogFragment {
 
     private static final String ARG_BOOKING_ID = "bookingId";
     private Booking preReserva;
-    @BindView(R.id.reserva_bt_hacer_pre_R) Button bt_preReservar;
-    @BindView(R.id.reserva_rb_confirmada) RadioButton rb_confirmado;
-    @BindView(R.id.reserva_rb_pendiente) RadioButton rb_pendiente;
-    @BindView(R.id.booking_note) TextView text_nota;
-    @BindView(R.id.booking_price) TextView textPrice;
-    @BindView(R.id.booking_check_in) DateSpinner checkInDateSpinner;
-    @BindView(R.id.booking_check_out) DateSpinner checkOutSpinner;
+    @BindView(R.id.reserva_bt_hacer_pre_R)
+    Button bt_preReservar;
+    @BindView(R.id.reserva_rb_confirmada)
+    RadioButton rb_confirmado;
+    @BindView(R.id.reserva_rb_pendiente)
+    RadioButton rb_pendiente;
+    @BindView(R.id.booking_note)
+    TextView text_nota;
+    @BindView(R.id.booking_price)
+    TextView textPrice;
+    @BindView(R.id.booking_check_in)
+    DateSpinner checkInDateSpinner;
+    @BindView(R.id.booking_check_out)
+    DateSpinner checkOutSpinner;
     private EntityDataStore<Persistable> dataStore;
     private BookingDao bookingDao;
 
@@ -153,6 +160,8 @@ public class EditBookingDialogFragment extends DialogFragment {
                 .setNote(nota);
 
         dataStore.update(preReserva);
+        //todo enviar mensaje editadra
+
         mCallback.onBookingEdit(oldBooking, preReserva);
 
         dismiss();
