@@ -137,7 +137,6 @@ public class ReservaPanelHabitacion extends LinearLayout {
         ManageSmsBooking manageSmsBooking = new ManageSmsBooking(newBooking, getContext());
         manageSmsBooking.buildDeleteMessage();
         //manageSmsBooking.enviar_mensaje();
-
     }
 
     public boolean esModoTodo() {
@@ -155,22 +154,22 @@ public class ReservaPanelHabitacion extends LinearLayout {
         EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
         List<Bedroom> bedrooms = dataStore.select(Bedroom.class).get().toList();
         List<Bedroom> disponibles = new ArrayList<>();
-        for(Bedroom bedroom: bedrooms){
+        for (Bedroom bedroom : bedrooms) {
             disponibles.add(bedroom);
         }
         // TODO mostrar cuando solo hay pendientes en el rango seleccionado
         List<Booking> bookings = bookingDao.bookingsBetween(diaMenor, diaMayor);
         LocalDate diaActual = diaMenor;
-        while(diaActual.compareTo(diaMayor) <= 0){
-            for(Booking booking: bookings){
-                if(booking.getCheckInDate().compareTo(diaActual) <= 0 && booking.getCheckOutDate().compareTo(diaActual) >= 0){
+        while (diaActual.compareTo(diaMayor) <= 0) {
+            for (Booking booking : bookings) {
+                if (booking.getCheckInDate().compareTo(diaActual) <= 0 && booking.getCheckOutDate().compareTo(diaActual) >= 0) {
                     Bedroom bedroom = booking.getBedroom();
                     disponibles.remove(bedroom);
                 }
             }
             diaActual = diaActual.plusDays(1);
         }
-        return  disponibles;
+        return disponibles;
     }
 
     public void clickDia(VistaDia dia) {
