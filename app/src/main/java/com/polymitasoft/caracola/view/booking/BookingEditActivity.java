@@ -91,31 +91,41 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
         tabLayout.setupWithViewPager(mViewPager);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_edit, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                // TODO Use findById or findByTag
-                // By tag: android:switcher:{R.id.container}:0
-                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                    if (fragment instanceof BookingEditFragment) {
-                        ((BookingEditFragment) fragment).saveBooking();
-                    }
-                }
-                return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_save:
+//                // TODO Use findById or findByTag
+//                // By tag: android:switcher:{R.id.container}:0
+//                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+//                    if (fragment instanceof BookingEditFragment) {
+//                        ((BookingEditFragment) fragment).saveBooking();
+//                    }
+//                }
+//                return true;
+//        }
+//        return false;
+//    }
 
     @Override
     public void onBookingEdited(Booking booking) {
-        finish();
+//        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof BookingEditFragment) {
+                ((BookingEditFragment) fragment).saveBooking();
+            }
+        }
     }
 
     @Override
