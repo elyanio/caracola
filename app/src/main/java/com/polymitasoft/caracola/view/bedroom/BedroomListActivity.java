@@ -2,8 +2,11 @@ package com.polymitasoft.caracola.view.bedroom;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.RecyclerListActivity;
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
@@ -17,6 +20,12 @@ import io.requery.query.Result;
  * @since 16/2/2017
  */
 public class BedroomListActivity extends RecyclerListActivity<Bedroom> {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTitle(R.string.title_bedrooms);
+    }
 
     @Override
     protected QueryRecyclerAdapter<Bedroom, SimpleViewHolder> createAdapter() {
