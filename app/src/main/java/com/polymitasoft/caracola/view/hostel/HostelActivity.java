@@ -124,11 +124,6 @@ public class HostelActivity extends AppCompatActivity {
         adb.show();
     }
 
-    private void imprimirLog()
-    {
-        Log.e("HostelActivity","Imprimiendo Log");
-    }
-
     private void insertarHostel() {
         Hostel hostel = new Hostel();
         hostel.setName(nameHostal);
