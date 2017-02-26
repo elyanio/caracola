@@ -1,19 +1,13 @@
 package com.polymitasoft.caracola.view.bedroom;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.RecyclerListActivity;
+import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
-import com.polymitasoft.caracola.components.RecyclerListActivity;
-
-import java.util.Random;
 
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
@@ -26,66 +20,48 @@ public class BedroomListActivity extends RecyclerListActivity<Bedroom> {
 
     @Override
     protected QueryRecyclerAdapter<Bedroom, SimpleViewHolder> createAdapter() {
-        return new BedroomAdapter();
+        return new BedroomAdapter(this);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.list_add_menu, menu);
-        return true;
+    protected void onActionPlusMenu() {
+        Intent intent = new Intent(this, BedroomEditActivity.class);
+        startActivity(intent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_plus:
-                Intent intent = new Intent(this, BedroomEditActivity.class);
-                startActivity(intent);
-                return true;
-        }
-        return false;
-    }
+    static class BedroomAdapter extends SimpleListAdapter<Bedroom> {
 
-    /**
-     * Created by rainermf on 15/2/2017.
-     */
-    class BedroomAdapter extends QueryRecyclerAdapter<Bedroom, SimpleViewHolder> implements View.OnClickListener {
-
-        private final Random random = new Random();
-        private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
-
-        BedroomAdapter() {
-            super(Bedroom.$TYPE);
+        BedroomAdapter(Context context) {
+            super(context, Bedroom.$TYPE);
         }
 
         @Override
         public Result<Bedroom> performQuery() {
-            return data.select(Bedroom.class).get();
+            return dataStore.select(Bedroom.class).get();
         }
 
         @Override
-        public void onBindViewHolder(Bedroom item, SimpleViewHolder holder, int position) {
+        public void onBindViewHolder(final Bedroom item, SimpleViewHolder holder, int position) {
+            super.onBindViewHolder(item, holder, position);
             holder.primaryText.setText(item.getName());
-            holder.colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
-            holder.itemView.setTag(item);
-            holder.itemView.setOnClickListener(this);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editItem(item);
+                }
+            });
+            holder.editMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editItem(item);
+                }
+            });
         }
 
-        @Override
-        public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.simple_list_item, parent, false);
-            return new SimpleViewHolder(view);
-        }
-
-        @Override
-        public void onClick(View v) {
-            Bedroom service = (Bedroom) v.getTag();
-            if (service != null) {
-                Intent intent = new Intent(BedroomListActivity.this, BedroomEditActivity.class);
-                intent.putExtra(BedroomEditActivity.EXTRA_BEDROOM_ID, service.getId());
-                startActivity(intent);
-            }
+        private void editItem(Bedroom item) {
+            Intent intent = new Intent(context, BedroomEditActivity.class);
+            intent.putExtra(BedroomEditActivity.EXTRA_BEDROOM_ID, item.getId());
+            context.startActivity(intent);
         }
     }
 }
