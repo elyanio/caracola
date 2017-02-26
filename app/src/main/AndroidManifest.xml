@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <receiver android:name=".communication.Reciever">
+        <receiver android:name=".communication.Receiver">
             <intent-filter android:priority="1000">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -46,6 +46,7 @@
         <activity android:name=".view.bedroom.BedroomListActivity" />
         <activity android:name=".view.bedroom.BedroomEditActivity" />
         <activity android:name=".view.bedroom.BedroomInsertActivity" />
+        <activity android:name=".view.bedroom.BedroomLonlyActivity" />
 
         <activity
             android:name=".view.manager.ManagerActivity"

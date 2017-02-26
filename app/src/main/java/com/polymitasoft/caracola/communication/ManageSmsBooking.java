@@ -2,11 +2,14 @@ package com.polymitasoft.caracola.communication;
 
 import android.content.Context;
 import android.telephony.SmsManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Hostel;
+import com.polymitasoft.caracola.datamodel.LocalDateConverter;
 import com.polymitasoft.caracola.datamodel.Manager;
 
 import org.threeten.bp.LocalDate;
@@ -37,11 +40,12 @@ public class ManageSmsBooking {
 
     private String mensaje;
 
-    private String fecha_inicio;
-    private String fecha_fin;
+    private LocalDate fecha_inicio;
+    private LocalDate fecha_fin;
     private BookingState estado;
     private String nota;
     private int roomCode;
+    private String price;
 
     private Bedroom bedroom;
     private List<Manager> managers;
@@ -50,48 +54,49 @@ public class ManageSmsBooking {
 
     private EntityDataStore<Persistable> dataStore;
 
-    public ManageSmsBooking(String fecha_inicio, String fecha_fin, BookingState estado, String nota, String roomCode, Context context) {
+    public ManageSmsBooking(LocalDate fecha_inicio, LocalDate fecha_fin, BookingState estado, String nota, int roomCode, String price, Context context) {
 
         this.context = context;
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
         this.estado = estado;
         this.nota = nota;
-        this.roomCode = Integer.parseInt(roomCode);
+        this.price = price;
+        this.roomCode = roomCode;
         dataStore = DataStoreHolder.getInstance().getDataStore(context);
-
     }
 
     public LocalDate getFechaInicio() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
-        return LocalDate.parse(fecha_inicio, formatter);
+        return fecha_inicio;
     }
 
     public LocalDate getFechaFin() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
-        return LocalDate.parse(fecha_fin, formatter);
+        return fecha_fin;
     }
 
-    public Bedroom getBedroom() throws SQLException {
+    public void findBedroom() {
         bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
-        return bedroom;
     }
 
     public void buildMessage() {
         //  mensaje = "<$#17-01-30#17-02-05#1#1#Aqui va una notica de prerreserva. Esto esta de pinga asere, estoy loco por irme y no me dejaaaannn";
-        int state=1;
+        int state = 0;
         switch (estado) {
             case PENDING:
                 state = PENDING;
                 break;
             case CONFIRMED:
-                state=CONFIRMED;
+                state = CONFIRMED;
                 break;
             case CHECKED_IN:
-                state=CHECKED_IN;
+                state = CHECKED_IN;
                 break;
         }
-        mensaje = "<$#" + fecha_inicio + "#" + fecha_fin + "#" +state+"#"+roomCode+"#"+nota;
+
+        LocalDateConverter localDateConverter = new LocalDateConverter();
+        mensaje = "<$#" + localDateConverter.convertToPersisted(fecha_inicio) + "#" + localDateConverter.convertToPersisted(fecha_fin) + "#" + price + "#" + state + "#" + roomCode + "#" + nota;
+//        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
+//        Log.e("asio", "                          ddsfdsfsdfsdfsfsfsfsfsfsfsfsfsfsfwefffghrfksdjskdfhsfkhskdhk"+mensaje);
     }
 
     public String getNota() {
@@ -112,9 +117,8 @@ public class ManageSmsBooking {
         sms.sendTextMessage(numero, null, mensaje, null, null);
     }
 
-    public void enviar_mensaje(String mensaje) {
+    public void enviar_mensaje() {
         SmsManager sms = SmsManager.getDefault();
-
         if (managers.size() != 0) {
             for (Manager manager : managers) {
                 sms.sendTextMessage(manager.getPhoneNumber(), null, mensaje, null, null);
@@ -129,5 +133,9 @@ public class ManageSmsBooking {
 
     public List<Manager> getManagers() {
         return managers;
+    }
+
+    public Bedroom getBedroom() {
+        return bedroom;
     }
 }

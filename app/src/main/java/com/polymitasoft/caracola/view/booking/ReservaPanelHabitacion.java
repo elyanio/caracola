@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.communication.ManageSmsBooking;
 import com.polymitasoft.caracola.components.InteractivoScrollView;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
@@ -20,6 +21,7 @@ import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.IBedroom;
 import com.polymitasoft.caracola.datamodel.IBooking;
+import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
 
@@ -94,7 +96,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     public void click_fisicaR() {
         Context context = getContext();
         Intent intent = new Intent(context, BookingEditActivity.class);
-        if(preReservaSelecc != null) {
+        if (preReservaSelecc != null) {
             intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, preReservaSelecc.getId());
         }
         context.startActivity(intent);
@@ -134,7 +136,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 primerDiaSelec = dia;
                 primerDiaSelec.seleccionar(CellLocation.ALONE);
 
-            }else{                                //y si hay una primera seleccion en vista todos
+            } else {                                //y si hay una primera seleccion en vista todos
                 segundoDiaSelec = dia;
                 selecionadorRangoDiasTocadosModoH(CalendarState.SELECTED.color());
                 reservaPrincipal.showDisponibilidad();
@@ -543,15 +545,24 @@ public class ReservaPanelHabitacion extends LinearLayout {
         booking.setPrice(price);
         dataStore.insert(booking);
 
-
-
-
 //        todo enviar menssaje
-
+        sendMessage(diaMenor.getCalendar(), diaMayor.getCalendar(), estado, habitacion.getCode(), nota, price);
 
         // adicionar en los meses necesarios
         adicionarCalendarioReservaAMeses(booking);
     }
+
+    private void sendMessage(LocalDate fechaInicio, LocalDate fechaFinal, BookingState estado, int codeRoom, String nota, BigDecimal price) {
+
+        String precio = FormatUtils.formatMoney(price);
+        ManageSmsBooking manageSmsBooking = new ManageSmsBooking(fechaInicio, fechaFinal, estado, nota, codeRoom, precio, getContext());
+        manageSmsBooking.findBedroom();
+        manageSmsBooking.findManager();
+        manageSmsBooking.buildMessage();
+//        manageSmsBooking.enviar_mensaje("asas","asasassa");
+        //bedroom.setPriceInHighSeason(FormatUtils.parseMoney(priceInHighSeason.getText().toString()));
+    }
+
     public void salvarPreReservaYadicionarALosMesesModoTodos(Bedroom bedroom, VistaDia primerDiaSelecc, VistaDia segundoDiaSelecc, BookingState estado, String nota, BigDecimal price) {
         VistaDia diaMenor = primerDiaSelecc;
         VistaDia diaMayor = segundoDiaSelecc;
@@ -573,6 +584,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         // adicionar en los meses necesarios
         adicionarCalendarioReservaAMeses(booking);
     }
+
     public void adicionarCalendarioReservaAMeses(Booking calendario_reserva) {
         VistaDia fechaIniC = obtenerVistaDiaFict(calendario_reserva.getCheckInDate());
         VistaDia fechaFinC = obtenerVistaDiaFict(calendario_reserva.getCheckOutDate());
@@ -666,14 +678,14 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 meses.add(mes);
             }
             return meses.get(meses.size() - 1);
-        }else{
+        } else {
             LocalDate diaIniDelPrimerMes = meses.get(0).getInicio_mes();
             LocalDate localDatei = diaIniDelPrimerMes;
             while (dia.getCalendar().getYear() != localDatei.getYear() || dia.getCalendar().getMonthValue() != localDatei.getMonthValue()) {
                 localDatei = localDatei.minusMonths(1);
                 VistaMes mes = new VistaMes(getContext(), this, localDatei);
-                linearLayoutMeses.addView(mes,0);
-                meses.add(0,mes);
+                linearLayoutMeses.addView(mes, 0);
+                meses.add(0, mes);
             }
             return meses.get(0);
         }
@@ -741,21 +753,21 @@ public class ReservaPanelHabitacion extends LinearLayout {
     }
 
     private static class DialogDismissClickListener implements DialogInterface.OnClickListener {
-    public void onClick(DialogInterface dialog, int which) {
-        dialog.cancel();
-    }
-}
-
-public class cargarNuevoMesPrincipal implements InteractivoScrollView.CapturadorEventoMoverScroll {
-
-    @Override
-    public void onMover(int sentido) {
-        if (sentido == SENTIDO_SCROLL_ABAJO) {
-            crearNuevoMesAbajo();
-        } else {
-            crearNuevoMesArriba();
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
         }
-
     }
-}
+
+    public class cargarNuevoMesPrincipal implements InteractivoScrollView.CapturadorEventoMoverScroll {
+
+        @Override
+        public void onMover(int sentido) {
+            if (sentido == SENTIDO_SCROLL_ABAJO) {
+                crearNuevoMesAbajo();
+            } else {
+                crearNuevoMesArriba();
+            }
+
+        }
+    }
 }

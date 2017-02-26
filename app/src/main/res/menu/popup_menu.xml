@@ -3,9 +3,11 @@
 
     <item
         android:id="@+id/menu_hostel_proveedor"
-        android:title="Asignar Proveedor" />
+        android:title="Asignar gestor" />
     <item
         android:id="@+id/menu_hostel_habitacion"
-        android:title="Asignar Habitacion" />
-
+        android:title="Crear nuevo cuarto" />
+    <item
+        android:id="@+id/menu_hostel_bind"
+        android:title="Asignar un cuarto" />
 </menu>
