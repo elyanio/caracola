@@ -36,6 +36,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
     protected EntityDataStore<Persistable> data;
     private ExecutorService executor;
     private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
+    private boolean deleteConfirmationEnabled = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

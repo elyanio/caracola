@@ -85,7 +85,7 @@ public class EditBookingDialogFragment extends DialogFragment {
 //                });
 //        // Create the AlertDialog object and return it
 //
-//        dataStore = DataStoreHolder.getInstance().getDataStore(getActivity().getApplicationContext());
+//        dataStore = DataStoreHolder.instance().getDataStore(getActivity().getApplicationContext());
 //        bookingDao = new BookingDao(dataStore);
 //
 //        int idBooking = getArguments().getInt(ARG_BOOKING_ID);
