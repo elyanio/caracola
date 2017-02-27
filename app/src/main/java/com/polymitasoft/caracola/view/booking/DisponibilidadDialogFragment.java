@@ -133,7 +133,12 @@ public class DisponibilidadDialogFragment extends DialogFragment {
             primaryText.setText(textoMostrado);
 
             TextView secondaryText = (TextView) elemento.findViewById(R.id.secondary_text);
-            secondaryText.setText("Capacidad " + habitacion.getCapacity());
+            int capacity = habitacion.getCapacity();
+            if(capacity == 1){
+                secondaryText.setText("Capacidad " + capacity + " persona");
+            }else{
+                secondaryText.setText("Capacidad " + capacity + " personas");
+            }
 
             elemento.setOnClickListener(new View.OnClickListener() {
                 @Override
