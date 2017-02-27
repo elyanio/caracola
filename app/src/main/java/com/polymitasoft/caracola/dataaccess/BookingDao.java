@@ -89,7 +89,7 @@ public class BookingDao {
     public Result<Consumption> getConsumptions(@NonNull Booking booking) {
         return dataStore.select(Consumption.class)
                 .where(Consumption.BOOKING_ID.equal(booking.getId()))
-                .orderBy(Consumption.DATE.desc())
+                .orderBy(Consumption.DATE.desc(), Consumption.ID.desc())
                 .get();
     }
 
