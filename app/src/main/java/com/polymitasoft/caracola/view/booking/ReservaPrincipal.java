@@ -264,7 +264,6 @@ public class ReservaPrincipal extends AppCompatActivity
         EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(this);
 
         if(menu != null){
-
             for(int i = 0; i<bedrooms.size() ;i++){
                 menu.removeItem(i);
             }
@@ -274,13 +273,19 @@ public class ReservaPrincipal extends AppCompatActivity
                 menu.add(0, i, 0, bedroom.getName());
             }
             Bedroom habitacion = (Bedroom) reservaEsenaPrincipal.getReservaPanelHabitacionActual().getHabitacion();
-
             ActionMenuItemView item1 = findById(this, R.id.show_m);
-            if(item1 != null){
-                if(habitacion != null){
+            if(habitacion == null){
+                item1.setTitle("Disponibilidad");
+            }else{
+                Bedroom actual = dataStore.select(Bedroom.class).where(Bedroom.ID.equal(habitacion.getId())).get().firstOrNull();
+                if(actual == null){
+                    item1.setTitle("Disponibilidad");
+                    reservaEsenaPrincipal.getReservaPanelHabitacionActual().setHabitacion(null);
+                }else{
                     item1.setTitle(habitacion.getName());
                 }
             }
+            reservaEsenaPrincipal.getReservaPanelHabitacionActual().actualizarCambioHabitacion();
         }
     }
 

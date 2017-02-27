@@ -126,7 +126,7 @@ public class DisponibilidadDialogFragment extends DialogFragment {
         public View getView(final int posision, View convertView, ViewGroup parent) {
             View elemento = convertView;
             LayoutInflater contexto_inflado = ((Activity) getContext()).getLayoutInflater();
-            elemento = contexto_inflado.inflate(R.layout.simple_list_item, null);
+            elemento = contexto_inflado.inflate(R.layout.simple_list_item_disponibilidad, null);
             TextView primaryText = (TextView) elemento.findViewById(R.id.primary_text);
             final Bedroom habitacion = habitaciones.get(posision);
             String textoMostrado = habitacion.getName();
@@ -142,22 +142,6 @@ public class DisponibilidadDialogFragment extends DialogFragment {
                 }
             });
 
-            ImageView imageView = (ImageView) elemento.findViewById(R.id.edit_menu);
-            imageView.setImageResource(R.drawable.ic_add_black_24dp);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickEnListaDisponibilidad(habitaciones.get(posision));
-                }
-            });
-
-            ImageView imageViewDelete = (ImageView) elemento.findViewById(R.id.delete_menu);
-            imageViewDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    adaptador.remove(habitaciones.get(posision));
-                }
-            });
             View colorStrip = (View) elemento.findViewById(R.id.color_strip);
             colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
 
