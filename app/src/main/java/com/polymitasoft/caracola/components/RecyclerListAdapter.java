@@ -4,13 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
@@ -37,14 +33,6 @@ public abstract class RecyclerListAdapter<E extends Persistable, VH extends Recy
     @Override
     public void onBindViewHolder(final E item, final VH holder, int position) {
         holder.itemView.setTag(item);
-    }
-
-    @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.simple_list_item, parent, false);
-        RecyclerView.ViewHolder holder = new SimpleViewHolder(view);
-        return (VH) holder;
     }
 
     public boolean isDeleteConfirmationEnabled() {

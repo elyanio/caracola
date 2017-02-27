@@ -1,7 +1,11 @@
 package com.polymitasoft.caracola.components;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import com.polymitasoft.caracola.R;
 
 import io.requery.Persistable;
 import io.requery.meta.Type;
@@ -15,6 +19,13 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
 
     public SimpleListAdapter(Context context, Type<E> type) {
         super(context, type);
+    }
+
+    @Override
+    public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.simple_list_item, parent, false);
+        return new SimpleViewHolder(view);
     }
 
     @Override
