@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.view.service.InternalServiceEditActivity;
@@ -36,7 +37,6 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
     protected EntityDataStore<Persistable> data;
     private ExecutorService executor;
     private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
-    private boolean deleteConfirmationEnabled = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         setContentView(R.layout.list_items);
         ButterKnife.bind(this);
 
-        data = DataStoreHolder.getInstance().getDataStore(this);
+        data = CaracolaApplication.instance().getDataStore();
         executor = Executors.newSingleThreadExecutor();
         adapter = createAdapter();
         adapter.setExecutor(executor);

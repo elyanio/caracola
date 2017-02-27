@@ -13,10 +13,6 @@ import io.requery.meta.Type;
 
 public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerListAdapter<E, SimpleViewHolder> {
 
-    public SimpleListAdapter(Context context) {
-        super(context);
-    }
-
     public SimpleListAdapter(Context context, Type<E> type) {
         super(context, type);
     }
@@ -28,7 +24,7 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
         holder.deleteMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteItem(item);
+                handleDeletion(item);
             }
         });
     }

@@ -123,4 +123,7 @@
     <string name="title_edit_internal_service">Editar servicio</string>
     <string name="title_contacts">Contactos</string>
     <string name="title_settings">Configuración</string>
+    <string name="yes_action_button">Sí</string>
+    <string name="delete_confirmation_message">¿Realmente desea eliminar el elemento seleccionado?</string>
+    <string name="cancel_action_button">Cancelar</string>
 </resources>
