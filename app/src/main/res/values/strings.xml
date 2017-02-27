@@ -126,4 +126,8 @@
     <string name="yes_action_button">Sí</string>
     <string name="delete_confirmation_message">¿Realmente desea eliminar el elemento seleccionado?</string>
     <string name="cancel_action_button">Cancelar</string>
+    <string name="service">Servicio</string>
+    <string name="service_hint">[Seleccione un servicio]</string>
+    <string name="error_select_service">Debe elegir un servicio</string>
+    <string name="ok_action_button">Aceptar</string>
 </resources>

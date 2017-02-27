@@ -16,11 +16,14 @@
 
 package com.polymitasoft.caracola.view.consumption;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
@@ -49,7 +52,7 @@ public class ConsumptionEditActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_edit_consumption);
         }
-        data = DataStoreHolder.getInstance().getDataStore(this);
+        data = CaracolaApplication.instance().getDataStore();
         int consumptionId = getIntent().getIntExtra(EXTRA_CONSUMPTION_ID, -1);
         if (consumptionId == -1) {
             int idBooking = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
@@ -84,8 +87,19 @@ public class ConsumptionEditActivity extends AppCompatActivity {
 
     private void save() {
         consumption = binding.getConsumption();
-        data.upsert(consumption);
-
-        finish();
+        if(consumption.getInternalService() == null) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.error_select_service)
+                    .setPositiveButton(R.string.ok_action_button, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+        } else {
+            data.upsert(consumption);
+            finish();
+        }
     }
 }
