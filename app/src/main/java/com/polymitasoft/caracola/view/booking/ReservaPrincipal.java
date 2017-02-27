@@ -258,11 +258,8 @@ public class ReservaPrincipal extends AppCompatActivity
         reservaPanelHabitacionActual.limpiarTodo();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void actualizarMenu(){
         EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(this);
-
         if(menu != null){
             for(int i = 0; i<bedrooms.size() ;i++){
                 menu.removeItem(i);
@@ -288,5 +285,22 @@ public class ReservaPrincipal extends AppCompatActivity
             reservaEsenaPrincipal.getReservaPanelHabitacionActual().actualizarCambioHabitacion();
         }
     }
+
+    private void refrescarCache() {
+        if(reservaEsenaPrincipal != null){
+            if(reservaEsenaPrincipal.getReservaPanelHabitacionActual() != null){
+                reservaEsenaPrincipal.getReservaPanelHabitacionActual().refrescarCache();
+            }
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        actualizarMenu();
+        refrescarCache();
+    }
+
 
 }

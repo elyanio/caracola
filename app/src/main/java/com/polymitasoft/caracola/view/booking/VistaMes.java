@@ -3,6 +3,7 @@ package com.polymitasoft.caracola.view.booking;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,6 +101,10 @@ public class VistaMes extends LinearLayout {
         }
     }
 
+    public void refrescarCache(){
+        cargarCalendarioReservas();
+    }
+
     private void ponerNoDias() {
         DayOfWeek primerDiaSemana = DayOfWeek.MONDAY;
         DayOfWeek dia_semana = inicio_mes.getDayOfWeek();
@@ -125,7 +130,6 @@ public class VistaMes extends LinearLayout {
         } else {
             for (Booking booking : preReservas) {
                 Bedroom habitacion = booking.getBedroom();
-
                 if (booking.getCheckInDate().compareTo(dia) <= 0 && booking.getCheckOutDate().compareTo(dia) >= 0 &&
                         habitacion.getId() == reservaPanelHabitacion.getHabitacion().getId()) {
                     CellLocation location;

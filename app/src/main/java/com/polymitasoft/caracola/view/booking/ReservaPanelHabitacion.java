@@ -643,6 +643,12 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
+    public void refrescarCache() {
+        for (VistaMes mes : meses) {
+            mes.refrescarCache();
+        }
+    }
+
     public void actualizarCambioHabitacion() {
         for (VistaMes mes : meses) {
             mes.actualizarCambioHabitacion();
