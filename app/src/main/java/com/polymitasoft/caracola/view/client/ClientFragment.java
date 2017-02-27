@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
 
@@ -28,7 +28,7 @@ import static butterknife.ButterKnife.findById;
  */
 public class ClientFragment extends Fragment {
 
-    private static final String ARG_BOOKING_ID = "booking-id";
+    private static final String ARG_BOOKING_ID = "bookingId";
     private OnListInteractionListener mListener;
     private ClientRecyclerViewAdapter adapter;
 
@@ -48,11 +48,6 @@ public class ClientFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_client_list, container, false);
@@ -63,7 +58,7 @@ public class ClientFragment extends Fragment {
             RecyclerView recyclerView = findById(view, R.id.list);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+            EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
             int idBooking = getArguments().getInt(ARG_BOOKING_ID);
             Booking booking = dataStore.findByKey(Booking.class, idBooking);
             adapter = new ClientRecyclerViewAdapter(dataStore, booking, mListener);

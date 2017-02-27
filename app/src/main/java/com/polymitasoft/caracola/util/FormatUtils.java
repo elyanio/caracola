@@ -39,12 +39,12 @@ public class FormatUtils {
     }
 
     public static String formatMoneyWithCurrency(BigDecimal decimal) {
-        return "$ " + decimalFormat.format(decimal);
+        return "$" + decimalFormat.format(decimal);
     }
 
     public static BigDecimal parseMoney(String money) {
         try {
-            return (BigDecimal) decimalFormat.parse(money);
+            return (BigDecimal) decimalFormat.parse(money.replace('.', ','));
         } catch (ParseException e) {
             Log.e(FormatUtils.class.toString(), "Could not parse " + money + " as a BigDecimal. Using 0 as a fallback.");
         }

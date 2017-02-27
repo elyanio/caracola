@@ -23,7 +23,7 @@ public class Bookings {
         return Period.between(booking.getCheckInDate(), booking.getCheckOutDate()).getDays() + 1;
     }
 
-    public static BigDecimal lodgingPrice(@NonNull Booking booking) {
+    public static BigDecimal lodgingCost(@NonNull Booking booking) {
         return booking.getPrice().multiply(BigDecimal.valueOf(nights(booking)));
     }
 }

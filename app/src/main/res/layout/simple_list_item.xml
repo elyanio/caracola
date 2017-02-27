@@ -30,7 +30,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="67dp"
             android:minHeight="@dimen/card_min_height">
 
                 <View android:id="@+id/color_strip"
@@ -84,13 +84,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:layout_alignParentBottom="true"
                     android:paddingBottom="4dp"
                     android:textSize="18sp"
                     tools:text="$ 2000.00"
-                    android:layout_alignBottom="@id/options_menu"
-                    android:layout_toStartOf="@id/create_transaction"
-                    android:layout_marginEnd="@dimen/edge_padding"/>
+                    android:layout_alignParentBottom="true"
+                    android:layout_toStartOf="@+id/edit_menu"
+                    android:paddingRight="12dp"/>
         </RelativeLayout>
 
 </android.support.v7.widget.CardView>

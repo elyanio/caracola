@@ -66,10 +66,24 @@ public class InternalServiceSelectorView extends LinearLayout implements View.On
         return service;
     }
 
+    public interface OnSelectedServiceListener {
+        void onSelectedService(InternalService service);
+    }
+
+    private OnSelectedServiceListener listener;
+
+    public void setOnSelectedServiceListener(OnSelectedServiceListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public void onClick(View v) {
         EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
-        final List<InternalService> serviceList = dataStore.select(InternalService.class).get().toList();
+        final List<InternalService> serviceList = dataStore
+                .select(InternalService.class)
+                .orderBy(InternalService.NAME.lower())
+                .get()
+                .toList();
         String[] services = new String[serviceList.size()];
         for(int i = 0; i < services.length; i++) {
             services[i] = serviceList.get(i).getName();
@@ -79,6 +93,9 @@ public class InternalServiceSelectorView extends LinearLayout implements View.On
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         setService(serviceList.get(which));
+                        if(listener != null) {
+                            listener.onSelectedService(service);
+                        }
                         dialog.dismiss();
                     }
                 })

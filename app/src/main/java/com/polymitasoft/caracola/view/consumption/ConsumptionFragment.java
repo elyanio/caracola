@@ -11,19 +11,27 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.SimpleListAdapter;
+import com.polymitasoft.caracola.components.SimpleViewHolder;
+import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.dataaccess.Bookings;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Consumption;
-import com.polymitasoft.caracola.util.FormatUtils;
+
+import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.requery.Persistable;
+import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
 import static butterknife.ButterKnife.findById;
+import static com.polymitasoft.caracola.dataaccess.Consumptions.cost;
+import static com.polymitasoft.caracola.util.FormatUtils.formatDate;
+import static com.polymitasoft.caracola.util.FormatUtils.formatMoneyWithCurrency;
 
 /**
  * A fragment representing a list of Items.
@@ -34,9 +42,11 @@ import static butterknife.ButterKnife.findById;
 public class ConsumptionFragment extends Fragment {
 
     private static final String ARG_BOOKING_ID = "bookingId";
+    @BindView(R.id.totalPriceText) TextView totalPriceText;
+    @BindView(R.id.consumptionPriceText) TextView consumptionPriceText;
+    @BindView(R.id.lodgingPriceText) TextView lodgingPriceText;
     private OnListInteractionListener mListener;
     private ConsumptionRecyclerViewAdapter adapter;
-    @BindView(R.id.consumptionPriceText) TextView consumptionPriceText;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,11 +64,6 @@ public class ConsumptionFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_consumption_list, container, false);
@@ -70,13 +75,11 @@ public class ConsumptionFragment extends Fragment {
             RecyclerView recyclerView = findById(view, R.id.list);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
+            EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
             int idBooking = getArguments().getInt(ARG_BOOKING_ID);
             Booking booking = dataStore.findByKey(Booking.class, idBooking);
-            adapter = new ConsumptionRecyclerViewAdapter(dataStore, booking, mListener);
+            adapter = new ConsumptionRecyclerViewAdapter(booking);
             recyclerView.setAdapter(adapter);
-
-            consumptionPriceText.setText(FormatUtils.formatMoney(Bookings.lodgingPrice(booking)));
         }
         return view;
     }
@@ -106,5 +109,59 @@ public class ConsumptionFragment extends Fragment {
 
     public interface OnListInteractionListener {
         void onConsumptionListInteraction(Consumption consumption);
+    }
+
+    class ConsumptionRecyclerViewAdapter extends SimpleListAdapter<Consumption> {
+
+        private final BookingDao bookingDao;
+        private final Booking booking;
+
+        public ConsumptionRecyclerViewAdapter(Booking booking) {
+            super(getContext(), Consumption.$TYPE);
+            this.booking = booking;
+
+            bookingDao = new BookingDao(this.dataStore);
+        }
+
+        @Override
+        public Result<Consumption> performQuery() {
+            return bookingDao.getConsumptions(booking);
+        }
+
+        @Override
+        public void onBindViewHolder(final Consumption consumption, SimpleViewHolder holder, int position) {
+            super.onBindViewHolder(consumption, holder, position);
+            holder.primaryText.setText(consumption.getInternalService().getName());
+            holder.secondaryText.setText(formatDate(consumption.getDate()));
+            holder.tertiaryText.setText(formatMoneyWithCurrency(cost(consumption)));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectConsumption(consumption);
+                }
+            });
+            holder.editMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectConsumption(consumption);
+                }
+            });
+            updateTotals();
+        }
+
+        private void selectConsumption(Consumption consumption) {
+            mListener.onConsumptionListInteraction(consumption);
+            updateTotals();
+        }
+
+        private void updateTotals() {
+            BigDecimal consumptionCost = bookingDao.getConsumptionCost(booking);
+            BigDecimal lodgingCost = Bookings.lodgingCost(booking);
+
+            consumptionPriceText.setText(formatMoneyWithCurrency(consumptionCost));
+            lodgingPriceText.setText(formatMoneyWithCurrency(lodgingCost));
+            totalPriceText.setText(formatMoneyWithCurrency(consumptionCost.add(lodgingCost)));
+        }
     }
 }

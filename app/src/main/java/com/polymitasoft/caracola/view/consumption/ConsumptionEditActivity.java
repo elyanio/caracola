@@ -30,6 +30,8 @@ import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.datamodel.ConsumptionBuilder;
 
+import org.threeten.bp.LocalDate;
+
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
@@ -62,11 +64,13 @@ public class ConsumptionEditActivity extends AppCompatActivity {
             }
             consumption = new ConsumptionBuilder()
                     .booking(booking)
+                    .date(LocalDate.now())
                     .build();
         } else {
             consumption = data.findByKey(Consumption.class, consumptionId);
         }
         binding = new ConsumptionBinding(this, consumption);
+
     }
 
     @Override

@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
@@ -53,18 +55,22 @@ public class BookingEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_booking, container, false);
-        int idBooking = getArguments().getInt(ARG_BOOKING_ID);
-        dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
-        booking = dataStore.findByKey(Booking.class, idBooking);
-        binding = new EditBookingBinding(view, booking);
+        if(view instanceof LinearLayout) {
+            int idBooking = getArguments().getInt(ARG_BOOKING_ID);
+            dataStore = CaracolaApplication.instance().getDataStore();
+            booking = dataStore.findByKey(Booking.class, idBooking);
+            binding = new EditBookingBinding(view, booking);
+        }
 
         return view;
     }
 
     void saveBooking() {
-        booking = binding.getBooking();
-        dataStore.update(booking);
-        mListener.onBookingEdited(booking);
+        if(binding != null) {
+            booking = binding.getBooking();
+            dataStore.update(booking);
+            mListener.onBookingEdited(booking);
+        }
     }
 
     @Override

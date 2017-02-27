@@ -5,6 +5,7 @@ import android.widget.EditText;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Consumption;
+import com.polymitasoft.caracola.datamodel.InternalService;
 import com.polymitasoft.caracola.util.FormatUtils;
 import com.polymitasoft.caracola.view.service.InternalServiceSelectorView;
 
@@ -26,6 +27,12 @@ class ConsumptionBinding {
     ConsumptionBinding(Activity activity, Consumption consumption) {
         ButterKnife.bind(this, activity);
         setConsumption(consumption);
+        service.setOnSelectedServiceListener(new InternalServiceSelectorView.OnSelectedServiceListener() {
+            @Override
+            public void onSelectedService(InternalService service) {
+                price.setText(FormatUtils.formatMoney(service.getDefaultPrice()));
+            }
+        });
     }
 
     public Consumption getConsumption() {
