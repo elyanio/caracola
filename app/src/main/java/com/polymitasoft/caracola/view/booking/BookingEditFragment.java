@@ -3,15 +3,12 @@ package com.polymitasoft.caracola.view.booking;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 
 import io.requery.Persistable;
@@ -55,18 +52,16 @@ public class BookingEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_booking, container, false);
-        if(view instanceof LinearLayout) {
-            int idBooking = getArguments().getInt(ARG_BOOKING_ID);
-            dataStore = CaracolaApplication.instance().getDataStore();
-            booking = dataStore.findByKey(Booking.class, idBooking);
-            binding = new EditBookingBinding(view, booking);
-        }
+        int idBooking = getArguments().getInt(ARG_BOOKING_ID);
+        dataStore = CaracolaApplication.instance().getDataStore();
+        booking = dataStore.findByKey(Booking.class, idBooking);
+        binding = new EditBookingBinding(view, booking);
 
         return view;
     }
 
     void saveBooking() {
-        if(binding != null) {
+        if (binding != null) {
             booking = binding.getBooking();
             dataStore.update(booking);
             mListener.onBookingEdited(booking);

@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.IBooking;
@@ -65,7 +66,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         }
         setContentView(R.layout.list_items);
         ButterKnife.bind(this);
-        data = DataStoreHolder.getInstance().getDataStore(this);
+        data = CaracolaApplication.instance().getDataStore();
         executor = Executors.newSingleThreadExecutor();
         adapter = new BookingAdapter(data);
         adapter.setExecutor(executor);
@@ -110,7 +111,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
     /**
      * Created by rainermf on 15/2/2017.
      */
-    class BookingAdapter extends QueryRecyclerAdapter<IBooking, BookingHolder> implements View.OnClickListener {
+    class BookingAdapter extends QueryRecyclerAdapter<Booking, BookingHolder> implements View.OnClickListener {
 
         private final Random random = new Random();
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
@@ -122,19 +123,19 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         }
 
         @Override
-        public Result<IBooking> performQuery() {
+        public Result<Booking> performQuery() {
             // this is all persons in the db sorted by their name
             // note this method in executed in a background thread.
             // (Alternatively RxJava w/ RxBinding could be used)
             LocalDate today = LocalDate.now();
-            return data.select(IBooking.class)
+            return data.select(Booking.class)
                     .where(Booking.CHECK_IN_DATE.lessThanOrEqual(today))
                     .and(Booking.CHECK_OUT_DATE.greaterThanOrEqual(today))
                     .get();
         }
 
         @Override
-        public void onBindViewHolder(IBooking item, BookingHolder holder,
+        public void onBindViewHolder(Booking item, BookingHolder holder,
                                      int position) {
             holder.name.setText(item.getBedroom().getName());
             holder.image.setBackgroundColor(colors[random.nextInt(colors.length)]);
@@ -152,7 +153,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            IBooking booking = (IBooking) v.getTag();
+            Booking booking = (Booking) v.getTag();
             if (booking != null) {
                 Intent intent = new Intent(CurrentBookingsActivity.this, BookingEditActivity.class);
                 intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, booking.getId());
