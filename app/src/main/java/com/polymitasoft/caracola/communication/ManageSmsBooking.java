@@ -78,6 +78,8 @@ public class ManageSmsBooking {
         this.nota = booking.getNote();
         this.price = FormatUtils.formatMoney(booking.getPrice());
         this.roomCode = booking.getBedroom().getCode();
+
+        dataStore = DataStoreHolder.getInstance().getDataStore(context);
     }
 
     public ManageSmsBooking(Booking oldBooking, Booking newBooking, Context context) {
@@ -91,6 +93,7 @@ public class ManageSmsBooking {
         this.roomCode = oldBooking.getBedroom().getCode();
         oldFecha_inicio = oldBooking.getCheckInDate();
 
+        dataStore = DataStoreHolder.getInstance().getDataStore(context);
     }
 
     public LocalDate getFechaInicio() {
