@@ -116,10 +116,11 @@ public class ReservaPanelHabitacion extends LinearLayout {
         dialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-                dataStore.delete(preReservaSelecc);
 
                 //todo mensaje eliminar asere ....
                 sendMessage(preReservaSelecc);
+
+                dataStore.delete(preReservaSelecc);
 
                 VistaDia vistaDiaFictIni = obtenerVistaDiaFict(preReservaSelecc.getCheckInDate());
                 VistaDia vistaDiaFictFin = obtenerVistaDiaFict(preReservaSelecc.getCheckOutDate());

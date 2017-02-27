@@ -109,7 +109,7 @@ public class ManageSmsBooking {
     }
 
     public void buildMessage() {
-        //  mensaje = "<$#17-01-30#17-02-05#1#1#Aqui va una notica de prerreserva. Esto esta de pinga asere, estoy loco por irme y no me dejaaaannn";
+
         int state = 0;
         switch (estado) {
             case PENDING:
@@ -122,11 +122,8 @@ public class ManageSmsBooking {
                 state = CHECKED_IN;
                 break;
         }
-
         LocalDateConverter localDateConverter = new LocalDateConverter();
         mensaje = "<$#" + localDateConverter.convertToPersisted(fecha_inicio) + "#" + localDateConverter.convertToPersisted(fecha_fin) + "#" + price + "#" + state + "#" + roomCode + "#" + nota;
-//        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
-//        Log.e("asio", "                          ddsfdsfsdfsdfsfsfsfsfsfsfsfsfsfsfwefffghrfksdjskdfhsfkhskdhk"+mensaje);
     }
 
     public void buildUpdateMessage() {
@@ -143,7 +140,6 @@ public class ManageSmsBooking {
                 state = CHECKED_IN;
                 break;
         }
-
         LocalDateConverter localDateConverter = new LocalDateConverter();
         mensaje = ">$#" + localDateConverter.convertToPersisted(oldFecha_inicio) + "#" + localDateConverter.convertToPersisted(fecha_inicio) + "#" + localDateConverter.convertToPersisted(fecha_fin) + "#" + price + "#" + state + "#" + roomCode + "#" + nota;
 //        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
