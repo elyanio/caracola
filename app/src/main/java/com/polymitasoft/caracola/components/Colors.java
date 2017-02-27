@@ -17,7 +17,7 @@ public enum Colors {
 
     @ColorInt
     public int getColor(int index) {
-        return colors[(index << 2) % size];
+        return colors[index % size];
     }
 
     @NonNull

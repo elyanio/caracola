@@ -61,7 +61,7 @@ public class ClientFragment extends Fragment {
             EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
             int idBooking = getArguments().getInt(ARG_BOOKING_ID);
             Booking booking = dataStore.findByKey(Booking.class, idBooking);
-            adapter = new ClientRecyclerViewAdapter(dataStore, booking, mListener);
+            adapter = new ClientRecyclerViewAdapter(getContext(), booking, mListener);
             recyclerView.setAdapter(adapter);
         }
         return view;
