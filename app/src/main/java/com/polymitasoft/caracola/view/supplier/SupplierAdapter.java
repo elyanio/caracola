@@ -1,10 +1,10 @@
 package com.polymitasoft.caracola.view.supplier;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
-import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
@@ -50,5 +50,17 @@ class SupplierAdapter extends SimpleListAdapter<Supplier> {
     public void onBindViewHolder(Supplier item, SimpleViewHolder holder, int position) {
         super.onBindViewHolder(item, holder, position);
         holder.primaryText.setText(item.getName());
+    }
+
+    @Override
+    protected void viewItem(Supplier item) {
+        editItem(item);
+    }
+
+    @Override
+    protected void editItem(Supplier item) {
+        Intent intent = new Intent(context, SupplierEditActivity.class);
+        intent.putExtra(SupplierEditActivity.EXTRA_SUPPLIER_ID, item.getId());
+        context.startActivity(intent);
     }
 }

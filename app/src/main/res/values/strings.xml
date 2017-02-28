@@ -133,4 +133,9 @@
     <string name="contacts_services_tab_title">Servicios</string>
     <string name="contacts_all_tab_title">Contactos</string>
     <string name="title_suppliers">Contactos</string>
+    <string name="title_edit_supplier">Editar contacto</string>
+    <string name="supplier_name">Nombre</string>
+    <string name="supplier_description">Descripción</string>
+    <string name="supplier_email">E-mail</string>
+    <string name="supplier_address">Dirección</string>
 </resources>
