@@ -38,7 +38,7 @@ public class InternalServiceListDialog extends Dialog {
         setContentView(R.layout.dialog_service_list);
         ButterKnife.bind(this);
 
-        listAdapter = new InternalServiceListAdapter(this.getContext());
+        listAdapter = new InternalServiceListAdapter();
         serviceListView.setAdapter(listAdapter);
         listAdapter.queryAsync();
 

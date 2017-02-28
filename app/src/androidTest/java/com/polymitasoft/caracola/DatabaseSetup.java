@@ -1,8 +1,6 @@
 package com.polymitasoft.caracola;
 
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
-import com.polymitasoft.caracola.datamodel.BedroomBuilder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Client;
@@ -27,7 +25,6 @@ import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
 import static android.os.Environment.getExternalStorageDirectory;
-import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static com.polymitasoft.caracola.datamodel.Gender.FEMININE;
 import static com.polymitasoft.caracola.datamodel.Gender.MASCULINE;
 import static java.util.Arrays.asList;
@@ -57,7 +54,7 @@ public class DatabaseSetup {
         if (dbFile.exists()) {
             dbFile.delete();
         }
-        data = DataStoreHolder.getInstance().getDataStore(getTargetContext());
+        data = CaracolaApplication.instance().getDataStore();
     }
 
     public void start() {

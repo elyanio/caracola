@@ -21,9 +21,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
-import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 
 import io.requery.Persistable;
@@ -47,7 +46,7 @@ public class ExternalServiceEditActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_edit_external_service);
         }
-        data = DataStoreHolder.getInstance().getDataStore(this);
+        data = CaracolaApplication.instance().getDataStore();
         int serviceId = getIntent().getIntExtra(EXTRA_SERVICE_ID, -1);
         if (serviceId == -1) {
             service = new ExternalService();

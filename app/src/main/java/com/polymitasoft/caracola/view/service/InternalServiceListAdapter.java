@@ -4,15 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.InternalService;
 import com.polymitasoft.caracola.util.FormatUtils;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.requery.Persistable;
 import io.requery.android.QueryAdapter;
@@ -26,13 +24,13 @@ import static com.polymitasoft.caracola.datamodel.InternalService.NAME;
  * @since 22/2/2017
  */
 
-public class InternalServiceListAdapter extends QueryAdapter<InternalService> {
+class InternalServiceListAdapter extends QueryAdapter<InternalService> {
 
-    EntityDataStore<Persistable> dataStore;
+    private EntityDataStore<Persistable> dataStore;
 
-    public InternalServiceListAdapter(Context context) {
+    InternalServiceListAdapter() {
         super(InternalService.$TYPE);
-        dataStore = DataStoreHolder.getInstance().getDataStore(context);
+        dataStore = CaracolaApplication.instance().getDataStore();
     }
 
     @Override
