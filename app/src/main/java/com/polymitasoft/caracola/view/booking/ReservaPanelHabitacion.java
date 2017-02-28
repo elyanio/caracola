@@ -118,7 +118,9 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
 
                 //todo mensaje eliminar asere ....
-                sendMessage(preReservaSelecc);
+                if (preReservaSelecc.getBedroom().getCode() != 0) {
+                    sendMessage(preReservaSelecc);
+                }
 
                 dataStore.delete(preReservaSelecc);
 
@@ -138,7 +140,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
         ManageSmsBooking manageSmsBooking = new ManageSmsBooking(newBooking, getContext());
         manageSmsBooking.buildDeleteMessage();
-        //manageSmsBooking.enviar_mensaje();
+        manageSmsBooking.enviar_mensaje();
     }
 
     public boolean esModoTodo() {
@@ -639,8 +641,9 @@ public class ReservaPanelHabitacion extends LinearLayout {
         dataStore.insert(booking);
 
 //        todo enviar menssaje
-        sendMessage(diaMenor.getCalendar(), diaMayor.getCalendar(), estado, habitacion.getCode(), nota, price);
-
+        if (habitacion.getCode() != 0) {
+            sendMessage(diaMenor.getCalendar(), diaMayor.getCalendar(), estado, habitacion.getCode(), nota, price);
+        }
         // adicionar en los meses necesarios
         adicionarCalendarioReservaAMeses(booking);
     }
@@ -652,7 +655,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         manageSmsBooking.findBedroom();
         manageSmsBooking.findManager();
         manageSmsBooking.buildMessage();
-//        manageSmsBooking.enviar_mensaje();
+        manageSmsBooking.enviar_mensaje();
         //bedroom.setPriceInHighSeason(FormatUtils.parseMoney(priceInHighSeason.getText().toString()));
     }
 

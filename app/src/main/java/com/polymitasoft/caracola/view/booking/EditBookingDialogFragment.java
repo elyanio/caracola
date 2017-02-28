@@ -163,10 +163,10 @@ public class EditBookingDialogFragment extends DialogFragment {
         dataStore.update(preReserva);
 
         //todo enviar mensaje editadra
-        sendMessage(oldBooking, preReserva);
-
+        if (preReserva.getBedroom().getCode() != 0) {
+            sendMessage(oldBooking, preReserva);
+        }
         mCallback.onBookingEdit(oldBooking, preReserva);
-
         dismiss();
     }
 
@@ -176,8 +176,7 @@ public class EditBookingDialogFragment extends DialogFragment {
         manageSmsBooking.findBedroom();
         manageSmsBooking.findManager();
         manageSmsBooking.buildUpdateMessage();
-//        manageSmsBooking.enviar_mensaje();
-
+        manageSmsBooking.enviar_mensaje();
     }
 
     // Container Activity must implement this interface
@@ -200,5 +199,4 @@ public class EditBookingDialogFragment extends DialogFragment {
                     + " must implement OnHeadlineSelectedListener");
         }
     }
-
 }
