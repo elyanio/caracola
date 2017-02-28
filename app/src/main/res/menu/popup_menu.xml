@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_hostel_proveedor"
+        android:id="@+id/menu_hostel_manager"
         android:title="Asignar gestor" />
     <item
         android:id="@+id/menu_hostel_habitacion"

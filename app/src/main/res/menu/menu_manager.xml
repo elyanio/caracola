@@ -8,9 +8,4 @@
         android:title="Add"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action_hg_done"
-        android:icon="@drawable/ic_done_black_24dp"
-        android:title="Done"
-        app:showAsAction="always" />
 </menu>

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
@@ -77,31 +78,42 @@ public class Manager_Adapter extends BaseAdapter {
 
         TextView nombre_gestor = (TextView) item.findViewById(R.id.name_gestor);
         TextView numero_gestor = (TextView) item.findViewById(R.id.number_gestor);
-        CheckBox checkBox = (CheckBox) item.findViewById(R.id.checkBox_manager);
+        ImageView imageView = (ImageView) item.findViewById(R.id.eliminar_manager_button);
+
+//        CheckBox checkBox = (CheckBox) item.findViewById(R.id.checkBox_manager);
 
         nombre_gestor.setText(managers.get(position).getName());
         numero_gestor.setText(managers.get(position).getPhoneNumber());
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dataStore.delete(managers.get(position));
+                actualizarListaManager();
+                notifyDataSetChanged();
+            }
+        });
 
 //        if (contain(managers.get(position))) {
 //            checkBox.setChecked(true);
 //            isChecked[position] = true;
 //        }
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (isChecked[position]) {
-                    isChecked[position] = false;
-                } else {
-                    isChecked[position] = true;
-                }
-
-            }
-        });
+//        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (isChecked[position]) {
+//                    isChecked[position] = false;
+//                } else {
+//                    isChecked[position] = true;
+//                }
+//
+//            }
+//        });
         return item;
     }
 
-    public void actualizarListaManager()
-    {
+    public void actualizarListaManager() {
         Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(codeHostel)).get().first();
         managers = dataStore.select(Manager.class).where(Manager.HOSTEL.eq(hostel)).get().toList();
         isChecked = new boolean[managers.size()];

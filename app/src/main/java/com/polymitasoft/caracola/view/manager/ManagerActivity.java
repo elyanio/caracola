@@ -9,7 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Hostel;
@@ -31,6 +33,7 @@ public class ManagerActivity extends AppCompatActivity {
     private String manager_name;
     private String manager_number;
     private String codeHostel;
+    private ImageView delete_manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +46,7 @@ public class ManagerActivity extends AppCompatActivity {
         manager_adapter = new Manager_Adapter(this, codeHostel);
         managers = (ListView) findViewById(R.id.lista_gestor);
         managers.setAdapter(manager_adapter);
-        manager_adapter.notifyDataSetChanged();
 
-        eventos();
     }
 
     @Override
@@ -62,47 +63,9 @@ public class ManagerActivity extends AppCompatActivity {
             case R.id.action_hg_add:
                 insertarManager();
                 break;
-            case R.id.action_hg_done:
-                actualizarManagers();
-                break;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void actualizarManagers() {
-
-        List<Manager> managers = manager_adapter.getManagers();
-        boolean[] isChecked = manager_adapter.getIsChecked();
-        EntityDataStore<Persistable> dataStore = manager_adapter.getDataStore();
-
-        for (int i = 0; i < isChecked.length; i++) {
-
-            if (isChecked[i]) {
-                dataStore.delete(managers.get(i));
-            }
-        }
-        manager_adapter.actualizarListaManager();
-        manager_adapter.notifyDataSetChanged();
-    }
-
-    private void eventos() {
-        managers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-//                Intent intent = new Intent(ManagerActivity.this, Hostal_Activity.class);
-//                Gestor gestor = (Gestor) manager_adapter.getItem(position);
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("IDGESTOR", gestor.getId_auto());
-//                bundle.putInt("ESTADO", estado);
-//
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//                finish();
-            }
-        });
     }
 
     private void insertarManager() {
@@ -115,17 +78,30 @@ public class ManagerActivity extends AppCompatActivity {
                 EditText name_manager = (EditText) inflate.findViewById(R.id.manager_editText_nombre);
                 EditText number_manager = (EditText) inflate.findViewById(R.id.manager_editText_numero);
 
-                Manager manager = new Manager();
-                manager.setName(name_manager.getText().toString());
-                manager.setPhoneNumber(number_manager.getText().toString());
+                String number = number_manager.getText().toString();
 
-                EntityDataStore<Persistable> dataStore = manager_adapter.getDataStore();
-                Result<Hostel> hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(codeHostel)).get();
-                manager.setHostel(hostel.first());
+                if (name_manager.getText().toString().length() > 0) {
+                    if (number.length() == 8 && number.charAt(0) == '5') {
+                        Manager manager = new Manager();
+                        manager.setName(name_manager.getText().toString());
+                        manager.setPhoneNumber(number_manager.getText().toString());
 
-                dataStore.upsert(manager);
+                        EntityDataStore<Persistable> dataStore = manager_adapter.getDataStore();
+                        Result<Hostel> hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(codeHostel)).get();
+                        manager.setHostel(hostel.first());
 
-                manager_adapter.actualizarListaManager();
+                        dataStore.upsert(manager);
+
+                        manager_adapter.actualizarListaManager();
+                    } else {
+                        Toast.makeText(ManagerActivity.this, "Su numero no es correcto.", Toast.LENGTH_LONG).show();
+                        insertarManager();
+                    }
+                } else {
+                    Toast.makeText(ManagerActivity.this, "Escriba los datos por favor.", Toast.LENGTH_LONG).show();
+                    insertarManager();
+                }
+
             }
         }).setNegativeButton("Cancelar", null);
         adb.setCancelable(false);

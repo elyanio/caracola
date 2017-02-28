@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,15 +17,11 @@ import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Hostel;
-import com.polymitasoft.caracola.datamodel.Manager;
 import com.polymitasoft.caracola.view.bedroom.BedroomHostelActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomLonlyActivity;
 import com.polymitasoft.caracola.view.manager.ManagerActivity;
 
-import java.util.ArrayList;
-
 import io.requery.Persistable;
-import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
 /**
@@ -64,7 +59,7 @@ public class HostelActivity extends AppCompatActivity {
 
                         int id = item.getItemId();
                         switch (id) {
-                            case R.id.menu_hostel_proveedor:
+                            case R.id.menu_hostel_manager:
                                 startActivity(new Intent(HostelActivity.this, ManagerActivity.class).putExtra("CODE", hostel.getCode()));
                                 break;
                             case R.id.menu_hostel_habitacion:
@@ -160,28 +155,5 @@ public class HostelActivity extends AppCompatActivity {
         EntityDataStore<Persistable> dataStore = hostelAdapter.getDataStore();
         dataStore.insert(hostel);
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == RESULT_OK) {
-//
-//            Hostel hostel = new Hostel();
-//            hostel.setName(nameHostal);
-//            hostel.setCode(codeHostal);
-//
-//            EntityDataStore<Persistable> dataStore = hostelAdapter.getDataStore();
-//            ArrayList<Integer> checks = data.getIntegerArrayListExtra("CHECK");
-//
-//            for (int check : checks) {
-//                Result<Manager> manager = dataStore.select(Manager.class).where(Manager.ID.eq(check)).get();
-//                Manager mng = manager.first();
-//                mng.setHostel(hostel);
-//
-//                dataStore.insert(mng);
-//            }
-//        }
-//    }
 }
 
