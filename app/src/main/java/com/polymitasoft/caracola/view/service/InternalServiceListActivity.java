@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.RecyclerListActivity;
@@ -58,22 +57,14 @@ public class InternalServiceListActivity extends RecyclerListActivity<InternalSe
             super.onBindViewHolder(item, holder, position);
             holder.primaryText.setText(item.getName());
             holder.secondaryText.setText(FormatUtils.formatMoneyWithCurrency(item.getDefaultPrice()));
-
-            holder.editMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editItem(item);
-                }
-            });
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editItem(item);
-                }
-            });
         }
 
-        private void editItem(InternalService item) {
+        @Override
+        protected void viewItem(InternalService item) {
+            editItem(item);
+        }
+
+        protected void editItem(InternalService item) {
             Intent intent = new Intent(context, InternalServiceEditActivity.class);
             intent.putExtra(InternalServiceEditActivity.EXTRA_SERVICE_ID, item.getId());
             context.startActivity(intent);

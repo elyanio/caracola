@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.RecyclerListActivity;
@@ -53,21 +52,13 @@ public class BedroomListActivity extends RecyclerListActivity<Bedroom> {
         public void onBindViewHolder(final Bedroom item, SimpleViewHolder holder, int position) {
             super.onBindViewHolder(item, holder, position);
             holder.primaryText.setText(item.getName());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editItem(item);
-                }
-            });
-            holder.editMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editItem(item);
-                }
-            });
         }
 
-        private void editItem(Bedroom item) {
+        protected void viewItem(Bedroom item) {
+            editItem(item);
+        }
+
+        protected void editItem(Bedroom item) {
             Intent intent = new Intent(context, BedroomEditActivity.class);
             intent.putExtra(BedroomEditActivity.EXTRA_BEDROOM_ID, item.getId());
             context.startActivity(intent);

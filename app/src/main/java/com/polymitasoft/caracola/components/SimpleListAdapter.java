@@ -1,6 +1,8 @@
 package com.polymitasoft.caracola.components;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import io.requery.meta.Type;
  */
 
 public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerListAdapter<E, SimpleViewHolder> {
+
+    private boolean deleteConfirmationEnabled = true;
 
     public SimpleListAdapter(Context context, Type<E> type) {
         super(context, type);
@@ -38,5 +42,63 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
                 handleDeletion(item);
             }
         });
+        holder.editMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editItem(item);
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewItem(item);
+            }
+        });
+    }
+
+    public boolean isDeleteConfirmationEnabled() {
+        return deleteConfirmationEnabled;
+    }
+
+    public final void setDeleteConfirmationEnabled(boolean deleteConfirmationEnabled) {
+        this.deleteConfirmationEnabled = deleteConfirmationEnabled;
+    }
+
+    protected CharSequence getDeleteConfirmationMessage(E item) {
+        return context.getString(R.string.delete_confirmation_message);
+    }
+
+    protected void handleDeletion(final E item) {
+        if(isDeleteConfirmationEnabled()) {
+            new AlertDialog.Builder(context)
+                    .setPositiveButton(R.string.yes_action_button, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            deleteItem(item);
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel_action_button, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setMessage(getDeleteConfirmationMessage(item))
+                    .show();
+        }
+    }
+
+    protected void deleteItem(final E item) {
+        dataStore.delete(item);
+        queryAsync();
+    }
+
+    protected void editItem(final E item) {
+
+    }
+
+    protected void viewItem(final E item) {
+
     }
 }

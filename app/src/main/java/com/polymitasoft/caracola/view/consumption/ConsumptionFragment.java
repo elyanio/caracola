@@ -116,7 +116,7 @@ public class ConsumptionFragment extends Fragment {
         private final BookingDao bookingDao;
         private final Booking booking;
 
-        public ConsumptionRecyclerViewAdapter(Booking booking) {
+        ConsumptionRecyclerViewAdapter(Booking booking) {
             super(getContext(), Consumption.$TYPE);
             this.booking = booking;
 
@@ -134,23 +134,15 @@ public class ConsumptionFragment extends Fragment {
             holder.primaryText.setText(consumption.getInternalService().getName());
             holder.secondaryText.setText(formatDate(consumption.getDate()));
             holder.tertiaryText.setText(formatMoneyWithCurrency(cost(consumption)));
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectConsumption(consumption);
-                }
-            });
-            holder.editMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectConsumption(consumption);
-                }
-            });
             updateTotals();
         }
 
-        private void selectConsumption(Consumption consumption) {
+        @Override
+        protected void viewItem(Consumption item) {
+            editItem(item);
+        }
+
+        protected void editItem(Consumption consumption) {
             mListener.onConsumptionListInteraction(consumption);
             updateTotals();
         }
