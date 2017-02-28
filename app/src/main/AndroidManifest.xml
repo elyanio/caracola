@@ -40,7 +40,8 @@
         <activity android:name=".view.service.InternalServiceEditActivity" />
         <activity android:name=".view.supplier.ExternalServiceListActivity" />
         <activity android:name=".view.supplier.ExternalServiceEditActivity" />
-        <activity android:name=".view.supplier.SupplierListActivity" />
+        <activity android:name=".view.supplier.SupplierListActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.consumption.ConsumptionEditActivity" />
         <activity android:name=".view.client.ClientEditActivity" />
         <activity android:name=".view.bedroom.BedroomListActivity" />

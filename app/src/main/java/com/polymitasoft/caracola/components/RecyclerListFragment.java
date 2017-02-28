@@ -20,9 +20,9 @@ import static butterknife.ButterKnife.findById;
  * @since 27/2/2017
  */
 
-public abstract class RecyclerListFragment<T> extends Fragment {
+public abstract class RecyclerListFragment<T, L> extends Fragment {
 
-    private OnListInteractionListener<T> mListener;
+    private L mListener;
     private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
 
     protected abstract QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> createAdapter();
@@ -51,9 +51,10 @@ public abstract class RecyclerListFragment<T> extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListInteractionListener) {
-            mListener = (OnListInteractionListener<T>) context;
-        } else {
+
+        try {
+            mListener = (L) context;
+        } catch (ClassCastException e){
             throw new RuntimeException(context.toString()
                     + " must implement OnListInteractionListener");
         }
@@ -63,9 +64,5 @@ public abstract class RecyclerListFragment<T> extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public interface OnListInteractionListener<T> {
-        void onClientListInteraction(T item);
     }
 }

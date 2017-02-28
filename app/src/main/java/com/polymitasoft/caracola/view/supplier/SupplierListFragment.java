@@ -17,11 +17,20 @@ import io.requery.sql.EntityDataStore;
  * @since 27/2/2017
  */
 
-public class SupplierListFragment extends RecyclerListFragment<Supplier> {
+public class SupplierListFragment extends RecyclerListFragment<Supplier, SupplierListFragment.OnListInteractionListener> {
 
     public static final String ARG_SERVICE_ID = "serviceId";
 
     public SupplierListFragment() {
+    }
+
+    public static SupplierListFragment newInstance() {
+        
+        Bundle args = new Bundle();
+        
+        SupplierListFragment fragment = new SupplierListFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     public static SupplierListFragment newInstance(ExternalService externalService) {
@@ -40,5 +49,9 @@ public class SupplierListFragment extends RecyclerListFragment<Supplier> {
         int idService = getArguments().getInt(ARG_SERVICE_ID);
         ExternalService service = dataStore.findByKey(ExternalService.class, idService);
         return new SupplierAdapter(getContext(), service);
+    }
+
+    public interface OnListInteractionListener {
+        void onSupplierListInteraction(Supplier item);
     }
 }

@@ -1,5 +1,6 @@
 package com.polymitasoft.caracola.view.supplier;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
 import com.polymitasoft.caracola.components.RecyclerListFragment;
@@ -12,7 +13,16 @@ import io.requery.android.QueryRecyclerAdapter;
  * @since 27/2/2017
  */
 
-public class ExternalServiceListFragment extends RecyclerListFragment<ExternalService> {
+public class ExternalServiceListFragment extends RecyclerListFragment<ExternalService, ExternalServiceListFragment.OnListInteractionListener> {
+
+    public static ExternalServiceListFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        ExternalServiceListFragment fragment = new ExternalServiceListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public ExternalServiceListFragment() {
     }
@@ -20,5 +30,9 @@ public class ExternalServiceListFragment extends RecyclerListFragment<ExternalSe
     @Override
     protected QueryRecyclerAdapter<ExternalService, ? extends RecyclerView.ViewHolder> createAdapter() {
         return new ExternalServiceAdapter(getContext());
+    }
+
+    public interface OnListInteractionListener {
+        void onServiceListInteraction(ExternalService item);
     }
 }
