@@ -20,8 +20,6 @@ import io.requery.sql.EntityDataStore;
 public class SupplierListFragment extends RecyclerListFragment<Supplier> {
 
     public static final String ARG_SERVICE_ID = "serviceId";
-    private SupplierAdapter adapter;
-    private OnListInteractionListener mListener;
 
     public SupplierListFragment() {
     }
