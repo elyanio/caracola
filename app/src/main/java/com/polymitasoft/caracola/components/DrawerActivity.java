@@ -89,7 +89,7 @@ public class DrawerActivity extends AppCompatActivity implements
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.nav_gestor:
+            case R.id.nav_hostal:
                 startActivity(new Intent(this, HostelActivity.class));
         }
 

@@ -137,13 +137,13 @@ public class ReservaPrincipal extends AppCompatActivity
         // Create and show the dialog.
         VistaDia primerDiaSelec = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getPrimerDiaSelec();
         VistaDia segundoDiaSelec = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getSegundoDiaSelec();
-        DisponibilidadDialogFragment newFragment = DisponibilidadDialogFragment.newInstance(primerDiaSelec.getCalendar(),segundoDiaSelec.getCalendar());
+        DisponibilidadDialogFragment newFragment = DisponibilidadDialogFragment.newInstance(primerDiaSelec.getCalendar(), segundoDiaSelec.getCalendar());
         newFragment.show(ft, "show_disponibilidad");
     }
 
-    public List<Bedroom> obtenerDisponibilidad(LocalDate dia1, LocalDate dia2){
-        List<Bedroom> bedrooms = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().disponibilidad(dia1,dia2);
-        return  bedrooms;
+    public List<Bedroom> obtenerDisponibilidad(LocalDate dia1, LocalDate dia2) {
+        List<Bedroom> bedrooms = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().disponibilidad(dia1, dia2);
+        return bedrooms;
     }
 
     @Override
@@ -157,13 +157,13 @@ public class ReservaPrincipal extends AppCompatActivity
         ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
 //        panelHabitacionActual.setPrimerDiaSelec(panelHabitacionActual.obtenerVistaDiaFict(dia1));
 //        panelHabitacionActual.setSegundoDiaSelec(panelHabitacionActual.obtenerVistaDiaFict(dia2));
-        DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this,bedroom,panelHabitacionActual.obtenerVistaDiaFict(dia1),panelHabitacionActual.obtenerVistaDiaFict(dia2),true);
+        DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this, bedroom, panelHabitacionActual.obtenerVistaDiaFict(dia1), panelHabitacionActual.obtenerVistaDiaFict(dia2), true);
         dialog.show();
     }
 
     public void clickPreR() {
         ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
-        DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this, (Bedroom) panelHabitacionActual.getHabitacion(),panelHabitacionActual.getPrimerDiaSelec(),panelHabitacionActual.getSegundoDiaSelec(),false);
+        DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this, (Bedroom) panelHabitacionActual.getHabitacion(), panelHabitacionActual.getPrimerDiaSelec(), panelHabitacionActual.getSegundoDiaSelec(), false);
         dialog.show();
     }
 
@@ -222,10 +222,10 @@ public class ReservaPrincipal extends AppCompatActivity
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.nav_gestor:
+            case R.id.nav_hostal:
                 startActivity(new Intent(this, HostelActivity.class));
+                break;
         }
-
         DrawerLayout drawer = findById(this, R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -260,12 +260,12 @@ public class ReservaPrincipal extends AppCompatActivity
 
     public void actualizarMenu(){
         EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(this);
-        if(menu != null){
-            for(int i = 0; i<bedrooms.size() ;i++){
+        if (menu != null) {
+            for (int i = 0; i < bedrooms.size(); i++) {
                 menu.removeItem(i);
             }
             bedrooms = dataStore.select(Bedroom.class).orderBy(Bedroom.NAME).get().toList();
-            for(int i = 0; i < bedrooms.size(); i++ ){
+            for (int i = 0; i < bedrooms.size(); i++) {
                 Bedroom bedroom = bedrooms.get(i);
                 menu.add(0, i, 0, bedroom.getName());
             }

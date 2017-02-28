@@ -6,13 +6,14 @@ import android.content.Intent;
 import android.telephony.SmsMessage;
 
 import com.polymitasoft.caracola.CaracolaApplication;
-import com.polymitasoft.caracola.Notification.StateBar;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Hostel;
+import com.polymitasoft.caracola.datamodel.LocalDateConverter;
 import com.polymitasoft.caracola.datamodel.Manager;
+import com.polymitasoft.caracola.notification.StateBar;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -48,7 +49,6 @@ public class Receiver extends BroadcastReceiver {
                 for (int i = 0; i < msgs.length; i++) {
                     number_manager = msgs[i].getOriginatingAddress();
                     str += msgs[i].getMessageBody().toString();
-                    str += "\n";
                 }
             }
             String[] valores = str.split("#");
@@ -61,41 +61,61 @@ public class Receiver extends BroadcastReceiver {
                     if (chequearFidelidadMensaje(context, valores[5], number_manager)) {
 
                         insertarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], context);
+
+                        String mensaje = "Nueva reserva gestionada.\nFecha de inicio: " + valores[1] + "\nFecha final: " +
+                                valores[2] + "\nTipo de Reserva: " + valores[3] + "\n" + valores[6];
                         StateBar stateBar = new StateBar();
-                        stateBar.notificar(context, CaracolaApplication.class, "Nueva Prerreserva", "Hay vejoooooo", "Info", "Tickerrrr", "Notaaaaa");
+                        stateBar.notificar(context, CaracolaApplication.class, "Nueva Reserva", number_manager, "Phone", "", mensaje);
+
+                        Mensajero.confirmar_recibo(number_manager);
                     }
-                } else if (valores[0].equals(">$")) // este simbolo significa que es reserva
+                } else if (valores[0].equals(">$")) // este simbolo actualizar
                 {
                     //>$#2017-01-10#2017-02-16#2017-02-24#30,00#2#0#Holaaaaaaaaa
                     if (chequearFidelidadMensaje(context, valores[6], number_manager)) {
 
                         actualizarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], valores[7], context);
 
+                        String mensaje = "Actualizacion de reserva.\nFecha de inicio: " + valores[1] + "\nFecha final: " +
+                                valores[2] + "\nTipo de Reserva: " + valores[3] + "\n" + valores[6];
+
                         StateBar stateBar = new StateBar();
-                        stateBar.notificar(context, CaracolaApplication.class, "Nueva Prerreserva", "Hay vejoooooo", "Info", "Tickerrrr", "Notaaaaa");
+                        stateBar.notificar(context, CaracolaApplication.class, "Actualizacion de reserva", number_manager, "Phone", "", mensaje);
+
+                        Mensajero.confirmar_recibo(number_manager);
                     }
                 } else if (valores[0].equals("$$")) {
+                    //$$#2017-02-16#111
                     if (chequearFidelidadMensaje(context, valores[2], number_manager)) {
 
-                        borrarBooking(valores[1], valores[2], context);
+                        Booking booking = borrarBooking(valores[1], valores[2], context);
+
+                        LocalDateConverter localDateConverter = new LocalDateConverter();
+                        String mensaje = "Actualizacion de reserva.\nFecha de inicio: " + localDateConverter.convertToPersisted(booking.getCheckInDate()) + "\nFecha final: " +
+                                localDateConverter.convertToPersisted(booking.getCheckOutDate()) + "\nHabitacion: " + booking.getBedroom().getName();
 
                         StateBar stateBar = new StateBar();
-                        stateBar.notificar(context, CaracolaApplication.class, "Nueva Prerreserva", "Hay vejoooooo", "Info", "Tickerrrr", "Notaaaaa");
+                        stateBar.notificar(context, CaracolaApplication.class, "Eliminar Booking", number_manager, "Phone", "", mensaje);
+
+                        Mensajero.confirmar_recibo(number_manager);
                     }
                 }
             }
         }
     }
 
-    private void borrarBooking(String fechaInicio, String roomCode, Context context) {
+    private Booking borrarBooking(String fechaInicio, String roomCode, Context context) {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
         EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
-
         LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
         int code = Integer.parseInt(roomCode);
+
         Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).get().first();
         Booking booking = dataStore.select(Booking.class).where(Booking.BEDROOM.eq(bedroom).and(Booking.CHECK_IN_DATE.eq(localDateInicio))).get().first();
         dataStore.delete(booking);
+
+        return booking;
     }
 
     private boolean chequearFidelidadMensaje(Context context, String valor, String number_manager) {

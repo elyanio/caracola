@@ -1,4 +1,4 @@
-package com.polymitasoft.caracola.Notification;
+package com.polymitasoft.caracola.notification;
 
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
  */
 
 public class NotificationDialog extends DialogFragment {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,5 +25,6 @@ public class NotificationDialog extends DialogFragment {
             }
         });
         builder.create();
+        builder.show();
     }
 }

@@ -38,8 +38,6 @@ public class ManageSmsBooking {
     private static final int CONFIRMED = 2;
     private static final int CHECKED_IN = 3;
 
-    private static final String MENSAJE_CONFIRMACION = "Mensaje Prerreserva Recibido";
-
     private String mensaje;
     private LocalDate oldFecha_inicio;
     private LocalDate fecha_inicio;
@@ -180,23 +178,14 @@ public class ManageSmsBooking {
         managers = dataStore.select(Manager.class).where(Manager.HOSTEL.eq(hostel)).get().toList();
     }
 
-    public void enviar_mensaje(String numero, String mensaje) {
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(numero, null, mensaje, null, null);
-    }
-
     public void enviar_mensaje() {
-        SmsManager sms = SmsManager.getDefault();
-        if (managers.size() != 0) {
-            for (Manager manager : managers) {
-                sms.sendTextMessage(manager.getPhoneNumber(), null, mensaje, null, null);
-            }
-        }
-    }
-
-    public void confirmar_recibo(String numero) {
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(numero, null, MENSAJE_CONFIRMACION, null, null);
+        Mensajero.enviar_mensaje(managers, mensaje);
+//        SmsManager sms = SmsManager.getDefault();
+//        if (managers.size() != 0) {
+//            for (Manager manager : managers) {
+//                sms.sendTextMessage(manager.getPhoneNumber(), null, mensaje, null, null);
+//            }
+//        }
     }
 
     public List<Manager> getManagers() {

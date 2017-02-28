@@ -156,6 +156,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
         List<Bedroom> bedrooms = dataStore.select(Bedroom.class).get().toList();
         List<Bedroom> disponibles = new ArrayList<>();
+
         for (Bedroom bedroom : bedrooms) {
             disponibles.add(bedroom);
         }
