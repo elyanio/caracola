@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Mensajero {
 
-    private static final String MENSAJE_CONFIRMACION = "Mensaje Recibido";
+    private static final String MENSAJE_CONFIRMACION = "$$$#Mensaje Recibido";
 
     public static void enviar_mensaje(String numero, String mensaje) {
         SmsManager sms = SmsManager.getDefault();

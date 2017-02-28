@@ -36,7 +36,6 @@ public class Receiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-
         this.intent = intent;
         String action = intent.getAction();
 
@@ -91,7 +90,8 @@ public class Receiver extends BroadcastReceiver {
                         Booking booking = borrarBooking(valores[1], valores[2], context);
 
                         LocalDateConverter localDateConverter = new LocalDateConverter();
-                        String mensaje = "Actualizacion de reserva.\nFecha de inicio: " + localDateConverter.convertToPersisted(booking.getCheckInDate()) + "\nFecha final: " +
+
+                        String mensaje = "Reserva eliminada.\nFecha de inicio: " + localDateConverter.convertToPersisted(booking.getCheckInDate()) + "\nFecha final: " +
                                 localDateConverter.convertToPersisted(booking.getCheckOutDate()) + "\nHabitacion: " + booking.getBedroom().getName();
 
                         StateBar stateBar = new StateBar();
@@ -99,6 +99,9 @@ public class Receiver extends BroadcastReceiver {
 
                         Mensajero.confirmar_recibo(number_manager);
                     }
+                } else if (valores[0].equals("$$$")) {
+                    StateBar stateBar = new StateBar();
+                    stateBar.notificar(context, CaracolaApplication.class, "Confirmacion", number_manager, "Phone", "", valores[1]);
                 }
             }
         }
