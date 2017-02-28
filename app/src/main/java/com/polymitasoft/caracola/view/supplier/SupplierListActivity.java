@@ -61,9 +61,9 @@ public class SupplierListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.title_contacts);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setTitle(R.string.title_contacts);
+//        setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
@@ -115,9 +115,9 @@ public class SupplierListActivity extends AppCompatActivity implements
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.booking_general_tab_title);
+                    return getString(R.string.contacts_all_tab_title);
                 case 1:
-                    return getString(R.string.booking_clients_tab_title);
+                    return getString(R.string.contacts_services_tab_title);
             }
             return null;
         }
