@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
@@ -77,15 +78,27 @@ public class BedroomLonlyActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 EditText roomCode = (EditText) inflate.findViewById(R.id.roomCode);
                 String codigo = roomCode.getText().toString();
-                int code = Integer.parseInt(codigo);
-                EntityDataStore<Persistable> dataStore = bedroomAdapter.getDataStore();
-                Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
-                bedroom.setCode(code);
-                bedroom.setHostel(hostel);
+                if (codigo.length() > 0) {
+                    int code = Integer.parseInt(codigo);
 
-                dataStore.update(bedroom);
-                bedroomAdapter.actualizarVista();
-                bedroomAdapter.notifyDataSetChanged();
+                    if (chequearCodigoCuarto(code)) {
+
+                        EntityDataStore<Persistable> dataStore = bedroomAdapter.getDataStore();
+                        Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
+                        bedroom.setCode(code);
+                        bedroom.setHostel(hostel);
+                        dataStore.update(bedroom);
+                        bedroomAdapter.actualizarVista();
+                        bedroomAdapter.notifyDataSetChanged();
+                    }
+                    else
+                    {
+                        Toast.makeText(BedroomLonlyActivity.this, "Ya exite una habitacion con ese codigo, ingrese otro por favor.", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(BedroomLonlyActivity.this, "Escriba los datospor favor.", Toast.LENGTH_LONG).show();
+                }
+
             }
         }).setNegativeButton("Cancelar", null);
         adb.setCancelable(false);
@@ -94,6 +107,15 @@ public class BedroomLonlyActivity extends AppCompatActivity {
         adb.show();
     }
 
+    private boolean chequearCodigoCuarto(int code) {
+        EntityDataStore<Persistable> dataStore = bedroomAdapter.getDataStore();
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).get().firstOrNull();
+        if (bedroom == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public class BedroomAdapter extends BaseAdapter {
 
