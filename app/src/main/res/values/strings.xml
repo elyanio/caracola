@@ -132,4 +132,5 @@
     <string name="ok_action_button">Aceptar</string>
     <string name="contacts_services_tab_title">Servicios</string>
     <string name="contacts_all_tab_title">Contactos</string>
+    <string name="title_suppliers">Contactos</string>
 </resources>

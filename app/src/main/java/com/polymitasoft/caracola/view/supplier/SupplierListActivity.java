@@ -16,110 +16,45 @@
 
 package com.polymitasoft.caracola.view.supplier;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.components.RecyclerListActivity;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 
 import io.requery.Persistable;
+import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
 
-/**
- * TODO Renombrar a ContactsActivity teniendo en cuenta que modificaría ReservaPrincipal
- */
-public class SupplierListActivity extends AppCompatActivity implements
-        ExternalServiceListFragment.OnListInteractionListener,
-        SupplierListFragment.OnListInteractionListener {
+/* TODO Renombrar a ExternalServiceActivity teniendo en cuenta que modificaría ReservaPrincipal */
+public class SupplierListActivity extends RecyclerListActivity<Supplier> {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+    private ExternalService service;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacts);
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.setTitle(R.string.title_contacts);
-//        setSupportActionBar(toolbar);
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-    }
-
-
-    @Override
-    public void onServiceListInteraction(ExternalService item) {
-
+        if(service == null) {
+            setBarTitle(R.string.title_suppliers);
+        } else {
+            setBarTitle(service.getName());
+        }
     }
 
     @Override
-    public void onSupplierListInteraction(Supplier item) {
-
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
+    protected QueryRecyclerAdapter<Supplier, ? extends RecyclerView.ViewHolder> createAdapter() {
+        Intent intent = getIntent();
+        int serviceId = intent.getIntExtra(SupplierListFragment.ARG_SERVICE_ID, -1);
+        if(serviceId == -1) {
+            return new SupplierAdapter(this);
         }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return SupplierListFragment.newInstance();
-                case 1:
-                    return ExternalServiceListFragment.newInstance();
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getString(R.string.contacts_all_tab_title);
-                case 1:
-                    return getString(R.string.contacts_services_tab_title);
-            }
-            return null;
-        }
+        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        service = dataStore.findByKey(ExternalService.class, serviceId);
+        return new SupplierAdapter(this, service);
     }
 }

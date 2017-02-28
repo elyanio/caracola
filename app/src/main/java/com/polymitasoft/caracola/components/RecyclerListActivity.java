@@ -58,6 +58,12 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         }
     }
 
+    protected final void setBarTitle(CharSequence title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+    }
+
     protected abstract QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> createAdapter();
 
     @Override
