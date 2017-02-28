@@ -65,8 +65,8 @@ public class HostelAdapter extends BaseAdapter {
         return item;
     }
 
-    public void actualizarListaHostel(Hostel hostel) {
-        hostels.add(hostel);
+    public void actualizarListaHostel() {
+        hostels = dataStore.select(Hostel.class).get().toList();
     }
 
     public EntityDataStore<Persistable> getDataStore() {

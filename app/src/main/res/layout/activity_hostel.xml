@@ -2,33 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/cardview_light_background"
     android:orientation="vertical">
-
-    <!--<RelativeLayout-->
-    <!--android:id="@+id/hostal_toolbar"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@color/primary"-->
-    <!--android:orientation="horizontal">-->
-
-    <!--<ImageButton-->
-    <!--android:id="@+id/adicionar_hostal"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentEnd="true"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_marginRight="2dp"-->
-    <!--android:src="@drawable/love"-->
-    <!--android:onClick="vincular_gestor"-->
-    <!--android:text="OK" />-->
-
-    <!--</RelativeLayout>-->
 
     <ListView
         android:id="@+id/hostal_lista"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true" />
-
 
 </RelativeLayout>

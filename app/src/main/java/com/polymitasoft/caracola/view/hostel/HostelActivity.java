@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Hostel;
@@ -112,16 +113,43 @@ public class HostelActivity extends AppCompatActivity {
 
                 nameHostal = name_hostel.getText().toString();
                 codeHostal = number_hostel.getText().toString();
-                insertarHostel();
+                if (nameHostal.length() > 0) {
+                    if (chequearCodigoHostal(codeHostal)) {
+                        insertarHostel();
+                        hostelAdapter.actualizarListaHostel();
+                        hostelAdapter.notifyDataSetChanged();
 
-                startActivity(new Intent(HostelActivity.this, ManagerActivity.class).putExtra("CODE", codeHostal));
-                finish();
+                    } else {
+                        Toast.makeText(HostelActivity.this, "El codigo de su hostal no es valido", Toast.LENGTH_LONG).show();
+                        abrirDialog();
+                    }
+                } else {
+                    Toast.makeText(HostelActivity.this, "Escriba los datos, por favor.", Toast.LENGTH_LONG).show();
+                    abrirDialog();
+                }
+
 
             }
         }).setNegativeButton("Cancelar", null);
         adb.setView(inflate);
         adb.setTitle("Nuevo Hostal");
         adb.show();
+    }
+
+    private boolean chequearCodigoHostal(String code) {
+
+        if (code.length() > 0) {
+            EntityDataStore<Persistable> dataStore = hostelAdapter.getDataStore();
+            Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(code)).get().firstOrNull();
+
+            if (hostel != null) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 
     private void insertarHostel() {

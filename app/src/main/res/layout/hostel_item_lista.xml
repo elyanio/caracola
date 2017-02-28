@@ -10,7 +10,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
-        android:src="@drawable/profile" />
+        android:src="@drawable/hostel" />
 
     <TextView
         android:id="@+id/name_hostal"
