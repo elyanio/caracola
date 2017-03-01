@@ -1,6 +1,7 @@
 package com.polymitasoft.caracola.view.booking;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -54,8 +55,8 @@ public class ReservaEsenaPrincipal extends LinearLayout {
 
     private void configurarControles() {
         //poner dias de la semana encima
-        List<String> list = Arrays.asList("L", "M", "M", "J", "V", "S", "D");
-        ArrayAdapter<String> ada1 = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, list);
+        List<String> list = Arrays.asList("LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB", "DOM");
+        ArrayAdapter<String> ada1 = new GridDiasAdapter(getContext(), R.layout.simple_item_text_center, list);
         diasSemanasGrid.setAdapter(ada1);
         diasSemanasGrid.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
@@ -124,6 +125,29 @@ public class ReservaEsenaPrincipal extends LinearLayout {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((LinearLayout) object);
+        }
+    }
+
+
+    class GridDiasAdapter extends ArrayAdapter<String> {
+
+        private final List<String> listDias;
+
+        public GridDiasAdapter(Context context, int resource, List<String> objects) {
+            super(context, resource, objects);
+            this.listDias = objects;
+        }
+
+        @Override
+        public View getView(final int posision, View convertView, ViewGroup parent) {
+            View elemento ;
+            LayoutInflater contexto_inflado = ((Activity) getContext()).getLayoutInflater();
+            elemento = contexto_inflado.inflate(R.layout.simple_item_text_center, null);
+            TextView textGrid1 = (TextView) elemento.findViewById(R.id.textGrid1);
+            String dia = listDias.get(posision);
+            String textoMostrado = dia;
+            textGrid1.setText(textoMostrado);
+            return elemento;
         }
     }
 }
