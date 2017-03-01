@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.common.base.Function;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.dataaccess.SupplierDao;
 import com.polymitasoft.caracola.datamodel.ExternalService;
@@ -20,6 +21,7 @@ import io.requery.Persistable;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
+import static com.google.common.collect.Collections2.transform;
 import static com.polymitasoft.caracola.datamodel.ExternalService.NAME;
 
 /**
@@ -71,17 +73,15 @@ public class SupplierServices extends Button {
 
     private Set<Integer> getServiceLookup(Supplier supplier) {
         List<ExternalService> supplierServices = dao.services(supplier).toList();
-        Set<Integer> lookup = new HashSet<>();
-
-        for (ExternalService service : supplierServices) {
-            lookup.add(service.getId());
-        }
-
-        return lookup;
+        return new HashSet<>(transform(supplierServices, new Function<ExternalService, Integer>() {
+            @Override
+            public Integer apply(ExternalService input) {
+                return input.getId();
+            }
+        }));
     }
 
     public void setSupplier(Supplier supplier) {
-
         Result<ExternalService> serviceResult = dataStore.select(ExternalService.class).orderBy(NAME).get();
         List<ExternalService> allServices = serviceResult.toList();
         Set<Integer> lookup = getServiceLookup(supplier);
