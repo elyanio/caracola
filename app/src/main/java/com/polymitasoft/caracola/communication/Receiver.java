@@ -51,12 +51,18 @@ public class Receiver extends BroadcastReceiver {
                 }
             }
             String[] valores = str.split("#");
+
+            if (number_manager.length() >= 8) {
+                number_manager = parsearNumero(number_manager);
+            }
+
             //<$#2017-02-16#2017-02-24#30,00#2#0#Holaaaaaaaaa
             if (number_manager != null) {
 
                 if (valores[0].equals("<$")) // este simbolo significa que es booking
                 {
                     String showState = parssearBookingState(valores[4]);
+
                     if (chequearFidelidadMensaje(context, valores[5], number_manager)) {
 
                         insertarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], context);
@@ -105,6 +111,14 @@ public class Receiver extends BroadcastReceiver {
                 }
             }
         }
+    }
+
+    private String parsearNumero(String number) {
+        int indexFinal = number.length();
+        int indexInicial = number.length() - 8;
+
+        String numero = number.substring(indexInicial, indexFinal);
+        return numero;
     }
 
     private Booking borrarBooking(String fechaInicio, String roomCode, Context context) {
