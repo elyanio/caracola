@@ -53,8 +53,11 @@ public class SupplierBinding {
         supplier.setDescription(description.getText().toString());
         supplier.setEmailAddress(emailAddress.getText().toString());
         supplier.setAddress(address.getText().toString());
-        // TODO Poner los servicios
         return supplier;
+    }
+
+    public List<ExternalService> getServices() {
+        return services.getServices();
     }
 
     public void setSupplier(Supplier supplier) {

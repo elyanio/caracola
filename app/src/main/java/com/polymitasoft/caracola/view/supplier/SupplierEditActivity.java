@@ -23,8 +23,11 @@ import android.view.MenuItem;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierBuilder;
+
+import java.util.List;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -76,6 +79,7 @@ public class SupplierEditActivity extends AppCompatActivity {
     private void save() {
         supplier = binding.getSupplier();
         data.upsert(supplier);
+
         finish();
     }
 }

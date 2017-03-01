@@ -7,12 +7,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.common.base.Function;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.dataaccess.SupplierDao;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +21,6 @@ import io.requery.Persistable;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
-import static com.google.common.collect.Collections2.transform;
 import static com.polymitasoft.caracola.datamodel.ExternalService.NAME;
 
 /**
@@ -32,8 +31,9 @@ import static com.polymitasoft.caracola.datamodel.ExternalService.NAME;
 public class SupplierServices extends Button {
 
     private EntityDataStore<Persistable> dataStore;
-    private AlertDialog.Builder builder;
     private SupplierDao dao;
+    private boolean[] selection;
+    private List<ExternalService> allServices;
 
     public SupplierServices(Context context) {
         super(context);
@@ -54,41 +54,25 @@ public class SupplierServices extends Button {
         if (isInEditMode()) return;
         dataStore = CaracolaApplication.instance().getDataStore();
         dao = new SupplierDao();
-
-        builder = new AlertDialog.Builder(getContext())
-                .setTitle("Servicios")
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
     }
 
     private Set<Integer> getServiceLookup(Supplier supplier) {
         List<ExternalService> supplierServices = dao.services(supplier).toList();
-        return new HashSet<>(transform(supplierServices, new Function<ExternalService, Integer>() {
-            @Override
-            public Integer apply(ExternalService input) {
-                return input.getId();
-            }
-        }));
+        Set<Integer> set = new HashSet<>(supplierServices.size());
+        for (ExternalService service : supplierServices) {
+            set.add(service.getId());
+        }
+        return set;
     }
 
     public void setSupplier(Supplier supplier) {
         Result<ExternalService> serviceResult = dataStore.select(ExternalService.class).orderBy(NAME).get();
-        List<ExternalService> allServices = serviceResult.toList();
+        allServices = serviceResult.toList();
         Set<Integer> lookup = getServiceLookup(supplier);
 
         int size = allServices.size();
         final String[] servicesArray = new String[size];
-        final boolean[] selection = new boolean[size];
+        selection = new boolean[size];
 
         for (int i = 0; i < size; i++) {
             ExternalService service = allServices.get(i);
@@ -99,12 +83,37 @@ public class SupplierServices extends Button {
         setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builder.setMultiChoiceItems(servicesArray, selection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    }
-                }).show();
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Servicios")
+                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setMultiChoiceItems(servicesArray, selection, new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                            }
+                        }).show();
             }
         });
+    }
+
+    public List<ExternalService> getServices() {
+        List<ExternalService> services = new ArrayList<>();
+        int size = selection.length;
+        for(int i = 0; i < size; i++) {
+            if(selection[i]) {
+                services.add(allServices.get(i));
+            }
+        }
+        return services;
     }
 }

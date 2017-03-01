@@ -5,10 +5,17 @@ import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import io.requery.Persistable;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
+import static com.google.common.collect.Sets.difference;
 import static com.polymitasoft.caracola.datamodel.SupplierService.SERVICE_ID;
 import static com.polymitasoft.caracola.datamodel.SupplierService.SUPPLIER_ID;
 
@@ -41,5 +48,41 @@ public class SupplierDao {
                 .where(Supplier.ID.equal(supplier.getId()))
                 .orderBy(ExternalService.NAME.lower())
                 .get();
+    }
+
+    /**
+     * Los servicios que están que no están en currentServices pero están en services hay que insertarlos
+     * Los servicios que están en currentServices pero no están en services hay que eliminarlos
+     *
+     * @param supplier
+     * @param services
+     */
+    public void updateServices(Supplier supplier, Set<ExternalService> services) {
+        HashSet<ExternalService> currentServices = new HashSet<>(services(supplier).toList());
+
+        insertServices(supplier, difference(currentServices, services));
+        deleteServices(supplier, difference(services, currentServices));
+    }
+
+    public void insertServices(Supplier supplier, Iterable<ExternalService> services) {
+        List<SupplierService> sps = new ArrayList<>();
+        for (ExternalService service : services) {
+            SupplierService sp = new SupplierService()
+                    .setService(service)
+                    .setSupplier(supplier)
+                    .setPrice(BigDecimal.ZERO)
+                    .setComission(BigDecimal.ZERO);
+            sps.add(sp);
+        }
+        dataStore.insert(sps);
+    }
+
+    public void deleteServices(Supplier supplier, Iterable<ExternalService> services) {
+        for (ExternalService service : services) {
+            dataStore.delete()
+                    .from(SupplierService.class)
+                    .where(SERVICE_ID.eq(service.getId()))
+                    .and(SUPPLIER_ID.eq(supplier.getId()));
+        }
     }
 }
