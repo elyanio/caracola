@@ -21,6 +21,9 @@
     <string name="title_activity_settings">Preferencias</string>
 
     <!-- Strings related to Settings -->
+    <string name="title_dialog_disponibilidad">Disponibles</string>
+
+    <!-- Disponibilidad -->
 
     <!-- Example General settings -->
     <string name="pref_header_general">Ajustes generales</string>

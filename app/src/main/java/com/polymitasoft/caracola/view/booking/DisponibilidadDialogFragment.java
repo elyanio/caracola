@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.content.Context;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +58,10 @@ public class DisponibilidadDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.reserva_disponibilidad, container);
+        getDialog().setTitle(R.string.title_dialog_disponibilidad);
         ButterKnife.bind(this, view);
         final ListDisponibilidadAdapter adaptador = new ListDisponibilidadAdapter(getContext(), R.layout.simple_list_item, new ArrayList<Bedroom>());
+
         listDisponibilidad.setAdapter(adaptador);
         this.adaptador = adaptador;
 
@@ -75,9 +79,15 @@ public class DisponibilidadDialogFragment extends DialogFragment {
 
     private void addDisponibilidad() {
         List<Bedroom> bedrooms = mCallback.obtenerDisponibilidad(dia1, dia2);
-        for (Bedroom bedroom : bedrooms) {
-            adaptador.addHabitacion(bedroom);
+        if(bedrooms.isEmpty()){
+            adaptador.setVacio(true);
+            adaptador.addHabitacion(null);
+        }else{
+            for (Bedroom bedroom : bedrooms) {
+                adaptador.addHabitacion(bedroom);
+            }
         }
+
     }
 
 
@@ -116,6 +126,7 @@ public class DisponibilidadDialogFragment extends DialogFragment {
         private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
         List<Bedroom> habitaciones = new ArrayList<>();
         private final Random random = new Random();
+        private boolean vacio = false;
 
         public ListDisponibilidadAdapter(Context context, int resource, List<Bedroom> objects) {
             super(context, resource, objects);
@@ -124,38 +135,44 @@ public class DisponibilidadDialogFragment extends DialogFragment {
 
         @Override
         public View getView(final int posision, View convertView, ViewGroup parent) {
-            View elemento = convertView;
+            View elemento ;
             LayoutInflater contexto_inflado = ((Activity) getContext()).getLayoutInflater();
             elemento = contexto_inflado.inflate(R.layout.simple_list_item_disponibilidad, null);
             TextView primaryText = (TextView) elemento.findViewById(R.id.primary_text);
-            final Bedroom habitacion = habitaciones.get(posision);
-            String textoMostrado = habitacion.getName();
-            primaryText.setText(textoMostrado);
-
             TextView secondaryText = (TextView) elemento.findViewById(R.id.secondary_text);
-            int capacity = habitacion.getCapacity();
-            if(capacity == 1){
-                secondaryText.setText("Capacidad " + capacity + " persona");
-            }else{
-                secondaryText.setText("Capacidad " + capacity + " personas");
-            }
-
-            elemento.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickEnListaDisponibilidad(habitaciones.get(posision));
-                }
-            });
-
             View colorStrip = (View) elemento.findViewById(R.id.color_strip);
             colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
 
+            if(!vacio){
+                final Bedroom habitacion = habitaciones.get(posision);
+                String textoMostrado = habitacion.getName();
+                primaryText.setText(textoMostrado);
+                int capacity = habitacion.getCapacity();
+                if(capacity == 1){
+                    secondaryText.setText("Capacidad " + capacity + " persona");
+                }else{
+                    secondaryText.setText("Capacidad " + capacity + " personas");
+                }
+                elemento.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        clickEnListaDisponibilidad(habitaciones.get(posision));
+                    }
+                });
+            }else{
+                primaryText.setText("No tiene cuartos disponibles");
+//                primaryText.setGravity(Gravity.CENTER);
+            }
             return (elemento);
         }
 
         public void addHabitacion(Bedroom bedroom) {
 //            add(bedroom);
             habitaciones.add(bedroom);
+        }
+
+        public void setVacio(boolean b){
+            vacio = b;
         }
     }
 }

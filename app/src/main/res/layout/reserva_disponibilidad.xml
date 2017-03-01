@@ -2,18 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"><![CDATA[
 
-    <TextView
-        android:text="Disponibles"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textAlignment="center"
-        android:textStyle="normal|bold" />"
+    "
         android:textAlignment="center"
         android:id="@+id/disponibilidad_texview"
         android:textSize="24sp" />
+
+    ]]>
 
     <ListView
         android:id="@+id/reserva_list_disponibilidad"
