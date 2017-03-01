@@ -5,14 +5,11 @@ import android.content.Intent;
 
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
+import com.polymitasoft.caracola.dataaccess.SupplierDao;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
-import com.polymitasoft.caracola.datamodel.SupplierService;
 
 import io.requery.query.Result;
-
-import static com.polymitasoft.caracola.datamodel.SupplierService.SERVICE_ID;
-import static com.polymitasoft.caracola.datamodel.SupplierService.SUPPLIER_ID;
 
 /**
  * @author rainermf
@@ -21,6 +18,7 @@ import static com.polymitasoft.caracola.datamodel.SupplierService.SUPPLIER_ID;
 class SupplierAdapter extends SimpleListAdapter<Supplier> {
 
     private ExternalService service;
+    private SupplierDao dao;
 
     SupplierAdapter(Context context) {
         this(context, null);
@@ -29,6 +27,7 @@ class SupplierAdapter extends SimpleListAdapter<Supplier> {
     SupplierAdapter(Context context, ExternalService service) {
         super(context, Supplier.$TYPE);
         this.service = service;
+        dao = new SupplierDao();
     }
 
     @Override
@@ -36,13 +35,7 @@ class SupplierAdapter extends SimpleListAdapter<Supplier> {
         if(service == null) {
             return dataStore.select(Supplier.class).orderBy(Supplier.NAME.lower()).get();
         } else {
-            return dataStore.select(Supplier.class)
-                    .join(SupplierService.class).on(Supplier.ID.equal(SUPPLIER_ID))
-                    .join(ExternalService.class).on(SERVICE_ID.equal(ExternalService.ID))
-                    .where(ExternalService.ID.equal(service.getId()))
-                    .orderBy(Supplier.NAME.lower())
-                    .get();
-
+            return dao.withService(service);
         }
     }
 

@@ -76,7 +76,6 @@ public class DatabaseSetup {
         insertList(externalServices);
         List<SupplierService> supplierServices = getSupplierServices(suppliers, externalServices);
         insertList(supplierServices);
-        data.close();
     }
 
     public void insertList(List<? extends Persistable> list) {

@@ -138,4 +138,5 @@
     <string name="supplier_description">Descripción</string>
     <string name="supplier_email">E-mail</string>
     <string name="supplier_address">Dirección</string>
+    <string name="supplier_services">Servicios</string>
 </resources>
