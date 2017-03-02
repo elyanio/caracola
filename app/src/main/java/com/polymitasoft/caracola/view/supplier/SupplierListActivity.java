@@ -31,7 +31,7 @@ import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
 
-/* TODO Renombrar a ExternalServiceActivity teniendo en cuenta que modificaría ReservaPrincipal */
+/* TODO Renombrar a ServiceSupplierActivity teniendo en cuenta que modificaría ReservaPrincipal */
 public class SupplierListActivity extends RecyclerListActivity<Supplier> {
 
     private ExternalService service;

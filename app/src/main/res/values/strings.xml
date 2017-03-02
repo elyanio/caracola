@@ -139,4 +139,6 @@
     <string name="supplier_email">E-mail</string>
     <string name="supplier_address">Dirección</string>
     <string name="supplier_services">Servicios</string>
+    <string name="app_email">caracola@polymitasoft.com</string>
+    <string name="title_preferences">Preferencias</string>
 </resources>

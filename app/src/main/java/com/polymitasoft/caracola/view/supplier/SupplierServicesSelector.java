@@ -29,24 +29,24 @@ import static com.polymitasoft.caracola.datamodel.ExternalService.NAME;
  * @since 1/3/2017
  */
 
-public class SupplierServices extends Button {
+public class SupplierServicesSelector extends Button {
 
     private EntityDataStore<Persistable> dataStore;
     private SupplierDao dao;
     private boolean[] selection;
     private List<ExternalService> allServices;
 
-    public SupplierServices(Context context) {
+    public SupplierServicesSelector(Context context) {
         super(context);
         init();
     }
 
-    public SupplierServices(Context context, AttributeSet attrs) {
+    public SupplierServicesSelector(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public SupplierServices(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SupplierServicesSelector(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

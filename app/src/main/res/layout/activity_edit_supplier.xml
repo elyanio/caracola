@@ -65,7 +65,7 @@
                 android:text="@string/supplier_description"/>
         </android.support.design.widget.TextInputLayout>
 
-        <com.polymitasoft.caracola.view.supplier.SupplierServices
+        <com.polymitasoft.caracola.view.supplier.SupplierServicesSelector
             android:id="@+id/supplier_services"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

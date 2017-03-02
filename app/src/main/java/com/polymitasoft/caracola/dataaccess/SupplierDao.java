@@ -1,9 +1,7 @@
 package com.polymitasoft.caracola.dataaccess;
 
-import android.util.Log;
 import android.widget.Toast;
 
-import com.google.common.collect.Lists;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
@@ -17,8 +15,6 @@ import java.util.Set;
 
 import io.requery.Persistable;
 import io.requery.query.Result;
-import io.requery.query.Scalar;
-import io.requery.query.WhereAndOr;
 import io.requery.sql.EntityDataStore;
 
 import static com.google.common.collect.Sets.difference;

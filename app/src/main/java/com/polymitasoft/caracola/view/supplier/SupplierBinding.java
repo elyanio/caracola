@@ -1,32 +1,16 @@
 package com.polymitasoft.caracola.view.supplier;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.requery.Persistable;
-import io.requery.android.QueryAdapter;
-import io.requery.query.Result;
-import io.requery.sql.EntityDataStore;
 
 /**
  * @author rainermf
@@ -40,7 +24,7 @@ public class SupplierBinding {
     @BindView(R.id.supplier_description) EditText description;
     @BindView(R.id.supplier_email) EditText emailAddress;
     @BindView(R.id.supplier_address) EditText address;
-    @BindView(R.id.supplier_services) SupplierServices services;
+    @BindView(R.id.supplier_services) SupplierServicesSelector services;
 
     public SupplierBinding(Activity activity, Supplier supplier) {
         ButterKnife.bind(this, activity);
