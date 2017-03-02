@@ -42,6 +42,7 @@
                   android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.supplier.ExternalServiceEditActivity" />
         <activity android:name=".view.supplier.SupplierListActivity"/>
+        <activity android:name=".view.supplier.SupplierViewActivity"/>
         <activity android:name=".view.supplier.SupplierEditActivity"/>
         <activity android:name=".view.consumption.ConsumptionEditActivity" />
         <activity android:name=".view.client.ClientEditActivity" />

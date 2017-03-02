@@ -24,37 +24,37 @@ import android.support.v7.widget.RecyclerView;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.RecyclerListActivity;
-import com.polymitasoft.caracola.datamodel.ExternalService;
+import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
 
-/* TODO Renombrar a ExternalServiceViewActivity teniendo en cuenta que modificaría ReservaPrincipal */
-public class SupplierListActivity extends RecyclerListActivity<SupplierService> {
+public class SupplierViewActivity extends RecyclerListActivity<SupplierService> {
 
-    private ExternalService service;
+    public static final String EXTRA_SUPPLIER_ID = "supplierId";
+    private Supplier supplier;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(service == null) {
-            setBarTitle(R.string.title_suppliers);
+        if(supplier == null) {
+            setBarTitle(R.string.title_external_services);
         } else {
-            setBarTitle(service.getName());
+            setBarTitle(supplier.getName());
         }
     }
 
     @Override
     protected QueryRecyclerAdapter<SupplierService, ? extends RecyclerView.ViewHolder> createAdapter() {
         Intent intent = getIntent();
-        int serviceId = intent.getIntExtra(SupplierListFragment.ARG_SERVICE_ID, -1);
+        int serviceId = intent.getIntExtra(EXTRA_SUPPLIER_ID, -1);
         if(serviceId == -1) {
-            throw new RuntimeException("You should pass a service to this activity");
+            throw new RuntimeException("You should pass a supplier to this activity");
         }
         EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
-        service = dataStore.findByKey(ExternalService.class, serviceId);
-        return new SupplierServiceAdapter(this, service);
+        supplier = dataStore.findByKey(Supplier.class, serviceId);
+        return new ServiceSupplierAdapter(this, supplier);
     }
 }
