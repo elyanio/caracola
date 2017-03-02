@@ -29,9 +29,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.CaracolaApplication;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.IBooking;
 import com.polymitasoft.caracola.datamodel.Booking;
 
 import org.threeten.bp.LocalDate;

@@ -23,7 +23,6 @@ import android.view.MenuItem;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.ClientBuilder;

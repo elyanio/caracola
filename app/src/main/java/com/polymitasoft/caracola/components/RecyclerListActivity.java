@@ -1,6 +1,5 @@
 package com.polymitasoft.caracola.components;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -9,14 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.polymitasoft.caracola.CaracolaApplication;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.view.service.InternalServiceEditActivity;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
