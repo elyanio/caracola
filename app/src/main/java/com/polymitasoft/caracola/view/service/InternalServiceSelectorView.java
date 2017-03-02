@@ -89,7 +89,7 @@ public class InternalServiceSelectorView extends LinearLayout implements View.On
             services[i] = serviceList.get(i).getName();
         }
         new AlertDialog.Builder(getContext())
-                .setSingleChoiceItems(services, -1, new DialogInterface.OnClickListener() {
+                .setItems(services, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         setService(serviceList.get(which));
