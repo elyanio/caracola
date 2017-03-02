@@ -25,14 +25,14 @@ import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.RecyclerListActivity;
 import com.polymitasoft.caracola.datamodel.ExternalService;
-import com.polymitasoft.caracola.datamodel.Supplier;
+import com.polymitasoft.caracola.datamodel.SupplierService;
 
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
 
-/* TODO Renombrar a ServiceSupplierActivity teniendo en cuenta que modificaría ReservaPrincipal */
-public class SupplierListActivity extends RecyclerListActivity<Supplier> {
+/* TODO Renombrar a SupplierServiceActivity teniendo en cuenta que modificaría ReservaPrincipal */
+public class SupplierListActivity extends RecyclerListActivity<SupplierService> {
 
     private ExternalService service;
 
@@ -47,14 +47,14 @@ public class SupplierListActivity extends RecyclerListActivity<Supplier> {
     }
 
     @Override
-    protected QueryRecyclerAdapter<Supplier, ? extends RecyclerView.ViewHolder> createAdapter() {
+    protected QueryRecyclerAdapter<SupplierService, ? extends RecyclerView.ViewHolder> createAdapter() {
         Intent intent = getIntent();
         int serviceId = intent.getIntExtra(SupplierListFragment.ARG_SERVICE_ID, -1);
         if(serviceId == -1) {
-            return new SupplierAdapter(this);
+            throw new RuntimeException("You should pass a service to this activity");
         }
         EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
         service = dataStore.findByKey(ExternalService.class, serviceId);
-        return new SupplierAdapter(this, service);
+        return new SupplierServiceAdapter(this, service);
     }
 }
