@@ -1,5 +1,9 @@
 package com.polymitasoft.caracola.dataaccess;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.common.collect.Lists;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
@@ -13,6 +17,8 @@ import java.util.Set;
 
 import io.requery.Persistable;
 import io.requery.query.Result;
+import io.requery.query.Scalar;
+import io.requery.query.WhereAndOr;
 import io.requery.sql.EntityDataStore;
 
 import static com.google.common.collect.Sets.difference;
@@ -60,8 +66,8 @@ public class SupplierDao {
     public void updateServices(Supplier supplier, Set<ExternalService> services) {
         HashSet<ExternalService> currentServices = new HashSet<>(services(supplier).toList());
 
-        insertServices(supplier, difference(currentServices, services));
-        deleteServices(supplier, difference(services, currentServices));
+        insertServices(supplier, difference(services, currentServices));
+        deleteServices(supplier, difference(currentServices, services));
     }
 
     public void insertServices(Supplier supplier, Iterable<ExternalService> services) {
@@ -79,10 +85,15 @@ public class SupplierDao {
 
     public void deleteServices(Supplier supplier, Iterable<ExternalService> services) {
         for (ExternalService service : services) {
-            dataStore.delete()
-                    .from(SupplierService.class)
-                    .where(SERVICE_ID.eq(service.getId()))
-                    .and(SUPPLIER_ID.eq(supplier.getId()));
+            try {
+                dataStore.delete(SupplierService.class)
+                        .where(SERVICE_ID.eq(service.getId()))
+                        .and(SUPPLIER_ID.eq(supplier.getId()))
+                        .get()
+                        .call();
+            } catch (Exception e) {
+                Toast.makeText(CaracolaApplication.instance(), "Error al eliminar los servicios", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

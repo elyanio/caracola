@@ -23,10 +23,12 @@ import android.view.MenuItem;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.SupplierDao;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierBuilder;
 
+import java.util.HashSet;
 import java.util.List;
 
 import io.requery.Persistable;
@@ -42,6 +44,7 @@ public class SupplierEditActivity extends AppCompatActivity {
     private EntityDataStore<Persistable> data;
     private Supplier supplier;
     private SupplierBinding binding;
+    private SupplierDao dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class SupplierEditActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.title_edit_supplier);
         }
         data = CaracolaApplication.instance().getDataStore();
+        dao = new SupplierDao();
         int supplierId = getIntent().getIntExtra(EXTRA_SUPPLIER_ID, -1);
         if (supplierId == -1) {
             supplier = new SupplierBuilder().build();
@@ -79,7 +83,7 @@ public class SupplierEditActivity extends AppCompatActivity {
     private void save() {
         supplier = binding.getSupplier();
         data.upsert(supplier);
-
+        dao.updateServices(supplier, new HashSet<>(binding.getServices()));
         finish();
     }
 }
