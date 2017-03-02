@@ -141,4 +141,6 @@
     <string name="supplier_services">Servicios</string>
     <string name="app_email">caracola@polymitasoft.com</string>
     <string name="title_preferences">Preferencias</string>
+    <string name="contact_info_tab_title">General</string>
+    <string name="contact_services_tab_title">Servicios</string>
 </resources>

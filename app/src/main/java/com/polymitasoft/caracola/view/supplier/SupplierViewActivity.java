@@ -16,45 +16,96 @@
 
 package com.polymitasoft.caracola.view.supplier;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.components.RecyclerListActivity;
 import com.polymitasoft.caracola.datamodel.Supplier;
-import com.polymitasoft.caracola.datamodel.SupplierService;
 
 import io.requery.Persistable;
-import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
 
-public class SupplierViewActivity extends RecyclerListActivity<SupplierService> {
+public class SupplierViewActivity extends AppCompatActivity {
 
     public static final String EXTRA_SUPPLIER_ID = "supplierId";
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
     private Supplier supplier;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(supplier == null) {
-            setBarTitle(R.string.title_external_services);
-        } else {
-            setBarTitle(supplier.getName());
+        setContentView(R.layout.activity_contacts);
+
+        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        int supplierId = getIntent().getIntExtra(EXTRA_SUPPLIER_ID, -1);
+        if(supplierId == -1) {
+            throw new RuntimeException("You should pass a supplier to SupplierView");
         }
+        supplier = dataStore.findByKey(Supplier.class, supplierId);
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
-    @Override
-    protected QueryRecyclerAdapter<SupplierService, ? extends RecyclerView.ViewHolder> createAdapter() {
-        Intent intent = getIntent();
-        int serviceId = intent.getIntExtra(EXTRA_SUPPLIER_ID, -1);
-        if(serviceId == -1) {
-            throw new RuntimeException("You should pass a supplier to this activity");
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
-        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
-        supplier = dataStore.findByKey(Supplier.class, serviceId);
-        return new ServiceSupplierAdapter(this, supplier);
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return SupplierInfoFragment.newInstance();
+                case 1:
+                    return ServiceBySupplierListFragment.newInstance(supplier);
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getString(R.string.contact_info_tab_title);
+                case 1:
+                    return getString(R.string.contact_services_tab_title);
+            }
+            return null;
+        }
     }
 }

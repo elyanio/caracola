@@ -1,6 +1,7 @@
 package com.polymitasoft.caracola.view.supplier;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
@@ -45,7 +46,9 @@ class SupplierServiceAdapter extends SimpleListAdapter<SupplierService> {
 
     @Override
     protected void viewItem(SupplierService item) {
-        editItem(item);
+        Intent intent = new Intent(context, SupplierViewActivity.class);
+        intent.putExtra(SupplierViewActivity.EXTRA_SUPPLIER_ID, item.getSupplier().getId());
+        context.startActivity(intent);
     }
 
     @Override

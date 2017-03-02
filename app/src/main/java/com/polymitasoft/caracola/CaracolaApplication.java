@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.polymitasoft.caracola.components.Colors;
@@ -49,7 +50,7 @@ public class CaracolaApplication extends Application {
         TypedArray colorTypedArray = res.obtainTypedArray(R.array.account_colors);
         int[] colorOptions = new int[colorTypedArray.length()];
         for (int i = 0; i < colorTypedArray.length(); i++) {
-            int color = colorTypedArray.getColor(i, getResources().getColor(R.color.colorPrimary));
+            int color = colorTypedArray.getColor(i, Color.BLACK);
             colorOptions[i] = color;
         }
         colorTypedArray.recycle();
