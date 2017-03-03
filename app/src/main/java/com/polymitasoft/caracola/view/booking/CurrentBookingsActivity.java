@@ -1,159 +1,101 @@
-/*
- * Copyright 2016 requery.io
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.polymitasoft.caracola.view.booking;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.Colors;
+import com.polymitasoft.caracola.components.RecyclerListActivity;
+import com.polymitasoft.caracola.components.SimpleListAdapter;
+import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
-/**
- * Activity displaying a list of random people. You can tap on a person to edit their record.
- * Shows how to use a query with a {@link RecyclerView} and {@link QueryRecyclerAdapter} and RxJava
- */
-public class CurrentBookingsActivity extends AppCompatActivity {
+import static com.polymitasoft.caracola.datamodel.Booking.CHECK_IN_DATE;
+import static com.polymitasoft.caracola.datamodel.Booking.CHECK_OUT_DATE;
 
-    @BindView(R.id.listRecyclerView) RecyclerView recyclerView;
-    private EntityDataStore<Persistable> data;
-    private ExecutorService executor;
-    private BookingAdapter adapter;
+public class CurrentBookingsActivity extends RecyclerListActivity<Booking> implements EditBookingDialogFragment.OnBookingEditListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.title_current_bookings);
-        }
-        setContentView(R.layout.list_items);
-        ButterKnife.bind(this);
-        data = CaracolaApplication.instance().getDataStore();
-        executor = Executors.newSingleThreadExecutor();
-        adapter = new BookingAdapter(data);
-        adapter.setExecutor(executor);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setBarTitle(R.string.title_current_bookings);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_plus:
-                Intent intent = new Intent(this, BookingEditActivity.class);
-                startActivity(intent);
-                return true;
-        }
-        return false;
+    protected QueryRecyclerAdapter<Booking, ? extends RecyclerView.ViewHolder> createAdapter() {
+        return new BookingAdapter();
     }
 
     @Override
-    protected void onResume() {
-        adapter.queryAsync();
-        super.onResume();
-    }
+    public void onBookingEdit(Booking oldBooking, Booking newBooking) {
 
-    @Override
-    protected void onDestroy() {
-        executor.shutdown();
-        adapter.close();
-        super.onDestroy();
-    }
-
-    static class BookingHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.primary_text) TextView name;
-        @BindView(R.id.color_strip) View image;
-
-        BookingHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
     }
 
     /**
      * Created by rainermf on 15/2/2017.
      */
-    class BookingAdapter extends QueryRecyclerAdapter<Booking, BookingHolder> implements View.OnClickListener {
+    class BookingAdapter extends SimpleListAdapter<Booking> {
 
+        private final DateTimeFormatter dateFormatter;
         private EntityDataStore<Persistable> data;
 
-        BookingAdapter(EntityDataStore<Persistable> dataStore) {
-            super(Booking.$TYPE);
-            data = dataStore;
+        BookingAdapter() {
+            super(CurrentBookingsActivity.this, Booking.$TYPE);
+            data = CaracolaApplication.instance().getDataStore();
+
+            dateFormatter = DateTimeFormatter.ofPattern("d MMM");
         }
 
         @Override
         public Result<Booking> performQuery() {
-            // this is all persons in the db sorted by their name
-            // note this method in executed in a background thread.
-            // (Alternatively RxJava w/ RxBinding could be used)
             LocalDate today = LocalDate.now();
             return data.select(Booking.class)
-                    .where(Booking.CHECK_IN_DATE.lessThanOrEqual(today))
-                    .and(Booking.CHECK_OUT_DATE.greaterThanOrEqual(today))
+                    .where(CHECK_IN_DATE.lessThanOrEqual(today))
+                    .and(CHECK_OUT_DATE.greaterThanOrEqual(today.minusDays(1)))
                     .get();
         }
 
         @Override
-        public void onBindViewHolder(Booking item, BookingHolder holder,
-                                     int position) {
-            holder.name.setText(item.getBedroom().getName());
-            holder.image.setBackgroundColor(Colors.INSTANCE.getColor(item.getId()));
-            holder.itemView.setTag(item);
+        public void onBindViewHolder(Booking item, SimpleViewHolder holder, int position) {
+            super.onBindViewHolder(item, holder, position);
+            holder.primaryText.setText(item.getBedroom().getName());
+            String date = dateFormatter.format(item.getCheckInDate()) + " / "
+                    + dateFormatter.format(item.getCheckOutDate());
+            holder.secondaryText.setText(date);
+            holder.colorStrip.setBackgroundColor(Colors.INSTANCE.getColor(item.getId()));
         }
 
         @Override
-        public BookingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.simple_list_item, null);
-            BookingHolder holder = new BookingHolder(view);
-            view.setOnClickListener(this);
-            return holder;
+        protected void viewItem(Booking item) {
+            Intent intent = new Intent(CurrentBookingsActivity.this, BookingEditActivity.class);
+            intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, item.getId());
+            startActivity(intent);
         }
 
         @Override
-        public void onClick(View v) {
-            Booking booking = (Booking) v.getTag();
-            if (booking != null) {
-                Intent intent = new Intent(CurrentBookingsActivity.this, BookingEditActivity.class);
-                intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, booking.getId());
-                startActivity(intent);
+        protected void editItem(Booking item) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment prev = getSupportFragmentManager().findFragmentByTag("edit_booking_dialog");
+            if (prev != null) {
+                ft.remove(prev);
             }
+            ft.addToBackStack(null);
+
+            // Create and show the dialog.
+            EditBookingDialogFragment newFragment = EditBookingDialogFragment.newInstance(item);
+            newFragment.show(ft, "edit_booking_dialog");
         }
     }
 }

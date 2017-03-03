@@ -5,21 +5,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.communication.ManageSmsBooking;
 import com.polymitasoft.caracola.components.DateSpinner;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
 import com.polymitasoft.caracola.datamodel.BookingState;
@@ -37,24 +34,23 @@ import io.requery.sql.EntityDataStore;
 public class EditBookingDialogFragment extends DialogFragment {
 
     private static final String ARG_BOOKING_ID = "bookingId";
+
+    @BindView(R.id.reserva_rb_confirmada) RadioButton rb_confirmado;
+    @BindView(R.id.reserva_rb_pendiente) RadioButton rb_pendiente;
+    @BindView(R.id.booking_note) TextView text_nota;
+    @BindView(R.id.booking_price) TextView textPrice;
+    @BindView(R.id.booking_check_in) DateSpinner checkInDateSpinner;
+    @BindView(R.id.booking_check_out) DateSpinner checkOutSpinner;
+
     private Booking preReserva;
-    @BindView(R.id.reserva_bt_hacer_pre_R)
-    Button bt_preReservar;
-    @BindView(R.id.reserva_rb_confirmada)
-    RadioButton rb_confirmado;
-    @BindView(R.id.reserva_rb_pendiente)
-    RadioButton rb_pendiente;
-    @BindView(R.id.booking_note)
-    TextView text_nota;
-    @BindView(R.id.booking_price)
-    TextView textPrice;
-    @BindView(R.id.booking_check_in)
-    DateSpinner checkInDateSpinner;
-    @BindView(R.id.booking_check_out)
-    DateSpinner checkOutSpinner;
     private EntityDataStore<Persistable> dataStore;
     private BookingDao bookingDao;
 
+    public static EditBookingDialogFragment newInstance(Booking booking) {
+        return newInstance(booking.getId());
+    }
+
+    @Deprecated
     public static EditBookingDialogFragment newInstance(int bookingId) {
         EditBookingDialogFragment fragment = new EditBookingDialogFragment();
         Bundle args = new Bundle();
@@ -63,58 +59,37 @@ public class EditBookingDialogFragment extends DialogFragment {
         return fragment;
     }
 
-//    @NonNull
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        // Use the Builder class for convenient dialog construction
-//        View view = getActivity().getLayoutInflater().inflate(R.layout.reserva_dialog_editar_reserva, null);
-//        ButterKnife.bind(this, view);
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setView(view)
-//                .setTitle(R.string.reserva_titulo_hacer_reserva)
-//                .setPositiveButton("fire", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // FIRE ZE MISSILES!
-//                    }
-//                })
-//                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // User cancelled the dialog
-//                    }
-//                });
-//        // Create the AlertDialog object and return it
-//
-//        dataStore = DataStoreHolder.instance().getDataStore(getActivity().getApplicationContext());
-//        bookingDao = new BookingDao(dataStore);
-//
-//        int idBooking = getArguments().getInt(ARG_BOOKING_ID);
-//        preReserva = dataStore.findByKey(Booking.class, idBooking);
-//
-//        configurarControles();
-//        eventos();
-//
-//        return builder.create();
-//
-//    }
-
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.reserva_dialog_editar_reserva, container);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Use the Builder class for convenient dialog construction
+        View view = getActivity().getLayoutInflater().inflate(R.layout.reserva_dialog_editar_reserva, null);
         ButterKnife.bind(this, view);
-        dataStore = DataStoreHolder.getInstance().getDataStore(getActivity().getApplicationContext());
-        bookingDao = new BookingDao(dataStore);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(view)
+                .setTitle(R.string.title_edit_booking)
+                .setPositiveButton(R.string.ok_action_button, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        clickeditR();
+                    }
+                })
+                .setNegativeButton(R.string.cancel_action_button, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        // Create the AlertDialog object and return it
+
+        dataStore = CaracolaApplication.instance().getDataStore();
+        bookingDao = new BookingDao();
         int idBooking = getArguments().getInt(ARG_BOOKING_ID);
         preReserva = dataStore.findByKey(Booking.class, idBooking);
 
-        getDialog().setTitle(R.string.reserva_titulo_hacer_reserva);
         configurarControles();
-        eventos();
 
-        return view;
+        return builder.create();
+
     }
 
     public void setBooking(Booking booking) {
@@ -137,15 +112,6 @@ public class EditBookingDialogFragment extends DialogFragment {
         LocalDate maxDate = bookingDao.nextBookedDay(preReserva.getBedroom(), preReserva.getCheckOutDate()).minusDays(1);
         checkInDateSpinner.setMinDate(minDate);
         checkOutSpinner.setMaxDate(maxDate);
-    }
-
-    private void eventos() {
-        bt_preReservar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickeditR();
-            }
-        });
     }
 
     private void clickeditR() {
@@ -181,7 +147,7 @@ public class EditBookingDialogFragment extends DialogFragment {
 
     // Container Activity must implement this interface
     public interface OnBookingEditListener {
-        public void onBookingEdit(Booking oldBooking, Booking newBooking);
+        void onBookingEdit(Booking oldBooking, Booking newBooking);
     }
 
     OnBookingEditListener mCallback;
