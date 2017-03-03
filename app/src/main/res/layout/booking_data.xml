@@ -35,7 +35,6 @@
             android:inputType="textPersonName"
             android:textIsSelectable="false">
 
-            <requestFocus></requestFocus>
         </android.support.design.widget.TextInputEditText>
     </android.support.design.widget.TextInputLayout>
 

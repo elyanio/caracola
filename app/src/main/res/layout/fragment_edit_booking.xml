@@ -3,10 +3,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  android:padding="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusableInTouchMode="true"
+        android:padding="16dp">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -16,7 +18,8 @@
                 android:id="@+id/booking_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/booking_number"/>
+                android:hint="@string/booking_number"
+                android:inputType="number"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -29,7 +32,5 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/book_number"/>
         </android.support.design.widget.TextInputLayout>
-
-        <include layout="@layout/booking_data"/>
     </LinearLayout>
 </ScrollView>
