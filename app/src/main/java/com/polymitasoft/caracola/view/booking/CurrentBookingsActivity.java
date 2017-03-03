@@ -17,7 +17,6 @@
 package com.polymitasoft.caracola.view.booking;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,11 +29,11 @@ import android.widget.TextView;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.datamodel.Booking;
 
 import org.threeten.bp.LocalDate;
 
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -111,12 +110,10 @@ public class CurrentBookingsActivity extends AppCompatActivity {
      */
     class BookingAdapter extends QueryRecyclerAdapter<Booking, BookingHolder> implements View.OnClickListener {
 
-        private final Random random = new Random();
-        private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
         private EntityDataStore<Persistable> data;
 
         BookingAdapter(EntityDataStore<Persistable> dataStore) {
-//            super(BookingEntity.$TYPE);
+            super(Booking.$TYPE);
             data = dataStore;
         }
 
@@ -136,7 +133,7 @@ public class CurrentBookingsActivity extends AppCompatActivity {
         public void onBindViewHolder(Booking item, BookingHolder holder,
                                      int position) {
             holder.name.setText(item.getBedroom().getName());
-            holder.image.setBackgroundColor(colors[random.nextInt(colors.length)]);
+            holder.image.setBackgroundColor(Colors.INSTANCE.getColor(item.getId()));
             holder.itemView.setTag(item);
         }
 
