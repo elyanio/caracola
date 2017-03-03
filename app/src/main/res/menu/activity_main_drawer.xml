@@ -18,10 +18,6 @@
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_bedrooms"
             android:title="@string/title_bedrooms"/>
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
     </group>
 
     <item android:title="@string/title_settings">

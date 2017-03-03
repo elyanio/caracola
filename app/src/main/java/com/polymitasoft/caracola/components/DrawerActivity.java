@@ -80,8 +80,6 @@ public class DrawerActivity extends AppCompatActivity implements
             case R.id.nav_current_bookings:
                 startActivity(new Intent(this, CurrentBookingsActivity.class));
                 break;
-            case R.id.nav_manage:
-                break;
             case R.id.nav_share:
                 startActivity(new Intent(this, BedroomListActivity.class));
                 break;
