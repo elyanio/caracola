@@ -2,11 +2,11 @@ package com.polymitasoft.caracola.view.service;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
@@ -24,10 +24,10 @@ import io.requery.sql.EntityDataStore;
  * @since 22/2/2017
  */
 
-public class InternalServiceSelectorView extends LinearLayout implements View.OnClickListener {
+public class InternalServiceSelectorView extends TextInputLayout implements View.OnClickListener {
 
     InternalService service;
-    @BindView(R.id.selector) TextView selector;
+    @BindView(R.id.selector) TextInputEditText selector;
 
     public InternalServiceSelectorView(Context context) {
         super(context);
@@ -50,15 +50,13 @@ public class InternalServiceSelectorView extends LinearLayout implements View.On
             return;
         }
         ButterKnife.bind(this);
-        setOnClickListener(this);
+        selector.setOnClickListener(this);
     }
 
     public void setService(InternalService service) {
         this.service = service;
         if(service != null) {
             selector.setText(service.getName());
-        } else {
-            selector.setText(R.string.service_hint);
         }
     }
 

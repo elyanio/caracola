@@ -1,7 +1,5 @@
 package com.polymitasoft.caracola.datamodel;
 
-import com.polymitasoft.caracola.CaracolaApplication;
-
 /**
  * Created by rainermf on 11/2/2017.
  */
