@@ -87,6 +87,7 @@ public class ConsumptionFragment extends Fragment {
     @Override
     public void onResume() {
         adapter.queryAsync();
+        adapter.updateTotals();
         super.onResume();
     }
 
