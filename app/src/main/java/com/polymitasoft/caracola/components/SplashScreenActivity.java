@@ -24,6 +24,11 @@ public class SplashScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         if (BuildConfig.DEBUG) {
+            Intent mainIntent = new Intent().setClass(
+                    SplashScreenActivity.this, ReservaPrincipal.class);
+            startActivity(mainIntent);
+            finish();
+        }else{
             // do something for a debug build
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             // Hide title bar
@@ -45,11 +50,7 @@ public class SplashScreenActivity extends Activity {
             // Simulate a long loading process on application startup.
             Timer timer = new Timer();
             timer.schedule(task, SPLASH_SCREEN_DELAY);
-            // Start the next activity
-        }else{
-            Intent mainIntent = new Intent().setClass(
-                    SplashScreenActivity.this, ReservaPrincipal.class);
-            startActivity(mainIntent);
+            // Start the next activitys
         }
         // Set portrait orientation
 
