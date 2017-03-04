@@ -179,14 +179,11 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public void clickDia(VistaDia dia) {
         ArrayList<ActionType> actionTypes = new ArrayList<>();
-        if (esModoTodo()) { // el habitacionSeleccionada es todos
-//            reservaPrincipal.disableButtons();
-
-            reservaPrincipal.getBookingButtonBar().hide();
+        if (esModoTodo()) { // el habitacionSeleccionada es todos(disponibilidad)
+//            reservaPrincipal.getBookingButtonBar().hide();
             if (primerDiaSelec == null) {          //y si no hay una primera seleccion en vista todos
                 primerDiaSelec = dia;
                 primerDiaSelec.seleccionar(CellLocation.ALONE);
-
             } else {                                //y si hay una primera seleccion en vista todos
                 segundoDiaSelec = dia;
                 selecionadorRangoDiasTocadosModoH(CalendarState.SELECTED.color());
