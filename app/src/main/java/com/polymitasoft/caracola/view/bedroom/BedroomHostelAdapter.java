@@ -64,12 +64,33 @@ public class BedroomHostelAdapter extends BaseAdapter {
         TextView primary_text = (TextView) item.findViewById(R.id.primary_text);
         TextView secundary_text = (TextView) item.findViewById(R.id.secondary_text);
         ImageView delete_menu = (ImageView) item.findViewById(R.id.delete_menu);
+
         ImageView edit_menu = (ImageView) item.findViewById(R.id.edit_menu);
+        edit_menu.setVisibility(View.INVISIBLE);
 
         primary_text.setText(bedrooms.get(i).getName());
-        secundary_text.setText("Capacidad: " + bedrooms.get(i).getCapacity());
+        final int roomCode = bedrooms.get(i).getCode();
+        secundary_text.setText("Codigo: " + roomCode);
+
+        delete_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                desvincularHabitacion(roomCode);
+            }
+        });
 
         return item;
+    }
+
+    private void desvincularHabitacion(int roomCode) {
+
+        Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.HOSTEL.eq(hostel).and(Bedroom.CODE.eq(roomCode))).get().first();
+        bedroom.setCode(0);
+        bedroom.setHostel(null);
+        dataStore.update(bedroom);
+        actualizarLista();
+        notifyDataSetChanged();
     }
 
     public void actualizarLista() {
