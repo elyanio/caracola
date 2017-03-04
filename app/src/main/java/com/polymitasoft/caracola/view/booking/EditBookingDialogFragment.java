@@ -216,15 +216,7 @@ public class EditBookingDialogFragment extends DialogFragment {
     }
 
     private void sendMessage(Booking booking) {
-        String precio = FormatUtils.formatMoney(booking.getPrice());
-        ManageSmsBooking manageSmsBooking = new ManageSmsBooking(
-                booking.getCheckInDate(),
-                booking.getCheckOutDate(),
-                booking.getState(),
-                booking.getNote(),
-                booking.getBedroom().getCode(),
-                precio,
-                getContext());
+        ManageSmsBooking manageSmsBooking = new ManageSmsBooking(booking, getContext());
         manageSmsBooking.findBedroom();
         manageSmsBooking.findManager();
         manageSmsBooking.buildMessage();
