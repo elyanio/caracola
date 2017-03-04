@@ -145,24 +145,9 @@ public class ManageSmsBooking {
     }
 
     public void buildDeleteMessage() {
-        //  mensaje = "<$#17-01-30#17-02-05#1#1#Aqui va una notica de prerreserva. Esto esta de pinga asere, estoy loco por irme y no me dejaaaannn";
-        int state = 0;
-        switch (estado) {
-            case PENDING:
-                state = PENDING;
-                break;
-            case CONFIRMED:
-                state = CONFIRMED;
-                break;
-            case CHECKED_IN:
-                state = CHECKED_IN;
-                break;
-        }
 
         LocalDateConverter localDateConverter = new LocalDateConverter();
         mensaje = "$$#" + localDateConverter.convertToPersisted(fecha_inicio) + "#" + roomCode;
-//        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
-//        Log.e("asio", "                          ddsfdsfsdfsdfsfsfsfsfsfsfsfsfsfsfwefffghrfksdjskdfhsfkhskdhk"+mensaje);
     }
 
     public String getNota() {
@@ -180,12 +165,6 @@ public class ManageSmsBooking {
 
     public void enviar_mensaje() {
         Mensajero.enviar_mensaje(managers, mensaje);
-//        SmsManager sms = SmsManager.getDefault();
-//        if (managers.size() != 0) {
-//            for (Manager manager : managers) {
-//                sms.sendTextMessage(manager.getPhoneNumber(), null, mensaje, null, null);
-//            }
-//        }
     }
 
     public List<Manager> getManagers() {

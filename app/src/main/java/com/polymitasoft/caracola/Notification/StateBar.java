@@ -15,7 +15,6 @@ import com.polymitasoft.caracola.R;
 /**
  * Created by asio on 2/24/2017.
  */
-
 public class StateBar {
 
     public void notificar(Context context_emisor, Class<CaracolaApplication> context_receptor, String titulo, String text, String info, String ticker, String nota) {
@@ -40,8 +39,10 @@ public class StateBar {
         //        PendingIntent piDismiss = PendingIntent.getActivity(context_emisor, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(nota)).addAction(R.drawable.ic_done_black_24dp, "Confirmar", null).setAutoCancel(true);
         mBuilder.setFullScreenIntent(contIntent, true);
+        mBuilder.setAutoCancel(false);
 
         NotificationManager mNotificationManager = (NotificationManager) context_emisor.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, mBuilder.build());
+
     }
 }
