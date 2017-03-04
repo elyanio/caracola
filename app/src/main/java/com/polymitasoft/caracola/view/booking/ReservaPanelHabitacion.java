@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.communication.ManageSmsBooking;
 import com.polymitasoft.caracola.components.InteractivoScrollView;
@@ -57,7 +58,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public ReservaPanelHabitacion(Context context, Bedroom bedroom) {
         super(context);
-        dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
+        dataStore = CaracolaApplication.instance().getDataStore();
+        bookingDao = new BookingDao();
         inicializar();
         this.habitacion = bedroom;
         reservaPrincipal = (ReservaPrincipal) getContext();
@@ -65,8 +67,6 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
         crearMeses();
         configurarControles();
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
-        bookingDao = new BookingDao(dataStore);
     }
 
     private void inicializar() {
@@ -622,65 +622,6 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
-    public void salvarPreReservaYadicionarALosMeses(VistaDia primerDiaSelec, VistaDia diaFin, BookingState estado, String nota, BigDecimal price) {
-        VistaDia diaMenor = primerDiaSelec;
-        VistaDia diaMayor = diaFin;
-        // para si se seleciona de atras pa alante
-        if (primerDiaSelec.getCalendar().isAfter(diaFin.getCalendar())) {
-            diaMenor = diaFin;
-            diaMayor = primerDiaSelec;
-        }
-
-        Booking booking = new Booking();
-        booking.setCheckInDate(diaMenor.getCalendar());
-        booking.setCheckOutDate(diaMayor.getCalendar());
-        booking.setState(estado);
-        booking.setBedroom(habitacion);
-        booking.setNote(nota);
-        booking.setPrice(price);
-        dataStore.insert(booking);
-
-//        todo enviar menssaje
-        if (habitacion.getCode() != 0) {
-            sendMessage(diaMenor.getCalendar(), diaMayor.getCalendar(), estado, habitacion.getCode(), nota, price);
-        }
-        // adicionar en los meses necesarios
-        adicionarCalendarioReservaAMeses(booking);
-    }
-
-    private void sendMessage(LocalDate fechaInicio, LocalDate fechaFinal, BookingState estado, int codeRoom, String nota, BigDecimal price) {
-
-        String precio = FormatUtils.formatMoney(price);
-        ManageSmsBooking manageSmsBooking = new ManageSmsBooking(fechaInicio, fechaFinal, estado, nota, codeRoom, precio, getContext());
-        manageSmsBooking.findBedroom();
-        manageSmsBooking.findManager();
-        manageSmsBooking.buildMessage();
-        manageSmsBooking.enviar_mensaje();
-        //bedroom.setPriceInHighSeason(FormatUtils.parseMoney(priceInHighSeason.getText().toString()));
-    }
-
-    public void salvarPreReservaYadicionarALosMesesModoTodos(Bedroom bedroom, VistaDia primerDiaSelecc, VistaDia segundoDiaSelecc, BookingState estado, String nota, BigDecimal price) {
-        VistaDia diaMenor = primerDiaSelecc;
-        VistaDia diaMayor = segundoDiaSelecc;
-        // para si se seleciona de atras pa alante
-        if (primerDiaSelecc.getCalendar().isAfter(segundoDiaSelecc.getCalendar())) {
-            diaMenor = segundoDiaSelecc;
-            diaMayor = primerDiaSelecc;
-        }
-
-        Booking booking = new Booking();
-        booking.setCheckInDate(diaMenor.getCalendar());
-        booking.setCheckOutDate(diaMayor.getCalendar());
-        booking.setState(estado);
-        booking.setBedroom(bedroom);
-        booking.setNote(nota);
-        booking.setPrice(price);
-        dataStore.insert(booking);
-
-        // adicionar en los meses necesarios
-        adicionarCalendarioReservaAMeses(booking);
-    }
-
     public void adicionarCalendarioReservaAMeses(Booking calendario_reserva) {
         VistaDia fechaIniC = obtenerVistaDiaFict(calendario_reserva.getCheckInDate());
         VistaDia fechaFinC = obtenerVistaDiaFict(calendario_reserva.getCheckOutDate());
@@ -834,7 +775,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         return segundoDiaSelec;
     }
 
-    public IBedroom getHabitacion() {
+    public Bedroom getHabitacion() {
         return habitacion;
     }
 

@@ -43,6 +43,11 @@ public class CurrentBookingsActivity extends RecyclerListActivity<Booking> imple
 
     }
 
+    @Override
+    public void onBookingCreate(Booking newBooking) {
+
+    }
+
     /**
      * Created by rainermf on 15/2/2017.
      */

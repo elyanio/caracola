@@ -1,7 +1,11 @@
 package com.polymitasoft.caracola.dataaccess;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import com.polymitasoft.caracola.CaracolaApplication;
+import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 
 import org.threeten.bp.Period;
@@ -25,5 +29,11 @@ public class Bookings {
 
     public static BigDecimal lodgingCost(@NonNull Booking booking) {
         return booking.getPrice().multiply(BigDecimal.valueOf(nights(booking)));
+    }
+
+    public static BigDecimal perNightPrice(Bedroom bedroom) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CaracolaApplication.instance());
+        boolean highSeason = preferences.getBoolean("high_season", false);
+        return (highSeason)? bedroom.getPriceInHighSeason() : bedroom.getPriceInLowSeason();
     }
 }

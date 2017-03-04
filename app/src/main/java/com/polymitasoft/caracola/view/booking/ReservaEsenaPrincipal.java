@@ -31,6 +31,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     private ArrayList<ReservaPanelHabitacion> panelesHabitaciones = new ArrayList<>();
     private ReservaPanelHabitacion reservaPanelHabitacionActual;
     private TextView notaDeslizante;
+    private int currentPosition = 0;
 
     public ReservaEsenaPrincipal(Context context) {
         super(context);
@@ -68,6 +69,10 @@ public class ReservaEsenaPrincipal extends LinearLayout {
         deslizador.setCurrentItem(pos, true);
         reservaPanelHabitacionActual = panelesHabitaciones.get(pos);
         reservaPanelHabitacionActual.limpiarTodo();
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
     }
 
     //eventos
@@ -108,6 +113,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View itemView;
+            currentPosition = position;
             if (position == 0) {
                 itemView = new ReservaPanelHabitacion(getContext(), null);
                 container.addView(itemView);

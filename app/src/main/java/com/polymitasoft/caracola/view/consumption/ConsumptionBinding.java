@@ -1,8 +1,14 @@
 package com.polymitasoft.caracola.view.consumption;
 
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
@@ -24,7 +30,7 @@ import butterknife.ButterKnife;
  */
 class ConsumptionBinding {
 
-    @BindView(R.id.amountText) EditText amount;
+    @BindView(R.id.amountText) TextInputEditText amount;
     @BindView(R.id.priceText) EditText price;
     @BindView(R.id.service_selector) InternalServiceSelectorView service;
     private Consumption consumption;
@@ -39,41 +45,49 @@ class ConsumptionBinding {
                 price.setText(FormatUtils.formatMoney(service.getDefaultPrice()));
             }
         });
-        amount.setOnClickListener(new View.OnClickListener() {
+        amount.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                NumberPickerBuilder builder = new NumberPickerBuilder()
-                        .setFragmentManager(activity.getSupportFragmentManager())
-                        .setCurrentNumber(consumption.getAmount())
-                        .setStyleResId(R.style.BetterPickersDialogFragment_Light)
-                        .setPlusMinusVisibility(View.INVISIBLE)
-                        .setDecimalVisibility(View.INVISIBLE)
-                        .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
-                            @Override
-                            public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
-                                consumption.setAmount(number.intValue());
-                                amount.setText(String.valueOf(number.intValue()));
-                            }
-                        });
-                builder.show();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    amount.requestFocus();
+                    NumberPickerBuilder builder = new NumberPickerBuilder()
+                            .setFragmentManager(activity.getSupportFragmentManager())
+                            .setStyleResId(R.style.BetterPickersDialogFragment_Light)
+                            .setPlusMinusVisibility(View.INVISIBLE)
+                            .setDecimalVisibility(View.INVISIBLE)
+                            .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
+                                @Override
+                                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
+                                    consumption.setAmount(number.intValue());
+                                    amount.setText(String.valueOf(number.intValue()));
+                                }
+                            });
+                    builder.show();
+                    return true;
+                }
+                return false;
             }
         });
-        price.setOnClickListener(new View.OnClickListener() {
+        price.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                NumberPickerBuilder builder = new NumberPickerBuilder()
-                        .setFragmentManager(activity.getSupportFragmentManager())
-                        .setCurrentNumber(consumption.getPrice())
-                        .setStyleResId(R.style.BetterPickersDialogFragment_Light)
-                        .setPlusMinusVisibility(View.INVISIBLE)
-                        .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
-                            @Override
-                            public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
-                                consumption.setPrice(fullNumber);
-                                price.setText(FormatUtils.formatMoney(fullNumber));
-                            }
-                        });
-                builder.show();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    price.requestFocus();
+                    NumberPickerBuilder builder = new NumberPickerBuilder()
+                            .setFragmentManager(activity.getSupportFragmentManager())
+                            .setStyleResId(R.style.BetterPickersDialogFragment_Light)
+                            .setPlusMinusVisibility(View.INVISIBLE)
+                            .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
+                                @Override
+                                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
+                                    consumption.setPrice(fullNumber);
+                                    price.setText(FormatUtils.formatMoney(fullNumber));
+                                }
+                            });
+                    builder.show();
+                    return true;
+                }
+                return false;
             }
         });
     }

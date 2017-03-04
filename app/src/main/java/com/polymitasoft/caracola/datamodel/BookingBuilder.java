@@ -5,19 +5,19 @@ import org.threeten.bp.LocalDate;
 import java.math.BigDecimal;
 
 /**
- * Created by rainermf on 13/2/2017.
+ * @author rainermf
+ * @since 13/2/2017
  */
-
 public class BookingBuilder {
 
-    private LocalDate checkInDate;
-    private LocalDate checkOutDate;
+    private LocalDate checkInDate = LocalDate.now();
+    private LocalDate checkOutDate = LocalDate.now();
     private Bedroom bedroom;
-    private BigDecimal price;
-    private BookingState state;
-    private String note;
-    private String bookingNumber;
-    private String bookNumber;
+    private BigDecimal price = BigDecimal.ZERO;
+    private BookingState state = BookingState.CONFIRMED;
+    private String note = "";
+    private String bookingNumber = "";
+    private String bookNumber = "";
 
     public BookingBuilder with(Booking booking) {
         checkInDate = booking.getCheckInDate();
@@ -31,42 +31,42 @@ public class BookingBuilder {
         return this;
     }
 
-    public BookingBuilder setCheckInDate(LocalDate checkInDate) {
+    public BookingBuilder checkInDate(LocalDate checkInDate) {
         this.checkInDate = checkInDate;
         return this;
     }
 
-    public BookingBuilder setCheckOutDate(LocalDate checkOutDate) {
+    public BookingBuilder checkOutDate(LocalDate checkOutDate) {
         this.checkOutDate = checkOutDate;
         return this;
     }
 
-    public BookingBuilder setBedroom(Bedroom bedroom) {
+    public BookingBuilder bedroom(Bedroom bedroom) {
         this.bedroom = bedroom;
         return this;
     }
 
-    public BookingBuilder setPrice(BigDecimal price) {
+    public BookingBuilder price(BigDecimal price) {
         this.price = price;
         return this;
     }
 
-    public BookingBuilder setState(BookingState state) {
+    public BookingBuilder state(BookingState state) {
         this.state = state;
         return this;
     }
 
-    public BookingBuilder setNote(String note) {
+    public BookingBuilder note(String note) {
         this.note = note;
         return this;
     }
 
-    public BookingBuilder setBookingNumber(String bookingNumber) {
+    public BookingBuilder bookingNumber(String bookingNumber) {
         this.bookingNumber = bookingNumber;
         return this;
     }
 
-    public BookingBuilder setBookNumber(String bookNumber) {
+    public BookingBuilder bookNumber(String bookNumber) {
         this.bookNumber = bookNumber;
         return this;
     }

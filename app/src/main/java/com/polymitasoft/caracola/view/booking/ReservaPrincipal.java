@@ -2,15 +2,17 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.menu.ActionMenuItemView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.DrawerActivity;
-import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 
@@ -31,6 +33,7 @@ import static com.polymitasoft.caracola.view.booking.CalendarState.toCalendarSta
 public class ReservaPrincipal extends DrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener, EditBookingDialogFragment.OnBookingEditListener, DisponibilidadDialogFragment.OnDisponibilidadListener {
 
+    private static final String EDIT_BOOKING_DIALOG_TAG = "EDIT_BOOKING_DIALOG_TAG";
     private List<Bedroom> bedrooms = new ArrayList<>();
 
     //escenas
@@ -46,7 +49,7 @@ public class ReservaPrincipal extends DrawerActivity
     }
 
     private void loadData() {
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(this);
+        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
         bedrooms = dataStore.select(Bedroom.class).orderBy(Bedroom.NAME).get().toList();
     }
 
@@ -66,59 +69,60 @@ public class ReservaPrincipal extends DrawerActivity
     }
 
     public void clickEditR() {
+        EditBookingDialogFragment newFragment = EditBookingDialogFragment.newInstance(
+                getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getPreReservaSelecc());
+        showDialog(newFragment, EDIT_BOOKING_DIALOG_TAG);
+    }
+
+    private void showDialog(DialogFragment dialogFragment, String tag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag("edit_booking_dialog");
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(tag);
         if (prev != null) {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
 
-        // Create and show the dialog.
-        EditBookingDialogFragment newFragment = EditBookingDialogFragment.newInstance(
-                getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getPreReservaSelecc().getId());
-        newFragment.show(ft, "edit_booking_dialog");
+        dialogFragment.show(ft, tag);
     }
 
     public void showDisponibilidad() {
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag("show_disponibilidad");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
-
-        // Create and show the dialog.
         VistaDia primerDiaSelec = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getPrimerDiaSelec();
         VistaDia segundoDiaSelec = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().getSegundoDiaSelec();
         DisponibilidadDialogFragment newFragment = DisponibilidadDialogFragment.newInstance(primerDiaSelec.getCalendar(), segundoDiaSelec.getCalendar());
-        newFragment.show(ft, "show_disponibilidad");
+        showDialog(newFragment, "show_disponibilidad");
     }
 
     public List<Bedroom> obtenerDisponibilidad(LocalDate dia1, LocalDate dia2) {
-        List<Bedroom> bedrooms = getReservaEsenaPrincipal().getReservaPanelHabitacionActual().disponibilidad(dia1, dia2);
-        return bedrooms;
+        return getReservaEsenaPrincipal().getReservaPanelHabitacionActual().disponibilidad(dia1, dia2);
     }
 
     @Override
     public void actualizarSeleccionEnCalendaio(LocalDate dia1, LocalDate dia2) {
         ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
-        panelHabitacionActual.actualizarColorRangoModoTodos(panelHabitacionActual.obtenerVistaDiaFict(dia1), panelHabitacionActual.obtenerVistaDiaFict(dia2), CalendarState.UNSELECTED.color());;
+        panelHabitacionActual.actualizarColorRangoModoTodos(panelHabitacionActual.obtenerVistaDiaFict(dia1), panelHabitacionActual.obtenerVistaDiaFict(dia2), CalendarState.UNSELECTED.color());
     }
 
     @Override
     public void clickEnListaDisponibilidad(LocalDate dia1, LocalDate dia2, Bedroom bedroom) {
-        ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
-//        panelHabitacionActual.setPrimerDiaSelec(panelHabitacionActual.obtenerVistaDiaFict(dia1));
-//        panelHabitacionActual.setSegundoDiaSelec(panelHabitacionActual.obtenerVistaDiaFict(dia2));
-        DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this, bedroom, panelHabitacionActual.obtenerVistaDiaFict(dia1), panelHabitacionActual.obtenerVistaDiaFict(dia2), true);
-        dialog.show();
+        showEditDialog(bedroom, dia1, dia2);
     }
 
     public void clickPreR() {
         ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
-        DialogoHacerPreReserva dialog = new DialogoHacerPreReserva(this, (Bedroom) panelHabitacionActual.getHabitacion(), panelHabitacionActual.getPrimerDiaSelec(), panelHabitacionActual.getSegundoDiaSelec(), false);
-        dialog.show();
+        showEditDialog(panelHabitacionActual.getHabitacion(),
+                panelHabitacionActual.getPrimerDiaSelec().getCalendar(),
+                panelHabitacionActual.getSegundoDiaSelec().getCalendar());
+    }
+
+    private void showEditDialog(Bedroom bedroom, LocalDate day1, LocalDate day2) {
+        LocalDate checkInDate = day1;
+        LocalDate checkOutDate = day2;
+        if(day1.isAfter(day2)) {
+            checkInDate = day2;
+            checkOutDate = day1;
+        }
+        EditBookingDialogFragment dialog = EditBookingDialogFragment.newInstance(bedroom, checkInDate, checkOutDate);
+        showDialog(dialog, EDIT_BOOKING_DIALOG_TAG);
     }
 
     @Override
@@ -168,20 +172,33 @@ public class ReservaPrincipal extends DrawerActivity
 
     @Override
     public void onBookingEdit(Booking oldBooking, Booking newBooking) {
-        ReservaPanelHabitacion reservaPanelHabitacionActual = getReservaEsenaPrincipal().getReservaPanelHabitacionActual();
-        VistaDia vistaDiaFictIni = reservaPanelHabitacionActual.obtenerVistaDiaFict(oldBooking.getCheckInDate());
-        VistaDia vistaDiaFictFin = reservaPanelHabitacionActual.obtenerVistaDiaFict(oldBooking.getCheckOutDate());
-        VistaDia vistaDiaFictIniNew = reservaPanelHabitacionActual.obtenerVistaDiaFict(newBooking.getCheckInDate());
-        VistaDia vistaDiaFictFinNew = reservaPanelHabitacionActual.obtenerVistaDiaFict(newBooking.getCheckOutDate());
+        ReservaPanelHabitacion bedroomPanel = getReservaEsenaPrincipal().getReservaPanelHabitacionActual();
+        VistaDia vistaDiaFictIni = bedroomPanel.obtenerVistaDiaFict(oldBooking.getCheckInDate());
+        VistaDia vistaDiaFictFin = bedroomPanel.obtenerVistaDiaFict(oldBooking.getCheckOutDate());
+        VistaDia vistaDiaFictIniNew = bedroomPanel.obtenerVistaDiaFict(newBooking.getCheckInDate());
+        VistaDia vistaDiaFictFinNew = bedroomPanel.obtenerVistaDiaFict(newBooking.getCheckOutDate());
 
+        bedroomPanel.actualizarColorRangoModoH(vistaDiaFictIni, vistaDiaFictFin, CalendarState.EMPTY.color());
+        bedroomPanel.actualizarColorRangoModoH(vistaDiaFictIniNew, vistaDiaFictFinNew, toCalendarState(newBooking.getState()).color());
+        bedroomPanel.limpiarTodo();
+    }
 
-        reservaPanelHabitacionActual.actualizarColorRangoModoH(vistaDiaFictIni, vistaDiaFictFin, CalendarState.EMPTY.color());
-        reservaPanelHabitacionActual.actualizarColorRangoModoH(vistaDiaFictIniNew, vistaDiaFictFinNew, toCalendarState(newBooking.getState()).color());
-        reservaPanelHabitacionActual.limpiarTodo();
+    @Override
+    public void onBookingCreate(Booking newBooking) {
+        ReservaPanelHabitacion bedroomPanel = getReservaEsenaPrincipal().getReservaPanelHabitacionActual();
+        bedroomPanel.adicionarCalendarioReservaAMeses(newBooking);
+        if(getReservaEsenaPrincipal().getCurrentPosition() != 0) {
+            VistaDia primerDiaSelec = bedroomPanel.getPrimerDiaSelec();
+            VistaDia segundoDiaSelec = bedroomPanel.getSegundoDiaSelec();
+            bedroomPanel.actualizarColorRangoModoH(primerDiaSelec, segundoDiaSelec, toCalendarState(newBooking.getState()).color());
+            bedroomPanel.limpiarTodo();
+        } else {
+            bedroomPanel.actualizarCambioHabitacion();
+        }
     }
 
     public void actualizarMenu(){
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(this);
+        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
         if (menu != null) {
             for (int i = 0; i < bedrooms.size(); i++) {
                 menu.removeItem(i);
@@ -191,7 +208,7 @@ public class ReservaPrincipal extends DrawerActivity
                 Bedroom bedroom = bedrooms.get(i);
                 menu.add(0, i, 0, bedroom.getName());
             }
-            Bedroom habitacion = (Bedroom) reservaEsenaPrincipal.getReservaPanelHabitacionActual().getHabitacion();
+            Bedroom habitacion = reservaEsenaPrincipal.getReservaPanelHabitacionActual().getHabitacion();
             ActionMenuItemView item1 = findById(this, R.id.show_m);
             if(habitacion == null){
                 item1.setTitle("Disponibilidad");

@@ -92,8 +92,8 @@ public class DisponibilidadDialogFragment extends DialogFragment {
 
 
     public void clickEnListaDisponibilidad(Bedroom bedroom) {
-        mCallback.clickEnListaDisponibilidad(dia1, dia2, bedroom);
         dismiss();
+        mCallback.clickEnListaDisponibilidad(dia1, dia2, bedroom);
     }
 
     // Container Activity must implement this interface
