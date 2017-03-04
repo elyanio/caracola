@@ -11,6 +11,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +30,7 @@ public class DateSpinner extends LinearLayout {
     private LocalDate minDate = LocalDate.MIN;
     private DateSpinner firstSpinner;
     private DateSpinner secondSpinner;
+    private DateTimeFormatter dateFormatter;
 
     public DateSpinner(Context context) {
         super(context);
@@ -51,6 +53,7 @@ public class DateSpinner extends LinearLayout {
             return;
         }
         ButterKnife.bind(this);
+        dateFormatter = DateTimeFormatter.ofPattern("d MMM");
         previousButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +78,7 @@ public class DateSpinner extends LinearLayout {
         nextButton.setEnabled(!date.equals(maxDate));
 
         this.date = date;
-        dateText.setText(FormatUtils.formatDate(date));
+        dateText.setText(dateFormatter.format(date));
         if(firstSpinner != null) {
             firstSpinner.setMaxDate(date);
         } else if(secondSpinner != null) {

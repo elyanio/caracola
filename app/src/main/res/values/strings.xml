@@ -8,7 +8,9 @@
     <string name="action_settings">Settings</string>
     <string name="reserva_titulo_hacer_reserva">Hacer reserva</string>
     <string name="reserva_nota">Nota</string>
-    <string name="booking_price">Precio por noche</string>
+    <string name="booking_price">
+        $<xliff:g id="price" example="25.00">%.2f</xliff:g> por noche
+    </string>
     <string name="chek_in">Noche de inicio</string>
     <string name="chek_out">Noche de salida</string>
     <string name="title_current_bookings">Reservas actuales</string>
@@ -146,4 +148,6 @@
     <string name="title_preferences">Preferencias</string>
     <string name="contact_info_tab_title">General</string>
     <string name="contact_services_tab_title">Servicios</string>
+    <string name="booking_confirmed">Confirmada</string>
+    <string name="booking_pending">Pendiente</string>
 </resources>

@@ -1,50 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/fragment_edit_booking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:gravity="center"
-        android:orientation="vertical"
-        android:id="@+id/fragment_edit_booking">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/booking_confirmed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-
-                <RadioButton
-                    android:id="@+id/reserva_rb_confirmada"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:checked="true"
-                    android:text="Confirmada" />
-
-                <RadioButton
-                    android:id="@+id/reserva_rb_pendiente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:checked="false"
-                    android:text="Pendiente" />
-
-
-            </RadioGroup>
-        </LinearLayout>
+            android:checked="true"
+            android:paddingStart="4dp"
+            android:text="@string/booking_confirmed"
+            />
 
         <include layout="@layout/booking_data"/>
 

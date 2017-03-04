@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
+import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.communication.ManageSmsBooking;
@@ -20,11 +23,11 @@ import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
 import com.polymitasoft.caracola.datamodel.BookingState;
-import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,13 +38,12 @@ public class EditBookingDialogFragment extends DialogFragment {
 
     private static final String ARG_BOOKING_ID = "bookingId";
 
-    @BindView(R.id.reserva_rb_confirmada) RadioButton rb_confirmado;
-    @BindView(R.id.reserva_rb_pendiente) RadioButton rb_pendiente;
+    @BindView(R.id.booking_confirmed) SwitchCompat confirmedSwitch;
     @BindView(R.id.booking_note) TextView text_nota;
-    @BindView(R.id.booking_price) TextView textPrice;
+    @BindView(R.id.booking_price) Button textPrice;
     @BindView(R.id.booking_check_in) DateSpinner checkInDateSpinner;
     @BindView(R.id.booking_check_out) DateSpinner checkOutSpinner;
-
+    OnBookingEditListener mCallback;
     private Booking preReserva;
     private EntityDataStore<Persistable> dataStore;
     private BookingDao bookingDao;
@@ -50,6 +52,9 @@ public class EditBookingDialogFragment extends DialogFragment {
         return newInstance(booking.getId());
     }
 
+    /**
+     * @deprecated This is not type safe, use newInstance({@link Booking}) instead.
+     */
     @Deprecated
     public static EditBookingDialogFragment newInstance(int bookingId) {
         EditBookingDialogFragment fragment = new EditBookingDialogFragment();
@@ -62,7 +67,6 @@ public class EditBookingDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
         View view = getActivity().getLayoutInflater().inflate(R.layout.reserva_dialog_editar_reserva, null);
         ButterKnife.bind(this, view);
 
@@ -79,7 +83,6 @@ public class EditBookingDialogFragment extends DialogFragment {
                         dialog.dismiss();
                     }
                 });
-        // Create the AlertDialog object and return it
 
         dataStore = CaracolaApplication.instance().getDataStore();
         bookingDao = new BookingDao();
@@ -97,14 +100,38 @@ public class EditBookingDialogFragment extends DialogFragment {
     }
 
     private void configurarControles() {
-        text_nota.setText(preReserva.getNote());
-        textPrice.setText(FormatUtils.formatMoney(preReserva.getPrice()));
-        if ((preReserva.getState() == BookingState.CONFIRMED)) {
-            rb_confirmado.setChecked(true);
+        if(preReserva.getState() == BookingState.CHECKED_IN) {
+            confirmedSwitch.setVisibility(View.GONE);
         } else {
-            rb_confirmado.setChecked(false);
-            rb_pendiente.setChecked(true);
+            boolean confirmed = preReserva.getState() == BookingState.CONFIRMED;
+            confirmedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    confirmedSwitch.setText(isChecked ? R.string.booking_confirmed : R.string.booking_pending);
+                }
+            });
+            confirmedSwitch.setChecked(confirmed);
         }
+
+        text_nota.setText(preReserva.getNote());
+        textPrice.setText(getString(R.string.booking_price, preReserva.getPrice()));
+        textPrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new NumberPickerBuilder()
+                        .setFragmentManager(getActivity().getSupportFragmentManager())
+                        .setStyleResId(R.style.BetterPickersDialogFragment_Light)
+                        .setPlusMinusVisibility(View.INVISIBLE)
+                        .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
+                            @Override
+                            public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
+                                preReserva.setPrice(fullNumber);
+                                textPrice.setText(getString(R.string.booking_price, preReserva.getPrice()));
+                            }
+                        })
+                        .show();
+            }
+        });
         checkInDateSpinner.bindForRange(checkOutSpinner);
         checkInDateSpinner.setDate(preReserva.getCheckInDate());
         checkOutSpinner.setDate(preReserva.getCheckOutDate());
@@ -117,12 +144,15 @@ public class EditBookingDialogFragment extends DialogFragment {
     private void clickeditR() {
         Booking oldBooking = new BookingBuilder().with(preReserva).build();
         String nota = text_nota.getText().toString();
-        BookingState estado = rb_confirmado.isChecked() ? BookingState.CONFIRMED : BookingState.PENDING;
-        BigDecimal price = FormatUtils.parseMoney(textPrice.getText().toString());
+        BookingState estado;
+        if(preReserva.getState() == BookingState.CHECKED_IN) {
+            estado = BookingState.CHECKED_IN;
+        } else {
+            estado = confirmedSwitch.isChecked() ? BookingState.CONFIRMED : BookingState.PENDING;
+        }
 
         preReserva.setCheckInDate(checkInDateSpinner.getDate())
                 .setCheckOutDate(checkOutSpinner.getDate())
-                .setPrice(price)
                 .setState(estado)
                 .setNote(nota);
 
@@ -145,13 +175,6 @@ public class EditBookingDialogFragment extends DialogFragment {
         manageSmsBooking.enviar_mensaje();
     }
 
-    // Container Activity must implement this interface
-    public interface OnBookingEditListener {
-        void onBookingEdit(Booking oldBooking, Booking newBooking);
-    }
-
-    OnBookingEditListener mCallback;
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -164,5 +187,10 @@ public class EditBookingDialogFragment extends DialogFragment {
             throw new ClassCastException(context.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
+    }
+
+    // Container Activity must implement this interface
+    public interface OnBookingEditListener {
+        void onBookingEdit(Booking oldBooking, Booking newBooking);
     }
 }
