@@ -20,6 +20,7 @@ import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -233,6 +234,13 @@ public class ReservaPrincipal extends DrawerActivity
         }
 
     }
+
+//    @Override
+//    public Object onRetainNonConfigurationInstance()
+//    {
+//
+//        return new Object();
+//    }
 
     @Override
     protected void onResume() {
