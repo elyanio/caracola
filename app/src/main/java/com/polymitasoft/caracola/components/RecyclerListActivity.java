@@ -9,9 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.common.collect.Sets;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 
+import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -46,6 +48,14 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    protected EnumSet<Options> getOptions() {
+        return EnumSet.noneOf(Options.class);
+    }
+
+    protected QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> getAdapter() {
+        return adapter;
+    }
+
     protected final void setBarTitle(@StringRes int title) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
@@ -62,7 +72,9 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.list_add_menu, menu);
+        if(!getOptions().contains(Options.NO_ADD_MENU)) {
+            getMenuInflater().inflate(R.menu.list_add_menu, menu);
+        }
         return true;
     }
 
@@ -90,6 +102,10 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         executor.shutdown();
         adapter.close();
         super.onDestroy();
+    }
+
+    public enum Options {
+        NO_ADD_MENU
     }
 
 }

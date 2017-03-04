@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.common.collect.Sets;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.Colors;
@@ -17,11 +18,14 @@ import com.polymitasoft.caracola.datamodel.Booking;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.util.EnumSet;
+
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
+import static com.polymitasoft.caracola.components.RecyclerListActivity.Options.NO_ADD_MENU;
 import static com.polymitasoft.caracola.datamodel.Booking.CHECK_IN_DATE;
 import static com.polymitasoft.caracola.datamodel.Booking.CHECK_OUT_DATE;
 
@@ -40,12 +44,16 @@ public class CurrentBookingsActivity extends RecyclerListActivity<Booking> imple
 
     @Override
     public void onBookingEdit(Booking oldBooking, Booking newBooking) {
-
+        getAdapter().queryAsync();
     }
 
     @Override
     public void onBookingCreate(Booking newBooking) {
 
+    }
+
+    protected EnumSet<Options> getOptions() {
+        return EnumSet.of(NO_ADD_MENU);
     }
 
     /**

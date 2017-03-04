@@ -108,16 +108,16 @@ public class EditBookingDialogFragment extends DialogFragment {
             LocalDate firstNight = parseDate(getArguments().getString(ARG_CHECK_IN_DATE));
             LocalDate lastNight = parseDate(getArguments().getString(ARG_CHECK_OUT_DATE));
             Bedroom bedroom = dataStore.findByKey(Bedroom.class, idBedroom);
-            oldBooking = new BookingBuilder()
+            booking = new BookingBuilder()
                     .price(Bookings.perNightPrice(bedroom))
                     .checkInDate(firstNight)
                     .checkOutDate(lastNight)
                     .bedroom(bedroom)
                     .build();
         } else {
-            oldBooking = dataStore.findByKey(Booking.class, idBooking);
+            booking = dataStore.findByKey(Booking.class, idBooking);
         }
-        booking = new BookingBuilder().with(oldBooking).build();
+        oldBooking = new BookingBuilder().with(booking).build();
 
         configurarControles();
 
