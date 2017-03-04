@@ -31,6 +31,7 @@ import android.view.View;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.view.client.ClientEditActivity;
@@ -79,6 +80,7 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
         } else {
             booking = data.findByKey(Booking.class, bookingId);
         }
+        booking.setState(BookingState.CHECKED_IN);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
