@@ -1,5 +1,6 @@
 package com.polymitasoft.caracola.view.supplier;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
@@ -49,6 +50,11 @@ public class SupplierListFragment extends RecyclerListFragment<Supplier, Supplie
         int idService = getArguments().getInt(ARG_SERVICE_ID);
         ExternalService service = dataStore.findByKey(ExternalService.class, idService);
         return new SupplierAdapter(getContext(), service);
+    }
+
+    @Override
+    protected void onActionPlusMenu() {
+        startActivity(new Intent(getContext(), SupplierEditActivity.class));
     }
 
     public interface OnListInteractionListener {

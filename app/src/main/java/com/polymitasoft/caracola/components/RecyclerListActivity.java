@@ -3,18 +3,15 @@ package com.polymitasoft.caracola.components;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 
-import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,8 +28,9 @@ import io.requery.sql.EntityDataStore;
  */
 public abstract class RecyclerListActivity<T> extends AppCompatActivity {
 
-    @BindView(R.id.listRecyclerView) RecyclerView recyclerView;
     protected EntityDataStore<Persistable> data;
+    @BindView(R.id.listRecyclerView) RecyclerView recyclerView;
+    @BindView(R.id.fab) FloatingActionButton fab;
     private ExecutorService executor;
     private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
     private EnumSet<Options> options;
@@ -43,23 +41,22 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         setContentView(R.layout.list_items);
         ButterKnife.bind(this);
 
+        if (getOptions().contains(Options.ADD_MENU)) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onActionPlusMenu();
+                }
+            });
+        } else {
+            fab.setVisibility(View.GONE);
+        }
         data = CaracolaApplication.instance().getDataStore();
         executor = Executors.newSingleThreadExecutor();
         adapter = createAdapter();
         adapter.setExecutor(executor);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    protected EnumSet<Options> removedDefaults() {
-        return EnumSet.noneOf(Options.class);
-    }
-
-    private EnumSet<Options> getOptions() {
-        if(options == null) {
-            options = EnumSet.complementOf(removedDefaults());
-        }
-        return options;
     }
 
     protected QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> getAdapter() {
@@ -80,24 +77,6 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
 
     protected abstract QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> createAdapter();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if(getOptions().contains(Options.ADD_MENU)) {
-            getMenuInflater().inflate(R.menu.list_add_menu, menu);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_plus:
-                onActionPlusMenu();
-                return true;
-        }
-        return false;
-    }
-
     protected void onActionPlusMenu() {
     }
 
@@ -112,6 +91,17 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         executor.shutdown();
         adapter.close();
         super.onDestroy();
+    }
+
+    protected EnumSet<Options> removedDefaults() {
+        return EnumSet.noneOf(Options.class);
+    }
+
+    private EnumSet<Options> getOptions() {
+        if (options == null) {
+            options = EnumSet.complementOf(removedDefaults());
+        }
+        return options;
     }
 
     public enum Options {
