@@ -7,6 +7,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,6 +25,8 @@ public class SupplierBinding {
     @BindView(R.id.supplier_description) EditText description;
     @BindView(R.id.supplier_email) EditText emailAddress;
     @BindView(R.id.supplier_address) EditText address;
+    @BindView(R.id.supplier_phone1) EditText phone1;
+    @BindView(R.id.supplier_phone2) EditText phone2;
     @BindView(R.id.supplier_services) SupplierServicesSelector services;
 
     public SupplierBinding(Activity activity, Supplier supplier) {
@@ -37,6 +40,10 @@ public class SupplierBinding {
         supplier.setDescription(description.getText().toString());
         supplier.setEmailAddress(emailAddress.getText().toString());
         supplier.setAddress(address.getText().toString());
+        supplier.setPhoneNumbers(Arrays.asList(
+                phone1.getText().toString().trim(),
+                phone2.getText().toString().trim()
+        ));
         return supplier;
     }
 
@@ -51,5 +58,12 @@ public class SupplierBinding {
         emailAddress.setText(supplier.getEmailAddress());
         address.setText(supplier.getAddress());
         services.setSupplier(supplier);
+        List<String> phoneNumbers = supplier.getPhoneNumbers();
+        if(phoneNumbers.size() > 0) {
+            phone1.setText(phoneNumbers.get(0));
+        }
+        if(phoneNumbers.size() > 1) {
+            phone2.setText(phoneNumbers.get(1));
+        }
     }
 }

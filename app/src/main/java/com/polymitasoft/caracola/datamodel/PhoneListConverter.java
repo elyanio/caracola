@@ -1,5 +1,7 @@
 package com.polymitasoft.caracola.datamodel;
 
+import com.google.common.base.Joiner;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +10,8 @@ import io.requery.Converter;
 import io.requery.Nullable;
 
 /**
- * Created by rainermf on 11/2/2017.
+ * @author rainermf
+ * @since 11/2/2017
  */
 public class PhoneListConverter implements Converter<List<String>, String> {
 
@@ -30,11 +33,7 @@ public class PhoneListConverter implements Converter<List<String>, String> {
 
     @Override
     public String convertToPersisted(List<String> list) {
-        String phones = "";
-        for (String value: list) {
-            phones += "\u00A0" + value;
-        }
-        return phones;
+        return Joiner.on('\u00A0').join(list);
     }
 
     @Override

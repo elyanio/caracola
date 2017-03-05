@@ -150,4 +150,6 @@
     <string name="contact_services_tab_title">Servicios</string>
     <string name="booking_confirmed">Confirmada</string>
     <string name="booking_pending">Pendiente</string>
+    <string name="supplier_phone1">Teléfono 1</string>
+    <string name="supplier_phone2">Teléfono 2</string>
 </resources>

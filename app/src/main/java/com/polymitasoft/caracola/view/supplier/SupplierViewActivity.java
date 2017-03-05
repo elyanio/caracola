@@ -85,7 +85,7 @@ public class SupplierViewActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return SupplierInfoFragment.newInstance();
+                    return SupplierInfoFragment.newInstance(supplier);
                 case 1:
                     return ServiceBySupplierListFragment.newInstance(supplier);
             }
