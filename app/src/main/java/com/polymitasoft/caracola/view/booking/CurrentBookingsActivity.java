@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 
-import com.google.common.collect.Sets;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.Colors;
@@ -25,7 +24,7 @@ import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
-import static com.polymitasoft.caracola.components.RecyclerListActivity.Options.NO_ADD_MENU;
+import static com.polymitasoft.caracola.components.RecyclerListActivity.Options.ADD_MENU;
 import static com.polymitasoft.caracola.datamodel.Booking.CHECK_IN_DATE;
 import static com.polymitasoft.caracola.datamodel.Booking.CHECK_OUT_DATE;
 
@@ -52,8 +51,9 @@ public class CurrentBookingsActivity extends RecyclerListActivity<Booking> imple
 
     }
 
-    protected EnumSet<Options> getOptions() {
-        return EnumSet.of(NO_ADD_MENU);
+    @Override
+    protected EnumSet<Options> removedDefaults() {
+        return EnumSet.of(ADD_MENU);
     }
 
     /**

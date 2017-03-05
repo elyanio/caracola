@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 
+import java.util.EnumSet;
+
 import io.requery.Persistable;
 import io.requery.meta.Type;
 
@@ -20,6 +22,7 @@ import io.requery.meta.Type;
 public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerListAdapter<E, SimpleViewHolder> {
 
     private boolean deleteConfirmationEnabled = true;
+    private EnumSet<Options> options;
 
     public SimpleListAdapter(Context context, Type<E> type) {
         super(context, type);
@@ -36,18 +39,26 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
     public void onBindViewHolder(final E item, final SimpleViewHolder holder, int position) {
         super.onBindViewHolder(item, holder, position);
         holder.colorStrip.setBackgroundColor(Colors.INSTANCE.getColor((int) holder.getItemId()));
-        holder.deleteMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleDeletion(item);
-            }
-        });
-        holder.editMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editItem(item);
-            }
-        });
+        if(getOptions().contains(Options.DELETE_ICON)) {
+            holder.deleteMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleDeletion(item);
+                }
+            });
+        } else {
+            holder.deleteMenu.setVisibility(View.GONE);
+        }
+        if(getOptions().contains(Options.EDIT_ICON)) {
+            holder.editMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editItem(item);
+                }
+            });
+        } else {
+            holder.editMenu.setVisibility(View.GONE);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,5 +111,21 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
 
     protected void viewItem(final E item) {
 
+    }
+
+    protected EnumSet<Options> removedDefaults() {
+        return EnumSet.noneOf(Options.class);
+    }
+
+    private EnumSet<Options> getOptions() {
+        if(options == null) {
+            options = EnumSet.complementOf(removedDefaults());
+        }
+        return options;
+    }
+
+    public enum Options {
+        EDIT_ICON,
+        DELETE_ICON
     }
 }

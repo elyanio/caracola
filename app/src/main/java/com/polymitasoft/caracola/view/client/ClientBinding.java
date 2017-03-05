@@ -6,7 +6,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
+import com.codetroopers.betterpickers.datepicker.DatePickerDialogFragment;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.Country;
@@ -25,36 +26,42 @@ import butterknife.ButterKnife;
 class ClientBinding {
 
     private final AppCompatActivity activity;
+    private final DatePickerBuilder birthdayPicker;
     @BindView(R.id.passportText) EditText passport;
     @BindView(R.id.firstNameText) EditText firstName;
     @BindView(R.id.lastNameText) EditText lastName;
     @BindView(R.id.birthdayText) EditText birthday;
     @BindView(R.id.genderSpinner) Spinner gender;
     @BindView(R.id.countryText) EditText country;
-    private CalendarDatePickerDialogFragment birthdayPicker;
     private Client client;
 
     ClientBinding(AppCompatActivity activity, Client client) {
         ButterKnife.bind(this, activity);
         this.activity = activity;
-        initPickers();
+        birthdayPicker = createDatePicker();
+        initComponents();
         setClient(client);
     }
 
-    private void initPickers() {
-        birthdayPicker = new CalendarDatePickerDialogFragment()
-                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+    private DatePickerBuilder createDatePicker() {
+        return new DatePickerBuilder()
+                .setFragmentManager(activity.getSupportFragmentManager())
+                .setStyleResId(R.style.BetterPickersDialogFragment_Light)
+                .addDatePickerDialogHandler(new DatePickerDialogFragment.DatePickerDialogHandler() {
                     @Override
-                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                    public void onDialogDateSet(int reference, int year, int monthOfYear, int dayOfMonth) {
                         LocalDate date = LocalDate.of(year, monthOfYear + 1, dayOfMonth);
                         birthday.setText(FormatUtils.formatDate(date));
                         client.setBirthday(date);
                     }
                 });
+    }
+
+    private void initComponents() {
         birthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                birthdayPicker.show(activity.getSupportFragmentManager(), "birthdayPicker");
+                birthdayPicker.show();
             }
         });
 
@@ -78,9 +85,7 @@ class ClientBinding {
         passport.setText(client.getPassport());
         firstName.setText(client.getFirstName());
         lastName.setText(client.getLastName());
-        LocalDate date = client.getBirthday();
-        birthday.setText(FormatUtils.formatDate(date));
-        birthdayPicker.setPreselectedDate(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
+        birthday.setText(FormatUtils.formatDate(client.getBirthday()));
         gender.setSelection(client.getGender().ordinal());
         country.setText(client.getCountry().getCode());
     }

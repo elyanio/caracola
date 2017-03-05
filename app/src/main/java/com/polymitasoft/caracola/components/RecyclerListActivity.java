@@ -9,10 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,6 +35,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
     protected EntityDataStore<Persistable> data;
     private ExecutorService executor;
     private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
+    private EnumSet<Options> options;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,8 +51,15 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    protected EnumSet<Options> getOptions() {
+    protected EnumSet<Options> removedDefaults() {
         return EnumSet.noneOf(Options.class);
+    }
+
+    private EnumSet<Options> getOptions() {
+        if(options == null) {
+            options = EnumSet.complementOf(removedDefaults());
+        }
+        return options;
     }
 
     protected QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> getAdapter() {
@@ -72,7 +82,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(!getOptions().contains(Options.NO_ADD_MENU)) {
+        if(getOptions().contains(Options.ADD_MENU)) {
             getMenuInflater().inflate(R.menu.list_add_menu, menu);
         }
         return true;
@@ -105,7 +115,6 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
     }
 
     public enum Options {
-        NO_ADD_MENU
+        ADD_MENU
     }
-
 }

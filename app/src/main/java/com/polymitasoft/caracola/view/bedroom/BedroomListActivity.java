@@ -11,6 +11,8 @@ import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 
+import java.util.EnumSet;
+
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 
@@ -55,13 +57,14 @@ public class BedroomListActivity extends RecyclerListActivity<Bedroom> {
         }
 
         protected void viewItem(Bedroom item) {
-            editItem(item);
-        }
-
-        protected void editItem(Bedroom item) {
             Intent intent = new Intent(context, BedroomEditActivity.class);
             intent.putExtra(BedroomEditActivity.EXTRA_BEDROOM_ID, item.getId());
             context.startActivity(intent);
+        }
+
+        @Override
+        protected EnumSet<Options> removedDefaults() {
+            return EnumSet.of(Options.EDIT_ICON);
         }
     }
 }
