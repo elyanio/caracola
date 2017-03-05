@@ -28,7 +28,7 @@ public class Mensajero {
         }
     }
 
-    public static void  confirmar_recibo(String numero) {
+    public static void confirmar_recibo(String numero) {
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(numero, null, MENSAJE_CONFIRMACION, null, null);
     }

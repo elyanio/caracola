@@ -67,8 +67,8 @@ public class Receiver extends BroadcastReceiver {
 
                         insertarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], context);
 
-                        String mensaje = "Nueva reserva gestionada.\nFecha de inicio: " + valores[1] + "\nFecha final: " +
-                                valores[2] + "\nTipo de Reserva: " + valores[3] + "\n" + valores[6];
+                        String mensaje = "Nueva reserva gestionada.\nEntrada: " + valores[1] + "\nSalida: " +
+                                valores[2] + "\nTipo de Reserva: " + valores[4] + "\n" + valores[6];
                         StateBar stateBar = new StateBar();
                         stateBar.notificar(context, CaracolaApplication.class, "Nueva Reserva", number_manager, "Phone", "", mensaje);
 
@@ -81,11 +81,11 @@ public class Receiver extends BroadcastReceiver {
 
                         actualizarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], valores[7], context);
 
-                        String mensaje = "Actualizacion de reserva.\nFecha de inicio: " + valores[1] + "\nFecha final: " +
-                                valores[2] + "\nTipo de Reserva: " + valores[3] + "\n" + valores[6];
+                        String mensaje = "Actualización de reserva.\nEntrada: " + valores[1] + "\nSalida: " +
+                                valores[2] + "\nTipo de Reserva: " + valores[4] + "\n" + valores[6];
 
                         StateBar stateBar = new StateBar();
-                        stateBar.notificar(context, CaracolaApplication.class, "Actualizacion de reserva", number_manager, "Phone", "", mensaje);
+                        stateBar.notificar(context, CaracolaApplication.class, "Actualización de reserva", number_manager, "Phone", "", mensaje);
 
                         Mensajero.confirmar_recibo(number_manager);
                     }
@@ -93,21 +93,24 @@ public class Receiver extends BroadcastReceiver {
                     //$$#2017-02-16#111
                     if (chequearFidelidadMensaje(context, valores[2], number_manager)) {
 
-                        Booking booking = borrarBooking(valores[1], valores[2], context);
+                        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+                        int code = Integer.parseInt(valores[2]);
 
+                        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).get().first();
+
+                        Booking booking = borrarBooking(valores[1], valores[2], context);
                         LocalDateConverter localDateConverter = new LocalDateConverter();
 
-                        String mensaje = "Reserva eliminada.\nFecha de inicio: " + localDateConverter.convertToPersisted(booking.getCheckInDate()) + "\nFecha final: " +
-                                localDateConverter.convertToPersisted(booking.getCheckOutDate()) + "\nHabitacion: " + booking.getBedroom().getName();
+                        String mensaje = "Reserva eliminada.\nEntrada: " + localDateConverter.convertToPersisted(booking.getCheckInDate()) + "\nSalida: " +
+                                localDateConverter.convertToPersisted(booking.getCheckOutDate()) + "\nHabitación: " + bedroom.getName();
 
                         StateBar stateBar = new StateBar();
-                        stateBar.notificar(context, CaracolaApplication.class, "Eliminar Booking", number_manager, "Phone", "", mensaje);
-
+                        stateBar.notificar(context, CaracolaApplication.class, "Eliminar reserva", number_manager, "Phone", "", mensaje);
                         Mensajero.confirmar_recibo(number_manager);
                     }
                 } else if (valores[0].equals("$$$")) {
                     StateBar stateBar = new StateBar();
-                    stateBar.notificar(context, CaracolaApplication.class, "Confirmacion", number_manager, "Phone", "", valores[1]);
+                    stateBar.notificar(context, CaracolaApplication.class, "Confirmación", number_manager, "Phone", "", valores[1]);
                 }
             }
         }
@@ -126,12 +129,11 @@ public class Receiver extends BroadcastReceiver {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
         EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
         LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
-        int code = Integer.parseInt(roomCode);
 
+        int code = Integer.parseInt(roomCode);
         Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).get().first();
         Booking booking = dataStore.select(Booking.class).where(Booking.BEDROOM.eq(bedroom).and(Booking.CHECK_IN_DATE.eq(localDateInicio))).get().first();
         dataStore.delete(booking);
-
         return booking;
     }
 
