@@ -7,13 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.CaracolaApplication;
+import com.polymitasoft.caracola.components.RecyclerListActivity;
 import com.polymitasoft.caracola.components.RecyclerListFragment;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
+import java.util.EnumSet;
+
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
+
+import static com.polymitasoft.caracola.components.RecyclerListActivity.Options.ADD_MENU;
 
 /**
  * @author rainermf
@@ -22,8 +27,8 @@ import io.requery.sql.EntityDataStore;
 
 public class ServiceBySupplierListFragment extends RecyclerListFragment<SupplierService, ServiceBySupplierListFragment.OnListInteractionListener> {
 
-    private Supplier supplier;
     public static final String ARG_SUPPLIER_ID = "supplierId";
+    private Supplier supplier;
 
     public static ServiceBySupplierListFragment newInstance(Supplier supplier) {
 
@@ -43,12 +48,14 @@ public class ServiceBySupplierListFragment extends RecyclerListFragment<Supplier
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    public ServiceBySupplierListFragment() {
-    }
-
     @Override
     protected QueryRecyclerAdapter<SupplierService, ? extends RecyclerView.ViewHolder> createAdapter() {
         return new ServiceSupplierAdapter(getContext(), supplier);
+    }
+
+    @Override
+    protected EnumSet<RecyclerListActivity.Options> removedDefaults() {
+        return EnumSet.of(ADD_MENU);
     }
 
     public interface OnListInteractionListener {

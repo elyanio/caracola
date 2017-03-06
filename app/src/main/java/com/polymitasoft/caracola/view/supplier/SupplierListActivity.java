@@ -27,9 +27,13 @@ import com.polymitasoft.caracola.components.RecyclerListActivity;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
+import java.util.EnumSet;
+
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
+
+import static com.polymitasoft.caracola.components.RecyclerListActivity.Options.ADD_MENU;
 
 /* TODO Renombrar a ExternalServiceViewActivity teniendo en cuenta que modificaría ReservaPrincipal */
 public class SupplierListActivity extends RecyclerListActivity<SupplierService> {
@@ -56,5 +60,10 @@ public class SupplierListActivity extends RecyclerListActivity<SupplierService> 
         EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
         service = dataStore.findByKey(ExternalService.class, serviceId);
         return new SupplierServiceAdapter(this, service);
+    }
+
+    @Override
+    protected EnumSet<Options> removedDefaults() {
+        return EnumSet.of(ADD_MENU);
     }
 }
