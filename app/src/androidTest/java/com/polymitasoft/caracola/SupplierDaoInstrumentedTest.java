@@ -1,8 +1,5 @@
 package com.polymitasoft.caracola;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-
 import com.polymitasoft.caracola.dataaccess.SupplierDao;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
@@ -13,7 +10,6 @@ import org.junit.Test;
 import java.util.List;
 
 import io.requery.Persistable;
-import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
 import static org.junit.Assert.assertEquals;
@@ -26,13 +22,9 @@ import static org.junit.Assert.assertTrue;
 
 public class SupplierDaoInstrumentedTest {
 
-    @Before
-    public void beforeTests() {
-        new DatabaseSetup().start();
-    }
-
     @Test
     public void testServices() {
+        new DatabaseSetup().mockDatabase();
         SupplierDao dao = new SupplierDao();
         EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
         Supplier supplier = dataStore.findByKey(Supplier.class, 1);

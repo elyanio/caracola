@@ -50,31 +50,36 @@ public class DatabaseSetup {
     private File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");
 
     public DatabaseSetup() {
+        data = CaracolaApplication.instance().getDataStore();
+    }
+
+    public void cleanDatabase() {
         directory.mkdirs();
         if (dbFile.exists()) {
             dbFile.delete();
         }
-        data = CaracolaApplication.instance().getDataStore();
     }
 
-    public void start() {
+    public void mockDatabase() {
+        cleanDatabase();
         List<Client> clients = getClients();
-        insertList(clients);
         List<Supplier> suppliers = getSuppliers();
-        insertList(suppliers);
         List<Bedroom> bedrooms = getBedrooms();
-        insertList(bedrooms);
         List<InternalService> internalServices = getInternalServices();
-        insertList(internalServices);
         List<Booking> bookings = getBookings(bedrooms);
-        insertList(bookings);
         List<ClientStay> stays = getClientStays(bookings, clients);
-        insertList(stays);
         List<Consumption> consumptions = getConsumptions(bookings, internalServices);
-        insertList(consumptions);
         List<ExternalService> externalServices = getExternalServices();
-        insertList(externalServices);
         List<SupplierService> supplierServices = getSupplierServices(suppliers, externalServices);
+
+        insertList(clients);
+        insertList(suppliers);
+        insertList(bedrooms);
+        insertList(internalServices);
+        insertList(bookings);
+        insertList(stays);
+        insertList(consumptions);
+        insertList(externalServices);
         insertList(supplierServices);
     }
 
