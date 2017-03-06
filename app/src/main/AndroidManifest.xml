@@ -40,10 +40,10 @@
                   android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.service.InternalServiceListActivity" />
         <activity android:name=".view.service.InternalServiceEditActivity" />
-        <activity android:name=".view.supplier.ExternalServiceListActivity"
+        <activity android:name=".view.supplier.ContactsActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.supplier.ExternalServiceEditActivity" />
-        <activity android:name=".view.supplier.SupplierListActivity"/>
+        <activity android:name=".view.supplier.ExternalServiceViewActivity"/>
         <activity android:name=".view.supplier.SupplierViewActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.supplier.SupplierEditActivity"/>

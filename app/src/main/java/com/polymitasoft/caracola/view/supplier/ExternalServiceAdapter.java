@@ -32,7 +32,7 @@ class ExternalServiceAdapter extends SimpleListAdapter<ExternalService> {
 
     @Override
     protected void viewItem(ExternalService item) {
-        Intent intent = new Intent(context, SupplierListActivity.class);
+        Intent intent = new Intent(context, ExternalServiceViewActivity.class);
         intent.putExtra(SupplierListFragment.ARG_SERVICE_ID, item.getId());
         context.startActivity(intent);
     }

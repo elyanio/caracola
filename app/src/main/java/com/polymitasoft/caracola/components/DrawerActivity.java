@@ -19,8 +19,7 @@ import com.polymitasoft.caracola.view.booking.BookingButtonBar;
 import com.polymitasoft.caracola.view.booking.CurrentBookingsActivity;
 import com.polymitasoft.caracola.view.hostel.HostelActivity;
 import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
-import com.polymitasoft.caracola.view.supplier.ExternalServiceListActivity;
-import com.polymitasoft.caracola.view.supplier.SupplierListActivity;
+import com.polymitasoft.caracola.view.supplier.ContactsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,7 +74,7 @@ public class DrawerActivity extends AppCompatActivity implements
                 startActivity(new Intent(this, InternalServiceListActivity.class));
                 break;
             case R.id.nav_contacts:
-                startActivity(new Intent(this, ExternalServiceListActivity.class));
+                startActivity(new Intent(this, ContactsActivity.class));
                 break;
             case R.id.nav_current_bookings:
                 startActivity(new Intent(this, CurrentBookingsActivity.class));

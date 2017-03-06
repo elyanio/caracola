@@ -35,8 +35,7 @@ import io.requery.sql.EntityDataStore;
 
 import static com.polymitasoft.caracola.components.RecyclerListActivity.Options.ADD_MENU;
 
-/* TODO Renombrar a ExternalServiceViewActivity teniendo en cuenta que modificaría ReservaPrincipal */
-public class SupplierListActivity extends RecyclerListActivity<SupplierService> {
+public class ExternalServiceViewActivity extends RecyclerListActivity<SupplierService> {
 
     private ExternalService service;
 
