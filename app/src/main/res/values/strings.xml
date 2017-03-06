@@ -152,4 +152,7 @@
     <string name="booking_pending">Pendiente</string>
     <string name="supplier_phone1">Teléfono 1</string>
     <string name="supplier_phone2">Teléfono 2</string>
+    <string name="supplier_service_price">Precio</string>
+    <string name="supplier_service_commission">Comisión</string>
+    <string name="supplier_service_edit_title">Editar servicio del proveedor</string>
 </resources>

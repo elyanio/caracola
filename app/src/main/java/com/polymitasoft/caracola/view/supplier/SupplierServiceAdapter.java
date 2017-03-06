@@ -1,6 +1,7 @@
 package com.polymitasoft.caracola.view.supplier;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.polymitasoft.caracola.components.SimpleListAdapter;
@@ -53,8 +54,13 @@ class SupplierServiceAdapter extends SimpleListAdapter<SupplierService> {
 
     @Override
     protected void editItem(SupplierService item) {
-//        Intent intent = new Intent(context, SupplierServiceEditActivity.class);
-//        intent.putExtra(SupplierServiceEditActivity.EXTRA_SUPPLIER_SERVICE_ID, item.getId());
-//        context.startActivity(intent);
+        new SupplierServiceEditDialog(context, item)
+                .setOkListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        queryAsync();
+                    }
+                })
+                .show();
     }
 }
