@@ -31,13 +31,11 @@ public interface IBooking extends Persistable {
     @Column(nullable = false)
     @Convert(LocalDateConverter.class)
     LocalDate getCheckInDate();
-    IBooking setCheckInDate(LocalDate checkInDate);
 
     @NonNull
     @Column(nullable = false)
     @Convert(LocalDateConverter.class)
     LocalDate getCheckOutDate();
-    IBooking setCheckOutDate(LocalDate checkOutDate);
 
     @NonNull
     @Column(nullable = false)
