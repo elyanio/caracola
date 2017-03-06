@@ -9,8 +9,8 @@ import android.widget.Spinner;
 import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
 import com.codetroopers.betterpickers.datepicker.DatePickerDialogFragment;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.CountryListDialog;
 import com.polymitasoft.caracola.datamodel.Client;
-import com.polymitasoft.caracola.datamodel.Country;
 import com.polymitasoft.caracola.datamodel.Gender;
 import com.polymitasoft.caracola.util.FormatUtils;
 
@@ -64,6 +64,12 @@ class ClientBinding {
                 birthdayPicker.show();
             }
         });
+        country.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new CountryListDialog(activity).show();
+            }
+        });
 
         ArrayAdapter<Gender> adapter = new ArrayAdapter<>(activity,
                 android.R.layout.simple_spinner_item, Gender.values());
@@ -76,7 +82,6 @@ class ClientBinding {
         client.setFirstName(firstName.getText().toString());
         client.setLastName(lastName.getText().toString());
         client.setGender((Gender) gender.getSelectedItem());
-        client.setCountry(Country.fromCode(country.getText().toString()));
         return client;
     }
 
@@ -87,6 +92,6 @@ class ClientBinding {
         lastName.setText(client.getLastName());
         birthday.setText(FormatUtils.formatDate(client.getBirthday()));
         gender.setSelection(client.getGender().ordinal());
-        country.setText(client.getCountry().getCode());
+        country.setText(client.getCountry().getName());
     }
 }
