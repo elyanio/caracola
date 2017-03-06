@@ -14,6 +14,8 @@ import java.util.EnumSet;
 import io.requery.Persistable;
 import io.requery.meta.Type;
 
+import static com.polymitasoft.caracola.components.SimpleListAdapter.Options.DELETE_CONFIRMATION;
+
 /**
  * @author rainermf
  * @since 25/2/2017
@@ -21,7 +23,6 @@ import io.requery.meta.Type;
 
 public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerListAdapter<E, SimpleViewHolder> {
 
-    private boolean deleteConfirmationEnabled = true;
     private EnumSet<Options> options;
 
     public SimpleListAdapter(Context context, Type<E> type) {
@@ -67,20 +68,12 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
         });
     }
 
-    public boolean isDeleteConfirmationEnabled() {
-        return deleteConfirmationEnabled;
-    }
-
-    public final void setDeleteConfirmationEnabled(boolean deleteConfirmationEnabled) {
-        this.deleteConfirmationEnabled = deleteConfirmationEnabled;
-    }
-
     protected CharSequence getDeleteConfirmationMessage(E item) {
         return context.getString(R.string.delete_confirmation_message);
     }
 
     protected void handleDeletion(final E item) {
-        if(isDeleteConfirmationEnabled()) {
+        if(getOptions().contains(DELETE_CONFIRMATION)) {
             new AlertDialog.Builder(context)
                     .setPositiveButton(R.string.yes_action_button, new DialogInterface.OnClickListener() {
                         @Override
@@ -124,8 +117,9 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
         return options;
     }
 
-    public enum Options {
+    protected enum Options {
         EDIT_ICON,
-        DELETE_ICON
+        DELETE_ICON,
+        DELETE_CONFIRMATION
     }
 }
