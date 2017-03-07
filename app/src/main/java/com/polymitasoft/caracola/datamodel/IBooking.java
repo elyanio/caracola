@@ -52,12 +52,12 @@ public interface IBooking extends Persistable {
     BookingState getState();
 
     @NonNull
-    @Column(nullable = false, value = "")
+    @Column(nullable = false)
     String getNote();
 
-    @Nullable
-    String getBookingNumber();
+    @Column(value = "-1")
+    int getBookingNumber();
 
-    @Nullable
-    String getBookNumber();
+    @Column(value = "-1")
+    int getBookNumber();
 }

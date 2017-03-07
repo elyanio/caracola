@@ -195,8 +195,8 @@ public class DatabaseSetup {
     }
 
     public List<Booking> getBookings(List<Bedroom> bedrooms) {
-        String[] bookingNumbers = new String[]{"1", "13", "15", "16", "18", "10", "14"};
-        String[] bookNumbers = new String[]{"3434", "5555", "7878", "1212", "7518", "6510", "2314"};
+        int[] bookingNumbers = new int[]{1, 13, 15, 16, 18, 10, 14};
+        int[] bookNumbers = new int[]{3434, 5555, 7878, 1212, 7518, 6510, 2314};
         String[] checkInDates = new String[]{"2017/01/21", "2017/02/11", "2017/03/11", "2017/04/01", "2017/07/13", "2017/05/01", "2017/10/22"};
         String[] checkOutDates = new String[]{"2017/01/21", "2017/02/21", "2017/03/30", "2017/04/02", "2017/08/13", "2017/05/02", "2017/12/05"};
         String[] notes = new String[]{"polymita sera ", " una empresa ", "enorme en ", "diversion ", "y alomejor en soft", " les habla", "un polymitero"};

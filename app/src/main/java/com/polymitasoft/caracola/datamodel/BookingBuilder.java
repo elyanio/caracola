@@ -16,8 +16,8 @@ public class BookingBuilder {
     private BigDecimal price = BigDecimal.ZERO;
     private BookingState state = BookingState.CONFIRMED;
     private String note = "";
-    private String bookingNumber = "";
-    private String bookNumber = "";
+    private int bookingNumber = -1;
+    private int bookNumber = -1;
 
     public BookingBuilder with(Booking booking) {
         checkInDate = booking.getCheckInDate();
@@ -61,12 +61,12 @@ public class BookingBuilder {
         return this;
     }
 
-    public BookingBuilder bookingNumber(String bookingNumber) {
+    public BookingBuilder bookingNumber(int bookingNumber) {
         this.bookingNumber = bookingNumber;
         return this;
     }
 
-    public BookingBuilder bookNumber(String bookNumber) {
+    public BookingBuilder bookNumber(int bookNumber) {
         this.bookNumber = bookNumber;
         return this;
     }
