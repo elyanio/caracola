@@ -8,9 +8,11 @@ import android.widget.Spinner;
 
 import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
 import com.codetroopers.betterpickers.datepicker.DatePickerDialogFragment;
+import com.mukesh.countrypicker.fragments.CountryPicker;
+import com.mukesh.countrypicker.interfaces.CountryPickerListener;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.components.CountryListDialog;
 import com.polymitasoft.caracola.datamodel.Client;
+import com.polymitasoft.caracola.datamodel.Country;
 import com.polymitasoft.caracola.datamodel.Gender;
 import com.polymitasoft.caracola.util.FormatUtils;
 
@@ -27,6 +29,7 @@ class ClientBinding {
 
     private final AppCompatActivity activity;
     private final DatePickerBuilder birthdayPicker;
+    private final CountryPicker countryPicker;
     @BindView(R.id.passportText) EditText passport;
     @BindView(R.id.firstNameText) EditText firstName;
     @BindView(R.id.lastNameText) EditText lastName;
@@ -39,6 +42,7 @@ class ClientBinding {
         ButterKnife.bind(this, activity);
         this.activity = activity;
         birthdayPicker = createDatePicker();
+        countryPicker = createCountryPicker();
         initComponents();
         setClient(client);
     }
@@ -57,6 +61,19 @@ class ClientBinding {
                 });
     }
 
+    private CountryPicker createCountryPicker() {
+        final CountryPicker picker = CountryPicker.newInstance("Seleccione un país");
+        picker.setListener(new CountryPickerListener() {
+            @Override
+            public void onSelectCountry(String name, String code, String dialCode, int flagDrawableResID) {
+                country.setText(name);
+                client.setCountry(Country.fromCode(code));
+                picker.dismiss();
+            }
+        });
+        return picker;
+    }
+
     private void initComponents() {
         birthday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +84,7 @@ class ClientBinding {
         country.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CountryListDialog(activity).show();
+                countryPicker.show(activity.getSupportFragmentManager(), "COUNTRY_PICKER");
             }
         });
 

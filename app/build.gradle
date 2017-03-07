@@ -34,6 +34,7 @@ dependencies {
     compile 'com.android.support:percent:25.0.1'
     compile 'com.android.support:support-vector-drawable:25.0.1'
     compile 'com.code-troopers.betterpickers:library:2.5.5'
+    compile 'com.github.mukeshsolanki:country-picker-android:1.1.7'
 
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     compile 'com.google.guava:guava:20.0'
