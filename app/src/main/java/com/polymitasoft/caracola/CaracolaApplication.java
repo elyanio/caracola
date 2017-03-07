@@ -1,29 +1,27 @@
 package com.polymitasoft.caracola;
 
-import android.Manifest;
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.os.StrictMode;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.datamodel.Models;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import java.io.File;
 import java.util.Locale;
 
 import io.requery.Persistable;
 import io.requery.android.sqlcipher.SqlCipherDatabaseSource;
+import io.requery.android.sqlite.DatabaseSource;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.os.Environment.getExternalStorageDirectory;
 
 /**
@@ -39,8 +37,25 @@ public class CaracolaApplication extends Application {
         return instance;
     }
 
+    private static final boolean ENCRYPTION_ENABLED = true;
+
     @Override
     public void onCreate() {
+        super.onCreate();
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
         instance = this;
         AndroidThreeTen.init(this);
         Locale.setDefault(new Locale("es"));
@@ -64,9 +79,22 @@ public class CaracolaApplication extends Application {
 
     void createDataStore(Context context, File dbFile) {
         String dbName = dbFile.getAbsolutePath();
-        SqlCipherDatabaseSource source =
-                new SqlCipherDatabaseSource(context, Models.DEFAULT, dbName, "PasswordParaPruebas", 1);
-        Configuration configuration = source.getConfiguration();
+        Configuration configuration;
+        if (ENCRYPTION_ENABLED) {
+            SqlCipherDatabaseSource source =
+                    new SqlCipherDatabaseSource(context, Models.DEFAULT, dbName, "PasswordParaPruebas", 1) {
+                        @Override
+                        public void onOpen(SQLiteDatabase db) {
+                            super.onOpen(db);
+                            db.execSQL("PRAGMA foreign_keys=ON;");
+                        }
+                    };
+            configuration = source.getConfiguration();
+        } else {
+            DatabaseSource source =
+                    new DatabaseSource(context, Models.DEFAULT, dbName, 1);
+            configuration = source.getConfiguration();
+        }
 
         entityDataStore = new EntityDataStore<>(configuration);
     }
