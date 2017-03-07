@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.components.RecyclerListFragment;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 
@@ -46,7 +46,7 @@ public class SupplierListFragment extends RecyclerListFragment<Supplier, Supplie
 
     @Override
     protected QueryRecyclerAdapter<Supplier, ? extends RecyclerView.ViewHolder> createAdapter() {
-        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         int idService = getArguments().getInt(ARG_SERVICE_ID);
         ExternalService service = dataStore.findByKey(ExternalService.class, idService);
         return new SupplierAdapter(getContext(), service);

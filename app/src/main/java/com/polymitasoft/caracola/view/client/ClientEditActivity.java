@@ -21,8 +21,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.datamodel.ClientBuilder;
@@ -50,7 +50,7 @@ public class ClientEditActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_edit_client);
         }
-        data = CaracolaApplication.instance().getDataStore();
+        data = DataStoreHolder.INSTANCE.getDataStore();
         int clientId = getIntent().getIntExtra(EXTRA_CLIENT_ID, -1);
         if (clientId == -1) {
             client = new ClientBuilder().build(); // creating a new client

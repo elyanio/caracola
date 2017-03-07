@@ -8,8 +8,8 @@ import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.InternalService;
 
 import java.util.List;
@@ -76,7 +76,7 @@ public class InternalServiceSelectorView extends TextInputLayout implements View
 
     @Override
     public void onClick(View v) {
-        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         final List<InternalService> serviceList = dataStore
                 .select(InternalService.class)
                 .orderBy(InternalService.NAME.lower())

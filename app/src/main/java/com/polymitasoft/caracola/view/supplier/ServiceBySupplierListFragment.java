@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.components.RecyclerListActivity;
 import com.polymitasoft.caracola.components.RecyclerListFragment;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
@@ -42,7 +42,7 @@ public class ServiceBySupplierListFragment extends RecyclerListFragment<Supplier
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         int idSupplier = getArguments().getInt(ARG_SUPPLIER_ID);
         supplier = dataStore.findByKey(Supplier.class, idSupplier);
         return super.onCreateView(inflater, container, savedInstanceState);

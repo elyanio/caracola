@@ -1,5 +1,6 @@
 package com.polymitasoft.caracola;
 
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
@@ -50,7 +51,7 @@ public class DatabaseSetup {
     private File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");
 
     public DatabaseSetup() {
-        data = CaracolaApplication.instance().getDataStore();
+        data = DataStoreHolder.INSTANCE.getDataStore();
     }
 
     public void cleanDatabase() {

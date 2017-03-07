@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 import com.polymitasoft.caracola.util.FormatUtils;
 
@@ -41,7 +41,7 @@ public class SupplierServiceEditDialog {
                 .setPositiveButton(R.string.ok_action_button, new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+                        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
                         supplierService.setPrice(FormatUtils.parseMoney(priceView.getText().toString()));
                         supplierService.setComission(FormatUtils.parseMoney(comissionView.getText().toString()));
                         dataStore.update(supplierService);

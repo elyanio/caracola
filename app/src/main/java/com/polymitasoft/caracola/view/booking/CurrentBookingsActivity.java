@@ -6,12 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.components.RecyclerListActivity;
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 
 import org.threeten.bp.LocalDate;
@@ -66,7 +66,7 @@ public class CurrentBookingsActivity extends RecyclerListActivity<Booking> imple
 
         BookingAdapter() {
             super(CurrentBookingsActivity.this, Booking.$TYPE);
-            data = CaracolaApplication.instance().getDataStore();
+            data = DataStoreHolder.INSTANCE.getDataStore();
 
             dateFormatter = DateTimeFormatter.ofPattern("d MMM");
         }

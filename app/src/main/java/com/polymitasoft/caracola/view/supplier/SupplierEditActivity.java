@@ -21,15 +21,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.dataaccess.SupplierDao;
-import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierBuilder;
 
 import java.util.HashSet;
-import java.util.List;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -53,7 +51,7 @@ public class SupplierEditActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_edit_supplier);
         }
-        data = CaracolaApplication.instance().getDataStore();
+        data = DataStoreHolder.INSTANCE.getDataStore();
         dao = new SupplierDao();
         int supplierId = getIntent().getIntExtra(EXTRA_SUPPLIER_ID, -1);
         if (supplierId == -1) {

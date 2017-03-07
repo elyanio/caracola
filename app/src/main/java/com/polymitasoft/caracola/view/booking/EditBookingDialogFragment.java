@@ -16,12 +16,12 @@ import android.widget.TextView;
 
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.communication.ManageSmsBooking;
 import com.polymitasoft.caracola.components.DateSpinner;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.dataaccess.Bookings;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
@@ -84,7 +84,7 @@ public class EditBookingDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.reserva_dialog_editar_reserva, null);
         ButterKnife.bind(this, view);
-        dataStore = CaracolaApplication.instance().getDataStore();
+        dataStore = DataStoreHolder.INSTANCE.getDataStore();
         bookingDao = new BookingDao();
         int idBooking = getArguments().getInt(ARG_BOOKING_ID, -1);
 

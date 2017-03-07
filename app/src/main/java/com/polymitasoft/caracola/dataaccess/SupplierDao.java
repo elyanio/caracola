@@ -31,7 +31,7 @@ public class SupplierDao {
     private EntityDataStore<Persistable> dataStore;
 
     public SupplierDao() {
-        dataStore = CaracolaApplication.instance().getDataStore();
+        dataStore = DataStoreHolder.INSTANCE.getDataStore();
     }
 
     public Result<Supplier> withService(ExternalService service) {

@@ -1,9 +1,8 @@
 package com.polymitasoft.caracola;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.BedroomBuilder;
 import com.polymitasoft.caracola.datamodel.Booking;
@@ -33,7 +32,7 @@ public class CascadeRemoveTest {
 
     @Test
     public void deleteBedroomWithBookings() throws Exception {
-        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         Bedroom bedroom = new BedroomBuilder().build();
         dataStore.insert(bedroom);
         Booking booking = new BookingBuilder().bedroom(bedroom).build();

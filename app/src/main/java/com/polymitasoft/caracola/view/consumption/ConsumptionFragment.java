@@ -11,12 +11,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.dataaccess.Bookings;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Consumption;
 
@@ -75,7 +75,7 @@ public class ConsumptionFragment extends Fragment {
             RecyclerView recyclerView = findById(view, R.id.list);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+            EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
             int idBooking = getArguments().getInt(ARG_BOOKING_ID);
             Booking booking = dataStore.findByKey(Booking.class, idBooking);
             adapter = new ConsumptionRecyclerViewAdapter(booking);

@@ -2,7 +2,6 @@ package com.polymitasoft.caracola.dataaccess;
 
 import android.support.annotation.NonNull;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
@@ -33,7 +32,7 @@ public class BookingDao {
     private EntityDataStore<Persistable> dataStore;
 
     public BookingDao() {
-        this(CaracolaApplication.instance().getDataStore());
+        this(DataStoreHolder.INSTANCE.getDataStore());
     }
 
     public BookingDao(EntityDataStore<Persistable> dataStore) {

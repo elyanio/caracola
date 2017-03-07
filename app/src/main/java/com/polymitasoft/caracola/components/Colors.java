@@ -1,19 +1,23 @@
 package com.polymitasoft.caracola.components;
 
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+
+import com.polymitasoft.caracola.CaracolaApplication;
+import com.polymitasoft.caracola.R;
 
 /**
  * @author rainermf
  * @since 24/2/2017
  */
-
 public enum Colors {
     INSTANCE;
 
-    private int[] colors = new int[] { Color.BLACK };
-    private int size = 1;
+    private final int[] colors;
+    private final int size;
 
     @ColorInt
     public int getColor(int index) {
@@ -25,8 +29,15 @@ public enum Colors {
         return colors;
     }
 
-    public void setColors(@NonNull int[] colors) {
-        this.colors = colors;
-        this.size = colors.length;
+    Colors() {
+        Resources res = CaracolaApplication.instance().getResources();
+        TypedArray colorTypedArray = res.obtainTypedArray(R.array.account_colors);
+        colors = new int[colorTypedArray.length()];
+        for (int i = 0; i < colorTypedArray.length(); i++) {
+            int color = colorTypedArray.getColor(i, Color.BLACK);
+            colors[i] = color;
+        }
+        colorTypedArray.recycle();
+        size = colors.length;
     }
 }

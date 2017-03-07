@@ -28,8 +28,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Client;
@@ -73,7 +73,7 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
         toolbar.setTitle(R.string.title_edit_booking);
         setSupportActionBar(toolbar);
 
-        EntityDataStore<Persistable> data = CaracolaApplication.instance().getDataStore();
+        EntityDataStore<Persistable> data = DataStoreHolder.INSTANCE.getDataStore();
         int bookingId = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
         if (bookingId == -1) {
             booking = new Booking(); // creating a new booking

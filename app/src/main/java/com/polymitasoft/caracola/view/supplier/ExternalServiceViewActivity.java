@@ -21,9 +21,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.RecyclerListActivity;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
@@ -56,7 +56,7 @@ public class ExternalServiceViewActivity extends RecyclerListActivity<SupplierSe
         if(serviceId == -1) {
             throw new RuntimeException("You should pass a service to this activity");
         }
-        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         service = dataStore.findByKey(ExternalService.class, serviceId);
         return new SupplierServiceAdapter(this, service);
     }

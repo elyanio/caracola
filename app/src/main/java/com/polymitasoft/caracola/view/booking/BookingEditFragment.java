@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
 
@@ -60,7 +61,7 @@ public class BookingEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_booking, container, false);
         int idBooking = getArguments().getInt(ARG_BOOKING_ID);
-        dataStore = CaracolaApplication.instance().getDataStore();
+        dataStore = DataStoreHolder.INSTANCE.getDataStore();
         booking = dataStore.findByKey(Booking.class, idBooking);
         oldBooking = new BookingBuilder().with(booking).build();
         Log.e("shit", booking.getBookNumber() + " : " + booking.getBookingNumber());

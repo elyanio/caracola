@@ -3,7 +3,7 @@ package com.polymitasoft.caracola.components;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
-import com.polymitasoft.caracola.CaracolaApplication;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
@@ -23,7 +23,7 @@ public abstract class RecyclerListAdapter<E extends Persistable, VH extends Recy
     public RecyclerListAdapter(Context context, Type<E> type) {
         super(type);
         this.context = context;
-        dataStore = CaracolaApplication.instance().getDataStore();
+        dataStore = DataStoreHolder.INSTANCE.getDataStore();
     }
 
     @Override

@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.polymitasoft.caracola.CaracolaApplication;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.dataaccess.SupplierDao;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
@@ -53,7 +52,7 @@ public class SupplierServicesSelector extends Button {
 
     private void init() {
         if (isInEditMode()) return;
-        dataStore = CaracolaApplication.instance().getDataStore();
+        dataStore = DataStoreHolder.INSTANCE.getDataStore();
         dao = new SupplierDao();
     }
 

@@ -1,6 +1,5 @@
 package com.polymitasoft.caracola.view.booking;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,14 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.DrawerActivity;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 
@@ -25,7 +23,6 @@ import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -79,7 +76,7 @@ public class ReservaPrincipal extends DrawerActivity
     }
 
     private void loadData() {
-        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         bedrooms = dataStore.select(Bedroom.class).orderBy(Bedroom.NAME).get().toList();
     }
 
@@ -228,7 +225,7 @@ public class ReservaPrincipal extends DrawerActivity
     }
 
     public void actualizarMenu(){
-        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         if (menu != null) {
             for (int i = 0; i < bedrooms.size(); i++) {
                 menu.removeItem(i);

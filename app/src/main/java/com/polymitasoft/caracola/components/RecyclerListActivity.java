@@ -9,8 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 
 import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
@@ -51,7 +51,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         } else {
             fab.setVisibility(View.GONE);
         }
-        data = CaracolaApplication.instance().getDataStore();
+        data = DataStoreHolder.INSTANCE.getDataStore();
         executor = Executors.newSingleThreadExecutor();
         adapter = createAdapter();
         adapter.setExecutor(executor);

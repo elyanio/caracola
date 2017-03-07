@@ -11,8 +11,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Supplier;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class SupplierInfoFragment extends Fragment {
         findById(view, R.id.supplier_services).setVisibility(View.GONE);
 
         int supplierId = getArguments().getInt(ARG_SUPPLIER_ID);
-        supplier = CaracolaApplication.instance().getDataStore().findByKey(Supplier.class, supplierId);
+        supplier = DataStoreHolder.INSTANCE.getDataStore().findByKey(Supplier.class, supplierId);
 
         nameView.setText(supplier.getName());
         List<String> phoneNumbers = supplier.getPhoneNumbers();

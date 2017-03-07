@@ -1,10 +1,10 @@
 package com.polymitasoft.caracola;
 
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.dataaccess.SupplierDao;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class SupplierDaoInstrumentedTest {
     public void testServices() {
         new DatabaseSetup().mockDatabase();
         SupplierDao dao = new SupplierDao();
-        EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         Supplier supplier = dataStore.findByKey(Supplier.class, 1);
         List<ExternalService> services = dao.services(supplier).toList();
 

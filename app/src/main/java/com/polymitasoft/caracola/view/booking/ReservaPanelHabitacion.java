@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -13,26 +12,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.communication.ManageSmsBooking;
 import com.polymitasoft.caracola.components.InteractivoScrollView;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
-import com.polymitasoft.caracola.dataaccess.Bookings;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.BookingBuilder;
-import com.polymitasoft.caracola.datamodel.BookingState;
-import com.polymitasoft.caracola.datamodel.IBedroom;
 import com.polymitasoft.caracola.datamodel.IBooking;
-import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.requery.Persistable;
@@ -58,7 +49,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public ReservaPanelHabitacion(Context context, Bedroom bedroom) {
         super(context);
-        dataStore = CaracolaApplication.instance().getDataStore();
+        dataStore = DataStoreHolder.INSTANCE.getDataStore();
         bookingDao = new BookingDao();
         inicializar();
         this.habitacion = bedroom;

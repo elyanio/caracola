@@ -1,28 +1,15 @@
 package com.polymitasoft.caracola;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.StrictMode;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
-import com.polymitasoft.caracola.components.Colors;
-import com.polymitasoft.caracola.datamodel.Models;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 
-import net.sqlcipher.database.SQLiteDatabase;
-
-import java.io.File;
 import java.util.Locale;
 
 import io.requery.Persistable;
-import io.requery.android.sqlcipher.SqlCipherDatabaseSource;
-import io.requery.android.sqlite.DatabaseSource;
-import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
-
-import static android.os.Environment.getExternalStorageDirectory;
 
 /**
  * @author rainermf
@@ -31,13 +18,10 @@ import static android.os.Environment.getExternalStorageDirectory;
 public class CaracolaApplication extends Application {
 
     private static CaracolaApplication instance;
-    private EntityDataStore<Persistable> entityDataStore;
 
     public static CaracolaApplication instance() {
         return instance;
     }
-
-    private static final boolean ENCRYPTION_ENABLED = true;
 
     @Override
     public void onCreate() {
@@ -59,47 +43,13 @@ public class CaracolaApplication extends Application {
         instance = this;
         AndroidThreeTen.init(this);
         Locale.setDefault(new Locale("es"));
-        Colors.INSTANCE.setColors(getRibbonColors());
-        File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Hostel");
-        File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");
-        createDataStore(this, dbFile);
     }
 
-    private int[] getRibbonColors() {
-        Resources res = getResources();
-        TypedArray colorTypedArray = res.obtainTypedArray(R.array.account_colors);
-        int[] colorOptions = new int[colorTypedArray.length()];
-        for (int i = 0; i < colorTypedArray.length(); i++) {
-            int color = colorTypedArray.getColor(i, Color.BLACK);
-            colorOptions[i] = color;
-        }
-        colorTypedArray.recycle();
-        return colorOptions;
-    }
-
-    void createDataStore(Context context, File dbFile) {
-        String dbName = dbFile.getAbsolutePath();
-        Configuration configuration;
-        if (ENCRYPTION_ENABLED) {
-            SqlCipherDatabaseSource source =
-                    new SqlCipherDatabaseSource(context, Models.DEFAULT, dbName, "PasswordParaPruebas", 1) {
-                        @Override
-                        public void onOpen(SQLiteDatabase db) {
-                            super.onOpen(db);
-                            db.execSQL("PRAGMA foreign_keys=ON;");
-                        }
-                    };
-            configuration = source.getConfiguration();
-        } else {
-            DatabaseSource source =
-                    new DatabaseSource(context, Models.DEFAULT, dbName, 1);
-            configuration = source.getConfiguration();
-        }
-
-        entityDataStore = new EntityDataStore<>(configuration);
-    }
-
+    /**
+     * @deprecated Use DataStoreHolder.INSTANCE.getDataStore()
+     */
+    @Deprecated
     public EntityDataStore<Persistable> getDataStore() {
-        return entityDataStore;
+        return DataStoreHolder.INSTANCE.getDataStore();
     }
 }

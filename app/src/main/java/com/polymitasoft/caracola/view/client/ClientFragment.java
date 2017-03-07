@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
 
@@ -58,7 +58,7 @@ public class ClientFragment extends Fragment {
             RecyclerView recyclerView = findById(view, R.id.list);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            EntityDataStore<Persistable> dataStore = CaracolaApplication.instance().getDataStore();
+            EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
             int idBooking = getArguments().getInt(ARG_BOOKING_ID);
             Booking booking = dataStore.findByKey(Booking.class, idBooking);
             adapter = new ClientRecyclerViewAdapter(getContext(), booking, mListener);
