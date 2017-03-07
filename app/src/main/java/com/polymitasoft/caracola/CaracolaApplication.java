@@ -1,10 +1,14 @@
 package com.polymitasoft.caracola;
 
+import android.Manifest;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.polymitasoft.caracola.components.Colors;
@@ -18,6 +22,8 @@ import io.requery.android.sqlcipher.SqlCipherDatabaseSource;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.os.Environment.getExternalStorageDirectory;
 
 /**
@@ -39,7 +45,6 @@ public class CaracolaApplication extends Application {
         AndroidThreeTen.init(this);
         Locale.setDefault(new Locale("es"));
         Colors.INSTANCE.setColors(getRibbonColors());
-
         File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Hostel");
         File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");
         createDataStore(this, dbFile);

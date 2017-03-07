@@ -1,14 +1,19 @@
 package com.polymitasoft.caracola.view.booking;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.R;
@@ -25,6 +30,8 @@ import java.util.Objects;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static butterknife.ButterKnife.findById;
 import static com.polymitasoft.caracola.view.booking.CalendarState.toCalendarState;
 
@@ -35,6 +42,7 @@ public class ReservaPrincipal extends DrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener, EditBookingDialogFragment.OnBookingEditListener, DisponibilidadDialogFragment.OnDisponibilidadListener {
 
     private static final String EDIT_BOOKING_DIALOG_TAG = "EDIT_BOOKING_DIALOG_TAG";
+    private static final int REQUEST_WRITE_ES = 123;
     private List<Bedroom> bedrooms = new ArrayList<>();
 
     //escenas
@@ -45,8 +53,29 @@ public class ReservaPrincipal extends DrawerActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED) {
+            init();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[] { WRITE_EXTERNAL_STORAGE }, REQUEST_WRITE_ES);
+        }
+    }
+
+    private void init() {
         loadData();
         configurarControles();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_WRITE_ES) {
+            if(grantResults[0] == PERMISSION_GRANTED) {
+                init();
+            } else {
+                Toast.makeText(this, "La aplicación no funcionará correctamente debido a la falta de privilegios", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     private void loadData() {
