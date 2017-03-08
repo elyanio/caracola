@@ -63,7 +63,7 @@ public class Receiver extends BroadcastReceiver {
                 {
                     String showState = parssearBookingState(valores[4]);
 
-                    if (chequearFidelidadMensaje(context, valores[5], number_manager)) {
+                    if (chequearFidelidadMensaje(context, valores[5], number_manager, valores[1])) {
 
                         insertarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], context);
 
@@ -73,6 +73,9 @@ public class Receiver extends BroadcastReceiver {
                         stateBar.notification(context, 1, "Nueva Reserva", "Reserva gestionada", number_manager, mensaje);
 
                         Mensajero.confirmar_recibo(number_manager);
+                    } else {
+                        StateBar stateBar = new StateBar();
+                        stateBar.notification(context, 1, "Error en la Reserva", "Mensaje de Error", number_manager, "La reserva ya existe, por favor sincronice su calendario.");
                     }
                 } else if (valores[0].equals(">$")) // este simbolo actualizar
                 {
@@ -141,6 +144,28 @@ public class Receiver extends BroadcastReceiver {
         Booking booking = dataStore.select(Booking.class).where(Booking.BEDROOM.eq(bedroom).and(Booking.CHECK_IN_DATE.eq(localDateInicio))).get().first();
         dataStore.delete(booking);
         return booking;
+    }
+
+    private boolean chequearFidelidadMensaje(Context context, String valor, String number_manager, String fechaInicio) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
+        LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
+
+        int roomCode = Integer.parseInt(valor);
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
+        Hostel hostel = bedroom.getHostel();
+        Manager managerHostel = dataStore.select(Manager.class).where(Manager.HOSTEL.eq(hostel).and(Manager.PHONE_NUMBER.eq(number_manager))).get().firstOrNull();
+
+        if (managerHostel == null) {
+            return false;
+        } else {
+            Booking firstBooking = dataStore.select(Booking.class).where(Booking.CHECK_IN_DATE.eq(localDateInicio).and(Booking.BEDROOM.eq(bedroom))).get().firstOrNull();
+            if (firstBooking == null) {
+                return true;
+            }
+            return false;
+        }
     }
 
     private boolean chequearFidelidadMensaje(Context context, String valor, String number_manager) {
