@@ -544,7 +544,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
-    private void animateNote(int modo, Booking booking) {
+    public void animateNote(int modo, Booking booking) {
         if (modo == 0) { //encoger
             if (visibleTextNota) {
                 ViewPropertyAnimator vpa = reservaPrincipal.getReservaEsenaPrincipal().getLayoutCabecera().animate();
@@ -783,6 +783,18 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public void setSegundoDiaSelec(VistaDia segundoDiaSelec) {
         this.segundoDiaSelec = segundoDiaSelec;
+    }
+
+    public void setPreReservaSelecc(Booking preReservaSelecc) {
+        this.preReservaSelecc = preReservaSelecc;
+    }
+
+    public void setVisibleTextNota(boolean visibleTextNota) {
+        this.visibleTextNota = visibleTextNota;
+    }
+
+    public boolean getVisibleTextNota() {
+        return visibleTextNota;
     }
 
 

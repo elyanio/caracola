@@ -36,12 +36,13 @@
         android:layout_gravity="center_vertical"
         android:numColumns="7" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/reserva_panel_deslizador"
+    <LinearLayout
+        android:id="@+id/reserva_panel_princ"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/reserva_dia_semanas"
         android:layout_gravity="center"
+        android:orientation="vertical"
         android:animateFirstView="true"/>
 
 </RelativeLayout>

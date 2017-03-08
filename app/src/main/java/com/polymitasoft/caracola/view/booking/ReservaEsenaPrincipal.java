@@ -27,8 +27,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     //controles
     private LinearLayout layoutCabecera;
     private GridView diasSemanasGrid;
-    private ViewPager deslizador;
-    private ArrayList<ReservaPanelHabitacion> panelesHabitaciones = new ArrayList<>();
+    private LinearLayout panelPrincipal;
     private ReservaPanelHabitacion reservaPanelHabitacionActual;
     private TextView notaDeslizante;
     private int currentPosition = 0;
@@ -50,7 +49,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     private void obtenerControles() {
         notaDeslizante = (TextView) findViewById(R.id.reserva_nota_deslizante);
         layoutCabecera = (LinearLayout) findViewById(R.id.reserva_cabecera);
-        deslizador = (ViewPager) findViewById(R.id.reserva_panel_deslizador);
+        panelPrincipal = (LinearLayout) findViewById(R.id.reserva_panel_princ);
         diasSemanasGrid = (GridView) findViewById(R.id.reserva_dia_semanas);
     }
 
@@ -60,15 +59,9 @@ public class ReservaEsenaPrincipal extends LinearLayout {
         ArrayAdapter<String> ada1 = new GridDiasAdapter(getContext(), R.layout.simple_item_text_center, list);
         diasSemanasGrid.setAdapter(ada1);
         diasSemanasGrid.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
-        deslizador.setAdapter(new Adaptador_Pag_Vista());
+        reservaPanelHabitacionActual = new ReservaPanelHabitacion(getContext(), null);
+        panelPrincipal.addView(reservaPanelHabitacionActual);
         layoutCabecera.setY(getY() - 60);
-    }
-
-    public void seleccionarPanelManual(int pos) {
-        deslizador.setCurrentItem(pos, true);
-        reservaPanelHabitacionActual = panelesHabitaciones.get(pos);
-        reservaPanelHabitacionActual.limpiarTodo();
     }
 
     public int getCurrentPosition() {
@@ -97,42 +90,6 @@ public class ReservaEsenaPrincipal extends LinearLayout {
     }
 
 
-    public class Adaptador_Pag_Vista extends PagerAdapter {
-
-        @Override
-        public int getCount() {
-//            return reservaPrincipal.BEDROOM_AMOUNT + 1;
-            return 1;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            View itemView;
-            currentPosition = position;
-            if (position == 0) {
-                itemView = new ReservaPanelHabitacion(getContext(), null);
-                container.addView(itemView);
-                panelesHabitaciones.add(position, (ReservaPanelHabitacion) itemView);
-                reservaPanelHabitacionActual = (ReservaPanelHabitacion) itemView;
-            } else {
-                itemView = new ReservaPanelHabitacion(getContext(), reservaPrincipal.getBedrooms().get(position));
-                container.addView(itemView);
-                panelesHabitaciones.add(position, (ReservaPanelHabitacion) itemView);
-                reservaPanelHabitacionActual = (ReservaPanelHabitacion) itemView;
-            }
-            return itemView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout) object);
-        }
-    }
 
 
     class GridDiasAdapter extends ArrayAdapter<String> {

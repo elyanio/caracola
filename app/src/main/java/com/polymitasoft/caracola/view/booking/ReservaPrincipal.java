@@ -46,6 +46,7 @@ public class ReservaPrincipal extends DrawerActivity
     private ReservaEsenaPrincipal reservaEsenaPrincipal;
     private Menu menu;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +61,34 @@ public class ReservaPrincipal extends DrawerActivity
     private void init() {
         loadData();
         configurarControles();
+        Object restore =  getLastCustomNonConfigurationInstance();
+
+        if (restore != null)
+        {
+            ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
+            SalvarEstadoReservaPrincipal salvaActivity = (SalvarEstadoReservaPrincipal)restore;
+            panelHabitacionActual.setHabitacion(salvaActivity.getHabitacion());
+            panelHabitacionActual.setPrimerDiaSelec(salvaActivity.getPrimerDiaSelec());
+            panelHabitacionActual.setSegundoDiaSelec(null);  //porq yo llamo a click dia aki mismo
+            panelHabitacionActual.setPreReservaSelecc(salvaActivity.getPreReservaSelecc());
+            panelHabitacionActual.setVisibleTextNota(salvaActivity.isVisibleTextNota());
+            panelHabitacionActual.actualizarCambioHabitacion();
+//            int modo ;
+//            if(salvaActivity.isVisibleTextNota()){
+//               modo = 1;
+//            }else{
+//                modo = 0;
+//            }
+            int modo;
+            modo = 0;
+            panelHabitacionActual.animateNote(modo,salvaActivity.getPreReservaSelecc());
+//            if(salvaActivity.getPrimerDiaSelec() != null){
+//
+//            }
+//            panelHabitacionActual.clickDia(salvaActivity.getSegundoDiaSelec());
+
+        }
+
     }
 
     @Override
@@ -78,6 +107,7 @@ public class ReservaPrincipal extends DrawerActivity
     private void loadData() {
         EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         bedrooms = dataStore.select(Bedroom.class).orderBy(Bedroom.NAME).get().toList();
+
     }
 
     private void configurarControles() {
@@ -158,6 +188,13 @@ public class ReservaPrincipal extends DrawerActivity
         this.menu = menu;
         for (int i = 0; i < bedrooms.size(); i++) {
             menu.add(0, i, 0, bedrooms.get(i).getName());
+        }
+        MenuItem item1 = (MenuItem) menu.findItem(R.id.show_m);
+        Bedroom habitacion = reservaEsenaPrincipal.getReservaPanelHabitacionActual().getHabitacion();
+        if( habitacion == null){
+            item1.setTitle("Disponibilidad");
+        }else {
+            item1.setTitle(habitacion.getName());
         }
         return true;
     }
@@ -261,12 +298,18 @@ public class ReservaPrincipal extends DrawerActivity
 
     }
 
-//    @Override
-//    public Object onRetainNonConfigurationInstance()
-//    {
-//
-//        return new Object();
-//    }
+    @Override
+    public Object onRetainCustomNonConfigurationInstance(){
+        Log.e("s","salve la activity");
+        ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
+        SalvarEstadoReservaPrincipal salvarActivity = new SalvarEstadoReservaPrincipal();
+        salvarActivity.setHabitacion(panelHabitacionActual.getHabitacion());
+        salvarActivity.setPrimerDiaSelec(panelHabitacionActual.getPrimerDiaSelec());
+        salvarActivity.setSegundoDiaSelec(panelHabitacionActual.getSegundoDiaSelec());
+        salvarActivity.setPreReservaSelecc(panelHabitacionActual.getPreReservaSelecc());
+        salvarActivity.setVisibleTextNota(panelHabitacionActual.getVisibleTextNota());
+        return salvarActivity;
+    }
 
     @Override
     protected void onResume() {
@@ -276,4 +319,54 @@ public class ReservaPrincipal extends DrawerActivity
     }
 
 
+    class SalvarEstadoReservaPrincipal{
+        private Bedroom habitacion = null;
+        private VistaDia primerDiaSelec = null;
+        private VistaDia segundoDiaSelec = null;
+        private Booking preReservaSelecc = null;
+        private boolean visibleTextNota = false;
+
+        public SalvarEstadoReservaPrincipal() {
+        }
+
+        public Bedroom getHabitacion() {
+            return habitacion;
+        }
+
+        public void setHabitacion(Bedroom habitacion) {
+            this.habitacion = habitacion;
+        }
+
+        public VistaDia getPrimerDiaSelec() {
+            return primerDiaSelec;
+        }
+
+        public void setPrimerDiaSelec(VistaDia primerDiaSelec) {
+            this.primerDiaSelec = primerDiaSelec;
+        }
+
+        public VistaDia getSegundoDiaSelec() {
+            return segundoDiaSelec;
+        }
+
+        public void setSegundoDiaSelec(VistaDia segundoDiaSelec) {
+            this.segundoDiaSelec = segundoDiaSelec;
+        }
+
+        public Booking getPreReservaSelecc() {
+            return preReservaSelecc;
+        }
+
+        public void setPreReservaSelecc(Booking preReservaSelecc) {
+            this.preReservaSelecc = preReservaSelecc;
+        }
+
+        public boolean isVisibleTextNota() {
+            return visibleTextNota;
+        }
+
+        public void setVisibleTextNota(boolean visibleTextNota) {
+            this.visibleTextNota = visibleTextNota;
+        }
+    }
 }
