@@ -211,21 +211,21 @@ public class Receiver extends BroadcastReceiver {
 
     private String parssearBookingState(String valor) {
 
-        BookingState bookingState = null;
         int state = Integer.parseInt(valor);
+        String imprimir = "";
 
         switch (state) {
             case 1:
-                bookingState = BookingState.PENDING;
+                imprimir = "Pendiente";
                 break;
             case 2:
-                bookingState = BookingState.CONFIRMED;
+                imprimir = "Confirmada";
                 break;
             case 3:
-                bookingState = BookingState.CHECKED_IN;
+                imprimir = "Registrada";
                 break;
         }
-        return bookingState.toString();
+        return imprimir;
     }
 
     public static SmsMessage[] getMessagesFromIntent(Intent intent) {
