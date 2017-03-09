@@ -30,6 +30,10 @@ public class BedroomHostelActivity extends AppCompatActivity {
 
         bedroomHostelList = (ListView) findViewById(R.id.lista_bedroom_hostel);
         bedroomHostelList.setAdapter(bedroomHostelAdapter);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Habitación");
+        }
     }
 
     @Override

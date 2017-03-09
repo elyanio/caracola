@@ -51,7 +51,7 @@ public class BedroomLonlyActivity extends AppCompatActivity {
         listView.setAdapter(bedroomAdapter);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Asignar Cuarto");
+            getSupportActionBar().setTitle("Asignar Habitación");
         }
     }
 

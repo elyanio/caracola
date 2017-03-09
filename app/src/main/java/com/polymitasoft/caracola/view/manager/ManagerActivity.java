@@ -53,6 +53,9 @@ public class ManagerActivity extends AppCompatActivity {
         managers = (ListView) findViewById(R.id.lista_gestor);
         managers.setAdapter(manager_adapter);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Gestor");
+        }
     }
 
     @Override
