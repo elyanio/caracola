@@ -22,6 +22,7 @@ import com.polymitasoft.caracola.util.Metrics;
 import io.requery.query.Result;
 
 import static com.polymitasoft.caracola.util.Metrics.dp;
+import static java.lang.Character.toUpperCase;
 
 /**
  * @author rainermf
@@ -58,17 +59,11 @@ class SupplierAdapter extends SimpleListAdapter<Supplier> {
     }
 
     @Override
-    protected void setupColorStrip(Supplier item, SimpleViewHolder holder, int position) {
-        int pad = dp(5);
-        holder.colorStrip.setPadding(pad, pad, pad, pad);
-
-        int color = Colors.INSTANCE.getColor((int) holder.getItemId());
+    protected void setupIconView(Supplier item, SimpleViewHolder holder, int position) {
+        int color = Colors.INSTANCE.getColor(item.getId());
         String name = item.getName();
-        String letter = name.isEmpty() ? "" : String.valueOf(name.charAt(0)).toUpperCase();
-        TextDrawable drawable = TextDrawable.builder().buildRound(letter, color);
-        holder.colorStrip.setLayoutParams(new RelativeLayout.LayoutParams(dp(70), dp(70)));
-        holder.colorStrip.setImageDrawable(drawable);
-
+        char letter = name.isEmpty() ? '\0' : toUpperCase(name.charAt(0));
+        drawIconLetter(color, letter, holder.colorStrip);
     }
 
     @Override

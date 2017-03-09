@@ -27,6 +27,7 @@ import com.polymitasoft.caracola.datamodel.Supplier;
 import io.requery.query.Result;
 
 import static com.polymitasoft.caracola.util.Metrics.dp;
+import static java.lang.Character.toUpperCase;
 
 /**
  * @author rainermf
@@ -59,25 +60,15 @@ class ExternalServiceAdapter extends SimpleListAdapter<ExternalService> {
     };
 
     @Override
-    protected void setupColorStrip(ExternalService item, SimpleViewHolder holder, int position) {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        int pad = dp(13);
-        int margin = dp(5);
-
-        holder.colorStrip.setPadding(pad, pad, pad, pad);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dp(60), dp(60));
-        layoutParams.setMargins(margin, margin, margin, margin);
-        holder.colorStrip.setLayoutParams(layoutParams);
-
-        final Drawable icon = ContextCompat.getDrawable(holder.itemView.getContext(), drawables[((int)holder.getItemId()) % 6]);
-        DrawableCompat.setTint(icon, Color.WHITE);
-
-        int color = Colors.INSTANCE.getColor((int) holder.getItemId());
-        final ShapeDrawable background = new ShapeDrawable(new OvalShape());
-        background.getPaint().setColor(color);
-
-        holder.colorStrip.setBackground(background);
-        holder.colorStrip.setImageDrawable(icon);
+    protected void setupIconView(ExternalService item, SimpleViewHolder holder, int position) {
+        int color = Colors.INSTANCE.getColor(item.getId());
+        if(item.getId() % 3 == 0) {
+            String name = item.getName();
+            char letter = name.isEmpty() ? '\0' : toUpperCase(name.charAt(0));
+            drawIconLetter(color, letter, holder.colorStrip);
+        } else {
+            drawIconImage(color, drawables[item.getId() % 6], holder.colorStrip);
+        }
     }
 
     @Override
