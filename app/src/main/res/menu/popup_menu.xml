@@ -6,8 +6,8 @@
         android:title="Asignar gestor" />
     <item
         android:id="@+id/menu_hostel_habitacion"
-        android:title="Crear nuevo cuarto" />
+        android:title="Habitación Asignada" />
     <item
         android:id="@+id/menu_hostel_bind"
-        android:title="Asignar un cuarto" />
+        android:title="Asignar Habitación" />
 </menu>
