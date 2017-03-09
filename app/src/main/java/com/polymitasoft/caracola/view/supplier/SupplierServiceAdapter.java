@@ -3,7 +3,10 @@ package com.polymitasoft.caracola.view.supplier;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.widget.RelativeLayout;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.dataaccess.SupplierDao;
@@ -16,6 +19,7 @@ import java.util.Locale;
 import io.requery.query.Result;
 
 import static com.polymitasoft.caracola.datamodel.SupplierService.SERVICE;
+import static com.polymitasoft.caracola.util.Metrics.dp;
 
 /**
  * @author rainermf
@@ -43,6 +47,20 @@ class SupplierServiceAdapter extends SimpleListAdapter<SupplierService> {
         Supplier supplier = item.getSupplier();
         holder.primaryText.setText(supplier.getName());
         holder.secondaryText.setText(String.format(Locale.getDefault(), "$%.2f (%.2f)", item.getPrice(), item.getComission()));
+    }
+
+    @Override
+    protected void setupColorStrip(SupplierService item, SimpleViewHolder holder, int position) {
+        int pad = dp(5);
+        holder.colorStrip.setPadding(pad, pad, pad, pad);
+
+        int color = Colors.INSTANCE.getColor((int) holder.getItemId());
+        String name = item.getSupplier().getName();
+        String letter = name.isEmpty() ? "" : String.valueOf(name.charAt(0)).toUpperCase();
+        TextDrawable drawable = TextDrawable.builder().buildRound(letter, color);
+        holder.colorStrip.setLayoutParams(new RelativeLayout.LayoutParams(dp(70), dp(70)));
+        holder.colorStrip.setImageDrawable(drawable);
+
     }
 
     @Override

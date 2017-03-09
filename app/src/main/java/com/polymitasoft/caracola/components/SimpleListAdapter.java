@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.polymitasoft.caracola.R;
 
@@ -39,7 +40,7 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
     @Override
     public void onBindViewHolder(final E item, final SimpleViewHolder holder, int position) {
         super.onBindViewHolder(item, holder, position);
-        holder.colorStrip.setBackgroundColor(Colors.INSTANCE.getColor((int) holder.getItemId()));
+        setupColorStrip(item, holder, position);
         if(getOptions().contains(Options.DELETE_ICON)) {
             holder.deleteMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,6 +67,10 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
                 viewItem(item);
             }
         });
+    }
+
+    protected void setupColorStrip(E item, SimpleViewHolder holder, int position) {
+        holder.colorStrip.setBackgroundColor(Colors.INSTANCE.getColor((int) holder.getItemId()));
     }
 
     protected CharSequence getDeleteConfirmationMessage(E item) {
