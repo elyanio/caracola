@@ -300,7 +300,6 @@ public class ReservaPrincipal extends DrawerActivity
 
     @Override
     public Object onRetainCustomNonConfigurationInstance(){
-        Log.e("s","salve la activity");
         ReservaPanelHabitacion panelHabitacionActual = reservaEsenaPrincipal.getReservaPanelHabitacionActual();
         SalvarEstadoReservaPrincipal salvarActivity = new SalvarEstadoReservaPrincipal();
         salvarActivity.setHabitacion(panelHabitacionActual.getHabitacion());
