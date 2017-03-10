@@ -10,8 +10,6 @@ import com.polymitasoft.caracola.datamodel.Booking;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static java.lang.Integer.parseInt;
-
 /**
  * @author rainermf
  * @since 16/2/2017

@@ -2,26 +2,16 @@ package com.polymitasoft.caracola.view.supplier;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.common.base.Strings;
-import com.google.common.primitives.Chars;
-import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.dataaccess.SupplierDao;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
-import com.polymitasoft.caracola.util.Metrics;
 
 import io.requery.query.Result;
 
-import static com.polymitasoft.caracola.util.Metrics.dp;
 import static java.lang.Character.toUpperCase;
 
 /**
@@ -45,7 +35,7 @@ class SupplierAdapter extends SimpleListAdapter<Supplier> {
 
     @Override
     public Result<Supplier> performQuery() {
-        if(service == null) {
+        if (service == null) {
             return dataStore.select(Supplier.class).orderBy(Supplier.NAME.lower()).get();
         } else {
             return dao.withService(service);
