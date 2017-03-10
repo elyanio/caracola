@@ -12,7 +12,6 @@ import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import io.requery.ManyToOne;
-import io.requery.Nullable;
 import io.requery.Persistable;
 
 import static io.requery.PropertyNameStyle.FLUENT_BEAN;

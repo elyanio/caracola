@@ -6,26 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.polymitasoft.caracola.components.RecyclerListActivity;
 import com.polymitasoft.caracola.components.RecyclerListFragment;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
-import java.util.EnumSet;
-
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
-
-import static com.polymitasoft.caracola.components.RecyclerListActivity.Options.ADD_MENU;
 
 /**
  * @author rainermf
  * @since 27/2/2017
  */
 
-public class ServiceBySupplierListFragment extends RecyclerListFragment<SupplierService, ServiceBySupplierListFragment.OnListInteractionListener> {
+public class ServiceBySupplierListFragment extends RecyclerListFragment<SupplierService> {
 
     public static final String ARG_SUPPLIER_ID = "supplierId";
     private Supplier supplier;
@@ -54,11 +49,7 @@ public class ServiceBySupplierListFragment extends RecyclerListFragment<Supplier
     }
 
     @Override
-    protected EnumSet<RecyclerListActivity.Options> removedDefaults() {
-        return EnumSet.of(ADD_MENU);
-    }
-
-    public interface OnListInteractionListener {
-        void onServiceListInteraction(SupplierService item);
+    public boolean isAddMenuVisible() {
+        return false;
     }
 }

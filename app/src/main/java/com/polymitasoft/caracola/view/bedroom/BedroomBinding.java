@@ -31,7 +31,7 @@ public class BedroomBinding {
         this.bedroom = bedroom;
         priceInHighSeason.setText(FormatUtils.formatMoney(bedroom.getPriceInHighSeason()));
         priceInLowSeason.setText(FormatUtils.formatMoney(bedroom.getPriceInLowSeason()));
-        capacity.setText(bedroom.getCapacity() + "");
+        capacity.setText(String.valueOf(bedroom.getCapacity()));
         name.setText(bedroom.getName());
     }
 

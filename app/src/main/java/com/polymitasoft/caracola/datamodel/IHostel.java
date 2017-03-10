@@ -1,7 +1,6 @@
 package com.polymitasoft.caracola.datamodel;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import io.requery.Column;
 import io.requery.Entity;

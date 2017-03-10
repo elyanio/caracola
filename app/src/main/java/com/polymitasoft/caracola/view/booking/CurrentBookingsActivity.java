@@ -17,14 +17,11 @@ import com.polymitasoft.caracola.datamodel.Booking;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
-import java.util.EnumSet;
-
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
-import static com.polymitasoft.caracola.components.RecyclerListActivity.Options.ADD_MENU;
 import static com.polymitasoft.caracola.datamodel.Booking.CHECK_IN_DATE;
 import static com.polymitasoft.caracola.datamodel.Booking.CHECK_OUT_DATE;
 
@@ -52,8 +49,8 @@ public class CurrentBookingsActivity extends RecyclerListActivity<Booking> imple
     }
 
     @Override
-    protected EnumSet<Options> removedDefaults() {
-        return EnumSet.of(ADD_MENU);
+    public boolean isAddMenuVisible() {
+        return false;
     }
 
     /**

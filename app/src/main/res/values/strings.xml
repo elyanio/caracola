@@ -1,21 +1,16 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Caracola</string>
-    <string name="title_activity_main">Reservas</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
     <string name="reserva_titulo_hacer_reserva">Hacer reserva</string>
     <string name="reserva_nota">Nota</string>
     <string name="booking_price">
         $<xliff:g id="price" example="25.00">%.2f</xliff:g> por noche
     </string>
-    <string name="chek_in">Noche de inicio</string>
-    <string name="chek_out">Noche de salida</string>
     <string name="title_current_bookings">Reservas actuales</string>
     <string name="action_back">Atrás</string>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="book_number">Número del libro</string>
     <string name="booking_number">Número de la reserva</string>
     <string name="title_edit_booking">Editar reserva</string>
@@ -100,14 +95,11 @@
     <string name="bedroom_capacity">Capacidad (# de personas)</string>
     <string name="title_edit_bedroom">Editar habitación</string>
     <string name="title_insert_bedroom">Insertar habitación</string>
-    <string name="booking_clients_title">Clientes</string>
-    <string name="add_client">Agregar cliente</string>
     <string name="person_full_name">
         <xliff:g id="firstName" example="Rainer">%s</xliff:g> <xliff:g id="lastName" example="Martínez Fraga">%s</xliff:g>
     </string>
     <string name="title_edit_client">Editar cliente</string>
     <string name="passport">Pasaporte</string>
-    <string name="person_name">Nombre</string>
     <string name="person_first_name">Nombre</string>
     <string name="person_last_name">Apellidos</string>
     <string name="birthday_form_label">Fecha de nacimiento</string>
@@ -119,11 +111,8 @@
     <string name="booking_general_tab_title">General</string>
     <string name="booking_clients_tab_title">Clientes</string>
     <string name="booking_consumption_tab_title">Consumo</string>
-    <string name="add_consumption">Añadir consumo</string>
     <string name="amount">Cantidad</string>
-    <string name="date_of_consumption">Fecha</string>
     <string name="title_edit_consumption">Editar consumo</string>
-    <string name="title_external_services">Servicios externos</string>
     <string name="title_bedrooms">Habitaciones</string>
     <string name="title_edit_internal_service">Editar servicio</string>
     <string name="title_contacts">Contactos</string>

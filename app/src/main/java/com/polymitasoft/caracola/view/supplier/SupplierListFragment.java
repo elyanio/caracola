@@ -18,7 +18,7 @@ import io.requery.sql.EntityDataStore;
  * @since 27/2/2017
  */
 
-public class SupplierListFragment extends RecyclerListFragment<Supplier, SupplierListFragment.OnListInteractionListener> {
+public class SupplierListFragment extends RecyclerListFragment<Supplier> {
 
     public static final String ARG_SERVICE_ID = "serviceId";
 
@@ -55,9 +55,5 @@ public class SupplierListFragment extends RecyclerListFragment<Supplier, Supplie
     @Override
     protected void onActionPlusMenu() {
         startActivity(new Intent(getContext(), SupplierEditActivity.class));
-    }
-
-    public interface OnListInteractionListener {
-        void onSupplierListInteraction(Supplier item);
     }
 }

@@ -14,7 +14,10 @@ import io.requery.android.QueryRecyclerAdapter;
  * @since 27/2/2017
  */
 
-public class ExternalServiceListFragment extends RecyclerListFragment<ExternalService, ExternalServiceListFragment.OnListInteractionListener> {
+public class ExternalServiceListFragment extends RecyclerListFragment<ExternalService> {
+
+    public ExternalServiceListFragment() {
+    }
 
     public static ExternalServiceListFragment newInstance() {
 
@@ -25,9 +28,6 @@ public class ExternalServiceListFragment extends RecyclerListFragment<ExternalSe
         return fragment;
     }
 
-    public ExternalServiceListFragment() {
-    }
-
     @Override
     protected QueryRecyclerAdapter<ExternalService, ? extends RecyclerView.ViewHolder> createAdapter() {
         return new ExternalServiceAdapter(getContext());
@@ -36,9 +36,5 @@ public class ExternalServiceListFragment extends RecyclerListFragment<ExternalSe
     @Override
     protected void onActionPlusMenu() {
         startActivity(new Intent(getContext(), ExternalServiceEditActivity.class));
-    }
-
-    public interface OnListInteractionListener {
-        void onServiceListInteraction(ExternalService item);
     }
 }

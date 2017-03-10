@@ -27,13 +27,9 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
-import java.util.EnumSet;
-
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
-
-import static com.polymitasoft.caracola.components.RecyclerListActivity.Options.ADD_MENU;
 
 public class ExternalServiceViewActivity extends RecyclerListActivity<SupplierService> {
 
@@ -62,7 +58,7 @@ public class ExternalServiceViewActivity extends RecyclerListActivity<SupplierSe
     }
 
     @Override
-    protected EnumSet<Options> removedDefaults() {
-        return EnumSet.of(ADD_MENU);
+    public boolean isAddMenuVisible() {
+        return false;
     }
 }

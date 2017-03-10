@@ -23,7 +23,6 @@
             android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
             tools:context="com.polymitasoft.caracola.view.client.ClientFragment"
-            tools:listitem="@layout/fragment_client"
             android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 

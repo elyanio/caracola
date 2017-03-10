@@ -12,7 +12,6 @@ import android.view.View;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 
-import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,7 +32,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
     @BindView(R.id.fab) FloatingActionButton fab;
     private ExecutorService executor;
     private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
-    private EnumSet<Options> options;
+    private boolean addMenuVisible = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         setContentView(R.layout.list_items);
         ButterKnife.bind(this);
 
-        if (getOptions().contains(Options.ADD_MENU)) {
+        if (isAddMenuVisible()) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -93,18 +92,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
         super.onDestroy();
     }
 
-    protected EnumSet<Options> removedDefaults() {
-        return EnumSet.noneOf(Options.class);
-    }
-
-    private EnumSet<Options> getOptions() {
-        if (options == null) {
-            options = EnumSet.complementOf(removedDefaults());
-        }
-        return options;
-    }
-
-    public enum Options {
-        ADD_MENU
+    public boolean isAddMenuVisible() {
+        return addMenuVisible;
     }
 }

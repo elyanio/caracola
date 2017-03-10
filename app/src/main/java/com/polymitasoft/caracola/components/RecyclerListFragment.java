@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.R;
 
-import java.util.EnumSet;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.requery.android.QueryRecyclerAdapter;
@@ -25,12 +23,11 @@ import static butterknife.ButterKnife.findById;
  * @since 27/2/2017
  */
 
-public abstract class RecyclerListFragment<T, L> extends Fragment {
+public abstract class RecyclerListFragment<T> extends Fragment {
 
-    private L mListener;
-    private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
     @BindView(R.id.fab) FloatingActionButton fab;
-    private EnumSet<RecyclerListActivity.Options> options;
+    private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
+    private boolean addMenuVisible = true;
 
     protected abstract QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> createAdapter();
 
@@ -46,7 +43,7 @@ public abstract class RecyclerListFragment<T, L> extends Fragment {
         View view = inflater.inflate(R.layout.list_items, container, false);
         ButterKnife.bind(this, view);
 
-        if (getOptions().contains(RecyclerListActivity.Options.ADD_MENU)) {
+        if (isAddMenuVisible()) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -67,39 +64,10 @@ public abstract class RecyclerListFragment<T, L> extends Fragment {
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try {
-            mListener = (L) context;
-        } catch (ClassCastException e){
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListInteractionListener");
-        }
-    }
-
     protected void onActionPlusMenu() {
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    protected EnumSet<RecyclerListActivity.Options> removedDefaults() {
-        return EnumSet.noneOf(RecyclerListActivity.Options.class);
-    }
-
-    private EnumSet<RecyclerListActivity.Options> getOptions() {
-        if (options == null) {
-            options = EnumSet.complementOf(removedDefaults());
-        }
-        return options;
-    }
-
-    public enum Options {
-        ADD_MENU
+    public boolean isAddMenuVisible() {
+        return addMenuVisible;
     }
 }

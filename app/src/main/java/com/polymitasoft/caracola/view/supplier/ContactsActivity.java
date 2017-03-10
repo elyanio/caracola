@@ -12,9 +12,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 
-public class ContactsActivity extends AppCompatActivity implements
-        ExternalServiceListFragment.OnListInteractionListener,
-        SupplierListFragment.OnListInteractionListener {
+public class ContactsActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -43,17 +41,6 @@ public class ContactsActivity extends AppCompatActivity implements
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-    }
-
-
-    @Override
-    public void onServiceListInteraction(ExternalService item) {
-
-    }
-
-    @Override
-    public void onSupplierListInteraction(Supplier item) {
-
     }
 
     /**

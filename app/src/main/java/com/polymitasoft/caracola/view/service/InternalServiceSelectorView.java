@@ -82,6 +82,13 @@ public class InternalServiceSelectorView extends TextInputLayout implements View
                 .orderBy(InternalService.NAME.lower())
                 .get()
                 .toList();
+        if(serviceList.isEmpty()) {
+            new AlertDialog.Builder(getContext())
+                    .setMessage("No existen servicios disponibles, debe crearlos primero.")
+                    .show();
+            return;
+        }
+
         String[] services = new String[serviceList.size()];
         for(int i = 0; i < services.length; i++) {
             services[i] = serviceList.get(i).getName();

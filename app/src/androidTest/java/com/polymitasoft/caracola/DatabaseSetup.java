@@ -264,9 +264,9 @@ public class DatabaseSetup {
 
         List<ExternalService> services = new ArrayList<>(names.length);
 
-        for (int i = 0; i < names.length; i++) {
+        for (String name : names) {
             ExternalService service = new ExternalService();
-            service.setName(names[i]);
+            service.setName(name);
             services.add(service);
         }
 

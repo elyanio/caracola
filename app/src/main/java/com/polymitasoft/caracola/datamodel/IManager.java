@@ -2,8 +2,6 @@ package com.polymitasoft.caracola.datamodel;
 
 import android.support.annotation.NonNull;
 
-import java.math.BigDecimal;
-
 import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Generated;
