@@ -199,7 +199,6 @@ public class ReservaPanelHabitacion extends LinearLayout {
     public void clickDia(VistaDia dia) {
         ArrayList<ActionType> actionTypes = new ArrayList<>();
         if (esModoTodo()) { // el habitacionSeleccionada es todos(disponibilidad)
-//            reservaPrincipal.getBookingButtonBar().hide();
             if (primerDiaSelec == null) {          //y si no hay una primera seleccion en vista todos
                 primerDiaSelec = dia;
                 primerDiaSelec.seleccionar(CellLocation.ALONE);
@@ -210,10 +209,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 primerDiaSelec = null;
                 segundoDiaSelec = null;
             }
-
         } else {            // si hay una habitacion seleccionada
-//            reservaPrincipal.disableButtons();
-            //            reservaPrincipal.getBookingButtonBar().hide();
             limpiarUltimaSeleccion(); // si hubo una seleccion valida y no se prereservo
             if (primerDiaSelec == null) {          //y si no hay una primera seleccion
                 primerDiaSelec = dia;
@@ -226,22 +222,14 @@ public class ReservaPanelHabitacion extends LinearLayout {
                         actionTypes.add(ActionType.DELETE_BOOKING);
                     }else if(primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
                         actionTypes.add(ActionType.CREATE_CHECK_IN);
+                        actionTypes.add(ActionType.EDIT_BOOKING);
                         actionTypes.add(ActionType.DELETE_BOOKING);
                     }else{
+                        actionTypes.add(ActionType.CREATE_CHECK_IN);
                         actionTypes.add(ActionType.EDIT_BOOKING);
                         actionTypes.add(ActionType.DELETE_BOOKING);
                     }
-//                    if (true) {                                     // si es el dia de hoy
-//                        //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-////                        reservaPrincipal.enableCheckIn();
-//                        actionTypes.add(ActionType.CREATE_CHECK_IN);
-//                    }
                     animateNote(1, preReservaSelecc);
-//                    animateNote(1);
-//                    reservaPrincipal.enableEdit();
-//                    actionTypes.add(ActionType.EDIT_BOOKING);
-//                    reservaPrincipal.enableDelete();
-//                    actionTypes.add(ActionType.DELETE_BOOKING);
                     reservaPrincipal.getBookingButtonBar().show(actionTypes);
                 } else {                                                                   // no es hay reserva
                     reservaPrincipal.getBookingButtonBar().hide();
@@ -257,34 +245,26 @@ public class ReservaPanelHabitacion extends LinearLayout {
                     if (segundoDiaSelec.getColor() != CalendarState.CONFIRMED.color() && segundoDiaSelec.getColor() != CalendarState.PENDING.color() && segundoDiaSelec.getColor() != CalendarState.CHECKED_IN.color()) { // y la segunda no tiene reserv
                         segundoDiaSelec.seleccionar(CellLocation.ALONE);
                         preReservaSelecc = null;
-//                        animateNote(0);
                         animateNote(0, null);
                         reservaPrincipal.getBookingButtonBar().hide();
                     } else {  //la segunda tiene reserva
                         preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                         actualizarNotaDeslizante(preReservaSelecc);
                         seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color()); //seleccionar
-                        if(segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
+                        if(primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
                             actionTypes.add(ActionType.CREATE_CHECK_IN);
                             actionTypes.add(ActionType.EDIT_BOOKING);
                             actionTypes.add(ActionType.DELETE_BOOKING);
-                        }else if(segundoDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
+                        }else if(primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
                             actionTypes.add(ActionType.CREATE_CHECK_IN);
+                            actionTypes.add(ActionType.EDIT_BOOKING);
                             actionTypes.add(ActionType.DELETE_BOOKING);
                         }else{
+                            actionTypes.add(ActionType.CREATE_CHECK_IN);
                             actionTypes.add(ActionType.EDIT_BOOKING);
                             actionTypes.add(ActionType.DELETE_BOOKING);
                         }
-//                        if (true) {                                     // si es el dia de hoy
-//                            //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-////                            reservaPrincipal.enableCheckIn();
-//                            actionTypes.add(ActionType.CREATE_CHECK_IN);
-//                        }
                         animateNote(1, preReservaSelecc);
-//                        reservaPrincipal.enableEdit();
-//                        actionTypes.add(ActionType.EDIT_BOOKING);
-//                        reservaPrincipal.enableDelete();
-//                        actionTypes.add(ActionType.DELETE_BOOKING);
                         reservaPrincipal.getBookingButtonBar().show(actionTypes);
                     }
                     primerDiaSelec = segundoDiaSelec;
@@ -295,31 +275,23 @@ public class ReservaPanelHabitacion extends LinearLayout {
                             if (segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color() || segundoDiaSelec.getColor() == CalendarState.PENDING.color() || segundoDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) {
                                 preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
-                                if(segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
+                                if(primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
-                                }else if(segundoDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
+                                }else if(primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
+                                    actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
                                 }else{
+                                    actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
                                 }
-//                                if (true) {                                     // si es el dia de hoy
-//                                    //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-////                                    reservaPrincipal.enableCheckIn();
-//                                    actionTypes.add(ActionType.CREATE_CHECK_IN);
-//                                }
                                 animateNote(1, preReservaSelecc);
-//                                animateNote(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
-//                                reservaPrincipal.enableEdit();
-//                                actionTypes.add(ActionType.EDIT_BOOKING);
-//                                reservaPrincipal.enableDelete();
-//                                actionTypes.add(ActionType.DELETE_BOOKING);
                                 reservaPrincipal.getBookingButtonBar().show(actionTypes);
                             } else {
                                 Toast toast = Toast.makeText(getContext(), "no se puede seleccionar", Toast.LENGTH_SHORT);
@@ -359,31 +331,23 @@ public class ReservaPanelHabitacion extends LinearLayout {
                                 //                                no funciona el seleccionR UN PENDIENTE COMO SEGUNDO ELEMENTO
                                 preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
-                                if (true) {                                     // si es el dia de hoy
-                                    //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-//                                    reservaPrincipal.enableCheckIn();
-                                    actionTypes.add(ActionType.CREATE_CHECK_IN);
-                                }
-                                if(segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
+                                if(primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
-                                }else if(segundoDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
+                                }else if(primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
+                                    actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
                                 }else{
+                                    actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
                                 }
                                 animateNote(1, preReservaSelecc);
-//                                animateNote(1);
                                 primerDiaSelec.deSeleccionar(CellLocation.MIDDLE);
                                 primerDiaSelec = segundoDiaSelec;
                                 segundoDiaSelec = null;
-//                                reservaPrincipal.getBt_editR().setEnabled(true);
-//                                actionTypes.add(ActionType.EDIT_BOOKING);
-//                                reservaPrincipal.getBt_eliminaR().setEnabled(true);
-//                                actionTypes.add(ActionType.DELETE_BOOKING);
                                 reservaPrincipal.getBookingButtonBar().show(actionTypes);
                             } else {
                                 Toast toast = Toast.makeText(getContext(), "no se puede seleccionar", Toast.LENGTH_SHORT);
@@ -397,12 +361,6 @@ public class ReservaPanelHabitacion extends LinearLayout {
                         }
                         case 1: { // se puede reservar
                             selecionadorRangoDiasTocadosModoH(CalendarState.SELECTED.color());
-//                            if (true) {                                     // si es el dia de hoy
-//                                //mostrar un botoncito para si quiere hacer reserva fisica de la prereseva marcada o seleccionar la reserva marcada
-////                                reservaPrincipal.enableCheckIn();
-//                                actionTypes.add(ActionType.CREATE_CHECK_IN);
-//                            }
-//                            reservaPrincipal.enableBook();
                             actionTypes.add(ActionType.CREATE_BOOKING);
                             reservaPrincipal.getBookingButtonBar().show(actionTypes);
                             preReservaSelecc = null;
