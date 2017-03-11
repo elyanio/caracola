@@ -12,8 +12,6 @@ import com.polymitasoft.caracola.components.SimpleViewHolder;
 import com.polymitasoft.caracola.datamodel.InternalService;
 import com.polymitasoft.caracola.util.FormatUtils;
 
-import java.util.EnumSet;
-
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 
@@ -68,8 +66,8 @@ public class InternalServiceListActivity extends RecyclerListActivity<InternalSe
         }
 
         @Override
-        protected EnumSet<Options> removedDefaults() {
-            return EnumSet.of(Options.EDIT_ICON);
+        protected boolean shouldShowEditIcon() {
+            return false;
         }
 
         @Override

@@ -21,12 +21,9 @@ import android.widget.RelativeLayout;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.polymitasoft.caracola.R;
 
-import java.util.EnumSet;
-
 import io.requery.Persistable;
 import io.requery.meta.Type;
 
-import static com.polymitasoft.caracola.components.SimpleListAdapter.Options.DELETE_CONFIRMATION;
 import static com.polymitasoft.caracola.util.Metrics.dp;
 
 /**
@@ -35,8 +32,6 @@ import static com.polymitasoft.caracola.util.Metrics.dp;
  */
 
 public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerListAdapter<E, SimpleViewHolder> {
-
-    private EnumSet<Options> options;
 
     public SimpleListAdapter(Context context, Type<E> type) {
         super(context, type);
@@ -53,7 +48,7 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
     public void onBindViewHolder(final E item, final SimpleViewHolder holder, int position) {
         super.onBindViewHolder(item, holder, position);
         setupIconView(item, holder, position);
-        if(getOptions().contains(Options.DELETE_ICON)) {
+        if(shouldShowDeleteIcon()) {
             holder.deleteMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -63,7 +58,7 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
         } else {
             holder.deleteMenu.setVisibility(View.GONE);
         }
-        if(getOptions().contains(Options.EDIT_ICON)) {
+        if(shouldShowEditIcon()) {
             holder.editMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -128,7 +123,7 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
     }
 
     protected void handleDeletion(final E item) {
-        if(getOptions().contains(DELETE_CONFIRMATION)) {
+        if(shouldShowDeleteConfirmation()) {
             new AlertDialog.Builder(context)
                     .setPositiveButton(R.string.yes_action_button, new DialogInterface.OnClickListener() {
                         @Override
@@ -161,20 +156,15 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
 
     }
 
-    protected EnumSet<Options> removedDefaults() {
-        return EnumSet.noneOf(Options.class);
+    protected boolean shouldShowEditIcon() {
+        return true;
     }
 
-    private EnumSet<Options> getOptions() {
-        if(options == null) {
-            options = EnumSet.complementOf(removedDefaults());
-        }
-        return options;
+    protected boolean shouldShowDeleteIcon() {
+        return true;
     }
 
-    protected enum Options {
-        EDIT_ICON,
-        DELETE_ICON,
-        DELETE_CONFIRMATION
+    protected boolean shouldShowDeleteConfirmation() {
+        return true;
     }
 }

@@ -63,8 +63,8 @@ public class BedroomListActivity extends RecyclerListActivity<Bedroom> {
         }
 
         @Override
-        protected EnumSet<Options> removedDefaults() {
-            return EnumSet.of(Options.EDIT_ICON);
+        protected boolean shouldShowEditIcon() {
+            return false;
         }
     }
 }
