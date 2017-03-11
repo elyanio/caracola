@@ -7,7 +7,6 @@ import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,11 +33,29 @@ public class SupplierDao {
         dataStore = DataStoreHolder.INSTANCE.getDataStore();
     }
 
+    public Result<Supplier> all() {
+        return dataStore.select(Supplier.class)
+                .orderBy(Supplier.NAME.lower())
+                .get();
+    }
+
     public Result<Supplier> withService(ExternalService service) {
         return dataStore.select(Supplier.class)
                 .join(SupplierService.class).on(Supplier.ID.equal(SUPPLIER_ID))
                 .join(ExternalService.class).on(SERVICE_ID.equal(ExternalService.ID))
                 .where(ExternalService.ID.equal(service.getId()))
+                .orderBy(Supplier.NAME.lower())
+                .get();
+    }
+
+    public Result<Supplier> withoutService(ExternalService service) {
+        List<Supplier> withServices = withService(service).toList();
+        List<Integer> excludeList = new ArrayList<>(withServices.size());
+        for(Supplier supplier : withServices) {
+            excludeList.add(supplier.getId());
+        }
+        return dataStore.select(Supplier.class)
+                .where(Supplier.ID.notIn(excludeList))
                 .orderBy(Supplier.NAME.lower())
                 .get();
     }

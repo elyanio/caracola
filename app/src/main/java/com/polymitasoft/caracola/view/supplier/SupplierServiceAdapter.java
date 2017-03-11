@@ -14,6 +14,7 @@ import com.polymitasoft.caracola.datamodel.SupplierService;
 import io.requery.query.Result;
 
 import static com.polymitasoft.caracola.datamodel.SupplierService.SERVICE;
+import static com.polymitasoft.caracola.datamodel.SupplierService.SUPPLIER_ID;
 import static java.lang.Character.toUpperCase;
 
 /**
@@ -31,7 +32,10 @@ class SupplierServiceAdapter extends SimpleListAdapter<SupplierService> {
 
     @Override
     public Result<SupplierService> performQuery() {
-        return dataStore.select(SupplierService.class).where(SERVICE.eq(service)).get();
+        return dataStore.select(SupplierService.class)
+                .join(Supplier.class).on(SUPPLIER_ID.equal(Supplier.ID))
+                .where(SERVICE.eq(service))
+                .orderBy(Supplier.NAME.lower()).get();
     }
 
     @Override

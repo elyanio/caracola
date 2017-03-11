@@ -36,7 +36,7 @@ public class InternalServiceListActivity extends RecyclerListActivity<InternalSe
     }
 
     @Override
-    protected void onActionPlusMenu() {
+    protected void onActionAddMenu() {
         Intent intent = new Intent(this, InternalServiceEditActivity.class);
         startActivity(intent);
     }

@@ -43,7 +43,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onActionPlusMenu();
+                    onActionAddMenu();
                 }
             });
         } else {
@@ -75,7 +75,7 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
 
     protected abstract QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> createAdapter();
 
-    protected void onActionPlusMenu() {
+    protected void onActionAddMenu() {
     }
 
     @Override

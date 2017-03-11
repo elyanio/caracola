@@ -40,7 +40,7 @@ class SupplierServiceEditDialog {
                     public void onClick(DialogInterface dialog, int which) {
                         EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
                         supplierService.setDescription(descriptionView.getText().toString());
-                        dataStore.update(supplierService);
+                        dataStore.upsert(supplierService);
                         if (okListener != null) {
                             okListener.onClick(dialog, which);
                         }

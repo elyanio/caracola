@@ -34,7 +34,7 @@ public class BedroomListActivity extends RecyclerListActivity<Bedroom> {
     }
 
     @Override
-    protected void onActionPlusMenu() {
+    protected void onActionAddMenu() {
         Intent intent = new Intent(this, BedroomEditActivity.class);
         startActivity(intent);
     }
