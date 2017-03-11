@@ -23,10 +23,6 @@ class SupplierAdapter extends SimpleListAdapter<Supplier> {
     private ExternalService service;
     private SupplierDao dao;
 
-    SupplierAdapter(Context context) {
-        this(context, null);
-    }
-
     SupplierAdapter(Context context, ExternalService service) {
         super(context, Supplier.$TYPE);
         this.service = service;

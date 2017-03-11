@@ -144,4 +144,5 @@
     <string name="supplier_service_price">Precio</string>
     <string name="supplier_service_commission">Comisión</string>
     <string name="supplier_service_edit_title">Editar servicio del proveedor</string>
+    <string name="supplier_service_description">Descripción</string>
 </resources>

@@ -6,18 +6,12 @@ import java.util.List;
 public class SupplierBuilder {
 
     private String name = "";
-    private String description = "";
     private String emailAddress = "";
     private String address = "";
     private List<String> phoneNumbers = Collections.emptyList();
 
     public SupplierBuilder name(String name) {
         this.name = name;
-        return this;
-    }
-
-    public SupplierBuilder description(String description) {
-        this.description = description;
         return this;
     }
 
@@ -39,7 +33,6 @@ public class SupplierBuilder {
     public Supplier build() {
         return new Supplier()
                 .setName(name)
-                .setDescription(description)
                 .setEmailAddress(emailAddress)
                 .setAddress(address)
                 .setPhoneNumbers(phoneNumbers);

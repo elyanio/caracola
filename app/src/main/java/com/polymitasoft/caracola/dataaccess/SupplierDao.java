@@ -72,8 +72,7 @@ public class SupplierDao {
             SupplierService sp = new SupplierService()
                     .setService(service)
                     .setSupplier(supplier)
-                    .setPrice(BigDecimal.ZERO)
-                    .setComission(BigDecimal.ZERO);
+                    .setDescription("");
             sps.add(sp);
         }
         dataStore.insert(sps);

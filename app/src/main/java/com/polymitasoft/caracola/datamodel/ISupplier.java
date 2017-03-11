@@ -28,19 +28,15 @@ public interface ISupplier extends Persistable {
     String getName();
 
     @NonNull
-    @Column(nullable = false, value = "")
+    @Column(nullable = false)
     String getAddress();
 
     @NonNull
-    @Column(nullable = false, value = "")
+    @Column(nullable = false)
     @Convert(PhoneListConverter.class)
     List<String> getPhoneNumbers();
 
     @NonNull
-    @Column(nullable = false, value = "")
+    @Column(nullable = false)
     String getEmailAddress();
-
-    @Column(nullable = false, value = "")
-    @NonNull
-    String getDescription();
 }

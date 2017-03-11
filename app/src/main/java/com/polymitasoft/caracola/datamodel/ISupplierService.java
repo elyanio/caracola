@@ -35,9 +35,5 @@ public interface ISupplierService extends Persistable {
 
     @NonNull
     @Column(nullable = false)
-    BigDecimal getPrice();
-
-    @NonNull
-    @Column(nullable = false)
-    BigDecimal getComission();
+    String getDescription();
 }

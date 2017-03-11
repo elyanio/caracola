@@ -40,8 +40,6 @@ public class SupplierInfoFragment extends Fragment {
     @BindView(R.id.supplier_phone2) TextInputEditText phone2View;
     @BindView(R.id.supplier_email) TextInputEditText emailView;
     @BindView(R.id.supplier_address) TextInputEditText addressView;
-    @BindView(R.id.supplier_description) TextInputEditText descriptionView;
-    private Supplier supplier;
 
     public static SupplierInfoFragment newInstance(Supplier supplier) {
 
@@ -58,23 +56,22 @@ public class SupplierInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_edit_supplier, container, false);
         ButterKnife.bind(this, view);
-        apply(asList(nameView, phone1View, phone2View, emailView, addressView, descriptionView), EDITABLE, false);
+        apply(asList(nameView, phone1View, phone2View, emailView, addressView), EDITABLE, false);
         findById(view, R.id.supplier_services).setVisibility(View.GONE);
 
         int supplierId = getArguments().getInt(ARG_SUPPLIER_ID);
-        supplier = DataStoreHolder.INSTANCE.getDataStore().findByKey(Supplier.class, supplierId);
+        Supplier supplier = DataStoreHolder.INSTANCE.getDataStore().findByKey(Supplier.class, supplierId);
 
         nameView.setText(supplier.getName());
         List<String> phoneNumbers = supplier.getPhoneNumbers();
-        if(phoneNumbers.size() > 0) {
+        if (phoneNumbers.size() > 0) {
             phone1View.setText(phoneNumbers.get(0));
         }
-        if(phoneNumbers.size() > 1) {
+        if (phoneNumbers.size() > 1) {
             phone2View.setText(phoneNumbers.get(1));
         }
         emailView.setText(supplier.getEmailAddress());
         addressView.setText(supplier.getAddress());
-        descriptionView.setText(supplier.getDescription());
 
         return view;
     }

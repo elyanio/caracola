@@ -3,23 +3,17 @@ package com.polymitasoft.caracola.view.supplier;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.widget.RelativeLayout;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
-import com.polymitasoft.caracola.dataaccess.SupplierDao;
 import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
-import java.util.Locale;
-
 import io.requery.query.Result;
 
 import static com.polymitasoft.caracola.datamodel.SupplierService.SERVICE;
-import static com.polymitasoft.caracola.util.Metrics.dp;
 import static java.lang.Character.toUpperCase;
 
 /**
@@ -45,7 +39,7 @@ class SupplierServiceAdapter extends SimpleListAdapter<SupplierService> {
         super.onBindViewHolder(item, holder, position);
         Supplier supplier = item.getSupplier();
         holder.primaryText.setText(supplier.getName());
-        holder.secondaryText.setText(String.format(Locale.getDefault(), "$%.2f (%.2f)", item.getPrice(), item.getComission()));
+        holder.secondaryText.setText(item.getDescription());
     }
 
     @Override

@@ -43,25 +43,25 @@ import static org.threeten.bp.Month.SEPTEMBER;
  * @author rainermf
  * @since 11/2/2017
  */
-public class DatabaseSetup {
+class DatabaseSetup {
 
     private static DateTimeFormatter format = DateTimeFormatter.ofPattern("y/M/d");
     private final EntityDataStore<Persistable> data;
     private File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Hostel");
     private File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");
 
-    public DatabaseSetup() {
+    DatabaseSetup() {
         data = DataStoreHolder.INSTANCE.getDataStore();
     }
 
-    public void cleanDatabase() {
+    void cleanDatabase() {
         directory.mkdirs();
         if (dbFile.exists()) {
             dbFile.delete();
         }
     }
 
-    public void mockDatabase() {
+    void mockDatabase() {
         cleanDatabase();
         List<Client> clients = getClients();
         List<Supplier> suppliers = getSuppliers();
@@ -84,13 +84,13 @@ public class DatabaseSetup {
         insertList(supplierServices);
     }
 
-    public void insertList(List<? extends Persistable> list) {
+    private void insertList(List<? extends Persistable> list) {
         for (Persistable p : list) {
             data.insert(p);
         }
     }
 
-    public List<Client> getClients() {
+    private List<Client> getClients() {
         String[] firstNames = new String[]{"claudia", "Rainer", "Llilian", "Yadriel", "Yanier", "Asiel", "Alejandro"};
         String[] lastNames = new String[]{"Luque", "Martínez", "Martínez", "Miranda", "Alfonso", "Alonso", "Cabriales"};
         LocalDate[] birthdayDates = new LocalDate[]{
@@ -122,7 +122,7 @@ public class DatabaseSetup {
         return clients;
     }
 
-    public List<Supplier> getSuppliers() {
+    private List<Supplier> getSuppliers() {
         String[] names = new String[]{
                 "yanio alfonso", "Yadrio Miranda", "asio alonso", "Hextiandro Manuel",
                 "chacal right now", "yanio layout", "Chacón"
@@ -133,11 +133,6 @@ public class DatabaseSetup {
         String[] emailAdresses = new String[]{
                 "rmartinez@uclv.cu", "barrio@correo.das", "africa@yandex.com", "hello@gmail.com",
                 "cubadebate@yandex.ru", "fbcabriales@infomed.sld.cu", "claulisse@yahoo.com"
-        };
-
-        String[] descriptions = new String[]{
-                "Hey Jude", "Don't let me down", "Take a sad song", "and make it",
-                "better", "remember to let her into you heart", ""
         };
 
         List<String>[] phoneNumbers = (List<String>[]) (new List[]{
@@ -152,7 +147,6 @@ public class DatabaseSetup {
             client.setName(names[i]);
             client.setAddress(addresses[i]);
             client.setEmailAddress(emailAdresses[i]);
-            client.setDescription(descriptions[i]);
             client.setPhoneNumbers(phoneNumbers[i]);
 
             suppliers.add(client);
@@ -161,7 +155,7 @@ public class DatabaseSetup {
         return suppliers;
     }
 
-    public List<Bedroom> getBedrooms() {
+    private List<Bedroom> getBedrooms() {
         int[] capacity = new int[]{4, 2, 6, 4};
         double[] lowPrices = new double[]{25, 20, 25, 30};
         double[] highPrices = new double[]{30, 25, 30, 35};
@@ -180,7 +174,7 @@ public class DatabaseSetup {
         return bedrooms;
     }
 
-    public List<InternalService> getInternalServices() {
+    private List<InternalService> getInternalServices() {
         String[] names = new String[]{"Desayuno", "Almuerzo", "Cena", "Botella de vino tinto"};
         double[] prices = new double[]{10, 15, 15, 12.5};
         List<InternalService> services = new ArrayList<>(names.length);
@@ -195,7 +189,7 @@ public class DatabaseSetup {
         return services;
     }
 
-    public List<Booking> getBookings(List<Bedroom> bedrooms) {
+    private List<Booking> getBookings(List<Bedroom> bedrooms) {
         int[] bookingNumbers = new int[]{1, 13, 15, 16, 18, 10, 14};
         int[] bookNumbers = new int[]{3434, 5555, 7878, 1212, 7518, 6510, 2314};
         String[] checkInDates = new String[]{"2017/01/21", "2017/02/11", "2017/03/11", "2017/04/01", "2017/07/13", "2017/05/01", "2017/10/22"};
@@ -223,7 +217,7 @@ public class DatabaseSetup {
         return bookings;
     }
 
-    public List<ClientStay> getClientStays(List<Booking> bookings, List<Client> clients) {
+    private List<ClientStay> getClientStays(List<Booking> bookings, List<Client> clients) {
         boolean[] holders = new boolean[]{true, false, true, true, false, false, false, false};
         List<ClientStay> stays = new ArrayList<>(holders.length);
 
@@ -238,7 +232,7 @@ public class DatabaseSetup {
         return stays;
     }
 
-    public List<Consumption> getConsumptions(List<Booking> bookings, List<InternalService> services) {
+    private List<Consumption> getConsumptions(List<Booking> bookings, List<InternalService> services) {
         int[] amounts = new int[]{12, 34, 4, 5, 455, 6, 43};
         double[] prices = new double[]{23.3, 23.5, 65.3, 4.5, 23, 23, 33};
         String[] dates = new String[]{"2015/04/21", "2015/04/21", "2015/4/11", "2015/04/21", "2015/04/13", "2015/04/01", "2016/04/22"};
@@ -259,32 +253,43 @@ public class DatabaseSetup {
         return consumptions;
     }
 
-    public List<ExternalService> getExternalServices() {
-        String[] names = new String[]{"Paseos a caballo", "Caminatas", "Buceo", "ir rincon salsa", "borrachera", "Fiesta en las cueva", "Comer jevita"};
+    private List<ExternalService> getExternalServices() {
+        String[] names = new String[]{"Paseos a caballo", "Caminatas", "Buceo", "ir rincon salsa", "Taxis", "Fiesta en las cueva", "Comer jevita"};
+        int[] drawables = new int[] {
+                R.drawable.ic_florist,
+                R.drawable.ic_gym,
+                R.drawable.ic_scuba_diving,
+                0,
+                R.drawable.ic_taxi_stand,
+                R.drawable.ic_sync_black_24dp,
+                R.drawable.ic_beauty_salon,
+        };
 
         List<ExternalService> services = new ArrayList<>(names.length);
 
-        for (String name : names) {
+        for (int i = 0; i < names.length; i++) {
             ExternalService service = new ExternalService();
-            service.setName(name);
+            service.setName(names[i]);
+            service.setIcon(drawables[i]);
             services.add(service);
         }
 
         return services;
     }
 
-    public List<SupplierService> getSupplierServices(List<Supplier> suppliers, List<ExternalService> services) {
-        double[] prices = new double[]{12, 34, 34, 43, 45, 5, 6};
-        double[] commissions = new double[]{12, 34, 34, 43, 45, 5, 6};
+    private List<SupplierService> getSupplierServices(List<Supplier> suppliers, List<ExternalService> services) {
+        String[] descriptions = new String[]{
+                "Hey Jude", "Don't let me down", "Take a sad song", "and make it",
+                "better", "remember to let her into you heart", ""
+        };
 
         List<SupplierService> supplierServices = new ArrayList<>();
 
-        for (int i = 0; i < prices.length; i++) {
+        for (int i = 0; i < descriptions.length; i++) {
             SupplierService supplierService = new SupplierService();
             supplierService.setSupplier(suppliers.get(i % suppliers.size()));
             supplierService.setService(services.get(i % services.size()));
-            supplierService.setPrice(BigDecimal.valueOf(prices[i]));
-            supplierService.setComission(BigDecimal.valueOf(commissions[i]));
+            supplierService.setDescription(descriptions[i]);
 
             supplierServices.add(supplierService);
         }
