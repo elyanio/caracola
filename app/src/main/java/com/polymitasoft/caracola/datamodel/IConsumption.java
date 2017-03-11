@@ -9,12 +9,15 @@ import java.math.BigDecimal;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
+import io.requery.ForeignKey;
 import io.requery.Generated;
 import io.requery.Key;
 import io.requery.ManyToOne;
 import io.requery.Persistable;
+import io.requery.ReferentialAction;
 
 import static io.requery.PropertyNameStyle.FLUENT_BEAN;
+import static io.requery.ReferentialAction.RESTRICT;
 
 /**
  * @author rainermf
@@ -29,6 +32,7 @@ public interface IConsumption extends Persistable {
     @NonNull
     @Column(nullable = false)
     @ManyToOne
+    @ForeignKey(delete = RESTRICT)
     InternalService getInternalService();
 
     @NonNull

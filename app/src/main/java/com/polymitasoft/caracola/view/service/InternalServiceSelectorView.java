@@ -79,6 +79,7 @@ public class InternalServiceSelectorView extends TextInputLayout implements View
         EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         final List<InternalService> serviceList = dataStore
                 .select(InternalService.class)
+                .where(InternalService.HIDDEN.eq(false))
                 .orderBy(InternalService.NAME.lower())
                 .get()
                 .toList();

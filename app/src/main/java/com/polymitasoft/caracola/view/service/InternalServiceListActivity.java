@@ -17,6 +17,9 @@ import java.util.EnumSet;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.query.Result;
 
+import static com.polymitasoft.caracola.datamodel.InternalService.HIDDEN;
+import static com.polymitasoft.caracola.datamodel.InternalService.NAME;
+
 /**
  * @author rainermf
  * @since 16/2/2017
@@ -51,7 +54,10 @@ public class InternalServiceListActivity extends RecyclerListActivity<InternalSe
 
         @Override
         public Result<InternalService> performQuery() {
-            return dataStore.select(InternalService.class).get();
+            return dataStore.select(InternalService.class)
+                    .where(HIDDEN.eq(false))
+                    .orderBy(NAME.lower())
+                    .get();
         }
 
         @Override
@@ -71,6 +77,17 @@ public class InternalServiceListActivity extends RecyclerListActivity<InternalSe
             Intent intent = new Intent(context, InternalServiceEditActivity.class);
             intent.putExtra(InternalServiceEditActivity.EXTRA_SERVICE_ID, item.getId());
             context.startActivity(intent);
+        }
+
+        @Override
+        protected void deleteItem(InternalService item) {
+            try {
+                dataStore.delete(item);
+            } catch (Exception e) {
+                item.setHidden(true);
+                dataStore.update(item);
+            }
+            queryAsync();
         }
     }
 }

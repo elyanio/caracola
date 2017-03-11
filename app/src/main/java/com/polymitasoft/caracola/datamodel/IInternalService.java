@@ -29,4 +29,6 @@ public interface IInternalService extends Persistable {
     @NonNull
     @Column(nullable = false)
     BigDecimal getDefaultPrice();
+
+    boolean isHidden();
 }
