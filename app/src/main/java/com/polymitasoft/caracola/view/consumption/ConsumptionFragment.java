@@ -148,6 +148,12 @@ public class ConsumptionFragment extends Fragment {
             updateTotals();
         }
 
+        @Override
+        protected void deleteItem(Consumption item) {
+            super.deleteItem(item);
+            updateTotals();
+        }
+
         private void updateTotals() {
             BigDecimal consumptionCost = bookingDao.getConsumptionCost(booking);
             BigDecimal lodgingCost = Bookings.lodgingCost(booking);
