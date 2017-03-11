@@ -32,7 +32,6 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
     @BindView(R.id.fab) FloatingActionButton fab;
     private ExecutorService executor;
     private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
-    private boolean addMenuVisible = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +92,6 @@ public abstract class RecyclerListActivity<T> extends AppCompatActivity {
     }
 
     public boolean isAddMenuVisible() {
-        return addMenuVisible;
+        return true;
     }
 }

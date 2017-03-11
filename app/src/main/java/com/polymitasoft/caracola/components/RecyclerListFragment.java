@@ -27,7 +27,6 @@ public abstract class RecyclerListFragment<T> extends Fragment {
 
     @BindView(R.id.fab) FloatingActionButton fab;
     private QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> adapter;
-    private boolean addMenuVisible = true;
 
     protected abstract QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> createAdapter();
 
@@ -68,6 +67,6 @@ public abstract class RecyclerListFragment<T> extends Fragment {
     }
 
     public boolean isAddMenuVisible() {
-        return addMenuVisible;
+        return true;
     }
 }
