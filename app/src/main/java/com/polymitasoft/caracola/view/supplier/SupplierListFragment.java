@@ -53,7 +53,7 @@ public class SupplierListFragment extends RecyclerListFragment<Supplier> {
     }
 
     @Override
-    protected void onActionPlusMenu() {
+    protected void onActionAddMenu() {
         startActivity(new Intent(getContext(), SupplierEditActivity.class));
     }
 }

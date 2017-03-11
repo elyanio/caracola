@@ -69,6 +69,18 @@ public class SupplierDao {
                 .get();
     }
 
+    public Result<ExternalService> notRenderedServices(Supplier supplier) {
+        List<ExternalService> renderedServices = services(supplier).toList();
+        List<Integer> excludeList = new ArrayList<>(renderedServices.size());
+        for(ExternalService service : renderedServices) {
+            excludeList.add(service.getId());
+        }
+        return dataStore.select(ExternalService.class)
+                .where(ExternalService.ID.notIn(excludeList))
+                .orderBy(ExternalService.NAME.lower())
+                .get();
+    }
+
     /**
      * Los servicios que están que no están en currentServices pero están en services hay que insertarlos
      * Los servicios que están en currentServices pero no están en services hay que eliminarlos

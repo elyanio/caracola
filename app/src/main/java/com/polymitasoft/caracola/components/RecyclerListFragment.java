@@ -46,7 +46,7 @@ public abstract class RecyclerListFragment<T> extends Fragment {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onActionPlusMenu();
+                    onActionAddMenu();
                 }
             });
         } else {
@@ -63,7 +63,11 @@ public abstract class RecyclerListFragment<T> extends Fragment {
         return view;
     }
 
-    protected void onActionPlusMenu() {
+    public QueryRecyclerAdapter<T, ? extends RecyclerView.ViewHolder> getAdapter() {
+        return adapter;
+    }
+
+    protected void onActionAddMenu() {
     }
 
     public boolean isAddMenuVisible() {

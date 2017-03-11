@@ -1,6 +1,8 @@
 package com.polymitasoft.caracola.view.supplier;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +10,12 @@ import android.view.ViewGroup;
 
 import com.polymitasoft.caracola.components.RecyclerListFragment;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
+import com.polymitasoft.caracola.dataaccess.SupplierDao;
+import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
+
+import java.util.List;
 
 import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
@@ -49,7 +55,45 @@ public class ServiceBySupplierListFragment extends RecyclerListFragment<Supplier
     }
 
     @Override
-    public boolean isAddMenuVisible() {
-        return false;
+    protected void onActionAddMenu() {
+        SupplierDao dao = new SupplierDao();
+        final List<ExternalService> services = dao.notRenderedServices(supplier).toList();
+        int size = services.size();
+
+        if (size == 0) {
+            new AlertDialog.Builder(getContext())
+                    .setMessage("Todos los servicios existentes ya han sido vinculados a este proveedor.")
+                    .show();
+            return;
+        }
+
+        CharSequence[] servicesLabels = new CharSequence[size];
+        for (int i = 0; i < size; i++) {
+            servicesLabels[i] = services.get(i).getName();
+        }
+        new AlertDialog.Builder(getContext())
+                .setItems(servicesLabels, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        addSupplierService(services.get(which));
+                    }
+                })
+                .show();
+    }
+
+    private void addSupplierService(ExternalService service) {
+        SupplierService item = new SupplierService()
+                .setService(service)
+                .setSupplier(supplier)
+                .setDescription("");
+        new SupplierServiceEditDialog(getContext(), item)
+                .setOkListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getAdapter().queryAsync();
+                    }
+                })
+                .show();
     }
 }

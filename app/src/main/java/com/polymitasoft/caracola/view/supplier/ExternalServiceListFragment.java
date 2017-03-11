@@ -34,7 +34,7 @@ public class ExternalServiceListFragment extends RecyclerListFragment<ExternalSe
     }
 
     @Override
-    protected void onActionPlusMenu() {
+    protected void onActionAddMenu() {
         startActivity(new Intent(getContext(), ExternalServiceEditActivity.class));
     }
 }
