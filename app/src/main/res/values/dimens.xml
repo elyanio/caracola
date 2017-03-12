@@ -12,4 +12,6 @@
     <dimen name="edge_padding">12dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="margin_input_text">4dp</dimen>
+    <dimen name="description_vertical_margin">10dp</dimen>
+    <dimen name="label_vertical_margin">4dp</dimen>
 </resources>

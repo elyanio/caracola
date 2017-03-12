@@ -1,15 +1,14 @@
 package com.polymitasoft.caracola.view.supplier;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
@@ -21,25 +20,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static butterknife.ButterKnife.apply;
 import static butterknife.ButterKnife.findById;
-import static java.util.Arrays.asList;
 
 public class SupplierInfoFragment extends Fragment {
 
     public static final String ARG_SUPPLIER_ID = "supplierId";
-    static final ButterKnife.Setter<TextView, Boolean> EDITABLE = new ButterKnife.Setter<TextView, Boolean>() {
-        @Override
-        public void set(TextView view, Boolean value, int index) {
-            view.setInputType(EditorInfo.TYPE_NULL);
-            view.setFocusable(false);
-        }
-    };
-    @BindView(R.id.supplier_name) TextInputEditText nameView;
-    @BindView(R.id.supplier_phone1) TextInputEditText phone1View;
-    @BindView(R.id.supplier_phone2) TextInputEditText phone2View;
-    @BindView(R.id.supplier_email) TextInputEditText emailView;
-    @BindView(R.id.supplier_address) TextInputEditText addressView;
+    @BindView(R.id.supplier_name) TextView nameView;
+    @BindView(R.id.supplier_phone1) TextView phone1View;
+    @BindView(R.id.supplier_phone2) TextView phone2View;
+    @BindView(R.id.supplier_email) TextView emailView;
+    @BindView(R.id.supplier_address) TextView addressView;
+    private Supplier supplier;
 
     public static SupplierInfoFragment newInstance(Supplier supplier) {
 
@@ -54,35 +45,82 @@ public class SupplierInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_edit_supplier, container, false);
+        View view = inflater.inflate(R.layout.fragment_supplier_info, container, false);
         ButterKnife.bind(this, view);
-        apply(asList(nameView, phone1View, phone2View, emailView, addressView), EDITABLE, false);
-        findById(view, R.id.supplier_services).setVisibility(View.GONE);
-
         int supplierId = getArguments().getInt(ARG_SUPPLIER_ID);
-        Supplier supplier = DataStoreHolder.INSTANCE.getDataStore().findByKey(Supplier.class, supplierId);
+        supplier = DataStoreHolder.INSTANCE.getDataStore().findByKey(Supplier.class, supplierId);
 
         nameView.setText(supplier.getName());
         List<String> phoneNumbers = supplier.getPhoneNumbers();
-        if (phoneNumbers.size() > 0) {
+        if (phoneNumbers.size() > 0 && !phoneNumbers.get(0).trim().isEmpty()) {
             phone1View.setText(phoneNumbers.get(0));
+        } else {
+            hide(findById(view, R.id.layout_phone1), findById(view, R.id.label_phone1));
         }
-        if (phoneNumbers.size() > 1) {
+        if (phoneNumbers.size() > 1 && !phoneNumbers.get(1).trim().isEmpty()) {
             phone2View.setText(phoneNumbers.get(1));
+        } else {
+            hide(findById(view, R.id.layout_phone2), findById(view, R.id.label_phone2));
         }
-        emailView.setText(supplier.getEmailAddress());
-        addressView.setText(supplier.getAddress());
+        if (!supplier.getEmailAddress().trim().isEmpty()) {
+            emailView.setText(supplier.getEmailAddress());
+        } else {
+            hide(findById(view, R.id.layout_email), findById(view, R.id.label_email));
+        }
+        if (!supplier.getAddress().trim().isEmpty()) {
+            addressView.setText(supplier.getAddress());
+        } else {
+            hide(findById(view, R.id.label_address), addressView);
+        }
 
         return view;
     }
 
-    @OnClick(R.id.supplier_email)
-    public void onEmailClick() {
-        Toast.makeText(getContext(), "Send email", Toast.LENGTH_SHORT).show();
+    private void hide(View view1, View view2) {
+        view1.setVisibility(View.GONE);
+        view2.setVisibility(View.GONE);
     }
 
-    @OnClick({R.id.supplier_phone1, R.id.supplier_phone2})
-    public void onPhoneClick() {
-        Toast.makeText(getContext(), "Call this guy", Toast.LENGTH_SHORT).show();
+    @OnClick(R.id.send_email)
+    public void onEmailClick() {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{supplier.getEmailAddress()});
+        emailIntent.setType("message/rfc822");
+        startActivity(Intent.createChooser(emailIntent, "Email"));
+    }
+
+    @OnClick(R.id.call_phone1)
+    public void onPhone1Click() {
+        openPhoneApp(supplier.getPhoneNumbers().get(0));
+    }
+
+    @OnClick(R.id.call_phone2)
+    public void onPhone2Click() {
+        openPhoneApp(supplier.getPhoneNumbers().get(1));
+    }
+
+    @OnClick(R.id.send_sms_phone1)
+    public void onSms1Click() {
+        openSmsApp(supplier.getPhoneNumbers().get(0));
+    }
+
+    @OnClick(R.id.send_sms_phone2)
+    public void onSms2Click() {
+        openSmsApp(supplier.getPhoneNumbers().get(1));
+    }
+
+    private void openPhoneApp(String number) {
+        Intent dialIntent = new Intent();
+        dialIntent.setAction(Intent.ACTION_DIAL);
+        dialIntent.setData(Uri.parse("tel:" + number));
+        startActivity(dialIntent);
+    }
+
+    private void openSmsApp(String number) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.putExtra("address", number);
+        intent.setType("vnd.android-dir/mms-sms");
+        startActivity(intent);
     }
 }
