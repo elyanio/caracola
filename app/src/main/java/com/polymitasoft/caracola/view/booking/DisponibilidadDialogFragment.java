@@ -6,22 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.content.Context;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.datamodel.Bedroom;
-import com.polymitasoft.caracola.util.Metrics;
 
 import org.threeten.bp.LocalDate;
 
@@ -123,9 +117,7 @@ public class DisponibilidadDialogFragment extends DialogFragment {
 
 
     class ListDisponibilidadAdapter extends ArrayAdapter<Bedroom> {
-        private final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA};
         List<Bedroom> habitaciones = new ArrayList<>();
-        private final Random random = new Random();
         private boolean vacio = false;
 
         public ListDisponibilidadAdapter(Context context, int resource, List<Bedroom> objects) {
@@ -137,14 +129,15 @@ public class DisponibilidadDialogFragment extends DialogFragment {
         public View getView(final int posision, View convertView, ViewGroup parent) {
             View elemento ;
             LayoutInflater contexto_inflado = ((Activity) getContext()).getLayoutInflater();
-            elemento = contexto_inflado.inflate(R.layout.simple_list_item_disponibilidad, null);
+            elemento = contexto_inflado.inflate(R.layout.simple_list_item_two_text, null);
             TextView primaryText = (TextView) elemento.findViewById(R.id.primary_text);
             TextView secondaryText = (TextView) elemento.findViewById(R.id.secondary_text);
             View colorStrip = (View) elemento.findViewById(R.id.color_strip);
-            colorStrip.setBackgroundColor(colors[random.nextInt(colors.length)]);
+
 
             if(!vacio){
                 final Bedroom habitacion = habitaciones.get(posision);
+                colorStrip.setBackgroundColor(Colors.INSTANCE.getColor(habitacion.getId()));
                 String textoMostrado = habitacion.getName();
                 primaryText.setText(textoMostrado);
                 int capacity = habitacion.getCapacity();
