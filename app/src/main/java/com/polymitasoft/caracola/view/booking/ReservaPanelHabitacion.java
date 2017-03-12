@@ -19,6 +19,7 @@ import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.IBooking;
 
 import org.threeten.bp.LocalDate;
@@ -28,6 +29,8 @@ import java.util.List;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
+
+import static com.polymitasoft.caracola.datamodel.BookingState.CHECKED_IN;
 
 
 public class ReservaPanelHabitacion extends LinearLayout {
@@ -92,11 +95,34 @@ public class ReservaPanelHabitacion extends LinearLayout {
     }
 
     public void click_fisicaR() {
+        if (preReservaSelecc != null) {
+            if(preReservaSelecc.getState() != CHECKED_IN && preReservaSelecc.getCheckInDate().isAfter(LocalDate.now())) {
+                new AlertDialog.Builder(getContext())
+                        .setMessage(R.string.check_in_confirmation_message)
+                        .setPositiveButton(R.string.yes_action_button, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startCheckIn();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel_action_button, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            } else {
+                startCheckIn();
+            }
+        }
+    }
+
+    private void startCheckIn() {
         Context context = getContext();
         Intent intent = new Intent(context, BookingEditActivity.class);
-        if (preReservaSelecc != null) {
-            intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, preReservaSelecc.getId());
-        }
+        intent.putExtra(BookingEditActivity.EXTRA_BOOKING_ID, preReservaSelecc.getId());
         context.startActivity(intent);
     }
 
