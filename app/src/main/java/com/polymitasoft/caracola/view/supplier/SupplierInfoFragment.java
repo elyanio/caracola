@@ -12,24 +12,30 @@ import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
+import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
+import com.polymitasoft.caracola.datamodel.SupplierService;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.requery.Persistable;
+import io.requery.sql.EntityDataStore;
 
 import static butterknife.ButterKnife.findById;
 
 public class SupplierInfoFragment extends Fragment {
 
     public static final String ARG_SUPPLIER_ID = "supplierId";
+    public static final String ARG_SUPPLIER_SERVICE_ID = "serviceId";
     @BindView(R.id.supplier_name) TextView nameView;
     @BindView(R.id.supplier_phone1) TextView phone1View;
     @BindView(R.id.supplier_phone2) TextView phone2View;
     @BindView(R.id.supplier_email) TextView emailView;
     @BindView(R.id.supplier_address) TextView addressView;
+    @BindView(R.id.supplier_service_description) TextView description;
     private Supplier supplier;
 
     public static SupplierInfoFragment newInstance(Supplier supplier) {
@@ -42,13 +48,24 @@ public class SupplierInfoFragment extends Fragment {
         return fragment;
     }
 
+    public static SupplierInfoFragment newInstance(SupplierService supplierService) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_SUPPLIER_ID, supplierService.getSupplier().getId());
+        args.putInt(ARG_SUPPLIER_SERVICE_ID, supplierService.getId());
+
+        SupplierInfoFragment fragment = new SupplierInfoFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_supplier_info, container, false);
         ButterKnife.bind(this, view);
         int supplierId = getArguments().getInt(ARG_SUPPLIER_ID);
-        supplier = DataStoreHolder.INSTANCE.getDataStore().findByKey(Supplier.class, supplierId);
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
+        supplier = dataStore.findByKey(Supplier.class, supplierId);
 
         nameView.setText(supplier.getName());
         List<String> phoneNumbers = supplier.getPhoneNumbers();
@@ -71,6 +88,12 @@ public class SupplierInfoFragment extends Fragment {
             addressView.setText(supplier.getAddress());
         } else {
             hide(findById(view, R.id.label_address), addressView);
+        }
+
+        int supplierServiceId = getArguments().getInt(ARG_SUPPLIER_SERVICE_ID, -1);
+        if(supplierServiceId != -1) {
+            SupplierService supplierService = dataStore.findByKey(SupplierService.class, supplierServiceId);
+            description.setText(supplierService.getDescription());
         }
 
         return view;

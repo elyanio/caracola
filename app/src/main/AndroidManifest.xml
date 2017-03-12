@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.polymitasoft.caracola">
+          package="com.polymitasoft.caracola">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".CaracolaApplication"
@@ -17,10 +17,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <receiver android:name=".communication.Receiver">
             <intent-filter android:priority="1000">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
             </intent-filter>
         </receiver>
 
@@ -29,48 +28,55 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.booking.ReservaPrincipal"
+        <activity
+            android:name=".view.booking.ReservaPrincipal"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".view.booking.CurrentBookingsActivity" />
-        <activity android:name=".view.booking.BookingEditActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".view.service.InternalServiceListActivity" />
-        <activity android:name=".view.service.InternalServiceEditActivity" />
-        <activity android:name=".view.supplier.ContactsActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".view.supplier.ExternalServiceEditActivity" />
-        <activity android:name=".view.supplier.ExternalServiceViewActivity"/>
-        <activity android:name=".view.supplier.SupplierViewActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".view.booking.CurrentBookingsActivity"/>
+        <activity
+            android:name=".view.booking.BookingEditActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".view.service.InternalServiceListActivity"/>
+        <activity android:name=".view.service.InternalServiceEditActivity"/>
+        <activity
+            android:name=".view.supplier.ContactsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".view.supplier.ExternalServiceEditActivity"/>
+        <activity android:name=".view.supplier.ExternalServiceInfoActivity"/>
+        <activity
+            android:name=".view.supplier.SupplierInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.supplier.SupplierEditActivity"/>
-        <activity android:name=".view.consumption.ConsumptionEditActivity" />
-        <activity android:name=".view.client.ClientEditActivity" />
-        <activity android:name=".view.bedroom.BedroomListActivity" />
+        <activity android:name=".view.consumption.ConsumptionEditActivity"/>
+        <activity android:name=".view.client.ClientEditActivity"/>
+        <activity android:name=".view.bedroom.BedroomListActivity"/>
         <activity android:name=".view.bedroom.BedroomEditActivity"/>
-        <activity android:name=".view.bedroom.BedroomInsertActivity" />
-        <activity android:name=".view.bedroom.BedroomLonlyActivity" />
-
+        <activity android:name=".view.bedroom.BedroomInsertActivity"/>
+        <activity android:name=".view.bedroom.BedroomLonlyActivity"/>
         <activity
             android:name=".view.manager.ManagerActivity"
-            android:label="Manager" />
+            android:label="Manager"/>
         <activity
             android:name=".view.bedroom.BedroomHostelActivity"
-            android:label="Habitacion" />
-
+            android:label="Habitacion"/>
         <activity
             android:name=".view.hostel.HostelActivity"
-            android:label="Hostel" />
+            android:label="Hostel"/>
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".view.booking.ReservaPrincipal">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.polymitasoft.caracola.view.booking.ReservaPrincipal" />
+                android:value="com.polymitasoft.caracola.view.booking.ReservaPrincipal"/>
+        </activity>
+        <activity
+            android:name=".view.supplier.SupplierServiceInfoActivity"
+            android:label="@string/title_activity_supplier_service_info">
         </activity>
     </application>
 

@@ -56,8 +56,8 @@ class SupplierServiceAdapter extends SimpleListAdapter<SupplierService> {
 
     @Override
     protected void viewItem(SupplierService item) {
-        Intent intent = new Intent(context, SupplierViewActivity.class);
-        intent.putExtra(SupplierViewActivity.EXTRA_SUPPLIER_ID, item.getSupplier().getId());
+        Intent intent = new Intent(context, SupplierServiceInfoActivity.class);
+        intent.putExtra(SupplierServiceInfoActivity.ARG_SUPPLIER_SERVICE_ID, item.getId());
         context.startActivity(intent);
     }
 

@@ -7,7 +7,7 @@
     <string name="reserva_titulo_hacer_reserva">Hacer reserva</string>
     <string name="reserva_nota">Nota</string>
     <string name="booking_price">
-        $<xliff:g id="price" example="25.00">%.2f</xliff:g> por noche
+        $<xliff:g example="25.00" id="price">%.2f</xliff:g> por noche
     </string>
     <string name="title_current_bookings">Reservas actuales</string>
     <string name="action_back">Atrás</string>
@@ -76,7 +76,7 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value" />
+    <string-array name="multi_select_list_preference_default_value"/>
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
@@ -96,7 +96,7 @@
     <string name="title_edit_bedroom">Editar habitación</string>
     <string name="title_insert_bedroom">Insertar habitación</string>
     <string name="person_full_name">
-        <xliff:g id="firstName" example="Rainer">%s</xliff:g> <xliff:g id="lastName" example="Martínez Fraga">%s</xliff:g>
+        <xliff:g example="Rainer" id="firstName">%s</xliff:g> <xliff:g example="Martínez Fraga" id="lastName">%s</xliff:g>
     </string>
     <string name="title_edit_client">Editar cliente</string>
     <string name="passport">Pasaporte</string>
@@ -115,7 +115,7 @@
     <string name="title_edit_consumption">Editar consumo</string>
     <string name="title_bedrooms">Habitaciones</string>
     <string name="title_edit_internal_service">Editar servicio</string>
-    <string name="title_contacts">Contactos</string>
+    <string name="title_contacts">Agenda</string>
     <string name="title_settings">Configuración</string>
     <string name="yes_action_button">Sí</string>
     <string name="delete_confirmation_message">¿Realmente desea eliminar el elemento seleccionado?</string>
@@ -146,4 +146,6 @@
     <string name="supplier_service_edit_title">Editar servicio del proveedor</string>
     <string name="supplier_service_description">Descripción</string>
     <string name="check_in_confirmation_message">La reserva seleccionada aún no está en fecha de iniciarse. ¿Está seguro que desea inciar el proceso de registro de la reserva?</string>
+    <string name="title_activity_supplier_service_info">Información</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -15,7 +15,7 @@ import com.polymitasoft.caracola.datamodel.Supplier;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
-public class SupplierViewActivity extends AppCompatActivity {
+public class SupplierInfoActivity extends AppCompatActivity {
 
     public static final String EXTRA_SUPPLIER_ID = "supplierId";
     /**

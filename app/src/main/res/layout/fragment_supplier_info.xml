@@ -43,10 +43,10 @@
                 android:id="@+id/supplier_phone1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:textAppearanceMedium"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:layout_gravity="center_vertical"/>
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@android:color/black"/>
 
             <ImageButton
                 android:id="@+id/call_phone1"
@@ -81,10 +81,10 @@
                 android:id="@+id/supplier_phone2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@android:color/black"
-                android:layout_gravity="center_vertical"/>
+                android:textColor="@android:color/black"/>
 
             <ImageButton
                 android:id="@+id/call_phone2"
@@ -119,10 +119,10 @@
                 android:id="@+id/supplier_email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@android:color/black"
-                android:layout_gravity="center_vertical"/>
+                android:textColor="@android:color/black"/>
 
             <ImageButton
                 android:id="@+id/send_email"
@@ -147,6 +147,14 @@
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@android:color/black"/>
 
+        <TextView
+            android:id="@+id/supplier_service_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/description_vertical_margin"
+            android:layout_marginTop="@dimen/description_vertical_margin"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@android:color/black"/>
     </LinearLayout>
 
 </ScrollView>

@@ -37,7 +37,7 @@ import io.requery.Persistable;
 import io.requery.android.QueryRecyclerAdapter;
 import io.requery.sql.EntityDataStore;
 
-public class ExternalServiceViewActivity extends RecyclerListActivity<SupplierService> {
+public class ExternalServiceInfoActivity extends RecyclerListActivity<SupplierService> {
 
     private ExternalService service;
 
@@ -69,7 +69,7 @@ public class ExternalServiceViewActivity extends RecyclerListActivity<SupplierSe
         final List<Supplier> suppliers = dao.withoutService(service).toList();
         int size = suppliers.size();
 
-        if(size == 0) {
+        if (size == 0) {
             new AlertDialog.Builder(this)
                     .setMessage("Todos los proveedores existentes ya han sido agregados a este servicio.")
                     .show();
