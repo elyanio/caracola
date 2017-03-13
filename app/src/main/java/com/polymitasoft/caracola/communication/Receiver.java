@@ -68,9 +68,9 @@ public class Receiver extends BroadcastReceiver {
                         insertarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], context);
 
                         String mensaje = "Nueva reserva gestionada.\nEntrada: " + valores[1] + "\nSalida: " +
-                                valores[2] + "\nTipo de Reserva: " + valores[4] + "\n" + valores[6];
+                                valores[2] + "\nTipo de Reserva: " + showState + "\n" + valores[6];
                         StateBar stateBar = new StateBar();
-                        stateBar.notificar(context, CaracolaApplication.class, "Nueva Reserva", number_manager, "Phone", "", mensaje);
+                        stateBar.notification(context, 1, "Nueva Reserva", "Reserva gestionada", number_manager, mensaje);
 
                         Mensajero.confirmar_recibo(number_manager);
                     }
@@ -79,13 +79,16 @@ public class Receiver extends BroadcastReceiver {
                     //>$#2017-01-10#2017-02-16#2017-02-24#30,00#2#0#Holaaaaaaaaa
                     if (chequearFidelidadMensaje(context, valores[6], number_manager)) {
 
+                        String showState = parssearBookingState(valores[5]);
                         actualizarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], valores[7], context);
 
-                        String mensaje = "Actualización de reserva.\nEntrada: " + valores[1] + "\nSalida: " +
-                                valores[2] + "\nTipo de Reserva: " + valores[4] + "\n" + valores[6];
+                        String mensaje = "Actualización de reserva.\nEntrada: " + valores[2] + "\nSalida: " +
+                                valores[3] + "\nTipo de Reserva: " + showState + "\n" + valores[7];
 
                         StateBar stateBar = new StateBar();
-                        stateBar.notificar(context, CaracolaApplication.class, "Actualización de reserva", number_manager, "Phone", "", mensaje);
+                        stateBar.notification(context, 1, "Actualización de Reserva", "Reserva actualizada", number_manager, mensaje);
+
+//                        stateBar.notificar(context, CaracolaApplication.class, "Actualización de reserva", number_manager, "Phone", "", mensaje);
 
                         Mensajero.confirmar_recibo(number_manager);
                     }
@@ -105,12 +108,15 @@ public class Receiver extends BroadcastReceiver {
                                 localDateConverter.convertToPersisted(booking.getCheckOutDate()) + "\nHabitación: " + bedroom.getName();
 
                         StateBar stateBar = new StateBar();
-                        stateBar.notificar(context, CaracolaApplication.class, "Eliminar reserva", number_manager, "Phone", "", mensaje);
+
+                        stateBar.notification(context, 1, "Eliminación Reserva", "Reserva eliminada", number_manager, mensaje);
+
+//                        stateBar.notificar(context, CaracolaApplication.class, "Eliminar reserva", number_manager, "Phone", "", mensaje);
                         Mensajero.confirmar_recibo(number_manager);
                     }
                 } else if (valores[0].equals("$$$")) {
                     StateBar stateBar = new StateBar();
-                    stateBar.notificar(context, CaracolaApplication.class, "Confirmación", number_manager, "Phone", "", valores[1]);
+                    stateBar.notification(context, 1, "Mensaje de Confiración", "Mensaje recibido", number_manager, "");
                 }
             }
         }
@@ -205,18 +211,21 @@ public class Receiver extends BroadcastReceiver {
 
     private String parssearBookingState(String valor) {
 
-        int estado = Integer.parseInt(valor);
-        BookingState bookingState = BookingState.values()[estado];
-        String showState = "";
+        BookingState bookingState = null;
+        int state = Integer.parseInt(valor);
 
-        if (bookingState == BookingState.CHECKED_IN) {
-            showState = "Registrado";
-        } else if (bookingState == BookingState.PENDING) {
-            showState = "Pendiente";
-        } else {
-            showState = "Confirmado";
+        switch (state) {
+            case 1:
+                bookingState = BookingState.PENDING;
+                break;
+            case 2:
+                bookingState = BookingState.CONFIRMED;
+                break;
+            case 3:
+                bookingState = BookingState.CHECKED_IN;
+                break;
         }
-        return showState;
+        return bookingState.toString();
     }
 
     public static SmsMessage[] getMessagesFromIntent(Intent intent) {

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.notification.StateBar;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
 import com.polymitasoft.caracola.view.booking.BookingButtonBar;
