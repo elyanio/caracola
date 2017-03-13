@@ -3,10 +3,13 @@ package com.polymitasoft.caracola.view.booking;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.percent.PercentRelativeLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
@@ -22,11 +25,11 @@ import com.polymitasoft.caracola.components.DateSpinner;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.dataaccess.Bookings;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
+import com.polymitasoft.caracola.dataaccess.HostelDao;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
 import com.polymitasoft.caracola.datamodel.BookingState;
-import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -39,6 +42,8 @@ import butterknife.ButterKnife;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
+import static android.Manifest.permission.SEND_SMS;
+import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 import static com.polymitasoft.caracola.settings.Preferences.isSmsSyncEnabled;
 import static com.polymitasoft.caracola.util.FormatUtils.parseDate;
 
@@ -61,6 +66,7 @@ public class EditBookingDialogFragment extends DialogFragment {
     private Booking oldBooking;
     private EntityDataStore<Persistable> dataStore;
     private BookingDao bookingDao;
+    private HostelDao hostelDao;
     private boolean createMode = false;
 
     public static EditBookingDialogFragment newInstance(Bedroom bedroom, LocalDate checkInDate, LocalDate checkOutDate) {
@@ -88,6 +94,7 @@ public class EditBookingDialogFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         dataStore = DataStoreHolder.INSTANCE.getDataStore();
         bookingDao = new BookingDao();
+        hostelDao = new HostelDao();
         int idBooking = getArguments().getInt(ARG_BOOKING_ID, -1);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -205,15 +212,47 @@ public class EditBookingDialogFragment extends DialogFragment {
         dismiss();
     }
 
+    private static final int REQUEST_SEND_CREATE_SMS = 123;
+    private static final int REQUEST_SEND_UPDATE_SMS = 124;
+
     private void sendMessage(Booking oldBooking, Booking newBooking) {
-        if (isSmsSyncEnabled() && (newBooking.getBedroom().getCode() != 0)) {
-            new ManageSmsBooking(oldBooking, newBooking).sendUpdateMessage();
+        if (shouldSendMessage(newBooking)) {
+            if(ContextCompat.checkSelfPermission(getContext(), SEND_SMS) == PERMISSION_GRANTED) {
+                new ManageSmsBooking(oldBooking, newBooking).sendUpdateMessage();
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[] { SEND_SMS }, REQUEST_SEND_UPDATE_SMS);
+            }
         }
     }
 
     private void sendMessage(Booking booking) {
-        if (isSmsSyncEnabled() && (booking.getBedroom().getCode() != 0)) {
-            new ManageSmsBooking(booking).sendCreateMessage();
+        if (shouldSendMessage(booking)) {
+            if(ContextCompat.checkSelfPermission(getContext(), SEND_SMS) == PERMISSION_GRANTED) {
+                new ManageSmsBooking(booking).sendCreateMessage();
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[] { SEND_SMS }, REQUEST_SEND_CREATE_SMS);
+            }
+        }
+    }
+
+    private boolean shouldSendMessage(Booking booking) {
+        return isSmsSyncEnabled()
+                && (booking.getBedroom().getCode() != 0)
+                && hostelDao.getManagerCount(booking.getBedroom().getHostel()) != 0;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_SEND_CREATE_SMS) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                new ManageSmsBooking(booking).sendCreateMessage();
+            }
+        } else if(requestCode == REQUEST_SEND_UPDATE_SMS) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                new ManageSmsBooking(oldBooking, booking).sendUpdateMessage();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.communication.ManageSmsBooking;
 import com.polymitasoft.caracola.components.DrawerActivity;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
@@ -99,6 +100,9 @@ public class ReservaPrincipal extends DrawerActivity
             } else {
                 Toast.makeText(this, "La aplicación no funcionará correctamente debido a la falta de privilegios", Toast.LENGTH_SHORT).show();
             }
+        } else if(requestCode == ReservaPanelHabitacion.REQUEST_SEND_DELETE_SMS) {
+            Booking booking = reservaEsenaPrincipal.getReservaPanelHabitacionActual().getPreReservaSelecc();
+            new ManageSmsBooking(booking).sendDeleteMessage();
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }

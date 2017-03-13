@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.ViewPropertyAnimator;
@@ -17,6 +19,7 @@ import com.polymitasoft.caracola.communication.ManageSmsBooking;
 import com.polymitasoft.caracola.components.InteractivoScrollView;
 import com.polymitasoft.caracola.dataaccess.BookingDao;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
+import com.polymitasoft.caracola.dataaccess.HostelDao;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
@@ -30,6 +33,8 @@ import java.util.List;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
+import static android.Manifest.permission.SEND_SMS;
+import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 import static com.polymitasoft.caracola.datamodel.BookingState.CHECKED_IN;
 import static com.polymitasoft.caracola.settings.Preferences.isSmsSyncEnabled;
 
@@ -50,6 +55,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     //controles
     private LinearLayout linearLayoutMeses;
     private InteractivoScrollView scroll_meses;
+    private HostelDao hostelDao;
 
     public ReservaPanelHabitacion(Context context, Bedroom bedroom) {
         super(context);
@@ -68,6 +74,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         String infladorServicio = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater asioInflador = (LayoutInflater) getContext().getSystemService(infladorServicio);
         asioInflador.inflate(R.layout.reserva_principal_panel_habitacion, this, true);
+        hostelDao = new HostelDao();
     }
 
     private void obtenerControles() {
@@ -150,10 +157,22 @@ public class ReservaPanelHabitacion extends LinearLayout {
         dialog.show();
     }
 
+    public static final int REQUEST_SEND_DELETE_SMS = 234;
+
     private void sendMessage(Booking booking) {
-        if (isSmsSyncEnabled() && (booking.getBedroom().getCode() != 0)) {
-            new ManageSmsBooking(booking).sendDeleteMessage();
+        if (shouldSendMessage(booking)) {
+            if(ContextCompat.checkSelfPermission(getContext(), SEND_SMS) == PERMISSION_GRANTED) {
+                new ManageSmsBooking(booking).sendDeleteMessage();
+            } else {
+                ActivityCompat.requestPermissions(reservaPrincipal, new String[] { SEND_SMS }, REQUEST_SEND_DELETE_SMS);
+            }
         }
+    }
+
+    private boolean shouldSendMessage(Booking booking) {
+        return isSmsSyncEnabled()
+                && (booking.getBedroom().getCode() != 0)
+                && hostelDao.getManagerCount(booking.getBedroom().getHostel()) != 0;
     }
 
     public boolean esModoTodo() {
