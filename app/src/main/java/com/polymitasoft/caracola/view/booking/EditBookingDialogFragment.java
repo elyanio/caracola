@@ -208,20 +208,11 @@ public class EditBookingDialogFragment extends DialogFragment {
     }
 
     private void sendMessage(Booking oldBooking, Booking newBooking) {
-        ManageSmsBooking manageSmsBooking = new ManageSmsBooking(oldBooking, newBooking, getContext());
-        manageSmsBooking.findBedroom();
-        manageSmsBooking.findManager();
-        manageSmsBooking.buildUpdateMessage();
-        manageSmsBooking.enviar_mensaje();
+        new ManageSmsBooking(oldBooking, newBooking).sendUpdateMessage();
     }
 
     private void sendMessage(Booking booking) {
-        ManageSmsBooking manageSmsBooking = new ManageSmsBooking(booking, getContext());
-        manageSmsBooking.findBedroom();
-        manageSmsBooking.findManager();
-        manageSmsBooking.buildMessage();
-        manageSmsBooking.enviar_mensaje();
-        //bedroom.setPriceInHighSeason(FormatUtils.parseMoney(priceInHighSeason.getText().toString()));
+        new ManageSmsBooking(booking).sendCreateMessage();
     }
 
     @Override

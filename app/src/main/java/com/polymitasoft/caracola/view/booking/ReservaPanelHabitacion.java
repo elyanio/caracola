@@ -154,12 +154,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     }
 
     private void sendMessage(Booking newBooking) {
-
-        ManageSmsBooking manageSmsBooking = new ManageSmsBooking(newBooking, getContext());
-        manageSmsBooking.buildDeleteMessage();
-        manageSmsBooking.findBedroom();
-        manageSmsBooking.findManager();
-        manageSmsBooking.enviar_mensaje();
+        new ManageSmsBooking(newBooking).sendDeleteMessage();
     }
 
     public boolean esModoTodo() {
