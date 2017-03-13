@@ -26,6 +26,7 @@ import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
 import com.polymitasoft.caracola.datamodel.BookingState;
+import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -38,6 +39,7 @@ import butterknife.ButterKnife;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
+import static com.polymitasoft.caracola.settings.Preferences.isSmsSyncEnabled;
 import static com.polymitasoft.caracola.util.FormatUtils.parseDate;
 
 public class EditBookingDialogFragment extends DialogFragment {
@@ -194,25 +196,25 @@ public class EditBookingDialogFragment extends DialogFragment {
         if(createMode) {
             mCallback.onBookingCreate(booking);
             //        todo enviar menssaje
-            if (booking.getBedroom().getCode() != 0) {
-                sendMessage(booking);
-            }
+            sendMessage(booking);
         } else {
             mCallback.onBookingEdit(oldBooking, booking);
             //todo enviar mensaje editadra
-            if (booking.getBedroom().getCode() != 0) {
-                sendMessage(oldBooking, booking);
-            }
+            sendMessage(oldBooking, booking);
         }
         dismiss();
     }
 
     private void sendMessage(Booking oldBooking, Booking newBooking) {
-        new ManageSmsBooking(oldBooking, newBooking).sendUpdateMessage();
+        if (isSmsSyncEnabled() && (newBooking.getBedroom().getCode() != 0)) {
+            new ManageSmsBooking(oldBooking, newBooking).sendUpdateMessage();
+        }
     }
 
     private void sendMessage(Booking booking) {
-        new ManageSmsBooking(booking).sendCreateMessage();
+        if (isSmsSyncEnabled() && (booking.getBedroom().getCode() != 0)) {
+            new ManageSmsBooking(booking).sendCreateMessage();
+        }
     }
 
     @Override

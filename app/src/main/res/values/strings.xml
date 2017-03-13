@@ -148,4 +148,6 @@
     <string name="check_in_confirmation_message">La reserva seleccionada aún no está en fecha de iniciarse. ¿Está seguro que desea inciar el proceso de registro de la reserva?</string>
     <string name="title_activity_supplier_service_info">Información</string>
     <string name="action_settings">Settings</string>
+    <string name="pref_title_enable_sms_notifications">Sincronización por SMS</string>
+    <string name="pref_description_enable_sms_notifications">Habilita el envío de SMS a los gestores definidos para sincronizar el calendario de reservas.</string>
 </resources>

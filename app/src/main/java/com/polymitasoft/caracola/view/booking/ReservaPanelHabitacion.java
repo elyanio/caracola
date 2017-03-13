@@ -31,6 +31,7 @@ import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
 import static com.polymitasoft.caracola.datamodel.BookingState.CHECKED_IN;
+import static com.polymitasoft.caracola.settings.Preferences.isSmsSyncEnabled;
 
 
 public class ReservaPanelHabitacion extends LinearLayout {
@@ -133,12 +134,8 @@ public class ReservaPanelHabitacion extends LinearLayout {
         dialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-
                 //todo mensaje eliminar asere ....
-                if (preReservaSelecc.getBedroom().getCode() != 0) {
-                    sendMessage(preReservaSelecc);
-                }
-
+                sendMessage(preReservaSelecc);
                 dataStore.delete(preReservaSelecc);
 
                 VistaDia vistaDiaFictIni = obtenerVistaDiaFict(preReservaSelecc.getCheckInDate());
@@ -153,8 +150,10 @@ public class ReservaPanelHabitacion extends LinearLayout {
         dialog.show();
     }
 
-    private void sendMessage(Booking newBooking) {
-        new ManageSmsBooking(newBooking).sendDeleteMessage();
+    private void sendMessage(Booking booking) {
+        if (isSmsSyncEnabled() && (booking.getBedroom().getCode() != 0)) {
+            new ManageSmsBooking(booking).sendDeleteMessage();
+        }
     }
 
     public boolean esModoTodo() {
