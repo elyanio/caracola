@@ -6,10 +6,4 @@
         android:summary="@string/pref_description_is_high_season"
         android:title="@string/pref_title_is_high_season" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="sms_sync"
-        android:summary="@string/pref_description_enable_sms_notifications"
-        android:title="@string/pref_title_enable_sms_notifications" />
-
 </PreferenceScreen>
