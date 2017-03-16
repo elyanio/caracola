@@ -1,9 +1,11 @@
 package com.polymitasoft.caracola.drm;
 
+import android.annotation.SuppressLint;
 import android.provider.Settings;
 import android.util.Base64;
 
 import com.google.common.io.BaseEncoding;
+import com.polymitasoft.caracola.CaracolaApplication;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -16,22 +18,27 @@ import javax.crypto.spec.SecretKeySpec;
 public enum Drm {
     ; // no instance
 
+    @SuppressLint("HardwareIds")
     public static String getDeviceId() {
-        return Settings.Secure.ANDROID_ID;
+        return Settings.Secure.getString(CaracolaApplication.instance().getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    public static Long getDeviceIdAsLong() {
+        return Long.valueOf(getDeviceId(), 16);
     }
 
     public static byte[] encrypt(String plainText, String encryptionKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
+        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("US-ASCII"), "AES");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        return cipher.doFinal(plainText.getBytes("UTF-8"));
+        return cipher.doFinal(plainText.getBytes("US-ASCII"));
     }
 
     public static String decrypt(byte[] cipherText, String encryptionKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
+        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("US-ASCII"), "AES");
         cipher.init(Cipher.DECRYPT_MODE, key);
-        return new String(cipher.doFinal(cipherText), "UTF-8");
+        return new String(cipher.doFinal(cipherText), "US-ASCII");
     }
 
     public static String encryptTo32String(String plainText, String encryptionKey) throws Exception {

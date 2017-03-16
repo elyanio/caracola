@@ -1,12 +1,17 @@
 package com.polymitasoft.caracola;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.util.SimpleArrayMap;
 
+import com.google.common.io.BaseEncoding;
+import com.google.common.primitives.Longs;
 import com.polymitasoft.caracola.drm.Drm;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static com.google.common.io.BaseEncoding.base16;
+import static com.google.common.io.BaseEncoding.base64;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -20,7 +25,8 @@ public class CryptoTest {
 
     @Test
     public void cryptoTest() throws Exception {
-        String plainString = Drm.getDeviceId();
+        String plainString = base64().encode(Longs.toByteArray(Drm.getDeviceIdAsLong()));
+        plainString += "-" + base64().encode(Longs.toByteArray(System.currentTimeMillis()));
         String encryptionKey = "Toawtef_*blyWef2";
         String encryptedString = Drm.encryptTo32String(plainString, encryptionKey);
 
