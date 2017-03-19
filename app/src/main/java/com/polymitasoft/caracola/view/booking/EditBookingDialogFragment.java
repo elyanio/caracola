@@ -54,12 +54,18 @@ public class EditBookingDialogFragment extends DialogFragment {
     private static final String ARG_CHECK_IN_DATE = "checkInDate";
     private static final String ARG_CHECK_OUT_DATE = "checkOutDate";
 
-    @BindView(R.id.booking_confirmed) SwitchCompat confirmedSwitch;
-    @BindView(R.id.booking_note) TextView text_nota;
-    @BindView(R.id.booking_price) Button textPrice;
-    @BindView(R.id.booking_check_in) DateSpinner checkInDateSpinner;
-    @BindView(R.id.booking_check_out) DateSpinner checkOutSpinner;
-    @BindView(R.id.layout_dates) PercentRelativeLayout datesContainer;
+    @BindView(R.id.booking_confirmed)
+    SwitchCompat confirmedSwitch;
+    @BindView(R.id.booking_note)
+    TextView text_nota;
+    @BindView(R.id.booking_price)
+    Button textPrice;
+    @BindView(R.id.booking_check_in)
+    DateSpinner checkInDateSpinner;
+    @BindView(R.id.booking_check_out)
+    DateSpinner checkOutSpinner;
+    @BindView(R.id.layout_dates)
+    PercentRelativeLayout datesContainer;
 
     private OnBookingEditListener mCallback;
     private Booking booking;
@@ -111,7 +117,7 @@ public class EditBookingDialogFragment extends DialogFragment {
                     }
                 });
 
-        if(idBooking == -1) {
+        if (idBooking == -1) {
             createMode = true;
             int idBedroom = getArguments().getInt(ARG_BEDROOM_ID);
             LocalDate firstNight = parseDate(getArguments().getString(ARG_CHECK_IN_DATE));
@@ -139,7 +145,7 @@ public class EditBookingDialogFragment extends DialogFragment {
     }
 
     private void configurarControles() {
-        if(booking.getState() == BookingState.CHECKED_IN) {
+        if (booking.getState() == BookingState.CHECKED_IN) {
             confirmedSwitch.setVisibility(View.GONE);
         } else {
             boolean confirmed = booking.getState() == BookingState.CONFIRMED;
@@ -171,7 +177,7 @@ public class EditBookingDialogFragment extends DialogFragment {
                         .show();
             }
         });
-        if(createMode) {
+        if (createMode) {
             datesContainer.setVisibility(View.GONE);
         } else {
             checkInDateSpinner.bindForRange(checkOutSpinner);
@@ -186,21 +192,24 @@ public class EditBookingDialogFragment extends DialogFragment {
 
     private void clickeditR() {
         String nota = text_nota.getText().toString();
+        if (nota.length() <= 0) {
+            nota = " ";
+        }
         BookingState estado;
-        if(booking.getState() == BookingState.CHECKED_IN) {
+        if (booking.getState() == BookingState.CHECKED_IN) {
             estado = BookingState.CHECKED_IN;
         } else {
             estado = confirmedSwitch.isChecked() ? BookingState.CONFIRMED : BookingState.PENDING;
         }
 
-        if(!createMode) {
+        if (!createMode) {
             booking.setCheckInDate(checkInDateSpinner.getDate())
                     .setCheckOutDate(checkOutSpinner.getDate());
         }
         booking.setState(estado).setNote(nota);
         dataStore.upsert(booking);
 
-        if(createMode) {
+        if (createMode) {
             mCallback.onBookingCreate(booking);
             //        todo enviar menssaje
             sendMessage(booking);
@@ -217,20 +226,20 @@ public class EditBookingDialogFragment extends DialogFragment {
 
     private void sendMessage(Booking oldBooking, Booking newBooking) {
         if (shouldSendMessage(newBooking)) {
-            if(ContextCompat.checkSelfPermission(getContext(), SEND_SMS) == PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getContext(), SEND_SMS) == PERMISSION_GRANTED) {
                 new ManageSmsBooking(oldBooking, newBooking).sendUpdateMessage();
             } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[] { SEND_SMS }, REQUEST_SEND_UPDATE_SMS);
+                ActivityCompat.requestPermissions(getActivity(), new String[]{SEND_SMS}, REQUEST_SEND_UPDATE_SMS);
             }
         }
     }
 
     private void sendMessage(Booking booking) {
         if (shouldSendMessage(booking)) {
-            if(ContextCompat.checkSelfPermission(getContext(), SEND_SMS) == PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getContext(), SEND_SMS) == PERMISSION_GRANTED) {
                 new ManageSmsBooking(booking).sendCreateMessage();
             } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[] { SEND_SMS }, REQUEST_SEND_CREATE_SMS);
+                ActivityCompat.requestPermissions(getActivity(), new String[]{SEND_SMS}, REQUEST_SEND_CREATE_SMS);
             }
         }
     }
@@ -243,12 +252,12 @@ public class EditBookingDialogFragment extends DialogFragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == REQUEST_SEND_CREATE_SMS) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_SEND_CREATE_SMS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 new ManageSmsBooking(booking).sendCreateMessage();
             }
-        } else if(requestCode == REQUEST_SEND_UPDATE_SMS) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        } else if (requestCode == REQUEST_SEND_UPDATE_SMS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 new ManageSmsBooking(oldBooking, booking).sendUpdateMessage();
             }
         } else {
@@ -273,6 +282,7 @@ public class EditBookingDialogFragment extends DialogFragment {
     // Container Activity must implement this interface
     public interface OnBookingEditListener {
         void onBookingEdit(Booking oldBooking, Booking newBooking);
+
         void onBookingCreate(Booking newBooking);
     }
 }

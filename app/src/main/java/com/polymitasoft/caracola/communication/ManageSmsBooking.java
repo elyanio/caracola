@@ -75,7 +75,11 @@ public class ManageSmsBooking {
                 break;
         }
         LocalDateConverter localDateConverter = new LocalDateConverter();
-        String message = "<$#" + localDateConverter.convertToPersisted(startDate) + "#" + localDateConverter.convertToPersisted(endDate) + "#" + price + "#" + state + "#" + roomCode + "#" + note;
+
+        String message = "<$#" + localDateConverter.convertToPersisted(startDate) + "#" + localDateConverter.convertToPersisted(endDate) + "#"
+                + price + "#" + state + "#" + roomCode + "#" + note;
+//        mensaje = "<$#CheckInBooking#CheckOutBooking#Price#State#RoomCode#note";
+
         sendMessage(message);
     }
 
@@ -93,13 +97,16 @@ public class ManageSmsBooking {
                 break;
         }
         LocalDateConverter localDateConverter = new LocalDateConverter();
-        String message = ">$#" + localDateConverter.convertToPersisted(oldStartDate) + "#" + localDateConverter.convertToPersisted(startDate) + "#" + localDateConverter.convertToPersisted(endDate) + "#" + price + "#" + state + "#" + roomCode + "#" + note;
+        String message = ">$#" + localDateConverter.convertToPersisted(oldStartDate) + "#" + localDateConverter.convertToPersisted(startDate)
+                + "#" + localDateConverter.convertToPersisted(endDate) + "#" + price + "#" + state + "#" + roomCode + "#" + note;
+//        mensaje = ">$#CheckInOldBooking#CheckInBooking#CheckOutBooking#Price#State#RoomCode#note";
         sendMessage(message);
     }
 
     public void sendDeleteMessage() {
         LocalDateConverter localDateConverter = new LocalDateConverter();
         String message = "$$#" + localDateConverter.convertToPersisted(startDate) + "#" + roomCode;
+//        mensaje = "$$#CheckInBooking#RoomCode";
         sendMessage(message);
     }
 
@@ -109,14 +116,14 @@ public class ManageSmsBooking {
 
 
     private Bedroom getBedroom() {
-        if(bedroom == null) {
+        if (bedroom == null) {
             bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
         }
         return bedroom;
     }
 
     private List<Manager> getManagers() {
-        if(managers == null) {
+        if (managers == null) {
             managers = dataStore.select(Manager.class)
                     .where(Manager.HOSTEL.eq(getBedroom().getHostel()))
                     .get().toList();

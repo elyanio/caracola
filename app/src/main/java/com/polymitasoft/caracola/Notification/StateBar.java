@@ -20,41 +20,7 @@ import com.polymitasoft.caracola.view.booking.ReservaPrincipal;
  */
 public class StateBar {
 
-    public void notificar(Context context_emisor, Class<CaracolaApplication> context_receptor, String titulo, String text, String info, String ticker, String nota) {
-
-        // Patrón de vibración: 1 segundo vibra, 0.5 segundos para, 1 segundo vibra
-        long[] pattern = new long[]{0, 2000, 0};
-        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context_emisor)
-                .setSmallIcon(R.drawable.ic_email_black_24dp)
-                .setContentTitle(titulo)
-                .setContentText(text)
-                .setContentInfo(info)
-                .setTicker(ticker);
-
-        Intent notIntent = new Intent(context_emisor, context_receptor.getClass());
-        PendingIntent contIntent = PendingIntent.getActivity(context_emisor, 0, notIntent, 0);
-
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        mBuilder.setSound(defaultSound);
-        mBuilder.setVibrate(pattern);
-        mBuilder.setLights(Color.RED, 1, 0);
-
-        mBuilder.setContentIntent(contIntent);
-
-        Intent intent = new Intent(context_emisor, context_receptor.getClass());
-        intent.setAction(Intent.ACTION_VIEW);
-
-        //        PendingIntent piDismiss = PendingIntent.getActivity(context_emisor, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(nota)).addAction(R.drawable.ic_done_black_24dp, "Confirmar", null).setAutoCancel(true);
-        mBuilder.setFullScreenIntent(contIntent, true);
-        mBuilder.setAutoCancel(false);
-
-        NotificationManager mNotificationManager = (NotificationManager) context_emisor.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, mBuilder.build());
-
-    }
-
-    public void notification(Context context_emisor, int id_notification, String title, String text, String phone, String bigText) {
+    public void BookingNotification(Context context_emisor, int id_notification, String title, String text, String phone, String bigText) {
 
         int mId = id_notification;
         long[] pattern = new long[]{0, 2000, 0};
@@ -85,8 +51,7 @@ public class StateBar {
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context_emisor.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // mId allows you to update the notification later on.
+        // mId allows you to update the BookingNotification later on.
         mNotificationManager.notify(mId, mBuilder.build());
-
     }
 }
