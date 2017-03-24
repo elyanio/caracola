@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.polymitasoft.caracola.BuildConfig;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
@@ -30,13 +31,11 @@ public class CheckActivation extends AsyncTask<Void, Void, Long> {
 
     @Override
     protected Long doInBackground(Void... params) {
-        return INVALID;
-    }
-
-    private Long shit() {
         String evalDateString = Preferences.getEncryptedPreference("evaluation_date");
         String evalDaysString = Preferences.getEncryptedPreference("evaluation_days");
-        Log.e(CheckActivation.class.getName(), "eval Date ---------> "  + evalDateString + "      " + evalDaysString);
+        if(BuildConfig.DEBUG) {
+            Log.e(CheckActivation.class.getName(), "eval Date ---------> "  + evalDateString + "      " + evalDaysString);
+        }
         if (evalDateString.trim().isEmpty()) {
             return INVALID;
         }
@@ -60,8 +59,7 @@ public class CheckActivation extends AsyncTask<Void, Void, Long> {
     }
 
     @Override
-    protected void onPostExecute(Long res) {
-        Long result = shit();
+    protected void onPostExecute(Long result) {
         if (result.equals(INVALID)) {
             new AlertDialog.Builder(activity).setMessage("La aplicación no está activada.")
                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
