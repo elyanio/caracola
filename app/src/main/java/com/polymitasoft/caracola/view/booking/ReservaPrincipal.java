@@ -19,6 +19,7 @@ import com.polymitasoft.caracola.components.DrawerActivity;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.view.drm.CheckActivation;
 
 import org.threeten.bp.LocalDate;
 
@@ -317,10 +318,14 @@ public class ReservaPrincipal extends DrawerActivity
     @Override
     protected void onResume() {
         super.onResume();
+        checkActivation();
         actualizarMenu();
         refrescarCache();
     }
 
+    private void checkActivation() {
+        new CheckActivation(this).execute();
+    }
 
     class SalvarEstadoReservaPrincipal{
         private Bedroom habitacion = null;

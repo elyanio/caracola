@@ -31,4 +31,23 @@ public class ExampleUnitTest {
         assertNotEquals(plainString, encryptedString);
         assertEquals(plainString, Drm.decryptFrom32String(encryptedString, encryptionKey));
     }
+
+    @Test
+    public void hash_isCorrect() throws Exception {
+        // ZdMEXiILF2Y=
+        String plainString = BaseEncoding.base64().encode(Longs.toByteArray(Long.MAX_VALUE));
+        String encryptionKey = "Toawtef_*blyWef2";
+        String encryptedString = Drm.encryptTo64String(plainString, encryptionKey);
+        String reducedEncryptedString = Drm.reduceToHalf(encryptedString);
+
+        System.out.println(plainString);
+        System.out.println(encryptedString);
+        System.out.println(reducedEncryptedString);
+
+        assertEquals(plainString.length(), 12);
+        assertEquals(encryptedString.length(), 24);
+        assertEquals(reducedEncryptedString.length(), 12);
+        assertNotEquals(plainString, encryptedString);
+        assertEquals(plainString, Drm.decryptFrom64String(encryptedString, encryptionKey));
+    }
 }

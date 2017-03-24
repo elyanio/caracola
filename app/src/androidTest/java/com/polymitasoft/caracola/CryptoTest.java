@@ -2,6 +2,7 @@ package com.polymitasoft.caracola;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.util.SimpleArrayMap;
+import android.util.Log;
 
 import com.google.common.io.BaseEncoding;
 import com.google.common.primitives.Longs;
@@ -32,6 +33,12 @@ public class CryptoTest {
 
         assertNotEquals(plainString, encryptedString);
         assertEquals(plainString, Drm.decryptFrom32String(encryptedString, encryptionKey));
+    }
+
+    @Test
+    public void hashTest() throws Exception {
+        String plainString = base64().encode(Longs.toByteArray(Drm.getDeviceIdAsLong()));
+        Log.e(CryptoTest.class.getName(), "Code " + plainString);
     }
 
 }
