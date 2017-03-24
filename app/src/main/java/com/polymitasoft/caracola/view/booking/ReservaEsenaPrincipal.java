@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ReservaEsenaPrincipal extends LinearLayout {
 
-    public final static int CANTIDAD_MESES_CARGADOS = 6;
+    public final static int CANTIDAD_MESES_CARGADOS = 8;
     private final ReservaPrincipal reservaPrincipal;
 
     //controles
