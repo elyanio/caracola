@@ -116,6 +116,7 @@ public class VistaMes extends LinearLayout {
     }
 
     public void actualizarCambioHabitacion() {
+        refrescarCache();
         for (VistaDia dia : dias) {
             if (dia.getColor() != NO_DAY.color()) {
                 Pair<Integer, CellLocation> pair = obtenerColorAlcrear(dia.getCalendar());
