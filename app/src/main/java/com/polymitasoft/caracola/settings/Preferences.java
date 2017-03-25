@@ -59,7 +59,7 @@ public class Preferences {
         String value = getPreferences().getString(Drm.encryptTo64String(key), "");
         String plainValue = Drm.decryptFrom64String(value);
         String[] results = plainValue.split("\\|");
-        if(results.length == 2 && results[1].equals(Drm.getDeviceId())) {
+        if (results.length == 2 && results[1].equals(Drm.getDeviceId())) {
             return results[0];
         }
         return "";

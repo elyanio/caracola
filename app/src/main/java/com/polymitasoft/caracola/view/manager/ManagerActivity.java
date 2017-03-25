@@ -3,6 +3,7 @@ package com.polymitasoft.caracola.view.manager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -15,10 +16,13 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.Manager;
@@ -28,6 +32,8 @@ import java.util.List;
 import io.requery.Persistable;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
+
+import static com.polymitasoft.caracola.util.Metrics.dp;
 
 /**
  * Created by asio on 2/21/2017.
@@ -103,7 +109,7 @@ public class ManagerActivity extends AppCompatActivity {
 
                         manager_adapter.actualizarListaManager();
                     } else {
-                        Toast.makeText(ManagerActivity.this, "Su numero no es correcto.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ManagerActivity.this, "Su número no es correcto.", Toast.LENGTH_LONG).show();
                         insertarManager();
                     }
                 } else {
@@ -145,9 +151,9 @@ public class ManagerActivity extends AppCompatActivity {
                         manager.setPhoneNumber(number_manager.getText().toString());
                         dataStore.update(manager);
                         manager_adapter.actualizarListaManager();
-                        manager_adapter.notifyDataSetChanged();
+
                     } else {
-                        Toast.makeText(ManagerActivity.this, "Su numero no es correcto.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ManagerActivity.this, "Su número no es correcto.", Toast.LENGTH_LONG).show();
                         actualizarrManager(name, numero);
                     }
                 } else {
@@ -215,13 +221,14 @@ public class ManagerActivity extends AppCompatActivity {
 
                     TextView nombre_gestor = (TextView) item.findViewById(R.id.name_gestor);
                     TextView numero_gestor = (TextView) item.findViewById(R.id.number_gestor);
+                    ImageView manger_image= (ImageView) item.findViewById(R.id.icon_gestor);
+
+//                    drawIconLetter(Colors.INSTANCE.getColor(managers.get(position).getId()),managers.get(position).getName().charAt(0),manger_image);
 
                     String nombre = nombre_gestor.getText().toString();
                     String numero = numero_gestor.getText().toString();
 
                     actualizarrManager(nombre, numero);
-
-                    Manager manager = dataStore.select(Manager.class).where(Manager.NAME.eq(nombre).and(Manager.PHONE_NUMBER.eq(numero))).get().first();
 
                 }
             });
@@ -251,5 +258,18 @@ public class ManagerActivity extends AppCompatActivity {
         public List<Manager> getManagers() {
             return managers;
         }
+    }
+
+
+    protected final void drawIconLetter(@ColorInt int color, char letter, ImageView colorStrip) {
+        int pad = dp(5);
+        colorStrip.setPadding(pad, pad, pad, pad);
+
+        TextDrawable drawable = TextDrawable.builder().buildRound(String.valueOf(letter), color);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) colorStrip.getLayoutParams();
+        int size = dp(70);
+        params.width = size;
+        params.height = size;
+        colorStrip.setImageDrawable(drawable);
     }
 }
