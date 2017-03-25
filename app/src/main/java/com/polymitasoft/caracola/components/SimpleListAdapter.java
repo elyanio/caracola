@@ -96,6 +96,19 @@ public abstract class SimpleListAdapter<E extends Persistable> extends RecyclerL
         colorStrip.setImageDrawable(drawable);
     }
 
+    protected final void drawIconImage(@ColorInt int color, String drawableResName, ImageView view) {
+        Class<R.drawable> r = R.drawable.class;
+        @DrawableRes int drawableRes = R.drawable.ic_add_black_24dp;
+        try {
+            drawableRes = r.getField(drawableResName).getInt(null);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        drawIconImage(color, drawableRes, view);
+    }
+
     protected final void drawIconImage(@ColorInt int color, @DrawableRes int drawableRes, ImageView colorStrip) {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         int pad = dp(13);

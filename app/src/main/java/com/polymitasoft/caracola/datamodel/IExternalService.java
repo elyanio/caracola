@@ -24,5 +24,5 @@ public interface IExternalService extends Persistable {
     @Column(nullable = false)
     String getName();
 
-    int getIcon();
+    String getIcon();
 }

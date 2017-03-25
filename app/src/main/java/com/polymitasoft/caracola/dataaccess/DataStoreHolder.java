@@ -26,8 +26,8 @@ public enum DataStoreHolder {
 
     private static final boolean ENCRYPTION_ENABLED = true;
     private EntityDataStore<Persistable> entityDataStore;
-    private final File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Hostel");
-    private final File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");;
+    private final File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Caracola");
+    private final File dbFile = new File(directory.getAbsolutePath() + "/caracola.db");
 
     @Deprecated
     public static DataStoreHolder getInstance() {

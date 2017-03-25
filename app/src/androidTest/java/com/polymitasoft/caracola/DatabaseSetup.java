@@ -47,8 +47,8 @@ class DatabaseSetup {
 
     private static DateTimeFormatter format = DateTimeFormatter.ofPattern("y/M/d");
     private final EntityDataStore<Persistable> data;
-    private File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Hostel");
-    private File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");
+    private File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Caracola");
+    private File dbFile = new File(directory.getAbsolutePath() + "/caracola.db");
 
     DatabaseSetup() {
         data = DataStoreHolder.INSTANCE.getDataStore();
@@ -255,15 +255,7 @@ class DatabaseSetup {
 
     private List<ExternalService> getExternalServices() {
         String[] names = new String[]{"Paseos a caballo", "Caminatas", "Buceo", "ir rincon salsa", "Taxis", "Fiesta en las cueva", "Comer jevita"};
-        int[] drawables = new int[] {
-                R.drawable.ic_florist,
-                R.drawable.ic_gym,
-                R.drawable.ic_scuba_diving,
-                0,
-                R.drawable.ic_taxi_stand,
-                R.drawable.ic_sync_black_24dp,
-                R.drawable.ic_beauty_salon,
-        };
+        String[] drawables = new String[]{ "ic_florist", "ic_gym", "ic_scuba_diving", "", "ic_taxi_stand", "ic_sync_black_24dp", "ic_beauty_salon" };
 
         List<ExternalService> services = new ArrayList<>(names.length);
 

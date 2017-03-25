@@ -3,6 +3,7 @@ package com.polymitasoft.caracola.view.supplier;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.google.common.base.Strings;
 import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.components.SimpleListAdapter;
 import com.polymitasoft.caracola.components.SimpleViewHolder;
@@ -42,8 +43,8 @@ class ServiceSupplierAdapter extends SimpleListAdapter<SupplierService> {
     @Override
     protected void setupIconView(SupplierService item, SimpleViewHolder holder, int position) {
         int color = Colors.INSTANCE.getColor(item.getService().getId());
-        int icon = item.getService().getIcon();
-        if (icon == 0) {
+        String icon = item.getService().getIcon();
+        if (Strings.isNullOrEmpty(icon)) {
             String name = item.getService().getName();
             char letter = name.isEmpty() ? '\0' : toUpperCase(name.charAt(0));
             drawIconLetter(color, letter, holder.colorStrip);
