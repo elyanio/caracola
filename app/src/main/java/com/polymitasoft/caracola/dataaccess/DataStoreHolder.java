@@ -26,6 +26,8 @@ public enum DataStoreHolder {
 
     private static final boolean ENCRYPTION_ENABLED = true;
     private EntityDataStore<Persistable> entityDataStore;
+    private final File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Hostel");
+    private final File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");;
 
     @Deprecated
     public static DataStoreHolder getInstance() {
@@ -39,11 +41,17 @@ public enum DataStoreHolder {
 
     public EntityDataStore<Persistable> getDataStore() {
         if (entityDataStore == null) {
-            File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Hostel");
-            File dbFile = new File(directory.getAbsolutePath() + "/hostels.db");
             entityDataStore = createDataStore(CaracolaApplication.instance(), dbFile);
         }
         return entityDataStore;
+    }
+
+    public File getDbFile() {
+        return dbFile;
+    }
+
+    public boolean existsDbFile() {
+        return dbFile.exists();
     }
 
     private EntityDataStore<Persistable> createDataStore(Context context, File dbFile) {

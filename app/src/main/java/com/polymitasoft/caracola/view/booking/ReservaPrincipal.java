@@ -43,7 +43,6 @@ public class ReservaPrincipal extends DrawerActivity
         implements NavigationView.OnNavigationItemSelectedListener, EditBookingDialogFragment.OnBookingEditListener, DisponibilidadDialogFragment.OnDisponibilidadListener {
 
     private static final String EDIT_BOOKING_DIALOG_TAG = "EDIT_BOOKING_DIALOG_TAG";
-    private static final int REQUEST_WRITE_ES = 123;
     private List<Bedroom> bedrooms = new ArrayList<>();
 
     //escenas
@@ -54,12 +53,7 @@ public class ReservaPrincipal extends DrawerActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED) {
-            init();
-        } else {
-            ActivityCompat.requestPermissions(this, new String[] { WRITE_EXTERNAL_STORAGE }, REQUEST_WRITE_ES);
-        }
+        init();
     }
 
     private void init() {
@@ -77,33 +71,14 @@ public class ReservaPrincipal extends DrawerActivity
             panelHabitacionActual.setPreReservaSelecc(salvaActivity.getPreReservaSelecc());
             panelHabitacionActual.setVisibleTextNota(salvaActivity.isVisibleTextNota());
             panelHabitacionActual.actualizarCambioHabitacion();
-//            int modo ;
-//            if(salvaActivity.isVisibleTextNota()){
-//               modo = 1;
-//            }else{
-//                modo = 0;
-//            }
-            int modo;
-            modo = 0;
-            panelHabitacionActual.animateNote(modo,salvaActivity.getPreReservaSelecc());
-//            if(salvaActivity.getPrimerDiaSelec() != null){
-//
-//            }
-//            panelHabitacionActual.clickDia(salvaActivity.getSegundoDiaSelec());
-
+            panelHabitacionActual.animateNote(0, salvaActivity.getPreReservaSelecc());
         }
 
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == REQUEST_WRITE_ES) {
-            if(grantResults[0] == PERMISSION_GRANTED) {
-                init();
-            } else {
-                Toast.makeText(this, "La aplicación no funcionará correctamente debido a la falta de privilegios", Toast.LENGTH_SHORT).show();
-            }
-        } else if(requestCode == ReservaPanelHabitacion.REQUEST_SEND_DELETE_SMS) {
+        if(requestCode == ReservaPanelHabitacion.REQUEST_SEND_DELETE_SMS) {
             Booking booking = reservaEsenaPrincipal.getReservaPanelHabitacionActual().getPreReservaSelecc();
             new ManageSmsBooking(booking).sendDeleteMessage();
         } else {
