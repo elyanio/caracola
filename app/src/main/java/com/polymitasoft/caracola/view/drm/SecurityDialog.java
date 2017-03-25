@@ -27,16 +27,15 @@ import static butterknife.ButterKnife.findById;
  * @since 18/3/2017
  */
 
-class SecurityDialog {
+public class SecurityDialog {
 
     private AppCompatActivity activity;
-    private boolean activated = false;
 
-    SecurityDialog(AppCompatActivity activity) {
+    public SecurityDialog(AppCompatActivity activity) {
         this.activity = activity;
     }
 
-    void requestActivationCode() {
+    public void requestActivationCode() {
         final View view = activity.getLayoutInflater().inflate(R.layout.dialog_activation_code, null);
         final EditText activationCodeText = findById(view, R.id.inputText);
         final TextView requestCodeText = findById(view, R.id.codeText);

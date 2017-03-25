@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
@@ -26,6 +27,7 @@ import org.threeten.bp.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
