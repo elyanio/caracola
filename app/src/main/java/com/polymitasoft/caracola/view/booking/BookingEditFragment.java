@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
+import com.polymitasoft.caracola.settings.Preferences;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -28,8 +28,6 @@ import io.requery.sql.EntityDataStore;
 public class BookingEditFragment extends Fragment {
 
     private static final String ARG_BOOKING_ID = "bookingId";
-    private static final String PREF_BOOK_NUMBER = "bookNumber";
-    private static final String PREF_BOOKING_NUMBER = "bookingNumber";
     private Booking booking = null;
     private Booking oldBooking = null;
     private OnBookingEdited mListener;
@@ -64,13 +62,8 @@ public class BookingEditFragment extends Fragment {
         dataStore = DataStoreHolder.INSTANCE.getDataStore();
         booking = dataStore.findByKey(Booking.class, idBooking);
         oldBooking = new BookingBuilder().with(booking).build();
-        Log.e("shit", booking.getBookNumber() + " : " + booking.getBookingNumber());
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CaracolaApplication.instance());
-        if(booking.getBookNumber() == -1) {
-            booking.setBookNumber(preferences.getInt(PREF_BOOK_NUMBER, 0));
-        }
-        if(booking.getBookingNumber() == -1) {
-            booking.setBookingNumber(preferences.getInt(PREF_BOOKING_NUMBER, 0));
+        if (booking.getBookingNumber() == -1) {
+            booking.setBookingNumber(Preferences.getBookingNumber());
         }
         binding = new EditBookingBinding(view, booking);
 
@@ -80,15 +73,9 @@ public class BookingEditFragment extends Fragment {
     void saveBooking() {
         if (binding != null) {
             booking = binding.getBooking();
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CaracolaApplication.instance());
-            SharedPreferences.Editor editor = preferences.edit();
-            if(booking.getBookNumber() != oldBooking.getBookNumber()) {
-                editor.putInt(PREF_BOOK_NUMBER, booking.getBookNumber());
+            if (booking.getBookingNumber() != oldBooking.getBookingNumber()) {
+                Preferences.setBookingNumber(booking.getBookingNumber() + 1);
             }
-            if(booking.getBookingNumber() != oldBooking.getBookingNumber()) {
-                editor.putInt(PREF_BOOKING_NUMBER, booking.getBookingNumber() + 1);
-            }
-            editor.apply();
             dataStore.update(booking);
             mListener.onBookingEdited(booking);
         }

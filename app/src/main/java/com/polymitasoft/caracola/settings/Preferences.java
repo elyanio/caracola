@@ -3,9 +3,7 @@ package com.polymitasoft.caracola.settings;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
-import com.google.common.base.Splitter;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.util.FormatUtils;
@@ -14,10 +12,13 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeParseException;
 
 /**
- * Created by rainermf on 13-Mar-17.
+ * @author rainermf
+ * @since 13-Mar-17
  */
-
 public class Preferences {
+
+    private static final String PREF_BOOKING_NUMBER = "bookingNumber";
+    private static final String PREF_SHOW_ACTIVATION_COUNTDOWN = "show_activation_countdown";
 
     public static boolean isHighSeason() {
         return getPreferences().getBoolean("high_season", false);
@@ -27,8 +28,16 @@ public class Preferences {
         return getPreferences().getBoolean("sms_sync", false);
     }
 
+    public static int getBookingNumber() {
+        return getPreferences().getInt(PREF_BOOKING_NUMBER, 0);
+    }
+
+    public static void setBookingNumber(int bookingNumber) {
+        getPreferences().edit().putInt(PREF_BOOKING_NUMBER, bookingNumber).apply();
+    }
+
     public static boolean shouldAlertActivationCountdown() {
-        String dateString = getPreferences().getString("show_activation_countdown", "");
+        String dateString = getPreferences().getString(PREF_SHOW_ACTIVATION_COUNTDOWN, "");
         try {
             return !FormatUtils.parseDate(dateString).isEqual(LocalDate.now());
         } catch (DateTimeParseException e) {
@@ -37,7 +46,7 @@ public class Preferences {
     }
 
     public static void updateAlertActivationCountdown() {
-        getPreferences().edit().putString("show_activation_countdown", FormatUtils.formatDate(LocalDate.now())).apply();
+        getPreferences().edit().putString(PREF_SHOW_ACTIVATION_COUNTDOWN, FormatUtils.formatDate(LocalDate.now())).apply();
     }
 
     public static void setEncryptedPreference(String key, String value) {

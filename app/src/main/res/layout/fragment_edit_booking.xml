@@ -21,17 +21,5 @@
                 android:hint="@string/booking_number"
                 android:inputType="number"/>
         </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/book_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/book_number"/>
-        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </ScrollView>

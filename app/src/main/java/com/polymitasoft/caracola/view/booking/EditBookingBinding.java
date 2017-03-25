@@ -17,7 +17,6 @@ import butterknife.ButterKnife;
 class EditBookingBinding {
 
     @BindView(R.id.booking_number) EditText bookingNumberView;
-    @BindView(R.id.book_number) EditText bookNumberView;
     private Booking booking;
 
     EditBookingBinding(View view, Booking booking) {
@@ -27,16 +26,13 @@ class EditBookingBinding {
 
     public Booking getBooking() {
         Integer bookingNumber = Ints.tryParse(bookingNumberView.getText().toString().trim());
-        Integer bookNumber = Ints.tryParse(bookNumberView.getText().toString().trim());
 
         booking.setBookingNumber(bookingNumber != null ? bookingNumber : -1);
-        booking.setBookNumber(bookNumber != null ? bookNumber : -1);
         return booking;
     }
 
     public void setBooking(Booking booking) {
         this.booking = booking;
         bookingNumberView.setText(String.format("%03d", booking.getBookingNumber()));
-        bookNumberView.setText(String.valueOf(booking.getBookNumber()));
     }
 }
