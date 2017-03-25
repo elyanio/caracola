@@ -7,6 +7,7 @@ import com.google.common.io.BaseEncoding;
 import com.google.common.primitives.Longs;
 import com.polymitasoft.caracola.CaracolaApplication;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -27,7 +28,7 @@ public enum Drm {
     }
 
     public static long getDeviceIdAsLong() {
-        return Long.valueOf(getDeviceId(), 16);
+        return new BigInteger(getDeviceId(), 16).longValue();
     }
 
     public static String getRequestCode() {
