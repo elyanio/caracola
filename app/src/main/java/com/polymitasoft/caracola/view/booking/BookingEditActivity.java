@@ -69,10 +69,6 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_booking);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.title_edit_booking);
-        setSupportActionBar(toolbar);
-
         EntityDataStore<Persistable> data = DataStoreHolder.INSTANCE.getDataStore();
         int bookingId = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
         if (bookingId == -1) {
@@ -167,7 +163,6 @@ public class BookingEditActivity extends AppCompatActivity implements ClientFrag
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 3;
         }
 
