@@ -215,16 +215,19 @@ public class EditBookingDialogFragment extends DialogFragment {
             mCallback.onBookingCreate(booking);
             //        todo enviar menssaje
             sendMessage(booking);
+            //set Alarm
+            Alarm alarm = new Alarm(getContext());
+            alarm.setAlarm(booking);
         } else {
             mCallback.onBookingEdit(oldBooking, booking);
             //todo enviar mensaje editadra
             sendMessage(oldBooking, booking);
+            //set Alarm
+            Alarm alarm = new Alarm(getContext());
+            alarm.cancelAlarm(oldBooking);
+            alarm.setAlarm(booking);
         }
 
-        //set Alarm
-        Alarm alarm = new Alarm(getContext());
-        alarm.setAlarm(booking);
-        Log.e("puse","alarm");
 
         dismiss();
     }

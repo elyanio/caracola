@@ -1,5 +1,6 @@
 package com.polymitasoft.caracola.view.booking;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,8 @@ import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.IBooking;
+import com.polymitasoft.caracola.reminder.Alarm;
+import com.polymitasoft.caracola.reminder.AlarmReceiver;
 
 import org.threeten.bp.LocalDate;
 
@@ -144,6 +147,10 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 //todo mensaje eliminar asere ....
                 sendMessage(preReservaSelecc);
                 dataStore.delete(preReservaSelecc);
+
+                //cancel Alarm
+                Alarm alarm = new Alarm(getContext());
+                alarm.cancelAlarm(preReservaSelecc);
 
                 VistaDia vistaDiaFictIni = obtenerVistaDiaFict(preReservaSelecc.getCheckInDate());
                 VistaDia vistaDiaFictFin = obtenerVistaDiaFict(preReservaSelecc.getCheckOutDate());
