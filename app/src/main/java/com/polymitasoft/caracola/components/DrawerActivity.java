@@ -67,7 +67,7 @@ public class DrawerActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 touchIcons++;
-                if(touchIcons % 4 == 0) {
+                if((touchIcons + 1) % 5 == 0) {
                     Toast.makeText(DrawerActivity.this, "Vas a entrar al menú de activación", Toast.LENGTH_SHORT).show();
                 }
                 if(touchIcons % 5  == 0) {
