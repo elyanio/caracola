@@ -54,4 +54,39 @@ public class StateBar {
         // mId allows you to update the BookingNotification later on.
         mNotificationManager.notify(mId, mBuilder.build());
     }
+
+    public void BookingNotificationService(Context context_emisor, int id_notification, String title, String text, String bigText) {
+
+        int mId = id_notification;
+        long[] pattern = new long[]{0, 1000, 0};
+        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context_emisor)
+                .setSmallIcon(android.R.drawable.ic_menu_agenda)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setAutoCancel(true)
+                .setSound(defaultSound)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
+                .setVibrate(pattern);
+
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(context_emisor, ReservaPrincipal.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context_emisor);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(ReservaPrincipal.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager = (NotificationManager) context_emisor.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // mId allows you to update the BookingNotification later on.
+        mNotificationManager.notify(mId, mBuilder.build());
+    }
+
 }
