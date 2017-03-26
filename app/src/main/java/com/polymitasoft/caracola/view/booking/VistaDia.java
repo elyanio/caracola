@@ -2,6 +2,7 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RoundRectShape;
@@ -48,10 +49,12 @@ public class VistaDia extends TextView implements Comparable<VistaDia> {
         this.color = bgColor;
         this.textColor = textColor;
         rellenarColor(bgColor, textColor, cellLocation);
+        marcarHoy();
     }
 
     public void pintarColor(int color, CellLocation cellLocation) {
         pintarColor(color, Color.BLACK, cellLocation);
+        marcarHoy();
     }
 
     private void rellenarColor(int bgColor, int textColor, CellLocation cellLocation) {
@@ -77,16 +80,19 @@ public class VistaDia extends TextView implements Comparable<VistaDia> {
                     break;
             }
         }
+        marcarHoy();
     }
 
     public void seleccionar(CellLocation cellLocation) {
         rellenarColor(SELECTED.color(), Color.WHITE, cellLocation);
+        marcarHoy();
     }
 
     public void deSeleccionar(CellLocation cellLocation) {
         if (color != NO_DAY.color()) {
             rellenarColor(color, textColor, cellLocation);
         }
+        marcarHoy();
     }
 
     private void configIni(CellLocation cellLocation) {
@@ -98,6 +104,7 @@ public class VistaDia extends TextView implements Comparable<VistaDia> {
             pintarColor(color, textColor, cellLocation);
         }
         this.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        marcarHoy();
     }
 
     private void eventos() {
@@ -107,6 +114,16 @@ public class VistaDia extends TextView implements Comparable<VistaDia> {
                 clickDia(v);
             }
         });
+    }
+
+    public void marcarHoy(){
+        LocalDate now = LocalDate.now();
+
+        if(dia.equals(now)){
+            setTypeface(null, Typeface.BOLD);
+        }else{
+            setTypeface(null, Typeface.NORMAL);
+        }
     }
 
     private void clickDia(View v) {
