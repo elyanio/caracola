@@ -47,7 +47,7 @@ public class BedroomEditActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.title_edit_bedroom);
         }
-        data = DataStoreHolder.getInstance().getDataStore(this);
+        data = DataStoreHolder.INSTANCE.getDataStore();
         int bedroomId = getIntent().getIntExtra(EXTRA_BEDROOM_ID, -1);
         if (bedroomId == -1) {
             bedroom = new BedroomBuilder().build(); // creating a new bedroom
@@ -76,7 +76,9 @@ public class BedroomEditActivity extends AppCompatActivity {
 
     private void saveBedroom() {
         bedroom = binding.getBedroom();
-        data.upsert(bedroom);
-        finish();
+        if(bedroom != null) {
+            data.upsert(bedroom);
+            finish();
+        }
     }
 }
