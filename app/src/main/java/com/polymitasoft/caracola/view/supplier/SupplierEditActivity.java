@@ -80,8 +80,10 @@ public class SupplierEditActivity extends AppCompatActivity {
 
     private void save() {
         supplier = binding.getSupplier();
-        data.upsert(supplier);
-        dao.updateServices(supplier, new HashSet<>(binding.getServices()));
-        finish();
+        if(supplier != null) {
+            data.upsert(supplier);
+            dao.updateServices(supplier, new HashSet<>(binding.getServices()));
+            finish();
+        }
     }
 }

@@ -142,7 +142,7 @@ public class SupplierInfoFragment extends Fragment {
 
     private void openSmsApp(String number) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.putExtra("address", number);
+        intent.putExtra("addressText", number);
         intent.setType("vnd.android-dir/mms-sms");
         startActivity(intent);
     }
