@@ -77,7 +77,7 @@ public class CheckActivation extends AsyncTask<Void, Void, Long> {
                     .show();
         } else if (result <= 3L && Preferences.shouldAlertActivationCountdown()) {
             Preferences.updateAlertActivationCountdown();
-            new AlertDialog.Builder(activity).setMessage("El tiempo de activación está a punto de expirar")
+            new AlertDialog.Builder(activity).setMessage("Queda " + result + " días para que expire el tiempo de activación.")
                     .setPositiveButton(R.string.ok_action_button, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
