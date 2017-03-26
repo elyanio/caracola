@@ -1,5 +1,8 @@
 package com.polymitasoft.caracola.view.client;
 
+import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -21,6 +24,8 @@ import org.threeten.bp.LocalDate;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static butterknife.ButterKnife.findById;
+
 /**
  * @author rainermf
  * @since 16/2/2017
@@ -30,9 +35,9 @@ class ClientBinding {
     private final AppCompatActivity activity;
     private final DatePickerBuilder birthdayPicker;
     private final CountryPicker countryPicker;
-    @BindView(R.id.passportText) EditText passport;
-    @BindView(R.id.firstNameText) EditText firstName;
-    @BindView(R.id.lastNameText) EditText lastName;
+    @BindView(R.id.passportText) EditText passportText;
+    @BindView(R.id.firstNameText) EditText firstNameText;
+    @BindView(R.id.lastNameText) EditText lastNameText;
     @BindView(R.id.birthdayText) EditText birthday;
     @BindView(R.id.genderSpinner) Spinner gender;
     @BindView(R.id.countryText) EditText country;
@@ -94,21 +99,54 @@ class ClientBinding {
         gender.setAdapter(adapter);
     }
 
+    @Nullable
     public Client getClient() {
-        client.setPassport(passport.getText().toString());
-        client.setFirstName(firstName.getText().toString());
-        client.setLastName(lastName.getText().toString());
+        if(!validate()) {
+            return null;
+        }
+        client.setPassport(passportText.getText().toString());
+        client.setFirstName(firstNameText.getText().toString());
+        client.setLastName(lastNameText.getText().toString());
         client.setGender((Gender) gender.getSelectedItem());
         return client;
     }
 
     public void setClient(Client client) {
         this.client = client;
-        passport.setText(client.getPassport());
-        firstName.setText(client.getFirstName());
-        lastName.setText(client.getLastName());
+        passportText.setText(client.getPassport());
+        firstNameText.setText(client.getFirstName());
+        lastNameText.setText(client.getLastName());
         birthday.setText(FormatUtils.formatDate(client.getBirthday()));
         gender.setSelection(client.getGender().ordinal());
         country.setText(client.getCountry().getName());
+    }
+
+    private boolean validate() {
+        boolean valid = true;
+        String passport = passportText.getText().toString();
+        if (passport.trim().isEmpty()) {
+            setError(R.id.layout_passport, "El pasaporte no puede estar vacío");
+            valid = false;
+        } else {
+            clearError(R.id.layout_passport);
+        }
+        String firstName = firstNameText.getText().toString();
+        if (firstName.trim().isEmpty()) {
+            setError(R.id.layout_first_name, "El nombre no puede estar vacío");
+            valid = false;
+        } else {
+            clearError(R.id.layout_first_name);
+        }
+        return valid;
+    }
+
+    private void setError(@IdRes int idRes, CharSequence message) {
+        TextInputLayout layout = findById(activity, idRes);
+        layout.setError(message);
+    }
+
+    private void clearError(@IdRes int idRes) {
+        TextInputLayout layout = findById(activity, idRes);
+        layout.setErrorEnabled(false);
     }
 }

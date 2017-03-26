@@ -78,6 +78,9 @@ public class ClientEditActivity extends AppCompatActivity {
 
     private void saveClient() {
         client = binding.getClient();
+        if(client == null) {
+            return;
+        }
         data.upsert(client);
 
         int idBooking = getIntent().getIntExtra(EXTRA_BOOKING_ID, -1);
