@@ -14,7 +14,6 @@ import android.view.Window;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
-import com.polymitasoft.caracola.dataaccess.DatabaseSetup;
 import com.polymitasoft.caracola.view.booking.ReservaPrincipal;
 
 import java.util.Timer;

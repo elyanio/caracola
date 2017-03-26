@@ -1,6 +1,5 @@
 package com.polymitasoft.caracola.dataaccess;
 
-import com.google.common.primitives.Ints;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.Manager;
 
@@ -9,9 +8,9 @@ import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
 /**
- * Created by rainermf on 13-Mar-17.
+ * @author rainermf
+ * @since 13-Mar-17
  */
-
 public class HostelDao {
 
     private EntityDataStore<Persistable> dataStore;
