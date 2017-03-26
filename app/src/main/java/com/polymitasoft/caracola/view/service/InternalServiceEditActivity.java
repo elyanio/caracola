@@ -76,7 +76,9 @@ public class InternalServiceEditActivity extends AppCompatActivity {
 
     private void saveService() {
         service = binding.getService();
-        data.upsert(service);
-        finish();
+        if(service != null) {
+            data.upsert(service);
+            finish();
+        }
     }
 }
