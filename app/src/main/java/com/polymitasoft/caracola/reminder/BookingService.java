@@ -1,4 +1,4 @@
-package com.polymitasoft.caracola.recordatory;
+package com.polymitasoft.caracola.reminder;
 
 import android.app.Service;
 import android.content.Intent;
@@ -51,6 +51,13 @@ public class BookingService extends Service {
     }
 
     private void checkBooking() {
+        int preftime = 10;
+        int prefTimeMilli = 1000 * 60 * 60 * preftime;
+
+        int prefDayBefore = 0;
+        int prefDayBeforeMilli = 1000 * 60 * 60 * 24 * prefDayBefore;
+
+
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
 

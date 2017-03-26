@@ -79,8 +79,7 @@
             android:label="@string/title_activity_supplier_service_info"></activity>
         <activity android:name=".view.publicity.Publicity"></activity>
 
-        <service android:name=".recordatory.BookingService"></service>
-        <receiver android:name=".recordatory.AlarmReceiver">
+        <receiver android:name=".reminder.AlarmReceiver">
 
         </receiver>
 

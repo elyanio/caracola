@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -30,6 +31,7 @@ import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
 import com.polymitasoft.caracola.datamodel.BookingState;
+import com.polymitasoft.caracola.reminder.Alarm;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -218,6 +220,12 @@ public class EditBookingDialogFragment extends DialogFragment {
             //todo enviar mensaje editadra
             sendMessage(oldBooking, booking);
         }
+
+        //set Alarm
+        Alarm alarm = new Alarm(getContext());
+        alarm.setAlarm(booking);
+        Log.e("puse","alarm");
+
         dismiss();
     }
 

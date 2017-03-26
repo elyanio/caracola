@@ -1,4 +1,4 @@
-package com.polymitasoft.caracola.recordatory;
+package com.polymitasoft.caracola.reminder;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,9 +15,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        Toast.makeText(context, "Hola soy una alarma", Toast.LENGTH_LONG).show();
         StateBar stateBar = new StateBar();
-        stateBar.BookingNotificationService(context, 3, "Recordatorio de Reserva", "Nueva Reserva programada", "Usted tiene una reserva programada para el día de hoy.");
+        stateBar.BookingNotificationService(context, 3, "Recordatorio de Reserva", "Recordatorio de Reserva", "Usted tiene una reserva programada para el día de hoy.");
     }
 }

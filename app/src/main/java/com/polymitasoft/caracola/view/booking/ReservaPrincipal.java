@@ -1,6 +1,5 @@
 package com.polymitasoft.caracola.view.booking;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,8 +20,7 @@ import com.polymitasoft.caracola.components.DrawerActivity;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.recordatory.Alarm;
-import com.polymitasoft.caracola.recordatory.BookingService;
+import com.polymitasoft.caracola.reminder.Alarm;
 import com.polymitasoft.caracola.view.drm.CheckActivation;
 
 import org.threeten.bp.LocalDate;
@@ -56,11 +54,6 @@ public class ReservaPrincipal extends DrawerActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Alarm alarm = new Alarm(this);
-        alarm.setAlarm();
-
-//        startService(new Intent(ReservaPrincipal.this, BookingService.class));
         init();
     }
 
