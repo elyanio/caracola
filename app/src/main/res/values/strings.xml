@@ -28,8 +28,7 @@
     <string name="pref_title_is_high_season">Temporada alta</string>
     <string name="pref_description_is_high_season">Al activar se cargarán por defecto los precios para la temporada alta</string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_title_day_display_name">Días con antelación</string>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
@@ -82,9 +81,12 @@
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notificaciones</string>
-
+    <string name="pref_title_is_enable_reminder">Recordatorio de reserva</string>
+    <string name="pref_title_is_enable_reminder_description">Habilita el recordatorio de reserva</string>
     <string name="pref_title_new_message_notifications">New message notifications</string>
-
+    <string name="pref_title_is_day_reminder_description">Días con antelación para el recordatorio de reserva</string>
+    <string name="pref_title_is_time_reminder_description">Hora del recordatorio de reserva</string>
+    <string name="pref_title_time_display_name">Hora del recordatorio</string>
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
 
@@ -150,4 +152,7 @@
     <string name="action_settings">Settings</string>
     <string name="pref_title_enable_sms_notifications">Sincronización por SMS</string>
     <string name="pref_description_enable_sms_notifications">Habilita el envío de SMS a los gestores definidos para sincronizar el calendario de reservas.</string>
+    <string name="set">aceptar</string>
+    <string name="cancel">cancelar</string>
+
 </resources>

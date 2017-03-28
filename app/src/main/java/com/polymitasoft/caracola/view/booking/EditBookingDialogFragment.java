@@ -32,6 +32,7 @@ import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.reminder.Alarm;
+import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -215,13 +216,16 @@ public class EditBookingDialogFragment extends DialogFragment {
             mCallback.onBookingCreate(booking);
             //        todo enviar menssaje
             sendMessage(booking);
+
             //set Alarm
             Alarm alarm = new Alarm(getContext());
             alarm.setAlarm(booking);
+
         } else {
             mCallback.onBookingEdit(oldBooking, booking);
             //todo enviar mensaje editadra
             sendMessage(oldBooking, booking);
+
             //set Alarm
             Alarm alarm = new Alarm(getContext());
             alarm.cancelAlarm(oldBooking);

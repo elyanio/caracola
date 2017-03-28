@@ -1,7 +1,28 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditTextPreference
-        android:defaultValue="">
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="enable_remider"
+        android:summary="@string/pref_title_is_enable_reminder_description"
+        android:title="@string/pref_title_is_enable_reminder" />
 
-    </EditTextPreference>
+    <EditTextPreference
+        android:defaultValue="0"
+        android:inputType="number"
+        android:key="before_day"
+        android:selectAllOnFocus="true"
+        android:summary="@string/pref_title_is_day_reminder_description"
+        android:title="@string/pref_title_day_display_name" />
+    <!--<com.polymitasoft.caracola.settings.TimePreference-->
+        <!--android:key="time_reminder"-->
+        <!--android:summary="@string/pref_title_is_time_reminder_description"-->
+        <!--android:title="@string/pref_title_time_display_name" />-->
+    <!--<EditTextPreference-->
+    <!--android:inputType="time"-->
+    <!--android:key="time_reminder"-->
+    <!--android:selectAllOnFocus="true"-->
+    <!--android:summary="@string/pref_title_is_time_reminder_description"-->
+    <!--android:title="@string/pref_title_time_display_name" />-->
+
+
 </PreferenceScreen>

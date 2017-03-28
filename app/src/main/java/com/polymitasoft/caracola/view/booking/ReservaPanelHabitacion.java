@@ -27,6 +27,7 @@ import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.IBooking;
 import com.polymitasoft.caracola.reminder.Alarm;
 import com.polymitasoft.caracola.reminder.AlarmReceiver;
+import com.polymitasoft.caracola.settings.Preferences;
 
 import org.threeten.bp.LocalDate;
 
@@ -107,7 +108,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public void click_fisicaR() {
         if (preReservaSelecc != null) {
-            if(preReservaSelecc.getState() != CHECKED_IN && preReservaSelecc.getCheckInDate().isAfter(LocalDate.now())) {
+            if (preReservaSelecc.getState() != CHECKED_IN && preReservaSelecc.getCheckInDate().isAfter(LocalDate.now())) {
                 new AlertDialog.Builder(getContext())
                         .setMessage(R.string.check_in_confirmation_message)
                         .setPositiveButton(R.string.yes_action_button, new DialogInterface.OnClickListener() {
@@ -168,10 +169,10 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     private void sendMessage(Booking booking) {
         if (shouldSendMessage(booking)) {
-            if(ContextCompat.checkSelfPermission(getContext(), SEND_SMS) == PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getContext(), SEND_SMS) == PERMISSION_GRANTED) {
                 new ManageSmsBooking(booking).sendDeleteMessage();
             } else {
-                ActivityCompat.requestPermissions(reservaPrincipal, new String[] { SEND_SMS }, REQUEST_SEND_DELETE_SMS);
+                ActivityCompat.requestPermissions(reservaPrincipal, new String[]{SEND_SMS}, REQUEST_SEND_DELETE_SMS);
             }
         }
     }
@@ -236,15 +237,15 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color() || primerDiaSelec.getColor() == CalendarState.PENDING.color() || primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) { // y si ese dia ya tiene reserva
                     preReservaSelecc = obtenerReservaModoH(primerDiaSelec);
                     seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
-                    if(primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
+                    if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()) {
                         actionTypes.add(ActionType.CREATE_CHECK_IN);
                         actionTypes.add(ActionType.EDIT_BOOKING);
                         actionTypes.add(ActionType.DELETE_BOOKING);
-                    }else if(primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
+                    } else if (primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) {
                         actionTypes.add(ActionType.CREATE_CHECK_IN);
                         actionTypes.add(ActionType.EDIT_BOOKING);
                         actionTypes.add(ActionType.DELETE_BOOKING);
-                    }else{
+                    } else {
                         actionTypes.add(ActionType.CREATE_CHECK_IN);
                         actionTypes.add(ActionType.EDIT_BOOKING);
                         actionTypes.add(ActionType.DELETE_BOOKING);
@@ -271,15 +272,15 @@ public class ReservaPanelHabitacion extends LinearLayout {
                         preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                         actualizarNotaDeslizante(preReservaSelecc);
                         seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color()); //seleccionar
-                        if(primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
+                        if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()) {
                             actionTypes.add(ActionType.CREATE_CHECK_IN);
                             actionTypes.add(ActionType.EDIT_BOOKING);
                             actionTypes.add(ActionType.DELETE_BOOKING);
-                        }else if(primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
+                        } else if (primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) {
                             actionTypes.add(ActionType.CREATE_CHECK_IN);
                             actionTypes.add(ActionType.EDIT_BOOKING);
                             actionTypes.add(ActionType.DELETE_BOOKING);
-                        }else{
+                        } else {
                             actionTypes.add(ActionType.CREATE_CHECK_IN);
                             actionTypes.add(ActionType.EDIT_BOOKING);
                             actionTypes.add(ActionType.DELETE_BOOKING);
@@ -295,15 +296,15 @@ public class ReservaPanelHabitacion extends LinearLayout {
                             if (segundoDiaSelec.getColor() == CalendarState.CONFIRMED.color() || segundoDiaSelec.getColor() == CalendarState.PENDING.color() || segundoDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) {
                                 preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
-                                if(primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
+                                if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()) {
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
-                                }else if(primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
+                                } else if (primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) {
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
-                                }else{
+                                } else {
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
@@ -351,15 +352,15 @@ public class ReservaPanelHabitacion extends LinearLayout {
                                 //                                no funciona el seleccionR UN PENDIENTE COMO SEGUNDO ELEMENTO
                                 preReservaSelecc = obtenerReservaModoH(segundoDiaSelec);
                                 seleccionadorDeReservaModoH(preReservaSelecc, CalendarState.SELECTED.color());
-                                if(primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()){
+                                if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color()) {
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
-                                }else if(primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()){
+                                } else if (primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) {
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);
-                                }else{
+                                } else {
                                     actionTypes.add(ActionType.CREATE_CHECK_IN);
                                     actionTypes.add(ActionType.EDIT_BOOKING);
                                     actionTypes.add(ActionType.DELETE_BOOKING);

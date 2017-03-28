@@ -3,12 +3,16 @@ package com.polymitasoft.caracola.settings;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeParseException;
 
 /**
@@ -68,4 +72,27 @@ public class Preferences {
     private static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(CaracolaApplication.instance());
     }
+
+    public static boolean isEnableReminder() {
+        return getPreferences().getBoolean("enable_remider", true);
+    }
+
+    public static int getDayBeforeReminder() {
+        return Integer.parseInt(getPreferences().getString("before_day", "0"));
+    }
+
+//    public static String getHourReminder() {
+//        return getPreferences().getString("hour", "10");
+//    }
+//    public static String getMinuteReminder() {
+//        return getPreferences().getString("minute", "00");
+//    }
+
+//    public static LocalTime getTimeReminder() {
+//        String time_reminder = getPreferences().getString("time_reminder", "10:00");
+//        Log.e("hora",time_reminder);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+//        LocalTime time = LocalTime.parse(time_reminder, formatter);
+//        return time;
+//    }
 }
