@@ -51,24 +51,6 @@
 -dontwarn com.google.errorprone.annotations.concurrent.LazyInit
 -dontwarn com.google.errorprone.annotations.ForOverride
 
-#-dontwarn rx.internal.**
-#-dontwarn android.support.**
-#-dontwarn sun.misc.Unsafe
-#-dontwarn com.google.common.collect.MinMaxPriorityQueue
-#-dontwarn com.google.errorprone.annotations.**
-#-dontwarn com.google.j2objc.**
-#-dontwarn java.lang.**
-#-keep class com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerController
-#-keep class com.codetroopers.betterpickers.calendardatepicker.MonthAdapter$CalendarDay
-#-keep class com.codetroopers.betterpickers.calendardatepicker.MonthView$OnDayClickListener
-#-keep class com.codetroopers.betterpickers.radialtimepicker.RadialPickerLayout$OnValueSelectedListener
-#-keep class com.codetroopers.betterpickers.widget.PickerLinearLayout
-#-keep class org.threeten.bp.LocalDate
-#-keep class com.polymitasoft.caracola.components.InteractivoScrollView$CapturadorEventoMoverScroll
-#-keep class com.polymitasoft.caracola.datamodel.Bedroom
-#-keep class com.polymitasoft.caracola.view.booking.VistaDia
-#-keep class com.polymitasoft.caracola.datamodel.Booking
-#-keep class com.polymitasoft.caracola.datamodel.InternalService
-#-keep class com.polymitasoft.caracola.view.service.InternalServiceSelectorView$OnSelectedServiceListener
-#-keep class com.polymitasoft.caracola.datamodel.Supplier
-#-keep class net.sqlcipher.database.SQLiteDebug$PagerStats
+-keep class net.sqlcipher.** {
+    *;
+}
