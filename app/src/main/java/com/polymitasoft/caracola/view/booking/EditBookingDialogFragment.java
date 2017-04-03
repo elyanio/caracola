@@ -223,17 +223,32 @@ public class EditBookingDialogFragment extends DialogFragment {
 
         } else {
             mCallback.onBookingEdit(oldBooking, booking);
-            //todo enviar mensaje editadra
-            sendMessage(oldBooking, booking);
+            if(noNoteChange(oldBooking,booking)){
+                //todo enviar mensaje editadra
+                sendMessage(oldBooking, booking);
+            }
+            if(!oldBooking.getCheckInDate().isEqual(booking.getCheckInDate())){
+                //set Alarm
+                Alarm alarm = new Alarm(getContext());
+                alarm.cancelAlarm(oldBooking);
+                alarm.setAlarm(booking);
+            }
 
-            //set Alarm
-            Alarm alarm = new Alarm(getContext());
-            alarm.cancelAlarm(oldBooking);
-            alarm.setAlarm(booking);
         }
 
 
         dismiss();
+    }
+
+    private boolean noNoteChange(Booking oldBooking, Booking booking) {
+        if(!oldBooking.getCheckInDate().isEqual(booking.getCheckInDate()) || !oldBooking.getCheckOutDate().isEqual(booking.getCheckOutDate())
+                || !oldBooking.getBedroom().equals(booking.getBedroom()) || oldBooking.getBookingNumber() != booking.getBookingNumber()
+                || oldBooking.getPrice().equals(booking.getPrice()) || oldBooking.getState().equals(booking.getState())
+                || oldBooking.getId() != booking.getId()){
+            return true;
+        }else{
+            return  false;
+        }
     }
 
     private static final int REQUEST_SEND_CREATE_SMS = 123;

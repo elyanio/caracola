@@ -50,12 +50,14 @@ public class Alarm {
 
         long time = prefTimeMilli + minusDayMilli;
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        intent.putExtra("idBooking", booking.getId());
-        int id = booking.getId();
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        if(time >= System.currentTimeMillis()){
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, AlarmReceiver.class);
+            intent.putExtra("idBooking", booking.getId());
+            int id = booking.getId();
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        }
 
     }
 
