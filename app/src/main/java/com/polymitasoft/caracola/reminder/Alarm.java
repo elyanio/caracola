@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.settings.Preferences;
@@ -20,7 +21,7 @@ import org.threeten.bp.temporal.TemporalField;
 
 public class Alarm {
     private Context context;
-    private static final int ALARM_REQUEST_CODE = 1;
+    public static final String ID_BOOKING_ALARM = "idBooking";
 
     public Alarm(Context context) {
         this.context = context;
@@ -37,28 +38,27 @@ public class Alarm {
 //        int second = 1000 * timeReminder.getSecond();
 //        int prefTimeMilli = hour + minute + second;
 
+        //pref tiene la cantidad de milisegundos de las 12:00am hasta las 10:00am
         int hour = 1000 * 60 * 60 * 10;
         int minute = 1000 * 60 * 0;
         int second = 1000 * 0;
         int prefTimeMilli = hour + minute + second;
 
         int prefDayBefore = Preferences.getDayBeforeReminder();
-
         LocalDate checkInDate = booking.getCheckInDate();
         LocalDate minusDay = checkInDate.minusDays(prefDayBefore);
         long minusDayMilli = minusDay.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
+        // tiempo cuando debe sonar la alarma
         long time = prefTimeMilli + minusDayMilli;
-
         if(time >= System.currentTimeMillis()){
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReceiver.class);
-            intent.putExtra("idBooking", booking.getId());
+            intent.putExtra(ID_BOOKING_ALARM, booking.getId());
             int id = booking.getId();
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
             alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
         }
-
     }
 
     public void cancelAlarm(Booking booking) {

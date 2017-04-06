@@ -94,15 +94,18 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public void crearMeses() {
         meses = new ArrayList<>(12);
-        LocalDate today = LocalDate.now();
-        int mes_actual = today.getMonthValue();
+        LocalDate temp = LocalDate.now();
 
         VistaMes mes;
-        for (int i = mes_actual; i < mes_actual + ReservaEsenaPrincipal.CANTIDAD_MESES_CARGADOS; i++) {
-            LocalDate date = LocalDate.of(today.getYear(), i, 1);
+        int i = 0;
+        while ( i < ReservaEsenaPrincipal.CANTIDAD_MESES_CARGADOS) {
+            LocalDate date = LocalDate.of(temp.getYear(), temp.getMonthValue(), 1);
             mes = new VistaMes(getContext(), this, date);
             linearLayoutMeses.addView(mes);
             meses.add(mes);
+
+            temp.plusMonths(1);
+            i++;
         }
     }
 
@@ -716,7 +719,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 meses.add(mes);
             }
             return meses.get(meses.size() - 1);
-        } else {
+        } else {   //se incrementa a principio de los meses
             LocalDate diaIniDelPrimerMes = meses.get(0).getInicio_mes();
             LocalDate localDatei = diaIniDelPrimerMes;
             while (dia.getCalendar().getYear() != localDatei.getYear() || dia.getCalendar().getMonthValue() != localDatei.getMonthValue()) {

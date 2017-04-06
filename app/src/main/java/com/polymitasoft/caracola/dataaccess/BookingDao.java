@@ -100,4 +100,12 @@ public class BookingDao {
     public BigDecimal getConsumptionCost(@NonNull Booking booking) {
         return Consumptions.cost(getConsumptions(booking));
     }
+
+    public List<Booking> findBooking(LocalDate checkInDate) {
+        return dataStore.select(Booking.class).where(Booking.CHECK_IN_DATE.eq(checkInDate)).get().toList();
+    }
+
+    public Booking findBooking(int id) {
+        return dataStore.select(Booking.class).where(Booking.ID.eq(id)).get().first();
+    }
 }
