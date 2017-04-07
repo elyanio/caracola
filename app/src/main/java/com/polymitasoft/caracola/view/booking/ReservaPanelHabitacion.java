@@ -104,7 +104,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
             linearLayoutMeses.addView(mes);
             meses.add(mes);
 
-            temp.plusMonths(1);
+            temp = temp.plusMonths(1);
             i++;
         }
     }
