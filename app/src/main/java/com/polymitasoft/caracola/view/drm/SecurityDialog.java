@@ -1,11 +1,14 @@
 package com.polymitasoft.caracola.view.drm;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
@@ -16,6 +19,7 @@ import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
+import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -41,6 +45,42 @@ public class SecurityDialog {
         final TextView requestCodeText = findById(view, R.id.codeText);
         final Button button = findById(view, R.id.okButton);
         final String requestCode = Drm.getRequestCode();
+        final TextView phone1 = findById(view, R.id.supplier_phone1_activar);
+        final TextView phone2 = findById(view, R.id.supplier_phone2_activar);
+
+        final ImageButton call1 = findById(view, R.id.call_phone1_activar);
+        final ImageButton call2 = findById(view, R.id.call_phone2_activar);
+        final ImageButton sms1 = findById(view, R.id.send_sms_phone1_activar);
+        final ImageButton sms2 = findById(view, R.id.send_sms_phone2_activar);
+
+        call1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPhoneApp(phone1.getText().toString());
+            }
+        });
+
+        call2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPhoneApp(phone2.getText().toString());
+            }
+        });
+
+        sms1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSmsApp(phone1.getText().toString());
+            }
+        });
+
+        sms2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSmsApp(phone2.getText().toString());
+            }
+        });
+
         requestCodeText.setText(requestCode);
 
         final AlertDialog dialog = new AlertDialog.Builder(activity)
@@ -88,4 +128,18 @@ public class SecurityDialog {
     }
 
     protected void notifyActivation(boolean activated) { }
+
+    private void openPhoneApp(String number) {
+        Intent dialIntent = new Intent();
+        dialIntent.setAction(Intent.ACTION_DIAL);
+        dialIntent.setData(Uri.parse("tel:" + number));
+        activity.startActivity(dialIntent);
+    }
+
+    private void openSmsApp(String number) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.putExtra("addressText", number);
+        intent.setType("vnd.android-dir/mms-sms");
+        activity.startActivity(intent);
+    }
 }
