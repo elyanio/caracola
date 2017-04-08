@@ -1,18 +1,37 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="enable_remider"
-        android:summary="@string/pref_title_is_enable_reminder_description"
-        android:title="@string/pref_title_is_enable_reminder" />
+    <PreferenceCategory android:title="@string/category_pref_booking">
 
-    <EditTextPreference
-        android:defaultValue="0"
-        android:inputType="number"
-        android:key="before_day"
-        android:selectAllOnFocus="true"
-        android:summary="@string/pref_title_is_day_reminder_description"
-        android:title="@string/pref_title_day_display_name" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enable_remider"
+            android:summary="@string/pref_title_is_enable_reminder_description"
+            android:title="@string/pref_title_is_enable_reminder" />
+        <EditTextPreference
+            android:defaultValue="0"
+            android:inputType="number"
+            android:key="before_day"
+            android:selectAllOnFocus="true"
+            android:summary="@string/pref_title_is_day_reminder_description"
+            android:title="@string/pref_title_day_display_name" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_pref_cliente">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enable_remider_birthday"
+            android:summary="@string/pref_title_is_enable_reminder_description_birthday"
+            android:title="@string/pref_title_is_enable_reminder" />
+        <EditTextPreference
+            android:defaultValue="0"
+            android:inputType="number"
+            android:key="before_day_birthday"
+            android:selectAllOnFocus="true"
+            android:summary="@string/pref_title_is_day_reminder_description_birthday"
+            android:title="@string/pref_title_day_display_name" />
+    </PreferenceCategory>
+
     <!--<com.polymitasoft.caracola.settings.TimePreference-->
         <!--android:key="time_reminder"-->
         <!--android:summary="@string/pref_title_is_time_reminder_description"-->

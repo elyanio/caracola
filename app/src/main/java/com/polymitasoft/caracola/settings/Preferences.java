@@ -74,8 +74,21 @@ public class Preferences {
     }
 
     public static int getDayBeforeReminder() {
-        return Integer.parseInt(getPreferences().getString("before_day", "0"));
+        return Integer.parseInt(getPreferences().getString("before_day", "-1"));
     }
+
+    public static boolean isEnableReminderBirthday() {
+        return getPreferences().getBoolean("enable_remider_birthday", true);
+    }
+
+    public static int getDayBeforeReminderBirthday() {
+        return Integer.parseInt(getPreferences().getString("before_day_birthday", "-1"));
+    }
+    public static boolean isEnableConfirmSms() {
+        return getPreferences().getBoolean("sms_sync_confirm", false);
+    }
+
+
 
 //    public static String getHourReminder() {
 //        return getPreferences().getString("hour", "10");

@@ -1,18 +1,15 @@
 package com.polymitasoft.caracola.view.booking;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.communication.ManageSmsBooking;
@@ -20,7 +17,7 @@ import com.polymitasoft.caracola.components.DrawerActivity;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.reminder.Alarm;
+import com.polymitasoft.caracola.reminder.BirthdayService;
 import com.polymitasoft.caracola.view.drm.CheckActivation;
 
 import org.threeten.bp.LocalDate;
@@ -28,12 +25,9 @@ import org.threeten.bp.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static butterknife.ButterKnife.findById;
 import static com.polymitasoft.caracola.view.booking.CalendarState.toCalendarState;
 
@@ -55,6 +49,7 @@ public class ReservaPrincipal extends DrawerActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
+        startService(new Intent(getBaseContext(), BirthdayService.class));
     }
 
     private void init() {

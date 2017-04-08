@@ -83,6 +83,9 @@
 
         </receiver>
 
+        <service android:name=".reminder.BirthdayService">
+            
+        </service>
     </application>
 
 </manifest>

@@ -155,5 +155,11 @@
     <string name="set">aceptar</string>
     <string name="cancel">cancelar</string>
     <string name="title_export">Exportar</string>
+    <string name="category_pref_booking">Recordatorio Reserva</string>
+    <string name="category_pref_cliente">Recordatorio cumpleaños</string>
+    <string name="pref_title_is_enable_reminder_description_birthday">Habilita el recordatorio de cumpleaños</string>
+    <string name="pref_title_is_day_reminder_description_birthday">Días con antelación para el recordatorio de cumpleaños</string>
+    <string name="pref_description_enable_sms_notifications_confirm">Habilita el envío de SMS para confirmar reserva.</string>
+    <string name="pref_title_enable_sms_notifications_confirm">Confirmación por SMS</string>
 
 </resources>

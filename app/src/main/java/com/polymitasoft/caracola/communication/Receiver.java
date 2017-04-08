@@ -15,6 +15,7 @@ import com.polymitasoft.caracola.datamodel.InternalService;
 import com.polymitasoft.caracola.datamodel.LocalDateConverter;
 import com.polymitasoft.caracola.datamodel.Manager;
 import com.polymitasoft.caracola.notification.StateBar;
+import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -78,6 +79,12 @@ public class Receiver extends BroadcastReceiver {
         }
     }
 
+    private void confirmarRecibo(String number) {
+        if (Preferences.isEnableConfirmSms()) {
+            Mensajero.confirmar_recibo(number);
+        }
+    }
+
 
     private void resolverNuevoBooking(String[] valores, Context context, String number_manager) {
         String showState = parssearBookingState(valores[4]);
@@ -92,7 +99,8 @@ public class Receiver extends BroadcastReceiver {
             StateBar stateBar = new StateBar();
             stateBar.BookingNotification(context, 1, "Nueva Reserva", "Reserva gestionada", number_manager, mensaje);
 
-            Mensajero.confirmar_recibo(number_manager);
+            confirmarRecibo(number_manager);
+
         } else {
             StateBar stateBar = new StateBar();
             stateBar.BookingNotification(context, 1, "Error en la Reserva", "Mensaje de Error", number_manager, "La reserva ya existe, por favor sincronice su calendario.");
@@ -116,8 +124,7 @@ public class Receiver extends BroadcastReceiver {
 
             StateBar stateBar = new StateBar();
             stateBar.BookingNotification(context, 1, "Eliminación Reserva", "Reserva eliminada", number_manager, mensaje);
-
-            Mensajero.confirmar_recibo(number_manager);
+            confirmarRecibo(number_manager);
         }
     }
 
@@ -133,8 +140,7 @@ public class Receiver extends BroadcastReceiver {
 
             StateBar stateBar = new StateBar();
             stateBar.BookingNotification(context, 1, "Actualización de Reserva", "Reserva actualizada", number_manager, mensaje);
-
-            Mensajero.confirmar_recibo(number_manager);
+            confirmarRecibo(number_manager);
         }
     }
 
