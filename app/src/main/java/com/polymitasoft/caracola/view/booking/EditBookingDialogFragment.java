@@ -244,7 +244,7 @@ public class EditBookingDialogFragment extends DialogFragment {
     private boolean noNoteChange(Booking oldBooking, Booking booking) {
         if(!oldBooking.getCheckInDate().isEqual(booking.getCheckInDate()) || !oldBooking.getCheckOutDate().isEqual(booking.getCheckOutDate())
                 || !oldBooking.getBedroom().equals(booking.getBedroom()) || oldBooking.getBookingNumber() != booking.getBookingNumber()
-                || oldBooking.getPrice().equals(booking.getPrice()) || oldBooking.getState().equals(booking.getState())
+                || !oldBooking.getPrice().equals(booking.getPrice()) || !oldBooking.getState().equals(booking.getState())
                 || oldBooking.getId() != booking.getId()){
             return true;
         }else{
