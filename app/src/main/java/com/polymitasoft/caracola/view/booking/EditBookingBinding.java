@@ -1,9 +1,9 @@
 package com.polymitasoft.caracola.view.booking;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.google.common.primitives.Ints;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.datamodel.Booking;
 
@@ -25,9 +25,14 @@ class EditBookingBinding {
     }
 
     public Booking getBooking() {
-        Integer bookingNumber = Ints.tryParse(bookingNumberView.getText().toString().trim());
+        int bookingNumber = -1;
+        try {
+            bookingNumber = Integer.parseInt(bookingNumberView.getText().toString().trim());
+        } catch (NumberFormatException e) {
+            Log.w(EditBookingBinding.class.getName(), "Couldn't format booking number, default to " + bookingNumber);
+        }
 
-        booking.setBookingNumber(bookingNumber != null ? bookingNumber : -1);
+        booking.setBookingNumber(bookingNumber);
         return booking;
     }
 

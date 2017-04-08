@@ -1,9 +1,5 @@
 package com.polymitasoft.caracola;
 
-import com.google.common.io.BaseEncoding;
-import com.google.common.primitives.Longs;
-
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigInteger;

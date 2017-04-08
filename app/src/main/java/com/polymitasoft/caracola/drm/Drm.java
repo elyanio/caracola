@@ -2,9 +2,8 @@ package com.polymitasoft.caracola.drm;
 
 import android.annotation.SuppressLint;
 import android.provider.Settings;
+import android.util.Base64;
 
-import com.google.common.io.BaseEncoding;
-import com.google.common.primitives.Longs;
 import com.polymitasoft.caracola.CaracolaApplication;
 
 import java.math.BigInteger;
@@ -32,7 +31,20 @@ public enum Drm {
     }
 
     public static String getRequestCode() {
-        return BaseEncoding.base64().encode(Longs.toByteArray(getDeviceIdAsLong()));
+
+        return Base64.encodeToString(toByteArray(getDeviceIdAsLong()), Base64.DEFAULT);
+//        return BaseEncoding.base64().encode(Longs.toByteArray(getDeviceIdAsLong()));
+    }
+
+    public static byte[] toByteArray(long value) {
+        // Note that this code needs to stay compatible with GWT, which has known
+        // bugs when narrowing byte casts of long values occur.
+        byte[] result = new byte[8];
+        for (int i = 7; i >= 0; i--) {
+            result[i] = (byte) (value & 0xffL);
+            value >>= 8;
+        }
+        return result;
     }
 
     public static byte[] encrypt(String plainText, String encryptionKey) {
@@ -57,20 +69,14 @@ public enum Drm {
         }
     }
 
-    public static String encryptTo32String(String plainText, String encryptionKey) throws Exception {
-        return BaseEncoding.base32Hex().encode(encrypt(plainText, encryptionKey));
-    }
-
-    public static String decryptFrom32String(String cipherText, String encryptionKey) throws Exception {
-        return decrypt(BaseEncoding.base32Hex().decode(cipherText), encryptionKey);
-    }
-
     public static String encryptTo64String(String plainText, String encryptionKey) {
-        return BaseEncoding.base64().encode(encrypt(plainText, encryptionKey));
+        return Base64.encodeToString(encrypt(plainText, encryptionKey), Base64.DEFAULT);
+//        return BaseEncoding.base64().encode(encrypt(plainText, encryptionKey));
     }
 
     public static String decryptFrom64String(String cipherText, String encryptionKey) {
-        return decrypt(BaseEncoding.base64().decode(cipherText), encryptionKey);
+        return decrypt(Base64.decode(cipherText, Base64.DEFAULT), encryptionKey);
+//        return decrypt(BaseEncoding.base64().decode(cipherText), encryptionKey);
     }
 
     public static String encryptTo64String(String plainText) {

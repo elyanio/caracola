@@ -16,7 +16,6 @@ import io.requery.Persistable;
 import io.requery.query.Result;
 import io.requery.sql.EntityDataStore;
 
-import static com.google.common.collect.Sets.difference;
 import static com.polymitasoft.caracola.datamodel.SupplierService.SERVICE_ID;
 import static com.polymitasoft.caracola.datamodel.SupplierService.SUPPLIER_ID;
 
@@ -88,11 +87,16 @@ public class SupplierDao {
      * @param supplier
      * @param services
      */
-    public void updateServices(Supplier supplier, Set<ExternalService> services) {
+    public void updateServices(Supplier supplier, final Set<ExternalService> services) {
         HashSet<ExternalService> currentServices = new HashSet<>(services(supplier).toList());
 
-        insertServices(supplier, difference(services, currentServices));
-        deleteServices(supplier, difference(currentServices, services));
+        HashSet<ExternalService> toInsert = new HashSet<>(services);
+        toInsert.removeAll(currentServices);
+        HashSet<ExternalService> toRemove = new HashSet<>(currentServices);
+        toRemove.removeAll(services);
+
+        insertServices(supplier, toInsert);
+        deleteServices(supplier, toRemove);
     }
 
     public void insertServices(Supplier supplier, Iterable<ExternalService> services) {

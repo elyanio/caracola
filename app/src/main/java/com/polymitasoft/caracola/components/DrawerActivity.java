@@ -17,7 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.notification.StateBar;
+import com.polymitasoft.caracola.reports.pdf.Report;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
 import com.polymitasoft.caracola.view.booking.BookingButtonBar;
@@ -109,6 +111,9 @@ public class DrawerActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_hostal:
                 startActivity(new Intent(this, HostelActivity.class));
+            case R.id.nav_export:
+                Report.createPdf(DataStoreHolder.INSTANCE.getDbFile().getParent());
+//                startActivity(new Intent(this, HostelActivity.class));
         }
 
         DrawerLayout drawer = findById(this, R.id.drawer_layout);
