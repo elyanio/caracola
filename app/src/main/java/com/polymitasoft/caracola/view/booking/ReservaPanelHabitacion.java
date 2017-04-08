@@ -748,7 +748,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     public void crearNuevoMesArriba() {
         LocalDate ultimoMes = meses.get(0).getInicio_mes();
         LocalDate calendar = LocalDate.of(ultimoMes.getYear(), ultimoMes.getMonth(), 1).minusMonths(1);
-        VistaMes mes = new VistaMes(getContext(), misma(), calendar);
+        VistaMes mes = new VistaMes(getContext(), this, calendar);
         linearLayoutMeses.addView(mes, 0);
         meses.add(0, mes);
     }
@@ -756,7 +756,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
     public void crearNuevoMesAbajo() {
         LocalDate ultimoMes = meses.get(meses.size() - 1).getInicio_mes();
         LocalDate calendar = LocalDate.of(ultimoMes.getYear(), ultimoMes.getMonth(), 1).plusMonths(1);
-        VistaMes mes = new VistaMes(getContext(), misma(), calendar);
+        VistaMes mes = new VistaMes(getContext(), this, calendar);
         linearLayoutMeses.addView(mes);
         meses.add(mes);
     }
@@ -779,10 +779,6 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public void setHabitacion(Bedroom habitacion) {
         this.habitacion = habitacion;
-    }
-
-    public ReservaPanelHabitacion misma() {
-        return this;
     }
 
     public void setPrimerDiaSelec(VistaDia primerDiaSelec) {

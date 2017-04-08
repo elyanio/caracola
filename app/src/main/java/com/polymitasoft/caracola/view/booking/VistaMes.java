@@ -90,12 +90,15 @@ public class VistaMes extends LinearLayout {
             LocalDate defecto = LocalDate.of(2000, Month.JANUARY, i);
             dias.add(new VistaDia(getContext(), defecto, NO_DAY.color()));
         }
-
+         DateTimeFormatter format = DateTimeFormatter.ofPattern("y/M/d");
         // poner los dias
         for (int i = 1; i <= cant_dias_mes; i++) {
             LocalDate dia = LocalDate.of(inicio_mes.getYear(), inicio_mes.getMonth(), i);
+            String s = dia.format(format);
+//            Log.e("dias",s);
             Pair<Integer, CellLocation> pair = obtenerColorAlcrear(dia);
             temp = new VistaDia(getContext(), dia, pair.first, pair.second);
+//            Log.e("color",temp.getColor()+"");
             dias.add(temp);
             temp.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
@@ -113,6 +116,9 @@ public class VistaMes extends LinearLayout {
             cont += 7;
         }
         cantNoDias = cont;
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("y/M/d");
+//        Log.e("dia",inicio_mes.format(format));
+//        Log.e("cant no dias",cantNoDias + "");
     }
 
     public void actualizarCambioHabitacion() {
@@ -307,15 +313,11 @@ public class VistaMes extends LinearLayout {
         @NonNull
         @Override
         public View getView(final int posision, View convertView, @NonNull ViewGroup parent) {
-            if (convertView == null) {
-                if(size == 0) size = getWidth() / 7;
-                VistaDia vistaDia = dias.get(posision);
-                vistaDia.setLayoutParams(new GridView.LayoutParams(size, size));
-                vistaDia.setGravity(Gravity.CENTER);
-                return vistaDia;
-            } else {
-                return convertView;
-            }
+            size = getWidth() / 7;
+            VistaDia vistaDia = dias.get(posision);
+            vistaDia.setLayoutParams(new GridView.LayoutParams(size, size));
+            vistaDia.setGravity(Gravity.CENTER);
+            return vistaDia;
         }
 
     }
