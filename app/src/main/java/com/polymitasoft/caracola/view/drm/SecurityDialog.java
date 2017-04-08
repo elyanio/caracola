@@ -17,6 +17,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
+import com.polymitasoft.caracola.util.PhoneUtils;
 
 import org.threeten.bp.LocalDate;
 import org.w3c.dom.Text;
@@ -25,6 +26,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import static butterknife.ButterKnife.findById;
+import static com.polymitasoft.caracola.util.PhoneUtils.dial;
+import static com.polymitasoft.caracola.util.PhoneUtils.sendSms;
 
 /**
  * @author rainermf
@@ -56,28 +59,28 @@ public class SecurityDialog {
         call1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openPhoneApp(phone1.getText().toString());
+                dial(activity, phone1.getText().toString());
             }
         });
 
         call2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openPhoneApp(phone2.getText().toString());
+                dial(activity, phone2.getText().toString());
             }
         });
 
         sms1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSmsApp(phone1.getText().toString());
+                sendSms(activity, phone1.getText().toString());
             }
         });
 
         sms2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSmsApp(phone2.getText().toString());
+                sendSms(activity, phone2.getText().toString());
             }
         });
 
@@ -128,18 +131,4 @@ public class SecurityDialog {
     }
 
     protected void notifyActivation(boolean activated) { }
-
-    private void openPhoneApp(String number) {
-        Intent dialIntent = new Intent();
-        dialIntent.setAction(Intent.ACTION_DIAL);
-        dialIntent.setData(Uri.parse("tel:" + number));
-        activity.startActivity(dialIntent);
-    }
-
-    private void openSmsApp(String number) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.putExtra("addressText", number);
-        intent.setType("vnd.android-dir/mms-sms");
-        activity.startActivity(intent);
-    }
 }

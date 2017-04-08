@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
-import com.polymitasoft.caracola.datamodel.ExternalService;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
 
@@ -25,6 +24,8 @@ import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
 import static butterknife.ButterKnife.findById;
+import static com.polymitasoft.caracola.util.PhoneUtils.dial;
+import static com.polymitasoft.caracola.util.PhoneUtils.sendSms;
 
 public class SupplierInfoFragment extends Fragment {
 
@@ -115,35 +116,21 @@ public class SupplierInfoFragment extends Fragment {
 
     @OnClick(R.id.call_phone1)
     public void onPhone1Click() {
-        openPhoneApp(supplier.getPhoneNumbers().get(0));
+        dial(getContext(), supplier.getPhoneNumbers().get(0));
     }
 
     @OnClick(R.id.call_phone2)
     public void onPhone2Click() {
-        openPhoneApp(supplier.getPhoneNumbers().get(1));
+        dial(getContext(), supplier.getPhoneNumbers().get(1));
     }
 
     @OnClick(R.id.send_sms_phone1)
     public void onSms1Click() {
-        openSmsApp(supplier.getPhoneNumbers().get(0));
+        sendSms(getContext(), supplier.getPhoneNumbers().get(0));
     }
 
     @OnClick(R.id.send_sms_phone2)
     public void onSms2Click() {
-        openSmsApp(supplier.getPhoneNumbers().get(1));
-    }
-
-    private void openPhoneApp(String number) {
-        Intent dialIntent = new Intent();
-        dialIntent.setAction(Intent.ACTION_DIAL);
-        dialIntent.setData(Uri.parse("tel:" + number));
-        startActivity(dialIntent);
-    }
-
-    private void openSmsApp(String number) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.putExtra("addressText", number);
-        intent.setType("vnd.android-dir/mms-sms");
-        startActivity(intent);
+        sendSms(getContext(), supplier.getPhoneNumbers().get(1));
     }
 }
