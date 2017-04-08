@@ -17,6 +17,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
+import com.polymitasoft.caracola.util.PhoneUtils;
 
 import org.threeten.bp.LocalDate;
 
@@ -131,6 +132,5 @@ public class SecurityDialog {
         builder.show();
     }
 
-    protected void notifyActivation(boolean activated) {
-    }
+    protected void notifyActivation(boolean activated) { }
 }

@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.notification.StateBar;
-import com.polymitasoft.caracola.reports.pdf.Report;
+import com.polymitasoft.caracola.report.Report;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
 import com.polymitasoft.caracola.view.booking.BookingButtonBar;
@@ -28,6 +28,8 @@ import com.polymitasoft.caracola.view.drm.SecurityDialog;
 import com.polymitasoft.caracola.view.hostel.HostelActivity;
 import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.ContactsActivity;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -111,6 +113,11 @@ public class DrawerActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_hostal:
                 startActivity(new Intent(this, HostelActivity.class));
+                break;
+            case R.id.nav_export:
+                File file = new File(DataStoreHolder.INSTANCE.getDbFile().getParent(), "report.txt");
+                new Report().write(file.getAbsolutePath());
+                Toast.makeText(this, "Archivo exportado con éxito en " + file.getAbsolutePath() + ".", Toast.LENGTH_LONG).show();
         }
 
         DrawerLayout drawer = findById(this, R.id.drawer_layout);

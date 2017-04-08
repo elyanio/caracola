@@ -154,5 +154,6 @@
     <string name="pref_description_enable_sms_notifications">Habilita el envío de SMS a los gestores definidos para sincronizar el calendario de reservas.</string>
     <string name="set">aceptar</string>
     <string name="cancel">cancelar</string>
+    <string name="title_export">Exportar</string>
 
 </resources>
