@@ -111,9 +111,6 @@ public class DrawerActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_hostal:
                 startActivity(new Intent(this, HostelActivity.class));
-            case R.id.nav_export:
-                Report.createPdf(DataStoreHolder.INSTANCE.getDbFile().getParent());
-//                startActivity(new Intent(this, HostelActivity.class));
         }
 
         DrawerLayout drawer = findById(this, R.id.drawer_layout);

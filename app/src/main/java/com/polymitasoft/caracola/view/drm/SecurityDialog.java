@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
+import com.polymitasoft.caracola.BuildConfig;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.settings.Preferences;
@@ -98,15 +99,16 @@ public class SecurityDialog {
             @Override
             public void onClick(View v) {
                 String userActivationCode = activationCodeText.getText().toString();
-                Log.e(SecurityDialog.class.getName(), "Length: " + requestCode.length());
                 String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(requestCode));
                 if (userActivationCode.equals(encryptedString)) {
                     dialog.dismiss();
                     requestActivationTime();
                     notifyActivation(true);
                 } else {
-                    Log.e(SecurityDialog.class.getName(), String.format("Request code: %s.", requestCode));
-                    Log.e(SecurityDialog.class.getName(), String.format("Expected: %s, Found: %s.", encryptedString, userActivationCode));
+                    if (BuildConfig.DEBUG) {
+                        Log.e(SecurityDialog.class.getName(), String.format("Request code: %s.", requestCode));
+                        Log.e(SecurityDialog.class.getName(), String.format("Expected: %s, Found: %s.", encryptedString, userActivationCode));
+                    }
                     activationCodeText.setText("");
                 }
             }
