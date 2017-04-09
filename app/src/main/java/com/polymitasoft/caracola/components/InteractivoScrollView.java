@@ -9,8 +9,6 @@ import android.widget.ScrollView;
 
 import com.polymitasoft.caracola.view.booking.VistaMes;
 
-import java.util.Calendar;
-
 
 /**
  * Triggers a event when scrolling reaches bottom.
@@ -53,7 +51,7 @@ public class InteractivoScrollView extends ScrollView {
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        View ultimaView = (View) getChildAt(getChildCount() - 1);
+        View ultimaView = getChildAt(getChildCount() - 1);
 //        View iniView = (View) getChildAt(0);
         //si llego al principio
         if (0 >= getScrollY() && mListener != null) {
@@ -96,10 +94,10 @@ public class InteractivoScrollView extends ScrollView {
 //     * Event listener.
 //     */
     public interface CapturadorEventoMoverScroll {
-        public static final int SENTIDO_SCROLL_ARRIBA = 1;
-        public static final int SENTIDO_SCROLL_ABAJO = 0;
+        int SENTIDO_SCROLL_ARRIBA = 1;
+        int SENTIDO_SCROLL_ABAJO = 0;
 
-        public void onMover(int sentido);
+        void onMover(int sentido);
     }
 
 }

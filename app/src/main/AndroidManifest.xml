@@ -76,8 +76,8 @@
         </activity>
         <activity
             android:name=".view.supplier.SupplierServiceInfoActivity"
-            android:label="@string/title_activity_supplier_service_info"></activity>
-        <activity android:name=".view.publicity.Publicity"></activity>
+            android:label="@string/title_activity_supplier_service_info"/>
+        <activity android:name=".view.publicity.Publicity"/>
 
         <receiver android:name=".reminder.AlarmReceiver">
 

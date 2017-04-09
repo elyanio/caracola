@@ -17,7 +17,6 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
-import com.polymitasoft.caracola.util.PhoneUtils;
 
 import org.threeten.bp.LocalDate;
 

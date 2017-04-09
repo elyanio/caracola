@@ -57,7 +57,7 @@ public class Publicity extends AppCompatActivity {
             elemento = contexto_inflado.inflate(R.layout.simple_list_item_two_text, null);
             TextView primaryText = (TextView) elemento.findViewById(R.id.primary_text);
             primaryText.setTextSize(Metrics.dp(27));
-            View colorStrip = (View) elemento.findViewById(R.id.color_strip);
+            View colorStrip = elemento.findViewById(R.id.color_strip);
             colorStrip.setBackgroundColor(Colors.INSTANCE.getColor(posision));
             final String marca = marcas.get(posision);
             primaryText.setText(marca);

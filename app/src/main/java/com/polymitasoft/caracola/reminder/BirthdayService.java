@@ -52,6 +52,7 @@ public class BirthdayService extends Service {
     private void checkBirthday() {
 
         timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
             public void run() {
                 int reminderBirthday = Preferences.getDayBeforeReminderBirthday();
                 LocalDate now = LocalDate.now();
@@ -66,8 +67,7 @@ public class BirthdayService extends Service {
 
     private List<Client> findClients(LocalDate birthDay) {
         EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
-        List<Client> clients = dataStore.select(Client.class).where(Client.BIRTHDAY.eq(birthDay)).get().toList();
-        return clients;
+        return dataStore.select(Client.class).where(Client.BIRTHDAY.eq(birthDay)).get().toList();
     }
 
 

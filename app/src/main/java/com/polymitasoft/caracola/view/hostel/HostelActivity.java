@@ -137,11 +137,7 @@ public class HostelActivity extends AppCompatActivity {
             EntityDataStore<Persistable> dataStore = hostelAdapter.getDataStore();
             Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(code)).get().firstOrNull();
 
-            if (hostel != null) {
-                return false;
-            } else {
-                return true;
-            }
+            return hostel == null;
         } else {
             return false;
         }

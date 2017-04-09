@@ -9,8 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.datamodel.ExternalService;
-import com.polymitasoft.caracola.datamodel.Supplier;
 
 public class ContactsActivity extends AppCompatActivity {
 

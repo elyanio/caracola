@@ -11,7 +11,6 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Hostel;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class HostelAdapter extends BaseAdapter {
 
     public HostelAdapter(Context context) {
         this.context = context;
-        dataStore = DataStoreHolder.getInstance().getDataStore(context);
+        dataStore = DataStoreHolder.INSTANCE.getDataStore();
         hostels = new ArrayList<>();
         hostels = dataStore.select(Hostel.class).get().toList();
     }

@@ -42,7 +42,7 @@ public class BedroomInsertActivity extends AppCompatActivity {
         }
 
         codeHostel = getIntent().getExtras().getString("CODE");
-        data = DataStoreHolder.getInstance().getDataStore(this);
+        data = DataStoreHolder.INSTANCE.getDataStore();
         hostel = data.select(Hostel.class).where(Hostel.CODE.eq(codeHostel)).get().first();
 
         bedroom = new BedroomBuilder().build(); // creating a new bedroom

@@ -143,6 +143,7 @@ public class ConsumptionFragment extends Fragment {
             editItem(item);
         }
 
+        @Override
         protected void editItem(Consumption consumption) {
             mListener.onConsumptionListInteraction(consumption);
             updateTotals();

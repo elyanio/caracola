@@ -127,6 +127,7 @@ public class ReservaPrincipal extends DrawerActivity
         showDialog(newFragment, "show_disponibilidad");
     }
 
+    @Override
     public List<Bedroom> obtenerDisponibilidad(LocalDate dia1, LocalDate dia2) {
         return getReservaEsenaPrincipal().getReservaPanelHabitacionActual().disponibilidad(dia1, dia2);
     }
@@ -167,7 +168,7 @@ public class ReservaPrincipal extends DrawerActivity
         for (int i = 0; i < bedrooms.size(); i++) {
             menu.add(0, i, 0, bedrooms.get(i).getName());
         }
-        MenuItem item1 = (MenuItem) menu.findItem(R.id.show_m);
+        MenuItem item1 = menu.findItem(R.id.show_m);
         Bedroom habitacion = reservaEsenaPrincipal.getReservaPanelHabitacionActual().getHabitacion();
         if( habitacion == null){
             item1.setTitle("Disponibilidad");

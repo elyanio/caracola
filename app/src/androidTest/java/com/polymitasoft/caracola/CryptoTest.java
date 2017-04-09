@@ -1,11 +1,9 @@
 package com.polymitasoft.caracola;
 
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Base64;
 
 import com.polymitasoft.caracola.drm.Drm;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

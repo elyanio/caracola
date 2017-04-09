@@ -9,9 +9,7 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingState;
-import com.polymitasoft.caracola.datamodel.Consumption;
 import com.polymitasoft.caracola.datamodel.Hostel;
-import com.polymitasoft.caracola.datamodel.InternalService;
 import com.polymitasoft.caracola.datamodel.LocalDateConverter;
 import com.polymitasoft.caracola.datamodel.Manager;
 import com.polymitasoft.caracola.notification.StateBar;
@@ -22,7 +20,6 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
-import java.net.Inet4Address;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -48,9 +45,9 @@ public class Receiver extends BroadcastReceiver {
 
             if (msgs != null) {
 
-                for (int i = 0; i < msgs.length; i++) {
-                    number_manager = msgs[i].getOriginatingAddress();
-                    str += msgs[i].getMessageBody().toString();
+                for (SmsMessage msg : msgs) {
+                    number_manager = msg.getOriginatingAddress();
+                    str += msg.getMessageBody();
                 }
             }
             String[] valores = str.split("#");
@@ -111,7 +108,7 @@ public class Receiver extends BroadcastReceiver {
 
         if (chequearFidelidadMensaje(context, valores[2], number_manager)) {
 
-            EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+            EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
             int code = Integer.parseInt(valores[2]);
 
             Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).get().first();
@@ -153,14 +150,13 @@ public class Receiver extends BroadcastReceiver {
         int indexFinal = number.length();
         int indexInicial = number.length() - 8;
 
-        String numero = number.substring(indexInicial, indexFinal);
-        return numero;
+        return number.substring(indexInicial, indexFinal);
     }
 
     private Booking borrarBooking(String fechaInicio, String roomCode, Context context) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
 
         int code = Integer.parseInt(roomCode);
@@ -176,7 +172,7 @@ public class Receiver extends BroadcastReceiver {
         LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
 
         int roomCode = Integer.parseInt(valor);
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
         Hostel hostel = bedroom.getHostel();
         Manager managerHostel = dataStore.select(Manager.class).where(Manager.HOSTEL.eq(hostel).and(Manager.PHONE_NUMBER.eq(number_manager))).get().firstOrNull();
@@ -185,33 +181,26 @@ public class Receiver extends BroadcastReceiver {
             return false;
         } else {
             Booking firstBooking = dataStore.select(Booking.class).where(Booking.CHECK_IN_DATE.eq(localDateInicio).and(Booking.BEDROOM.eq(bedroom))).get().firstOrNull();
-            if (firstBooking == null) {
-                return true;
-            }
-            return false;
+            return firstBooking == null;
         }
     }
 
     private boolean chequearFidelidadMensaje(Context context, String valor, String number_manager) {
 
         int roomCode = Integer.parseInt(valor);
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
         Hostel hostel = bedroom.getHostel();
         Manager managerHostel = dataStore.select(Manager.class).where(Manager.HOSTEL.eq(hostel).and(Manager.PHONE_NUMBER.eq(number_manager))).get().firstOrNull();
 
-        if (managerHostel == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return managerHostel != null;
     }
 
     private void insertarBooking(String fechaInicio, String fechaFin, String precio, String estado, String codigo, String comentario, Context context) {
 
         int state = Integer.parseInt(estado);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
 
 
         LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
@@ -233,14 +222,13 @@ public class Receiver extends BroadcastReceiver {
         }
         int roomCode = Integer.parseInt(codigo);
         Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
-        String comment = comentario;
 
         Booking booking = new Booking();
         booking.setCheckInDate(localDateInicio);
         booking.setCheckOutDate(localDateFin);
         booking.setState(bookingState);
         booking.setBedroom(bedroom);
-        booking.setNote(comment);
+        booking.setNote(comentario);
         booking.setPrice(price);
 
         dataStore.insert(booking);
@@ -250,7 +238,7 @@ public class Receiver extends BroadcastReceiver {
 
         int state = Integer.parseInt(estado);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(context);
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
 
         LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
         LocalDate localDateInicioVieja = LocalDate.parse(fechaInicioVieja, formatter);
@@ -274,14 +262,13 @@ public class Receiver extends BroadcastReceiver {
 
         int roomCode = Integer.parseInt(codigo);
         Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
-        String comment = comentario;
 
         Booking booking = dataStore.select(Booking.class).where(Booking.BEDROOM.eq(bedroom).and(Booking.CHECK_IN_DATE.eq(localDateInicioVieja))).get().first();
         booking.setCheckInDate(localDateInicio);
         booking.setCheckOutDate(localDateFin);
         booking.setState(bookingState);
         booking.setBedroom(bedroom);
-        booking.setNote(comment);
+        booking.setNote(comentario);
         booking.setPrice(price);
 
         dataStore.update(booking);

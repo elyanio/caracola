@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.components.Colors;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.Manager;
@@ -181,7 +179,7 @@ public class ManagerActivity extends AppCompatActivity {
             this.context = context;
             this.codeHostel = codeHostel;
 
-            dataStore = DataStoreHolder.getInstance().getDataStore(context);
+            dataStore = DataStoreHolder.INSTANCE.getDataStore();
             Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(codeHostel)).get().first();
             managers = dataStore.select(Manager.class).where(Manager.HOSTEL.eq(hostel)).get().toList();
 

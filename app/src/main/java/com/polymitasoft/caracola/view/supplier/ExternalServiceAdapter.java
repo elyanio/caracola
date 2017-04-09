@@ -53,6 +53,7 @@ class ExternalServiceAdapter extends SimpleListAdapter<ExternalService> {
         context.startActivity(intent);
     }
 
+    @Override
     protected void editItem(ExternalService service) {
         Intent intent = new Intent(context, ExternalServiceEditActivity.class);
         intent.putExtra(ExternalServiceEditActivity.EXTRA_SERVICE_ID, service.getId());

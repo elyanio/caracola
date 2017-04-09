@@ -4,17 +4,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.Client;
 import com.polymitasoft.caracola.settings.Preferences;
 
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneId;
-import org.threeten.bp.temporal.TemporalField;
 
 import java.util.List;
 
@@ -47,8 +43,8 @@ public class Alarm {
 
         //pref tiene la cantidad de milisegundos de las 12:00am hasta las 10:00am
         int hour = 1000 * 60 * 60 * 10;
-        int minute = 1000 * 60 * 0;
-        int second = 1000 * 0;
+        int minute = 0;
+        int second = 0;
         int prefTimeMilli = hour + minute + second;
 
         int prefDayBefore = Preferences.getDayBeforeReminder();
@@ -72,8 +68,8 @@ public class Alarm {
     public void setAlarmBirthday(List<Client> clients) {
         //pref tiene la cantidad de milisegundos de las 12:00am hasta las 10:00am
         int hour = 1000 * 60 * 60 * 10;
-        int minute = 1000 * 60 * 0;
-        int second = 1000 * 0;
+        int minute = 0;
+        int second = 0;
         int prefTimeMilli = hour + minute + second;
 
         for (Client client : clients) {

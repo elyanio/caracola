@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -110,11 +109,7 @@ public class BedroomLonlyActivity extends AppCompatActivity {
     private boolean chequearCodigoCuarto(int code) {
         EntityDataStore<Persistable> dataStore = bedroomAdapter.getDataStore();
         Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).get().firstOrNull();
-        if (bedroom == null) {
-            return true;
-        } else {
-            return false;
-        }
+        return bedroom == null;
     }
 
     public class BedroomAdapter extends BaseAdapter {
@@ -127,7 +122,7 @@ public class BedroomLonlyActivity extends AppCompatActivity {
 
         public BedroomAdapter(Context context) {
             this.context = context;
-            dataStore = DataStoreHolder.getInstance().getDataStore(context);
+            dataStore = DataStoreHolder.INSTANCE.getDataStore();
             bedrooms = new ArrayList<>();
             bedrooms = dataStore.select(Bedroom.class).where(Bedroom.HOSTEL.eq(nullHostel)).get().toList();
         }

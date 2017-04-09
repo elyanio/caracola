@@ -1,7 +1,6 @@
 package com.polymitasoft.caracola.components;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
-import com.polymitasoft.caracola.notification.StateBar;
 import com.polymitasoft.caracola.report.Report;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;

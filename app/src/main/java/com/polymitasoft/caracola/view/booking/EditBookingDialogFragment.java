@@ -12,12 +12,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
@@ -33,7 +31,6 @@ import com.polymitasoft.caracola.datamodel.Booking;
 import com.polymitasoft.caracola.datamodel.BookingBuilder;
 import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.reminder.Alarm;
-import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -111,11 +108,13 @@ public class EditBookingDialogFragment extends DialogFragment {
         builder.setView(view)
                 .setTitle((idBooking == -1) ? R.string.reserva_titulo_hacer_reserva : R.string.title_edit_booking)
                 .setPositiveButton(R.string.ok_action_button, new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         clickeditR();
                     }
                 })
                 .setNegativeButton(R.string.cancel_action_button, new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
@@ -242,14 +241,10 @@ public class EditBookingDialogFragment extends DialogFragment {
     }
 
     private boolean noNoteChange(Booking oldBooking, Booking booking) {
-        if(!oldBooking.getCheckInDate().isEqual(booking.getCheckInDate()) || !oldBooking.getCheckOutDate().isEqual(booking.getCheckOutDate())
+        return !oldBooking.getCheckInDate().isEqual(booking.getCheckInDate()) || !oldBooking.getCheckOutDate().isEqual(booking.getCheckOutDate())
                 || !oldBooking.getBedroom().equals(booking.getBedroom()) || oldBooking.getBookingNumber() != booking.getBookingNumber()
                 || !oldBooking.getPrice().equals(booking.getPrice()) || !oldBooking.getState().equals(booking.getState())
-                || oldBooking.getId() != booking.getId()){
-            return true;
-        }else{
-            return  false;
-        }
+                || oldBooking.getId() != booking.getId();
     }
 
     private static final int REQUEST_SEND_CREATE_SMS = 123;

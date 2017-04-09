@@ -10,8 +10,6 @@ package com.polymitasoft.caracola.reports.pdf;
 //import com.itextpdf.layout.element.ListItem;
 //import com.itextpdf.layout.element.Paragraph;
 
-import java.io.IOException;
-
 /**
  * @author rainermf
  * @since 8/4/2017

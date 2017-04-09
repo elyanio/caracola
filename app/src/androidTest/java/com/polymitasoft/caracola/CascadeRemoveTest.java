@@ -15,8 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.math.BigDecimal;
-
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 

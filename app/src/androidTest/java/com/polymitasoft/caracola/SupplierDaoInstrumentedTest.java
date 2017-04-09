@@ -13,7 +13,6 @@ import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author rainermf

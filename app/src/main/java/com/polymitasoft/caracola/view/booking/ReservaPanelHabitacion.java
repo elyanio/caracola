@@ -1,6 +1,5 @@
 package com.polymitasoft.caracola.view.booking;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,11 +22,7 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.dataaccess.HostelDao;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
-import com.polymitasoft.caracola.datamodel.BookingState;
-import com.polymitasoft.caracola.datamodel.IBooking;
 import com.polymitasoft.caracola.reminder.Alarm;
-import com.polymitasoft.caracola.reminder.AlarmReceiver;
-import com.polymitasoft.caracola.settings.Preferences;
 
 import org.threeten.bp.LocalDate;
 
@@ -146,6 +141,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         dialog.setTitle("Eliminar Reserva");
         dialog.setMessage("¿Seguro desea eliminar la reserva seleccionada?");
         dialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 //todo mensaje eliminar asere ....
@@ -198,7 +194,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
             diaMenor = dia2;
             diaMayor = dia1;
         }
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         List<Bedroom> bedrooms = dataStore.select(Bedroom.class).get().toList();
         List<Bedroom> disponibles = new ArrayList<>();
 
@@ -264,7 +260,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
                 // aqui no es necesario seleccionar reserva q lo hubiera hecho en el toque anterior,ah no tengo culpa
                 segundoDiaSelec = dia;
                 if (primerDiaSelec.getColor() == CalendarState.CONFIRMED.color() || primerDiaSelec.getColor() == CalendarState.PENDING.color() || primerDiaSelec.getColor() == CalendarState.CHECKED_IN.color()) { // si la primera seleccion esta en una reserva
-                    IBooking calendario_reserva = obtenerReservaModoH(primerDiaSelec);
+                    Booking calendario_reserva = obtenerReservaModoH(primerDiaSelec);
                     seleccionadorDeReservaModoH(calendario_reserva, CalendarState.UNSELECTED.color()); //deseleccionar reserva anteriior
                     if (segundoDiaSelec.getColor() != CalendarState.CONFIRMED.color() && segundoDiaSelec.getColor() != CalendarState.PENDING.color() && segundoDiaSelec.getColor() != CalendarState.CHECKED_IN.color()) { // y la segunda no tiene reserv
                         segundoDiaSelec.seleccionar(CellLocation.ALONE);
@@ -592,7 +588,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
-    public void eliminarCalendarioReservaAMeses(IBooking calendario_reserva) {
+    public void eliminarCalendarioReservaAMeses(Booking calendario_reserva) {
         VistaDia fechaIniC = obtenerVistaDiaFict(calendario_reserva.getCheckInDate());
         VistaDia fechaFinC = obtenerVistaDiaFict(calendario_reserva.getCheckOutDate());
         VistaMes mesMenor = mesDelDia(fechaIniC);
@@ -605,7 +601,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         }
     }
 
-    public void seleccionadorDeReservaModoH(IBooking calendario_reserva, int color) {
+    public void seleccionadorDeReservaModoH(Booking calendario_reserva, int color) {
         VistaDia diaIni = obtenerVistaDiaFict(calendario_reserva.getCheckInDate());
         VistaDia diaFin = obtenerVistaDiaFict(calendario_reserva.getCheckOutDate());
 
@@ -647,7 +643,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
         reservaPrincipal.getBookingButtonBar().hide();
     }
 
-    public boolean estaElDiaHoyEnReserva(IBooking calendario_reserva) {
+    public boolean estaElDiaHoyEnReserva(Booking calendario_reserva) {
         LocalDate diaMenor = calendario_reserva.getCheckInDate();
         LocalDate diaMayor = calendario_reserva.getCheckOutDate();
         LocalDate hoy = LocalDate.now();
@@ -710,8 +706,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
     public VistaMes cargarMesesHastaElDia(VistaDia dia) {
         if (dia.getCalendar().isAfter(meses.get(meses.size() - 1).getInicio_mes())) { // se incrementan al final de la lista
-            LocalDate diaIniDelUltimoMes = meses.get(meses.size() - 1).getInicio_mes();
-            LocalDate localDatei = diaIniDelUltimoMes;
+            LocalDate localDatei = meses.get(meses.size() - 1).getInicio_mes();
             while (dia.getCalendar().getYear() != localDatei.getYear() || dia.getCalendar().getMonthValue() != localDatei.getMonthValue()) {
                 localDatei = localDatei.plusMonths(1);
                 VistaMes mes = new VistaMes(getContext(), this, localDatei);
@@ -720,8 +715,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
             }
             return meses.get(meses.size() - 1);
         } else {   //se incrementa a principio de los meses
-            LocalDate diaIniDelPrimerMes = meses.get(0).getInicio_mes();
-            LocalDate localDatei = diaIniDelPrimerMes;
+            LocalDate localDatei = meses.get(0).getInicio_mes();
             while (dia.getCalendar().getYear() != localDatei.getYear() || dia.getCalendar().getMonthValue() != localDatei.getMonthValue()) {
                 localDatei = localDatei.minusMonths(1);
                 VistaMes mes = new VistaMes(getContext(), this, localDatei);
@@ -803,6 +797,7 @@ public class ReservaPanelHabitacion extends LinearLayout {
 
 
     private static class DialogDismissClickListener implements DialogInterface.OnClickListener {
+        @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.cancel();
         }

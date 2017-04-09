@@ -3,8 +3,6 @@ package com.polymitasoft.caracola.view.booking;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -107,9 +104,7 @@ public class ReservaEsenaPrincipal extends LinearLayout {
             LayoutInflater contexto_inflado = ((Activity) getContext()).getLayoutInflater();
             elemento = contexto_inflado.inflate(R.layout.simple_item_text_center, null);
             TextView textGrid1 = (TextView) elemento.findViewById(R.id.textGrid1);
-            String dia = listDias.get(posision);
-            String textoMostrado = dia;
-            textGrid1.setText(textoMostrado);
+            textGrid1.setText(listDias.get(posision));
             return elemento;
         }
     }

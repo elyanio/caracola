@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +14,6 @@ import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Hostel;
 
 import java.util.List;
-import java.util.StringTokenizer;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
@@ -36,7 +33,7 @@ public class BedroomHostelAdapter extends BaseAdapter {
         this.context = context;
         this.hostelCode = hostelCode;
 
-        dataStore = DataStoreHolder.getInstance().getDataStore(context);
+        dataStore = DataStoreHolder.INSTANCE.getDataStore();
         Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
         bedrooms = dataStore.select(Bedroom.class).where(Bedroom.HOSTEL.eq(hostel)).get().toList();
     }

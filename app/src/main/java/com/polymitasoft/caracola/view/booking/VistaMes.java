@@ -3,7 +3,6 @@ package com.polymitasoft.caracola.view.booking;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +52,7 @@ public class VistaMes extends LinearLayout {
         super(context);
         this.reservaPanelHabitacion = reservaPanelHabitacion;
         this.inicio_mes = inicio_mes;
-        EntityDataStore<Persistable> dataStore = DataStoreHolder.getInstance().getDataStore(getContext());
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         bookingDao = new BookingDao(dataStore);
         inicializar();
         cargarCalendarioReservas();
@@ -94,11 +93,8 @@ public class VistaMes extends LinearLayout {
         // poner los dias
         for (int i = 1; i <= cant_dias_mes; i++) {
             LocalDate dia = LocalDate.of(inicio_mes.getYear(), inicio_mes.getMonth(), i);
-            String s = dia.format(format);
-//            Log.e("dias",s);
             Pair<Integer, CellLocation> pair = obtenerColorAlcrear(dia);
             temp = new VistaDia(getContext(), dia, pair.first, pair.second);
-//            Log.e("color",temp.getColor()+"");
             dias.add(temp);
             temp.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
@@ -116,9 +112,6 @@ public class VistaMes extends LinearLayout {
             cont += 7;
         }
         cantNoDias = cont;
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("y/M/d");
-//        Log.e("dia",inicio_mes.format(format));
-//        Log.e("cant no dias",cantNoDias + "");
     }
 
     public void actualizarCambioHabitacion() {

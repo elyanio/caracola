@@ -8,16 +8,15 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import org.threeten.bp.LocalDate;
 
 import static com.polymitasoft.caracola.view.booking.CalendarState.NO_DAY;
 import static com.polymitasoft.caracola.view.booking.CalendarState.SELECTED;
 
-public class VistaDia extends TextView implements Comparable<VistaDia> {
+public class VistaDia extends AppCompatTextView implements Comparable<VistaDia> {
     private final LocalDate dia;
     @ColorInt private int color;
     @ColorInt private int textColor;

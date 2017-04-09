@@ -14,7 +14,6 @@ import io.requery.Generated;
 import io.requery.Key;
 import io.requery.ManyToOne;
 import io.requery.Persistable;
-import io.requery.ReferentialAction;
 
 import static io.requery.PropertyNameStyle.FLUENT_BEAN;
 import static io.requery.ReferentialAction.RESTRICT;

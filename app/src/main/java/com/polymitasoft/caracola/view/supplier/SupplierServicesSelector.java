@@ -3,9 +3,9 @@ package com.polymitasoft.caracola.view.supplier;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.dataaccess.SupplierDao;
@@ -28,7 +28,7 @@ import static com.polymitasoft.caracola.datamodel.ExternalService.NAME;
  * @since 1/3/2017
  */
 
-public class SupplierServicesSelector extends Button {
+public class SupplierServicesSelector extends AppCompatButton {
 
     private EntityDataStore<Persistable> dataStore;
     private SupplierDao dao;

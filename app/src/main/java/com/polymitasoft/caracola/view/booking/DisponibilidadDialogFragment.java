@@ -1,7 +1,6 @@
 package com.polymitasoft.caracola.view.booking;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -21,7 +20,6 @@ import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,11 +90,11 @@ public class DisponibilidadDialogFragment extends DialogFragment {
 
     // Container Activity must implement this interface
     public interface OnDisponibilidadListener {
-        public List<Bedroom> obtenerDisponibilidad(LocalDate dia1, LocalDate dia2);
+        List<Bedroom> obtenerDisponibilidad(LocalDate dia1, LocalDate dia2);
 
-        public void actualizarSeleccionEnCalendaio(LocalDate dia1, LocalDate dia2);
+        void actualizarSeleccionEnCalendaio(LocalDate dia1, LocalDate dia2);
 
-        public void clickEnListaDisponibilidad(LocalDate dia1, LocalDate dia2, Bedroom bedroom);
+        void clickEnListaDisponibilidad(LocalDate dia1, LocalDate dia2, Bedroom bedroom);
     }
 
     OnDisponibilidadListener mCallback;
@@ -132,7 +130,7 @@ public class DisponibilidadDialogFragment extends DialogFragment {
             elemento = contexto_inflado.inflate(R.layout.simple_list_item_two_text, null);
             TextView primaryText = (TextView) elemento.findViewById(R.id.primary_text);
             TextView secondaryText = (TextView) elemento.findViewById(R.id.secondary_text);
-            View colorStrip = (View) elemento.findViewById(R.id.color_strip);
+            View colorStrip = elemento.findViewById(R.id.color_strip);
 
 
             if(!vacio){

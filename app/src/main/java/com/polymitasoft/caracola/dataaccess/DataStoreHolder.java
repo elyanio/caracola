@@ -29,16 +29,6 @@ public enum DataStoreHolder {
     private final File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Caracola");
     private final File dbFile = new File(directory.getAbsolutePath() + "/caracola.db");
 
-    @Deprecated
-    public static DataStoreHolder getInstance() {
-        return INSTANCE;
-    }
-
-    @Deprecated
-    public EntityDataStore<Persistable> getDataStore(Context context) {
-        return getDataStore();
-    }
-
     public EntityDataStore<Persistable> getDataStore() {
         if (entityDataStore == null) {
             entityDataStore = createDataStore(CaracolaApplication.instance(), dbFile);

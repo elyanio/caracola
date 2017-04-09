@@ -1,6 +1,5 @@
 package com.polymitasoft.caracola.datamodel;
 
-import io.requery.Converter;
 import io.requery.converter.EnumOrdinalConverter;
 
 /**

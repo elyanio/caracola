@@ -4,15 +4,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
 
-import com.polymitasoft.caracola.CaracolaApplication;
-import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.view.booking.ReservaEsenaPrincipal;
 import com.polymitasoft.caracola.view.booking.ReservaPrincipal;
 
 /**
@@ -22,7 +18,6 @@ public class StateBar {
 
     public void BookingNotification(Context context_emisor, int id_notification, String title, String text, String phone, String bigText) {
 
-        int mId = id_notification;
         long[] pattern = new long[]{0, 2000, 0};
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context_emisor)
@@ -52,12 +47,11 @@ public class StateBar {
         NotificationManager mNotificationManager = (NotificationManager) context_emisor.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // mId allows you to update the BookingNotification later on.
-        mNotificationManager.notify(mId, mBuilder.build());
+        mNotificationManager.notify(id_notification, mBuilder.build());
     }
 
     public void BookingNotificationService(Context context_emisor, int id_notification, String title, String text, String bigText) {
 
-        int mId = id_notification;
         long[] pattern = new long[]{0, 1000, 0};
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context_emisor)
@@ -86,7 +80,7 @@ public class StateBar {
         NotificationManager mNotificationManager = (NotificationManager) context_emisor.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // mId allows you to update the BookingNotification later on.
-        mNotificationManager.notify(mId, mBuilder.build());
+        mNotificationManager.notify(id_notification, mBuilder.build());
     }
 
 }
