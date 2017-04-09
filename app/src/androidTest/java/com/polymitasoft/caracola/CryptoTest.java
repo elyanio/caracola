@@ -1,9 +1,15 @@
 package com.polymitasoft.caracola;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Base64;
 
+import com.polymitasoft.caracola.drm.Drm;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author rainermf
@@ -15,19 +21,21 @@ public class CryptoTest {
 
     @Test
     public void cryptoTest() throws Exception {
-//        String plainString = base64().encode(Longs.toByteArray(Drm.getDeviceIdAsLong()));
-//        plainString += "-" + base64().encode(Longs.toByteArray(System.currentTimeMillis()));
-//        String encryptionKey = "Toawtef_*blyWef2";
-//        String encryptedString = Drm.encryptTo32String(plainString, encryptionKey);
-//
-//        assertNotEquals(plainString, encryptedString);
-//        assertEquals(plainString, Drm.decryptFrom32String(encryptedString, encryptionKey));
+        String plainString = "ZdMEXiILF2Y=";
+        String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(plainString));
+        String checkedEncryptedString = "MLFRUVDbGGM=";
+
+        assertEquals(encryptedString.length(), 12);
+        assertEquals(checkedEncryptedString.length(), 12);
+        assertEquals(encryptedString, checkedEncryptedString);
     }
 
     @Test
-    public void hashTest() throws Exception {
-//        String plainString = base64().encode(Longs.toByteArray(Drm.getDeviceIdAsLong()));
-//        Log.e(CryptoTest.class.getName(), "Code " + plainString);
+    public void decryptionTest() throws Exception {
+        String plainString = "Hell this is shit";
+        String encryptedString = Drm.encryptTo64String(plainString);
+
+        assertEquals(Drm.decryptFrom64String(encryptedString), plainString);
     }
 
 }

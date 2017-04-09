@@ -1,10 +1,9 @@
 package com.polymitasoft.caracola.view.drm;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,10 +16,8 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
-import com.polymitasoft.caracola.util.PhoneUtils;
 
 import org.threeten.bp.LocalDate;
-import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -101,13 +98,15 @@ public class SecurityDialog {
             @Override
             public void onClick(View v) {
                 String userActivationCode = activationCodeText.getText().toString();
-                String encryptionKey = "Toawtef_*blyWef2";
-                String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(requestCode, encryptionKey));
+                Log.e(SecurityDialog.class.getName(), "Length: " + requestCode.length());
+                String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(requestCode));
                 if (userActivationCode.equals(encryptedString)) {
                     dialog.dismiss();
                     requestActivationTime();
                     notifyActivation(true);
                 } else {
+                    Log.e(SecurityDialog.class.getName(), String.format("Request code: %s.", requestCode));
+                    Log.e(SecurityDialog.class.getName(), String.format("Expected: %s, Found: %s.", encryptedString, userActivationCode));
                     activationCodeText.setText("");
                 }
             }
@@ -130,5 +129,6 @@ public class SecurityDialog {
         builder.show();
     }
 
-    protected void notifyActivation(boolean activated) { }
+    protected void notifyActivation(boolean activated) {
+    }
 }

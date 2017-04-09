@@ -7,8 +7,6 @@ import android.util.Base64;
 import com.polymitasoft.caracola.CaracolaApplication;
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -31,9 +29,7 @@ public enum Drm {
     }
 
     public static String getRequestCode() {
-
-        return Base64.encodeToString(toByteArray(getDeviceIdAsLong()), Base64.DEFAULT);
-//        return BaseEncoding.base64().encode(Longs.toByteArray(getDeviceIdAsLong()));
+        return Base64.encodeToString(toByteArray(getDeviceIdAsLong()), Base64.DEFAULT).trim();
     }
 
     public static byte[] toByteArray(long value) {
@@ -70,13 +66,11 @@ public enum Drm {
     }
 
     public static String encryptTo64String(String plainText, String encryptionKey) {
-        return Base64.encodeToString(encrypt(plainText, encryptionKey), Base64.DEFAULT);
-//        return BaseEncoding.base64().encode(encrypt(plainText, encryptionKey));
+        return Base64.encodeToString(encrypt(plainText, encryptionKey), Base64.DEFAULT).trim();
     }
 
     public static String decryptFrom64String(String cipherText, String encryptionKey) {
         return decrypt(Base64.decode(cipherText, Base64.DEFAULT), encryptionKey);
-//        return decrypt(BaseEncoding.base64().decode(cipherText), encryptionKey);
     }
 
     public static String encryptTo64String(String plainText) {
@@ -85,22 +79,6 @@ public enum Drm {
 
     public static String decryptFrom64String(String cipherText) {
         return decryptFrom64String(cipherText, "Toawtef_*blyWef2");
-    }
-
-    public static String hashString(String plainText) {
-        byte[] hashedBytes = hashTemplate(plainText.getBytes(), "SHA1");
-        return new String(hashedBytes);
-    }
-
-    private static byte[] hashTemplate(byte[] data, String algorithm) {
-        if (data == null || data.length <= 0) return null;
-        try {
-            MessageDigest md = MessageDigest.getInstance(algorithm);
-            md.update(data);
-            return md.digest();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static String reduceToHalf(String text) {
