@@ -33,34 +33,30 @@ public class SplashScreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        // Hide title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.splash_screen);
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                if (ContextCompat.checkSelfPermission(SplashScreenActivity.this, WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED) {
-                    init();
-                } else {
-                    ActivityCompat.requestPermissions(SplashScreenActivity.this, new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_ES);
-                }
-                Intent mainIntent = new Intent().setClass(
-                        SplashScreenActivity.this, ReservaPrincipal.class);
-                startActivity(mainIntent);
-                finish();
-            }
-        };
 
-        // Simulate a long loading process on application startup.
-        Timer timer = new Timer();
-        timer.schedule(task, SPLASH_SCREEN_DELAY);
+        if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED) {
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    init();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(task, 0);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_ES);
+        }
     }
 
     private void init() {
         if (!DataStoreHolder.INSTANCE.existsDbFile()) {
             new DatabaseSetup().mockDatabase();
         }
+        Intent mainIntent = new Intent().setClass(this, ReservaPrincipal.class);
+        startActivity(mainIntent);
+        finish();
     }
 
     @Override
