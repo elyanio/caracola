@@ -3,7 +3,10 @@ package com.polymitasoft.caracola.communication;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.health.HealthStats;
 import android.telephony.SmsMessage;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
@@ -23,6 +26,7 @@ import java.math.BigDecimal;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
+import io.requery.sql.type.IntegerType;
 
 /**
  * Created by asio on 2/24/2017.
@@ -82,16 +86,21 @@ public class Receiver extends BroadcastReceiver {
         }
     }
 
-
     private void resolverNuevoBooking(String[] valores, Context context, String number_manager) {
         String showState = parssearBookingState(valores[4]);
 
-        if (chequearFidelidadMensaje(context, valores[5], number_manager, valores[1])) {
+        if (chequearFidelidadMensaje(context, valores[5], number_manager, valores[1], valores[6])) {
 
-            insertarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], context);
+            insertarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[7], valores[6], context);
+
+            int code = Integer.parseInt(valores[5]);
+
+            EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
+            Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(valores[6])).get().first();
+            Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
 
             String mensaje = "Nueva reserva gestionada.\nEntrada: " + valores[1] + "\nSalida: " +
-                    valores[2] + "\nTipo de Reserva: " + showState + "\n" + valores[6];
+                    valores[2] + "\nTipo de Reserva: " + showState + "\nHabitación: " + bedroom.getName() + "\nHostal: " + hostel.getName() + "\n" + valores[7];
 
             StateBar stateBar = new StateBar();
             stateBar.BookingNotification(context, 1, "Nueva Reserva", "Reserva gestionada", number_manager, mensaje);
@@ -106,18 +115,20 @@ public class Receiver extends BroadcastReceiver {
 
     private void resolverEliminarBooking(String[] valores, Context context, String number_manager) {
 
-        if (chequearFidelidadMensaje(context, valores[2], number_manager)) {
+        if (chequearFidelidadMensaje(context, valores[2], number_manager, valores[3])) {
 
             EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
             int code = Integer.parseInt(valores[2]);
+            String hostelCode = valores[3];
 
-            Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).get().first();
+            Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
+            Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
 
             Booking booking = borrarBooking(valores[1], valores[2], context);
             LocalDateConverter localDateConverter = new LocalDateConverter();
 
             String mensaje = "Reserva eliminada.\nEntrada: " + localDateConverter.convertToPersisted(booking.getCheckInDate()) + "\nSalida: " +
-                    localDateConverter.convertToPersisted(booking.getCheckOutDate()) + "\nHabitación: " + bedroom.getName();
+                    localDateConverter.convertToPersisted(booking.getCheckOutDate()) + "\nHabitación: " + bedroom.getName() + "\nHostal " + hostel.getName();
 
             StateBar stateBar = new StateBar();
             stateBar.BookingNotification(context, 1, "Eliminación Reserva", "Reserva eliminada", number_manager, mensaje);
@@ -127,13 +138,18 @@ public class Receiver extends BroadcastReceiver {
 
     private void resolverActualizarBooking(String[] valores, Context context, String number_manager) {
 
-        if (chequearFidelidadMensaje(context, valores[6], number_manager)) {
+        if (chequearFidelidadMensaje(context, valores[6], number_manager, valores[7])) {
 
             String showState = parssearBookingState(valores[5]);
-            actualizarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], valores[7], context);
+            actualizarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], valores[8], valores[7], context);
+
+            int code = Integer.parseInt(valores[6]);
+            EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
+            Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(valores[7])).get().first();
+            Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
 
             String mensaje = "Actualización de reserva.\nEntrada: " + valores[2] + "\nSalida: " +
-                    valores[3] + "\nTipo de Reserva: " + showState + "\n" + valores[7];
+                    valores[3] + "\nTipo de Reserva: " + showState + "\nHabitación: " + bedroom.getName() + "\nHostal: " + hostel.getName() + "\n" + valores[8];
 
             StateBar stateBar = new StateBar();
             stateBar.BookingNotification(context, 1, "Actualización de Reserva", "Reserva actualizada", number_manager, mensaje);
@@ -143,7 +159,7 @@ public class Receiver extends BroadcastReceiver {
 
     private void resolverConfirmacion(Context context, String number_manager) {
         StateBar stateBar = new StateBar();
-        stateBar.BookingNotification(context, 1, "Mensaje de Confirmación", "Mensaje recibido", number_manager, "");
+        stateBar.BookingNotification(context, 1, "Mensaje de Confirmación", "Mensaje recibido, Los datos han sido actualizado", number_manager, "");
     }
 
     private String parsearNumero(String number) {
@@ -166,15 +182,15 @@ public class Receiver extends BroadcastReceiver {
         return booking;
     }
 
-    private boolean chequearFidelidadMensaje(Context context, String valor, String number_manager, String fechaInicio) {
+    private boolean chequearFidelidadMensaje(Context context, String valor, String number_manager, String fechaInicio, String hostelCode) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
         LocalDate localDateInicio = LocalDate.parse(fechaInicio, formatter);
 
         int roomCode = Integer.parseInt(valor);
         EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
-        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
-        Hostel hostel = bedroom.getHostel();
+        Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
         Manager managerHostel = dataStore.select(Manager.class).where(Manager.HOSTEL.eq(hostel).and(Manager.PHONE_NUMBER.eq(number_manager))).get().firstOrNull();
 
         if (managerHostel == null) {
@@ -185,18 +201,18 @@ public class Receiver extends BroadcastReceiver {
         }
     }
 
-    private boolean chequearFidelidadMensaje(Context context, String valor, String number_manager) {
+    private boolean chequearFidelidadMensaje(Context context, String valor, String number_manager, String hostelCode) {
 
         int roomCode = Integer.parseInt(valor);
         EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
-        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
-        Hostel hostel = bedroom.getHostel();
-        Manager managerHostel = dataStore.select(Manager.class).where(Manager.HOSTEL.eq(hostel).and(Manager.PHONE_NUMBER.eq(number_manager))).get().firstOrNull();
+        Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
 
+        Manager managerHostel = dataStore.select(Manager.class).where(Manager.HOSTEL.eq(hostel).and(Manager.PHONE_NUMBER.eq(number_manager))).get().firstOrNull();
         return managerHostel != null;
     }
 
-    private void insertarBooking(String fechaInicio, String fechaFin, String precio, String estado, String codigo, String comentario, Context context) {
+    private void insertarBooking(String fechaInicio, String fechaFin, String precio, String estado, String codigo, String comentario, String codigoHostal, Context context) {
 
         int state = Integer.parseInt(estado);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
@@ -221,7 +237,9 @@ public class Receiver extends BroadcastReceiver {
                 break;
         }
         int roomCode = Integer.parseInt(codigo);
-        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
+
+        Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(codigoHostal)).get().first();
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
 
         Booking booking = new Booking();
         booking.setCheckInDate(localDateInicio);
@@ -234,7 +252,7 @@ public class Receiver extends BroadcastReceiver {
         dataStore.insert(booking);
     }
 
-    private void actualizarBooking(String fechaInicioVieja, String fechaInicio, String fechaFin, String precio, String estado, String codigo, String comentario, Context context) {
+    private void actualizarBooking(String fechaInicioVieja, String fechaInicio, String fechaFin, String precio, String estado, String codigo, String comentario, String hostelCode, Context context) {
 
         int state = Integer.parseInt(estado);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
@@ -258,10 +276,10 @@ public class Receiver extends BroadcastReceiver {
                 bookingState = BookingState.CHECKED_IN;
                 break;
         }
-
-
         int roomCode = Integer.parseInt(codigo);
-        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).get().first();
+
+        Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(roomCode)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
 
         Booking booking = dataStore.select(Booking.class).where(Booking.BEDROOM.eq(bedroom).and(Booking.CHECK_IN_DATE.eq(localDateInicioVieja))).get().first();
         booking.setCheckInDate(localDateInicio);

@@ -100,11 +100,10 @@ public class ManagerActivity extends AppCompatActivity {
                         manager.setPhoneNumber(number_manager.getText().toString());
 
                         EntityDataStore<Persistable> dataStore = manager_adapter.getDataStore();
-                        Result<Hostel> hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(codeHostel)).get();
-                        manager.setHostel(hostel.first());
+                        Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(codeHostel)).get().first();
+                        manager.setHostel(hostel);
 
                         dataStore.upsert(manager);
-
                         manager_adapter.actualizarListaManager();
                     } else {
                         Toast.makeText(ManagerActivity.this, "Su número no es correcto.", Toast.LENGTH_LONG).show();
@@ -219,7 +218,7 @@ public class ManagerActivity extends AppCompatActivity {
 
                     TextView nombre_gestor = (TextView) item.findViewById(R.id.name_gestor);
                     TextView numero_gestor = (TextView) item.findViewById(R.id.number_gestor);
-                    ImageView manger_image= (ImageView) item.findViewById(R.id.icon_gestor);
+                    ImageView manger_image = (ImageView) item.findViewById(R.id.icon_gestor);
 
 //                    drawIconLetter(Colors.INSTANCE.getColor(managers.get(position).getId()),managers.get(position).getName().charAt(0),manger_image);
 

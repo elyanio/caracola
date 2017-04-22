@@ -1,7 +1,6 @@
 <resources>
     <item name="ic_menu_save" type="drawable">@drawable/ic_save_white_24dp</item>
     <item name="ic_menu_add" type="drawable">@drawable/ic_add_white_24dp</item>
-    <item name="ic_menu_done" type="drawable">@drawable/ic_done_white_24dp</item>
     <item name="ic_menu_internal_services" type="drawable">@drawable/ic_room_service_black_24dp</item>
     <item name="ic_menu_contacts" type="drawable">@drawable/ic_contacts_black_24dp</item>
     <item name="ic_menu_current_bookings" type="drawable">@drawable/ic_access_time_black_24dp</item>

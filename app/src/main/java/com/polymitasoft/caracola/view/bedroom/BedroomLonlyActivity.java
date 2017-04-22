@@ -89,26 +89,25 @@ public class BedroomLonlyActivity extends AppCompatActivity {
                         dataStore.update(bedroom);
                         bedroomAdapter.actualizarVista();
                         bedroomAdapter.notifyDataSetChanged();
-                    }
-                    else
-                    {
-                        Toast.makeText(BedroomLonlyActivity.this, "Ya exite una habitacion con ese codigo, ingrese otro por favor.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(BedroomLonlyActivity.this, "Ya existe una habitación con ese código, ingrese otro por favor.", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(BedroomLonlyActivity.this, "Escriba los datospor favor.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BedroomLonlyActivity.this, "Escriba los datos por favor.", Toast.LENGTH_LONG).show();
                 }
 
             }
         }).setNegativeButton("Cancelar", null);
         adb.setCancelable(false);
         adb.setView(inflate);
-        adb.setTitle("Room Code");
+        adb.setTitle("Código Habitación");
         adb.show();
     }
 
     private boolean chequearCodigoCuarto(int code) {
         EntityDataStore<Persistable> dataStore = bedroomAdapter.getDataStore();
-        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).get().firstOrNull();
+        Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
+        Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code).and(Bedroom.HOSTEL.eq(hostel))).get().firstOrNull();
         return bedroom == null;
     }
 
@@ -151,7 +150,7 @@ public class BedroomLonlyActivity extends AppCompatActivity {
             TextView bedroomCode = (TextView) item.findViewById(R.id.secondary_text);
 
             bedroomName.setText(bedrooms.get(i).getName());
-            bedroomCode.setText("Codigo:" + bedrooms.get(i).getCode());
+            bedroomCode.setText("Código:" + bedrooms.get(i).getCode());
 
             item.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -115,7 +115,7 @@ public class HostelActivity extends AppCompatActivity {
                         hostelAdapter.notifyDataSetChanged();
 
                     } else {
-                        Toast.makeText(HostelActivity.this, "El codigo de su hostal no es valido", Toast.LENGTH_LONG).show();
+                        Toast.makeText(HostelActivity.this, "El código de su hostal no es válido", Toast.LENGTH_LONG).show();
                         abrirDialog();
                     }
                 } else {

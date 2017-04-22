@@ -10,8 +10,6 @@
         $<xliff:g example="25.00" id="price">%.2f</xliff:g> por noche
     </string>
     <string name="title_current_bookings">Reservas actuales</string>
-    <string name="action_back">Atrás</string>
-    <string name="book_number">Número del libro</string>
     <string name="booking_number">Número de la reserva</string>
     <string name="title_edit_booking">Editar reserva</string>
     <string name="title_internal_services">Servicios</string>
@@ -30,67 +28,16 @@
 
     <string name="pref_title_day_display_name">Días con antelación</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Datos y sincronización</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value"/>
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notificaciones</string>
     <string name="pref_title_is_enable_reminder">Recordatorio de reserva</string>
     <string name="pref_title_is_enable_reminder_description">Habilita el recordatorio de reserva</string>
-    <string name="pref_title_new_message_notifications">New message notifications</string>
     <string name="pref_title_is_day_reminder_description">Días con antelación para el recordatorio de reserva</string>
-    <string name="pref_title_is_time_reminder_description">Hora del recordatorio de reserva</string>
-    <string name="pref_title_time_display_name">Hora del recordatorio</string>
-    <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
 
-    <string name="pref_title_vibrate">Vibrate</string>
     <string name="bedroom_name">Nombre</string>
     <string name="price_low_season">Precio (temporada baja)</string>
     <string name="price_high_season">Precio (temporada alta)</string>
@@ -131,7 +78,6 @@
     <string name="title_suppliers">Contactos</string>
     <string name="title_edit_supplier">Editar contacto</string>
     <string name="supplier_name">Nombre</string>
-    <string name="supplier_description">Descripción</string>
     <string name="supplier_email">E-mail</string>
     <string name="supplier_address">Dirección</string>
     <string name="supplier_services">Servicios</string>
@@ -143,17 +89,12 @@
     <string name="booking_pending">Pendiente</string>
     <string name="supplier_phone1">Teléfono 1</string>
     <string name="supplier_phone2">Teléfono 2</string>
-    <string name="supplier_service_price">Precio</string>
-    <string name="supplier_service_commission">Comisión</string>
     <string name="supplier_service_edit_title">Editar servicio del proveedor</string>
     <string name="supplier_service_description">Descripción</string>
     <string name="check_in_confirmation_message">La reserva seleccionada aún no está en fecha de iniciarse. ¿Está seguro que desea inciar el proceso de registro de la reserva?</string>
     <string name="title_activity_supplier_service_info">Información</string>
-    <string name="action_settings">Settings</string>
     <string name="pref_title_enable_sms_notifications">Sincronización por SMS</string>
     <string name="pref_description_enable_sms_notifications">Habilita el envío de SMS a los gestores definidos para sincronizar el calendario de reservas.</string>
-    <string name="set">aceptar</string>
-    <string name="cancel">cancelar</string>
     <string name="title_export">Exportar</string>
     <string name="category_pref_booking">Recordatorio Reserva</string>
     <string name="category_pref_cliente">Recordatorio cumpleaños</string>

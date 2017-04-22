@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
@@ -30,7 +31,7 @@ public class BedroomInsertActivity extends AppCompatActivity {
     private BedroomBinding binding;
     private Hostel hostel;
     private String codeHostel;
-    private int codeRoom;
+//    private int codeRoom;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,11 +83,21 @@ public class BedroomInsertActivity extends AppCompatActivity {
                 EditText roomCode = (EditText) inflate.findViewById(R.id.roomCode);
                 String codigo = roomCode.getText().toString();
                 int code = Integer.parseInt(codigo);
-                saveBedroom(code);
+                if (chequearCodigoCuarto(code)) {
+                    saveBedroom(code);
+                } else {
+                    Toast.makeText(BedroomInsertActivity.this, "Ya existe una habitación con ese código, ingrese otro por favor.", Toast.LENGTH_LONG).show();
+                }
             }
         }).setNegativeButton("Cancelar", null);
         adb.setView(inflate);
         adb.setTitle("Room Code");
         adb.show();
+    }
+
+    private boolean chequearCodigoCuarto(int code) {
+        Hostel hostel = data.select(Hostel.class).where(Hostel.CODE.eq(codeHostel)).get().first();
+        Bedroom bedroom = data.select(Bedroom.class).where(Bedroom.CODE.eq(code).and(Bedroom.HOSTEL.eq(hostel))).get().firstOrNull();
+        return bedroom == null;
     }
 }

@@ -67,7 +67,7 @@ public class BedroomHostelAdapter extends BaseAdapter {
 
         primary_text.setText(bedrooms.get(i).getName());
         final int roomCode = bedrooms.get(i).getCode();
-        secundary_text.setText("Codigo: " + roomCode);
+        secundary_text.setText("Código: " + roomCode);
 
         delete_menu.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -32,6 +32,7 @@ public class ManageSmsBooking {
     private BookingState state;
     private String note;
     private int roomCode;
+    private String hostelCode;
     private String price;
 
     private Bedroom bedroom;
@@ -39,25 +40,25 @@ public class ManageSmsBooking {
 
     private EntityDataStore<Persistable> dataStore;
 
-    private ManageSmsBooking(LocalDate startDate, LocalDate endDate, BookingState state, String note, int roomCode, BigDecimal price) {
+    private ManageSmsBooking(LocalDate startDate, LocalDate endDate, BookingState state, String note, int roomCode, BigDecimal price, String hostelCode) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.state = state;
         this.note = note;
         this.price = FormatUtils.formatMoney(price);
         this.roomCode = roomCode;
-
+        this.hostelCode = hostelCode;
         dataStore = DataStoreHolder.INSTANCE.getDataStore();
     }
 
     public ManageSmsBooking(Booking booking) {
         this(booking.getCheckInDate(), booking.getCheckOutDate(), booking.getState(),
-                booking.getNote(), booking.getBedroom().getCode(), booking.getPrice());
+                booking.getNote(), booking.getBedroom().getCode(), booking.getPrice(), booking.getBedroom().getHostel().getCode());
     }
 
     public ManageSmsBooking(Booking oldBooking, Booking newBooking) {
         this(newBooking.getCheckInDate(), newBooking.getCheckOutDate(), newBooking.getState(),
-                newBooking.getNote(), oldBooking.getBedroom().getCode(), newBooking.getPrice());
+                newBooking.getNote(), oldBooking.getBedroom().getCode(), newBooking.getPrice(), newBooking.getBedroom().getHostel().getCode());
         oldStartDate = oldBooking.getCheckInDate();
     }
 
@@ -77,8 +78,8 @@ public class ManageSmsBooking {
         LocalDateConverter localDateConverter = new LocalDateConverter();
 
         String message = "<$#" + localDateConverter.convertToPersisted(startDate) + "#" + localDateConverter.convertToPersisted(endDate) + "#"
-                + price + "#" + state + "#" + roomCode + "#" + note;
-//        mensaje = "<$#CheckInBooking#CheckOutBooking#Price#State#RoomCode#note";
+                + price + "#" + state + "#" + roomCode + "#" + hostelCode + "#" + note;
+//        mensaje = "<$#CheckInBooking#CheckOutBooking#Price#State#RoomCode#hostelCode#note";
 
         sendMessage(message);
     }
@@ -98,15 +99,15 @@ public class ManageSmsBooking {
         }
         LocalDateConverter localDateConverter = new LocalDateConverter();
         String message = ">$#" + localDateConverter.convertToPersisted(oldStartDate) + "#" + localDateConverter.convertToPersisted(startDate)
-                + "#" + localDateConverter.convertToPersisted(endDate) + "#" + price + "#" + state + "#" + roomCode + "#" + note;
-//        mensaje = ">$#CheckInOldBooking#CheckInBooking#CheckOutBooking#Price#State#RoomCode#note";
+                + "#" + localDateConverter.convertToPersisted(endDate) + "#" + price + "#" + state + "#" + roomCode + "#" + hostelCode + "#" + note;
+//        mensaje = ">$#CheckInOldBooking#CheckInBooking#CheckOutBooking#Price#State#RoomCode#hostelCode#note";
         sendMessage(message);
     }
 
     public void sendDeleteMessage() {
         LocalDateConverter localDateConverter = new LocalDateConverter();
-        String message = "$$#" + localDateConverter.convertToPersisted(startDate) + "#" + roomCode;
-//        mensaje = "$$#CheckInBooking#RoomCode";
+        String message = "$$#" + localDateConverter.convertToPersisted(startDate) + "#" + roomCode + "#" + hostelCode;
+//        mensaje = "$$#CheckInBooking#RoomCode#hostelCode";
         sendMessage(message);
     }
 
