@@ -1,6 +1,8 @@
 package com.polymitasoft.caracola.components;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -31,6 +33,7 @@ import com.polymitasoft.caracola.view.supplier.ContactsActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -127,18 +130,14 @@ public class DrawerActivity extends AppCompatActivity implements
                 startActivity(new Intent(this, HostelActivity.class));
                 break;
             case R.id.nav_export:
+                Toast.makeText(DrawerActivity.this, "Elaborando el calendario...", Toast.LENGTH_LONG).show();
                 Observable.create(new ObservableOnSubscribe<String>() {
                     @Override
                     public void subscribe(ObservableEmitter<String> em) throws FileNotFoundException, DocumentException {
-                        File file = new File(DataStoreHolder.INSTANCE.getDbFile().getParent(), "report.pdf");
-                        try {
-                            new PdfReport().manipulatePdf(file.getAbsolutePath());
-                            em.onNext("Archivo exportado con éxito en " + file.getAbsolutePath() + ".");
-                        } catch (FileNotFoundException e) {
-                            em.onNext("Error de acceso, asegúrese que el archivo no esté siendo usado por otro programa.");
-                        } catch (DocumentException e) {
-                            em.onNext("Error al crear el archivo");
-                        }
+                        File file = new File(DataStoreHolder.INSTANCE.getDbFile().getParent(),
+                                "report" + Calendar.getInstance().getTimeInMillis() + ".pdf");
+                        new PdfReport().manipulatePdf(file.getAbsolutePath());
+                        em.onNext(file.getAbsolutePath());
                         em.onComplete();
                     }
                 }).subscribeOn(Schedulers.newThread())
@@ -146,7 +145,12 @@ public class DrawerActivity extends AppCompatActivity implements
                         .subscribe(new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
-                                Toast.makeText(DrawerActivity.this, s, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(new File(s)));
+                                try {
+                                    startActivity(intent);
+                                } catch(ActivityNotFoundException e) {
+                                    Toast.makeText(DrawerActivity.this, "No existe visor de pdf para visualizar el calendario.", Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
         }
