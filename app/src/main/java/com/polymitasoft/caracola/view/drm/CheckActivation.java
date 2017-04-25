@@ -19,11 +19,14 @@ import static org.threeten.bp.temporal.ChronoUnit.DAYS;
  * @author rainermf
  * @since 23/3/2017
  */
-
 public class CheckActivation extends AsyncTask<Void, Void, Long> {
 
     private static final Long INVALID = -1L;
     private final AppCompatActivity activity;
+    private static final String EVALUATION_DATE_KEY = "evaluation_date";
+    private static final String ACTIVATION_DATE_KEY = "evaluation_date";
+    private static final String ACTIVATION_DAYS_KEY = "evaluation_days";
+    private static final String EVALUATION_DAYS_VALUE = "2";
 
     public CheckActivation(AppCompatActivity activity) {
         this.activity = activity;
@@ -31,16 +34,18 @@ public class CheckActivation extends AsyncTask<Void, Void, Long> {
 
     @Override
     protected Long doInBackground(Void... params) {
-        String evalDateString = Preferences.getEncryptedPreference("evaluation_date");
-        String evalDaysString = Preferences.getEncryptedPreference("evaluation_days");
+        String evalDateString = Preferences.getEncryptedPreference(ACTIVATION_DATE_KEY);
+        String evalDaysString = Preferences.getEncryptedPreference(ACTIVATION_DAYS_KEY);
+        if (evalDateString.trim().isEmpty() || evalDaysString.trim().isEmpty()) {
+            String defaultValue = FormatUtils.formatDate(LocalDate.now());
+            if(!Preferences.existsDbPreference(EVALUATION_DATE_KEY)) {
+                Preferences.setDbPreference(EVALUATION_DATE_KEY, defaultValue);
+            }
+            evalDateString = Preferences.getDbPreference(EVALUATION_DATE_KEY, defaultValue);
+            evalDaysString = EVALUATION_DAYS_VALUE;
+        }
         if(BuildConfig.DEBUG) {
             Log.e(CheckActivation.class.getName(), "eval Date ---------> "  + evalDateString + "      " + evalDaysString);
-        }
-        if (evalDateString.trim().isEmpty()) {
-            return INVALID;
-        }
-        if (evalDaysString.trim().isEmpty()) {
-            return INVALID;
         }
         try {
             LocalDate startEvalDate = FormatUtils.parseDate(evalDateString);

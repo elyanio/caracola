@@ -28,6 +28,7 @@ public enum DataStoreHolder {
     private EntityDataStore<Persistable> entityDataStore;
     private final File directory = new File(getExternalStorageDirectory().getAbsolutePath() + "/Caracola");
     private final File dbFile = new File(directory.getAbsolutePath() + "/caracola.db");
+    private static final int DB_VERSION = 2;
 
     public EntityDataStore<Persistable> getDataStore() {
         if (entityDataStore == null) {
@@ -49,7 +50,7 @@ public enum DataStoreHolder {
         Configuration configuration;
         if (ENCRYPTION_ENABLED) {
             SqlCipherDatabaseSource source =
-                    new SqlCipherDatabaseSource(context, Models.DEFAULT, dbName, "PasswordParaPruebas", 1) {
+                    new SqlCipherDatabaseSource(context, Models.DEFAULT, dbName, "PasswordParaPruebas", DB_VERSION) {
                         @Override
                         public void onOpen(SQLiteDatabase db) {
                             super.onOpen(db);
@@ -59,7 +60,7 @@ public enum DataStoreHolder {
             configuration = source.getConfiguration();
         } else {
             DatabaseSource source =
-                    new DatabaseSource(context, Models.DEFAULT, dbName, 1);
+                    new DatabaseSource(context, Models.DEFAULT, dbName, DB_VERSION);
             configuration = source.getConfiguration();
         }
 

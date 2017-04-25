@@ -5,11 +5,16 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 import com.polymitasoft.caracola.CaracolaApplication;
+import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
+import com.polymitasoft.caracola.datamodel.DbPreference;
 import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeParseException;
+
+import io.requery.Persistable;
+import io.requery.sql.EntityDataStore;
 
 /**
  * @author rainermf
@@ -19,6 +24,7 @@ public class Preferences {
 
     private static final String PREF_BOOKING_NUMBER = "bookingNumber";
     private static final String PREF_SHOW_ACTIVATION_COUNTDOWN = "show_activation_countdown";
+    private static final EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
 
     public static boolean isHighSeason() {
         return getPreferences().getBoolean("high_season", false);
@@ -63,6 +69,24 @@ public class Preferences {
             return results[0];
         }
         return "";
+    }
+
+    public static boolean existsDbPreference(String key) {
+        return dataStore.findByKey(DbPreference.class, key) == null;
+    }
+
+    public static String getDbPreference(String key, String defaultValue) {
+        DbPreference pref = dataStore.findByKey(DbPreference.class, key);
+        if(pref == null) {
+            return defaultValue;
+        }
+        return pref.getValue();
+    }
+
+    public static void setDbPreference(String key, String value) {
+        EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
+        DbPreference pref = new DbPreference().setKey(key).setValue(value);
+        dataStore.upsert(pref);
     }
 
     private static SharedPreferences getPreferences() {
