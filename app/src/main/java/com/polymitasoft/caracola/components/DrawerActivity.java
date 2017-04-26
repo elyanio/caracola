@@ -12,8 +12,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -21,13 +19,11 @@ import com.itextpdf.text.DocumentException;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.about.AboutActivity;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
-import com.polymitasoft.caracola.report.Report;
 import com.polymitasoft.caracola.report.pdf.PdfReport;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
 import com.polymitasoft.caracola.view.booking.BookingButtonBar;
 import com.polymitasoft.caracola.view.booking.CurrentBookingsActivity;
-import com.polymitasoft.caracola.view.drm.SecurityDialog;
 import com.polymitasoft.caracola.view.hostel.HostelActivity;
 import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.ContactsActivity;
@@ -41,11 +37,8 @@ import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.internal.observers.FutureObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import static butterknife.ButterKnife.findById;
@@ -60,8 +53,6 @@ public class DrawerActivity extends AppCompatActivity implements
     protected LinearLayout esenas_frameLayout;
     @BindView(R.id.reserva_layout_base)
     protected BookingButtonBar bookingButtonBar;
-
-    int touchIcons = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,20 +72,6 @@ public class DrawerActivity extends AppCompatActivity implements
 
         NavigationView navigationView = findById(this, R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        ImageView drawerIcon = (ImageView) (navigationView.getHeaderView(0)).findViewById(R.id.drawerAppIcon);
-        drawerIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                touchIcons++;
-                if ((touchIcons + 1) % 5 == 0) {
-                    Toast.makeText(DrawerActivity.this, "Vas a entrar al menú de activación", Toast.LENGTH_SHORT).show();
-                }
-                if (touchIcons % 5 == 0) {
-                    new SecurityDialog(DrawerActivity.this).requestActivationCode();
-                }
-            }
-        });
     }
 
     @Override
