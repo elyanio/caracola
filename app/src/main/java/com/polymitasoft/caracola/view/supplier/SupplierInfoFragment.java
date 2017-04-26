@@ -14,6 +14,7 @@ import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Supplier;
 import com.polymitasoft.caracola.datamodel.SupplierService;
+import com.polymitasoft.caracola.util.MailUtils;
 
 import java.util.List;
 
@@ -107,11 +108,7 @@ public class SupplierInfoFragment extends Fragment {
 
     @OnClick(R.id.send_email)
     public void onEmailClick() {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{supplier.getEmailAddress()});
-        emailIntent.setType("message/rfc822");
-        startActivity(Intent.createChooser(emailIntent, "Email"));
+        MailUtils.sendEmail(getContext(), supplier.getEmailAddress());
     }
 
     @OnClick(R.id.call_phone1)

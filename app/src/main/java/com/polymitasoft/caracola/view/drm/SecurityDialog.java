@@ -46,41 +46,6 @@ public class SecurityDialog {
         final TextView requestCodeText = findById(view, R.id.codeText);
         final Button button = findById(view, R.id.okButton);
         final String requestCode = Drm.getRequestCode();
-        final TextView phone1 = findById(view, R.id.supplier_phone1_activar);
-        final TextView phone2 = findById(view, R.id.supplier_phone2_activar);
-
-        final ImageButton call1 = findById(view, R.id.call_phone1_activar);
-        final ImageButton call2 = findById(view, R.id.call_phone2_activar);
-        final ImageButton sms1 = findById(view, R.id.send_sms_phone1_activar);
-        final ImageButton sms2 = findById(view, R.id.send_sms_phone2_activar);
-
-        call1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dial(activity, phone1.getText().toString());
-            }
-        });
-
-        call2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dial(activity, phone2.getText().toString());
-            }
-        });
-
-        sms1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendSms(activity, phone1.getText().toString());
-            }
-        });
-
-        sms2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendSms(activity, phone2.getText().toString());
-            }
-        });
 
         requestCodeText.setText(requestCode);
 

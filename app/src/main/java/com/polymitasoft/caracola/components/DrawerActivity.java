@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.itextpdf.text.DocumentException;
 import com.polymitasoft.caracola.R;
+import com.polymitasoft.caracola.about.AboutActivity;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.report.Report;
 import com.polymitasoft.caracola.report.pdf.PdfReport;
@@ -112,22 +113,25 @@ public class DrawerActivity extends AppCompatActivity implements
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_internal_service:
-                startActivity(new Intent(this, InternalServiceListActivity.class));
+                startActivity(InternalServiceListActivity.class);
                 break;
             case R.id.nav_contacts:
-                startActivity(new Intent(this, ContactsActivity.class));
+                startActivity(ContactsActivity.class);
                 break;
             case R.id.nav_current_bookings:
-                startActivity(new Intent(this, CurrentBookingsActivity.class));
+                startActivity(CurrentBookingsActivity.class);
                 break;
             case R.id.nav_share:
-                startActivity(new Intent(this, BedroomListActivity.class));
+                startActivity(BedroomListActivity.class);
                 break;
             case R.id.nav_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(SettingsActivity.class);
                 break;
             case R.id.nav_hostal:
-                startActivity(new Intent(this, HostelActivity.class));
+                startActivity(HostelActivity.class);
+                break;
+            case R.id.nav_about:
+                startActivity(AboutActivity.class);
                 break;
             case R.id.nav_export:
                 Toast.makeText(DrawerActivity.this, "Elaborando el calendario...", Toast.LENGTH_LONG).show();
@@ -158,5 +162,9 @@ public class DrawerActivity extends AppCompatActivity implements
         DrawerLayout drawer = findById(this, R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private <T> void startActivity(Class<T> clazz) {
+        startActivity(new Intent(this, clazz));
     }
 }

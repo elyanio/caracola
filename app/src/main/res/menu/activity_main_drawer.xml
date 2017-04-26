@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group>
         <item
             android:id="@+id/nav_current_bookings"
             android:icon="@drawable/ic_menu_current_bookings"
@@ -22,19 +22,23 @@
             android:id="@+id/nav_export"
             android:icon="@drawable/ic_menu_export"
             android:title="@string/title_export"/>
+
+        <item android:title="@string/title_settings">
+            <menu>
+                <item
+                    android:id="@+id/nav_hostal"
+                    android:icon="@drawable/ic_location_city_black_24dp"
+                    android:title="Hostal" />
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_menu_settings"
+                    android:title="@string/title_preferences" />
+            </menu>
+        </item>
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="@string/title_about" />
     </group>
-
-    <item android:title="@string/title_settings">
-        <menu>
-            <item
-                android:id="@+id/nav_hostal"
-                android:icon="@drawable/ic_note_add_black_24dp"
-                android:title="Hostal" />
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_menu_settings"
-                android:title="@string/title_preferences" />
-        </menu>
-    </item>
-
 </menu>

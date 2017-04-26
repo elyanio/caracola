@@ -3,6 +3,7 @@ package com.polymitasoft.caracola.settings;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
@@ -72,7 +73,7 @@ public class Preferences {
     }
 
     public static boolean existsDbPreference(String key) {
-        return dataStore.findByKey(DbPreference.class, key) == null;
+        return dataStore.findByKey(DbPreference.class, key) != null;
     }
 
     public static String getDbPreference(String key, String defaultValue) {
@@ -86,6 +87,7 @@ public class Preferences {
     public static void setDbPreference(String key, String value) {
         EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
         DbPreference pref = new DbPreference().setKey(key).setValue(value);
+        Log.e(Preferences.class.getName(), pref.getKey() + ": " + pref.getValue());
         dataStore.upsert(pref);
     }
 
@@ -111,21 +113,4 @@ public class Preferences {
     public static boolean isEnableConfirmSms() {
         return getPreferences().getBoolean("sms_sync_confirm", false);
     }
-
-
-
-//    public static String getHourReminder() {
-//        return getPreferences().getString("hour", "10");
-//    }
-//    public static String getMinuteReminder() {
-//        return getPreferences().getString("minute", "00");
-//    }
-
-//    public static LocalTime getTimeReminder() {
-//        String time_reminder = getPreferences().getString("time_reminder", "10:00");
-//        Log.e("hora",time_reminder);
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-//        LocalTime time = LocalTime.parse(time_reminder, formatter);
-//        return time;
-//    }
 }

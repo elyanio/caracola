@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.polymitasoft.caracola.about.AboutActivity"
+    tools:showIn="@layout/activity_about">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_activation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_activation"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="6dp"
+            android:text="Activar" />
+
+        <LinearLayout
+            android:id="@+id/layout_phone1_activar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/description_vertical_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_phone1_activar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="54150751"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <ImageButton
+                android:id="@+id/call_phone1_activar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="?android:colorBackground"
+                app:srcCompat="@drawable/ic_call_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/send_sms_phone1_activar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="?android:colorBackground"
+                app:srcCompat="@drawable/ic_textsms_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_phone2_activar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/description_vertical_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_phone2_activar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="54126878"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <ImageButton
+                android:id="@+id/call_phone2_activar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="?android:colorBackground"
+                app:srcCompat="@drawable/ic_call_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/send_sms_phone2_activar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="?android:colorBackground"
+                app:srcCompat="@drawable/ic_textsms_black_24dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(c) Polymita 2017" />
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

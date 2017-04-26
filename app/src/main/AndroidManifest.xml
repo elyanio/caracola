@@ -76,16 +76,17 @@
         </activity>
         <activity
             android:name=".view.supplier.SupplierServiceInfoActivity"
-            android:label="@string/title_activity_supplier_service_info"/>
-        <activity android:name=".view.publicity.Publicity"/>
+            android:label="@string/title_activity_supplier_service_info" />
+        <activity android:name=".view.publicity.Publicity" />
 
-        <receiver android:name=".reminder.AlarmReceiver">
+        <receiver android:name=".reminder.AlarmReceiver"></receiver>
 
-        </receiver>
+        <service android:name=".reminder.BirthdayService"></service>
 
-        <service android:name=".reminder.BirthdayService">
-            
-        </service>
+        <activity
+            android:name=".about.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

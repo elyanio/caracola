@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-              tools:ignore="MissingPrefix"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
 
     <TextView
         android:id="@+id/codeText"
@@ -17,178 +16,13 @@
         android:id="@+id/inputText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:fontFamily="monospace" />
+        android:fontFamily="monospace"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/okButton"
+        style="@style/Widget.AppCompat.Light.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ok_action_button"
-        style="@style/Widget.AppCompat.Light.ActionButton"
-        />
-
-    <TextView
-        android:text="Contactos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:textAlignment="center" />
-
-    <LinearLayout
-        android:id="@+id/layout_phone1_activar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/description_vertical_margin"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/supplier_phone1_activar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:text="54150751" />
-
-        <ImageButton
-            android:id="@+id/call_phone1_activar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="?android:colorBackground"
-            app:srcCompat="@drawable/ic_call_black_24dp"/>
-
-        <ImageButton
-            android:id="@+id/send_sms_phone1_activar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="?android:colorBackground"
-            app:srcCompat="@drawable/ic_textsms_black_24dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/layout_phone2_activar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/description_vertical_margin"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/supplier_phone2_activar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:text="54126878" />
-
-        <ImageButton
-            android:id="@+id/call_phone2_activar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="?android:colorBackground"
-            app:srcCompat="@drawable/ic_call_black_24dp"/>
-
-        <ImageButton
-            android:id="@+id/send_sms_phone2_activar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="?android:colorBackground"
-            app:srcCompat="@drawable/ic_textsms_black_24dp"/>
-    </LinearLayout>
-    <!---->
-    <!--<LinearLayout-->
-        <!--android:id="@+id/layout_phone3_activar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="@dimen/description_vertical_margin"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/supplier_phone3_activar"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textAppearance="?android:textAppearanceMedium"-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:text="54520426" />-->
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/call_phone3_activar"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:backgroundTint="?android:colorBackground"-->
-            <!--app:srcCompat="@drawable/ic_call_black_24dp"/>-->
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/send_sms_phone3_activar"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:backgroundTint="?android:colorBackground"-->
-            <!--app:srcCompat="@drawable/ic_textsms_black_24dp"/>-->
-    <!--</LinearLayout>-->
-    <!--<LinearLayout-->
-        <!--android:id="@+id/layout_phone4_activar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="@dimen/description_vertical_margin"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/supplier_phone4_activar"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textAppearance="?android:textAppearanceMedium"-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:text="53746802" />-->
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/call_phone4_activar"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:backgroundTint="?android:colorBackground"-->
-            <!--app:srcCompat="@drawable/ic_call_black_24dp"/>-->
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/send_sms_phone4_activar"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:backgroundTint="?android:colorBackground"-->
-            <!--app:srcCompat="@drawable/ic_textsms_black_24dp"/>-->
-    <!--</LinearLayout>-->
-    <!--<LinearLayout-->
-        <!--android:id="@+id/layout_phone5_activar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="@dimen/description_vertical_margin"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/supplier_phone5_activar"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textAppearance="?android:textAppearanceMedium"-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:text="53850863" />-->
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/call_phone5_activar"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:backgroundTint="?android:colorBackground"-->
-            <!--app:srcCompat="@drawable/ic_call_black_24dp"/>-->
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/send_sms_phone5_activar"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:backgroundTint="?android:colorBackground"-->
-            <!--app:srcCompat="@drawable/ic_textsms_black_24dp"/>-->
-    <!--</LinearLayout>-->
+        android:text="@string/ok_action_button" />
 </LinearLayout>
