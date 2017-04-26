@@ -1,14 +1,16 @@
 package com.polymitasoft.caracola.view.drm;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
@@ -23,9 +25,9 @@ import org.threeten.bp.LocalDate;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import static butterknife.ButterKnife.findById;
-import static com.polymitasoft.caracola.util.PhoneUtils.dial;
-import static com.polymitasoft.caracola.util.PhoneUtils.sendSms;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * @author rainermf
@@ -35,22 +37,16 @@ import static com.polymitasoft.caracola.util.PhoneUtils.sendSms;
 public class SecurityDialog {
 
     private AppCompatActivity activity;
+    private AlertDialog dialog;
+    @BindView(R.id.activationCodeText) TextInputEditText activationCodeText;
+    @BindView(R.id.requestCodeText) TextView requestCodeText;
+    private final String requestCode;
 
     public SecurityDialog(AppCompatActivity activity) {
         this.activity = activity;
-    }
-
-    public void requestActivationCode() {
-        final View view = activity.getLayoutInflater().inflate(R.layout.dialog_activation_code, null);
-        final EditText activationCodeText = findById(view, R.id.inputText);
-        final TextView requestCodeText = findById(view, R.id.codeText);
-        final Button button = findById(view, R.id.okButton);
-        final String requestCode = Drm.getRequestCode();
-
-        requestCodeText.setText(requestCode);
-
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle("Password")
+        View view = activity.getLayoutInflater().inflate(R.layout.dialog_activation_code, null);
+        dialog = new AlertDialog.Builder(activity)
+                .setTitle("Activación")
                 .setView(view)
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
@@ -58,26 +54,38 @@ public class SecurityDialog {
                         notifyActivation(false);
                     }
                 })
-                .show();
+                .create();
+        ButterKnife.bind(this, view);
+        requestCode = Drm.getRequestCode();
+        requestCodeText.setText(requestCode);
+    }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userActivationCode = activationCodeText.getText().toString();
-                String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(requestCode));
-                if (userActivationCode.equals(encryptedString)) {
-                    dialog.dismiss();
-                    requestActivationTime();
-                    notifyActivation(true);
-                } else {
-                    if (BuildConfig.DEBUG) {
-                        Log.e(SecurityDialog.class.getName(), String.format("Request code: %s.", requestCode));
-                        Log.e(SecurityDialog.class.getName(), String.format("Expected: %s, Found: %s.", encryptedString, userActivationCode));
-                    }
-                    activationCodeText.setText("");
-                }
+    public void show() {
+        dialog.show();
+    }
+
+    @OnClick(R.id.requestCodeText)
+    void copyCode() {
+        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Activation request code", requestCode);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(activity, "Se ha copiado el código al portapapeles", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.okButton)
+    void okAction() {
+        String userActivationCode = activationCodeText.getText().toString();
+        String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(requestCode));
+        if (userActivationCode.equals(encryptedString)) {
+            dialog.dismiss();
+            requestActivationTime();
+        } else {
+            if (BuildConfig.DEBUG) {
+                Log.e(SecurityDialog.class.getName(), String.format("Request code: %s.", requestCode));
+                Log.e(SecurityDialog.class.getName(), String.format("Expected: %s, Found: %s.", encryptedString, userActivationCode));
             }
-        });
+            activationCodeText.setText("");
+        }
     }
 
     private void requestActivationTime() {
@@ -91,10 +99,12 @@ public class SecurityDialog {
                     public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
                         Preferences.setEncryptedPreference("evaluation_date", FormatUtils.formatDate(LocalDate.now()));
                         Preferences.setEncryptedPreference("evaluation_days", number.toString());
+                        notifyActivation(true);
                     }
                 });
         builder.show();
     }
 
-    protected void notifyActivation(boolean activated) { }
+    protected void notifyActivation(boolean activated) {
+    }
 }

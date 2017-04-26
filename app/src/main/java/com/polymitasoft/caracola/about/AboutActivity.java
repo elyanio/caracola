@@ -21,12 +21,9 @@ import static com.polymitasoft.caracola.util.PhoneUtils.sendSms;
 
 public class AboutActivity extends AppCompatActivity {
 
-    @BindView(R.id.text_phone1_activar)
-    TextView phone1;
-    @BindView(R.id.text_phone2_activar)
-    TextView phone2;
-    @BindView(R.id.text_activation)
-    TextView activationText;
+    @BindView(R.id.text_phone1_activar) TextView phone1;
+    @BindView(R.id.text_phone2_activar) TextView phone2;
+    @BindView(R.id.text_activation) TextView activationText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +74,11 @@ public class AboutActivity extends AppCompatActivity {
 
     @OnClick(R.id.button_activation)
     public void onActivationButtonClick() {
-        SecurityDialog securityDialog = new SecurityDialog(this) {
+        new SecurityDialog(this) {
             @Override
             protected void notifyActivation(boolean activated) {
                 updateActivationText();
             }
-        };
-        securityDialog.requestActivationCode();
+        }.show();
     }
 }
