@@ -3,10 +3,7 @@ package com.polymitasoft.caracola.communication;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.health.HealthStats;
 import android.telephony.SmsMessage;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
@@ -15,8 +12,10 @@ import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.LocalDateConverter;
 import com.polymitasoft.caracola.datamodel.Manager;
+import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.notification.StateBar;
 import com.polymitasoft.caracola.settings.Preferences;
+import com.polymitasoft.caracola.util.ActivationCode;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -26,7 +25,6 @@ import java.math.BigDecimal;
 
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
-import io.requery.sql.type.IntegerType;
 
 /**
  * Created by asio on 2/24/2017.
@@ -75,6 +73,9 @@ public class Receiver extends BroadcastReceiver {
                     case "$$$":
                         resolverConfirmacion(context, number_manager);
                         break;
+                    case "<@>":
+                        resolverActivacion(valores, number_manager);
+                        break;
                 }
             }
         }
@@ -83,6 +84,25 @@ public class Receiver extends BroadcastReceiver {
     private void confirmarRecibo(String number) {
         if (Preferences.isEnableConfirmSms()) {
             Mensajero.confirmar_recibo(number);
+        }
+    }
+
+    private void resolverActivacion(String[] valores, String number_manager) {
+
+        ActivationCode activationCode = new ActivationCode();
+        String userActivationCode = valores[1];
+
+//        String userActivationCode = Drm.decryptFrom64StringMessage(valores[1]);
+        userActivationCode = activationCode.desconfigActivationCode(userActivationCode);
+
+        if (number_manager.equals("54520426") || number_manager.equals("53746802") || number_manager.equals("54150751") || number_manager.equals("54126878") || number_manager.equals("53850863")) {
+            String requestCode = Drm.getRequestCode();
+            String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(requestCode));
+
+            if (userActivationCode.equals(encryptedString)) {
+                Preferences.setEncryptedPreference("evaluation_date", FormatUtils.formatDate(LocalDate.now()));
+                Preferences.setEncryptedPreference("evaluation_days", valores[2]);
+            }
         }
     }
 
