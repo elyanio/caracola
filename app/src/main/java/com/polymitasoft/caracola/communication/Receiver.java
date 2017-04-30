@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
@@ -15,7 +16,6 @@ import com.polymitasoft.caracola.datamodel.Manager;
 import com.polymitasoft.caracola.drm.Drm;
 import com.polymitasoft.caracola.notification.StateBar;
 import com.polymitasoft.caracola.settings.Preferences;
-import com.polymitasoft.caracola.util.ActivationCode;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -89,18 +89,23 @@ public class Receiver extends BroadcastReceiver {
 
     private void resolverActivacion(String[] valores, String number_manager) {
 
-        ActivationCode activationCode = new ActivationCode();
-        String userActivationCode = valores[1];
-
-//        String userActivationCode = Drm.decryptFrom64StringMessage(valores[1]);
-        userActivationCode = activationCode.desconfigActivationCode(userActivationCode);
+        String userActivationCode = Drm.decryptFrom64String(valores[1]);
+        String[] split = userActivationCode.split("#");
+        Log.e("Imprimir Code", split[0]);
+        Log.e("Imprimir Date", split[1]);
+        Log.e("Cantidad Dias", valores[2]);
 
         if (number_manager.equals("54520426") || number_manager.equals("53746802") || number_manager.equals("54150751") || number_manager.equals("54126878") || number_manager.equals("53850863")) {
+
             String requestCode = Drm.getRequestCode();
             String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(requestCode));
 
-            if (userActivationCode.equals(encryptedString)) {
-                Preferences.setEncryptedPreference("evaluation_date", FormatUtils.formatDate(LocalDate.now()));
+            if (split[0].equals(encryptedString)) {
+
+                Log.e("Espara", encryptedString);
+                Log.e("Recibe", split[0]);
+
+                Preferences.setEncryptedPreference("evaluation_date", split[1]);
                 Preferences.setEncryptedPreference("evaluation_days", valores[2]);
             }
         }

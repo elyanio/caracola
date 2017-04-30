@@ -81,13 +81,6 @@ public enum Drm {
         return decryptFrom64String(cipherText, "Toawtef_*blyWef2");
     }
 
-    public static String encryptTo64StringMessage(String plainText) {
-        return encryptTo64String(plainText, "Ghbcveq!*uxcVui7");
-    }
-    public static String decryptFrom64StringMessage(String cipherText) {
-        return decryptFrom64String(cipherText, "Ghbcveq!*uxcVui7");
-    }
-
     public static String reduceToHalf(String text) {
         StringBuilder builder = new StringBuilder(text.length() >> 1);
         int length = text.length();
