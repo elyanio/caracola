@@ -75,7 +75,7 @@ public class SecurityDialog {
     @OnClick(R.id.okButton)
     void okAction() {
         String userActivationCode = activationCodeText.getText().toString();
-        String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(requestCode));
+        String encryptedString = Drm.generateCode(requestCode);
         if (userActivationCode.equals(encryptedString)) {
             dialog.dismiss();
             requestActivationTime();

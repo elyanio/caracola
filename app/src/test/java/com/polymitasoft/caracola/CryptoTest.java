@@ -1,20 +1,14 @@
 package com.polymitasoft.caracola;
 
-import android.support.test.runner.AndroidJUnit4;
-
 import com.polymitasoft.caracola.drm.Drm;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author rainermf
- * @since 15/3/2017
+ * Created by rainermf on 5/13/2017.
  */
-
-@RunWith(AndroidJUnit4.class)
 public class CryptoTest {
 
     @Test
@@ -35,5 +29,4 @@ public class CryptoTest {
 
         assertEquals(Drm.decryptFrom64String(encryptedString), plainString);
     }
-
 }

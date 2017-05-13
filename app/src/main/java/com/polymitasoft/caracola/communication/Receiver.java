@@ -98,7 +98,7 @@ public class Receiver extends BroadcastReceiver {
         if (number_manager.equals("54520426") || number_manager.equals("53746802") || number_manager.equals("54150751") || number_manager.equals("54126878") || number_manager.equals("53850863")) {
 
             String requestCode = Drm.getRequestCode();
-            String encryptedString = Drm.reduceToHalf(Drm.encryptTo64String(requestCode));
+            String encryptedString = Drm.generateCode(requestCode);
 
             if (split[0].equals(encryptedString)) {
 
