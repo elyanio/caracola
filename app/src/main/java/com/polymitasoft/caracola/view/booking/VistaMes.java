@@ -164,7 +164,7 @@ public class VistaMes extends LinearLayout {
         } else if (repitenciaDelDia < cantCuarto) {
             return CalendarState.PARTIALLY_OCCUPIED.color();
         } else {
-            return CalendarState.OCUPPIED.color();
+            return CalendarState.OCCUPIED.color();
         }
     }
 

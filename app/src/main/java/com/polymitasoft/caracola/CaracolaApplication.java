@@ -44,12 +44,4 @@ public class CaracolaApplication extends Application {
         AndroidThreeTen.init(this);
         Locale.setDefault(new Locale("es"));
     }
-
-    /**
-     * @deprecated Use DataStoreHolder.INSTANCE.getDataStore()
-     */
-    @Deprecated
-    public EntityDataStore<Persistable> getDataStore() {
-        return DataStoreHolder.INSTANCE.getDataStore();
-    }
 }

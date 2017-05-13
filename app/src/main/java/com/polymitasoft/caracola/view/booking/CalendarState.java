@@ -11,13 +11,13 @@ import com.polymitasoft.caracola.datamodel.BookingState;
  * @author rainermf
  * @since 13/2/2017
  */
-enum CalendarState {
+public enum CalendarState {
     // TODO quitar el blanco mas uno
     NO_DAY(Color.parseColor("#FFFFFE")),
     EMPTY(Color.WHITE),
     CONFIRMED(Color.parseColor("#90caf9")), // blue"#FFCFD8DC"
     CHECKED_IN(Color.parseColor("#FFFF80AB")),  // pink
-    OCUPPIED(Color.parseColor("#FFBF360C")), // brown
+    OCCUPIED(Color.parseColor("#FFBF360C")), // brown
     PARTIALLY_OCCUPIED(Color.parseColor("#FFFF9E80")), // light brown
     SELECTED(Color.parseColor("#009688")), // green
     UNSELECTED(Color.TRANSPARENT),
@@ -31,16 +31,6 @@ enum CalendarState {
 
     @ColorInt public int color() {
         return color;
-    }
-
-    @Nullable
-    public BookingState toBookingState() {
-        switch (this) {
-            case CONFIRMED: return BookingState.CONFIRMED;
-            case PENDING: return BookingState.PENDING;
-            case CHECKED_IN: return BookingState.CHECKED_IN;
-            default: return null;
-        }
     }
 
     @NonNull

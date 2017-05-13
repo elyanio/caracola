@@ -32,12 +32,6 @@ public class SupplierDao {
         dataStore = DataStoreHolder.INSTANCE.getDataStore();
     }
 
-    public Result<Supplier> all() {
-        return dataStore.select(Supplier.class)
-                .orderBy(Supplier.NAME.lower())
-                .get();
-    }
-
     public Result<Supplier> withService(ExternalService service) {
         return dataStore.select(Supplier.class)
                 .join(SupplierService.class).on(Supplier.ID.equal(SUPPLIER_ID))

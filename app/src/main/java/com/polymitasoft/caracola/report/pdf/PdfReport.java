@@ -9,6 +9,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.polymitasoft.caracola.dataaccess.BedroomDao;
 import com.polymitasoft.caracola.datamodel.Bedroom;
 import com.polymitasoft.caracola.datamodel.Booking;
+import com.polymitasoft.caracola.datamodel.BookingState;
+import com.polymitasoft.caracola.view.booking.CalendarState;
 import com.polymitasoft.pdfcal.Calendar;
 import com.polymitasoft.pdfcal.CalendarRange;
 
@@ -17,11 +19,14 @@ import org.threeten.bp.YearMonth;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 import io.requery.query.Result;
 
 public class PdfReport {
+
+    private static EnumMap<BookingState, BaseColor> colors;
 
     public void manipulatePdf(String dest) throws FileNotFoundException, DocumentException {
         Document doc = new Document();
@@ -35,18 +40,7 @@ public class PdfReport {
             Result<Booking> bookings = bedroomDao.getBookings(bedroom, startMonth.atDay(1), endMonth.atEndOfMonth());
             List<CalendarRange> ranges = new ArrayList<>();
             for(Booking booking: bookings) {
-                BaseColor color = null;
-                switch (booking.getState()) {
-                    case PENDING:
-                        color = BaseColor.YELLOW;
-                        break;
-                    case CONFIRMED:
-                        color = BaseColor.CYAN;
-                        break;
-                    case CHECKED_IN:
-                        color = BaseColor.LIGHT_GRAY;
-                        break;
-                }
+                BaseColor color = colors.get(booking.getState());
                 ranges.add(CalendarRange.of(booking.getCheckInDate(), booking.getCheckOutDate(), color));
             }
             Calendar calendar = new Calendar.Builder()
@@ -70,5 +64,12 @@ public class PdfReport {
         title.add(titleText);
 
         return title;
+    }
+
+    static {
+        colors = new EnumMap<>(BookingState.class);
+        for (BookingState state: BookingState.values()) {
+            colors.put(state, new BaseColor(CalendarState.toCalendarState(state).color()));
+        }
     }
 }

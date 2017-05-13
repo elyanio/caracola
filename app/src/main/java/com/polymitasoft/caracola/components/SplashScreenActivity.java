@@ -43,8 +43,7 @@ public class SplashScreenActivity extends Activity {
                     init();
                 }
             };
-            Timer timer = new Timer();
-            timer.schedule(task, DataStoreHolder.INSTANCE.existsDbFile() ? SPLASH_SCREEN_DELAY : 0);
+            new Timer().schedule(task, DataStoreHolder.INSTANCE.existsDbFile() ? SPLASH_SCREEN_DELAY : 0);
         } else {
             ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_ES);
         }

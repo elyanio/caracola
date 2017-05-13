@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.itextpdf.text.DocumentException;
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.about.AboutActivity;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
@@ -29,27 +28,15 @@ import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
 import com.polymitasoft.caracola.view.supplier.ContactsActivity;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 

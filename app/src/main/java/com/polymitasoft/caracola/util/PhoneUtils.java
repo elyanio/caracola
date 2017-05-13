@@ -15,10 +15,6 @@ public class PhoneUtils {
         context.startActivity(getDialIntent(phoneNumber));
     }
 
-    public static void call(Context context, String phoneNumber) {
-        context.startActivity(getCallIntent(phoneNumber));
-    }
-
     public static void sendSms(Context context, String phoneNumber, String content) {
         context.startActivity(getSendSmsIntent(phoneNumber, content));
     }
@@ -31,11 +27,6 @@ public class PhoneUtils {
         Uri uri = Uri.parse("smsto:" + phoneNumber);
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
         intent.putExtra("sms_body", content);
-        return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    }
-
-    public static Intent getCallIntent(String phoneNumber) {
-        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNumber));
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
