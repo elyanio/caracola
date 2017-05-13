@@ -34,10 +34,22 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -49,10 +61,9 @@ import static butterknife.ButterKnife.findById;
 public class DrawerActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.reserva_esenas)
-    protected LinearLayout esenas_frameLayout;
-    @BindView(R.id.reserva_layout_base)
-    protected BookingButtonBar bookingButtonBar;
+    @BindView(R.id.reserva_esenas) protected LinearLayout esenas_frameLayout;
+    @BindView(R.id.reserva_layout_base) protected BookingButtonBar bookingButtonBar;
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,28 +123,10 @@ public class DrawerActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_export:
                 Toast.makeText(DrawerActivity.this, "Elaborando el calendario...", Toast.LENGTH_LONG).show();
-                Observable.create(new ObservableOnSubscribe<String>() {
-                    @Override
-                    public void subscribe(ObservableEmitter<String> em) throws FileNotFoundException, DocumentException {
-                        File file = new File(DataStoreHolder.INSTANCE.getDbFile().getParent(),
-                                "report" + Calendar.getInstance().getTimeInMillis() + ".pdf");
-                        new PdfReport().manipulatePdf(file.getAbsolutePath());
-                        em.onNext(file.getAbsolutePath());
-                        em.onComplete();
-                    }
-                }).subscribeOn(Schedulers.newThread())
+                disposables.add(exportPdf().subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<String>() {
-                            @Override
-                            public void accept(String s) throws Exception {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(new File(s)));
-                                try {
-                                    startActivity(intent);
-                                } catch(ActivityNotFoundException e) {
-                                    Toast.makeText(DrawerActivity.this, "No existe visor de pdf para visualizar el calendario.", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
+                        .doOnError(onPdfCreationError())
+                        .subscribe(displayPdf()));
         }
 
         DrawerLayout drawer = findById(this, R.id.drawer_layout);
@@ -141,7 +134,48 @@ public class DrawerActivity extends AppCompatActivity implements
         return true;
     }
 
+    private Single<File> exportPdf() {
+        return Single.create(new SingleOnSubscribe<File>() {
+            @Override
+            public void subscribe(SingleEmitter<File> em) throws Exception {
+                File file = new File(DataStoreHolder.INSTANCE.getDbFile().getParent(),
+                        "report" + Calendar.getInstance().getTimeInMillis() + ".pdf");
+                new PdfReport().manipulatePdf(file.getAbsolutePath());
+                em.onSuccess(file);
+            }
+        });
+    }
+
+    private Consumer<File> displayPdf() {
+        return new Consumer<File>() {
+            @Override
+            public void accept(File file) throws Exception {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(file));
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(DrawerActivity.this, "No existe visor de pdf para visualizar el calendario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+    }
+
+    private Consumer<Throwable> onPdfCreationError() {
+        return new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                Toast.makeText(DrawerActivity.this, "Error al crear el calendario.", Toast.LENGTH_LONG).show();
+            }
+        };
+    }
+
     private <T> void startActivity(Class<T> clazz) {
         startActivity(new Intent(this, clazz));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposables.clear();
     }
 }
