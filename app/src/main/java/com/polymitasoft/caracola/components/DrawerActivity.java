@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.about.AboutActivity;
+import com.polymitasoft.caracola.view.about.AboutActivity;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.report.pdf.PdfReport;
 import com.polymitasoft.caracola.settings.SettingsActivity;

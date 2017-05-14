@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.about.AboutActivity;
+import com.polymitasoft.caracola.view.about.AboutActivity;
 import com.polymitasoft.caracola.drm.ActivationData;
 import com.polymitasoft.caracola.settings.Preferences;
 

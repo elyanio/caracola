@@ -79,14 +79,14 @@
             android:label="@string/title_activity_supplier_service_info" />
         <activity android:name=".view.publicity.Publicity" />
 
-        <receiver android:name=".reminder.AlarmReceiver"></receiver>
+        <receiver android:name=".reminder.AlarmReceiver"/>
 
-        <service android:name=".reminder.BirthdayService"></service>
+        <service android:name=".reminder.BirthdayService"/>
 
         <activity
-            android:name=".about.AboutActivity"
+            android:name=".view.about.AboutActivity"
             android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
