@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import com.polymitasoft.caracola.R;
 import com.polymitasoft.caracola.communication.ManageSmsBooking;
@@ -25,6 +26,7 @@ import org.threeten.bp.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import io.requery.Persistable;
 import io.requery.sql.EntityDataStore;
 
@@ -39,6 +41,8 @@ public class ReservaPrincipal extends DrawerActivity
 
     private static final String EDIT_BOOKING_DIALOG_TAG = "EDIT_BOOKING_DIALOG_TAG";
     private List<Bedroom> bedrooms = new ArrayList<>();
+    @BindView(R.id.reserva_esenas) protected LinearLayout esenas_frameLayout;
+    @BindView(R.id.reserva_layout_base) protected BookingButtonBar bookingButtonBar;
 
     //escenas
     private ReservaEsenaPrincipal reservaEsenaPrincipal;
@@ -50,6 +54,11 @@ public class ReservaPrincipal extends DrawerActivity
         super.onCreate(savedInstanceState);
         init();
         startService(new Intent(getBaseContext(), BirthdayService.class));
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.reserva_principal_activity;
     }
 
     private void init() {
@@ -325,10 +334,6 @@ public class ReservaPrincipal extends DrawerActivity
 
         public void setPrimerDiaSelec(VistaDia primerDiaSelec) {
             this.primerDiaSelec = primerDiaSelec;
-        }
-
-        public VistaDia getSegundoDiaSelec() {
-            return segundoDiaSelec;
         }
 
         public void setSegundoDiaSelec(VistaDia segundoDiaSelec) {

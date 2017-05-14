@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.polymitasoft.caracola.R;
@@ -21,7 +21,6 @@ import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.report.pdf.PdfReport;
 import com.polymitasoft.caracola.settings.SettingsActivity;
 import com.polymitasoft.caracola.view.bedroom.BedroomListActivity;
-import com.polymitasoft.caracola.view.booking.BookingButtonBar;
 import com.polymitasoft.caracola.view.booking.CurrentBookingsActivity;
 import com.polymitasoft.caracola.view.hostel.HostelActivity;
 import com.polymitasoft.caracola.view.service.InternalServiceListActivity;
@@ -30,7 +29,6 @@ import com.polymitasoft.caracola.view.supplier.ContactsActivity;
 import java.io.File;
 import java.util.Calendar;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
@@ -45,17 +43,15 @@ import static butterknife.ButterKnife.findById;
 /**
  * @author yanier.alfonso
  */
-public class DrawerActivity extends AppCompatActivity implements
+public abstract class DrawerActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.reserva_esenas) protected LinearLayout esenas_frameLayout;
-    @BindView(R.id.reserva_layout_base) protected BookingButtonBar bookingButtonBar;
-    private final CompositeDisposable disposables = new CompositeDisposable();
+    protected final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reserva_principal_activity);
+        setContentView(getLayout());
         setTitle("");
         ButterKnife.bind(this);
 
@@ -71,6 +67,8 @@ public class DrawerActivity extends AppCompatActivity implements
         NavigationView navigationView = findById(this, R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    protected abstract @LayoutRes int getLayout();
 
     @Override
     public void onBackPressed() {
