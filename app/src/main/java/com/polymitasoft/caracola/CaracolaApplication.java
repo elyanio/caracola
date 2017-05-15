@@ -42,6 +42,5 @@ public class CaracolaApplication extends Application {
         }
         instance = this;
         AndroidThreeTen.init(this);
-        Locale.setDefault(new Locale("es"));
     }
 }

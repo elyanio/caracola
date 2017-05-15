@@ -9,6 +9,7 @@ import org.threeten.bp.format.DateTimeFormatter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.Locale;
 
 import static java.lang.Character.isLowerCase;
 
@@ -22,7 +23,7 @@ public class FormatUtils {
     private static DateTimeFormatter dateFormatter;
 
     static {
-        decimalFormat = (DecimalFormat) DecimalFormat.getInstance();
+        decimalFormat = (DecimalFormat) DecimalFormat.getInstance(Locale.ENGLISH);
         decimalFormat.setMaximumFractionDigits(2);
         decimalFormat.setMinimumFractionDigits(2);
         decimalFormat.setParseBigDecimal(true);
@@ -30,8 +31,8 @@ public class FormatUtils {
         dateFormatter = DateTimeFormatter.ofPattern("d-MM-y");
     }
 
-    private FormatUtils() throws InstantiationException {
-        throw new InstantiationException("FormatUtils is a utility class. It should not be instantiated.");
+    private FormatUtils() {
+        throw new AssertionError("FormatUtils is a utility class. It should not be instantiated.");
     }
 
     public static String formatMoney(BigDecimal decimal) {
@@ -44,7 +45,7 @@ public class FormatUtils {
 
     public static BigDecimal parseMoney(String money) {
         try {
-            return (BigDecimal) decimalFormat.parse(money.replace('.', ','));
+            return (BigDecimal) decimalFormat.parse(money);
         } catch (ParseException e) {
             Log.e(FormatUtils.class.toString(), "Could not parse " + money + " as a BigDecimal. Using 0 as a fallback.");
         }
