@@ -20,6 +20,7 @@ import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.temporal.Temporal;
 
 import java.math.BigDecimal;
 
@@ -44,23 +45,19 @@ public class Receiver extends BroadcastReceiver {
         if (action.equals(ACTION_SMS_RECEIVED)) {
             String number_manager = null, str = "";
             SmsMessage[] msgs = getMessagesFromIntent(intent);
-
             if (msgs != null) {
-
                 for (SmsMessage msg : msgs) {
                     number_manager = msg.getOriginatingAddress();
                     str += msg.getMessageBody();
                 }
             }
             String[] valores = str.split("#");
-
             if (number_manager.length() >= 8) {
                 number_manager = parsearNumero(number_manager);
             }
 
             if (number_manager != null) {
                 switch (valores[0]) {
-
                     case "<$":
                         resolverNuevoBooking(valores, context, number_manager);
                         break;
@@ -88,98 +85,109 @@ public class Receiver extends BroadcastReceiver {
     }
 
     private void resolverActivacion(String[] valores, String number_manager) {
-
         String userActivationCode = Drm.decryptFrom64String(valores[1]);
         String[] split = userActivationCode.split("#");
-        Log.e("Imprimir Code", split[0]);
-        Log.e("Imprimir Date", split[1]);
-        Log.e("Cantidad Dias", valores[2]);
-
         if (number_manager.equals("54520426") || number_manager.equals("53746802") || number_manager.equals("54150751") || number_manager.equals("54126878") || number_manager.equals("53850863")) {
-
             String requestCode = Drm.getRequestCode();
             String encryptedString = Drm.generateCode(requestCode);
 
             if (split[0].equals(encryptedString)) {
-
-                Log.e("Espara", encryptedString);
-                Log.e("Recibe", split[0]);
-
                 Preferences.setEncryptedPreference("evaluation_date", split[1]);
                 Preferences.setEncryptedPreference("evaluation_days", valores[2]);
             }
         }
     }
 
-    private void resolverNuevoBooking(String[] valores, Context context, String number_manager) {
-        String showState = parssearBookingState(valores[4]);
+    private void resolverNuevoBooking(String[] dataBooking, Context context, String number_manager) {
+        String showState = parssearBookingState(dataBooking[4]);
 
-        if (chequearFidelidadMensaje(context, valores[5], number_manager, valores[1], valores[6])) {
-
-            insertarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[7], valores[6], context);
-
-            int code = Integer.parseInt(valores[5]);
-
+        if (chequearFidelidadMensaje(context, dataBooking[5], number_manager, dataBooking[1], dataBooking[6])) {
+            insertarBooking(dataBooking[1], dataBooking[2], dataBooking[3], dataBooking[4], dataBooking[5], dataBooking[7], dataBooking[6], context);
             EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
-            Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(valores[6])).get().first();
-            Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
-
-            String mensaje = "Nueva reserva gestionada.\nEntrada: " + valores[1] + "\nSalida: " +
-                    valores[2] + "\nTipo de Reserva: " + showState + "\nHabitación: " + bedroom.getName() + "\nHostal: " + hostel.getName() + "\n" + valores[7];
-
-            StateBar stateBar = new StateBar();
-            stateBar.BookingNotification(context, 1, "Nueva Reserva", "Reserva gestionada", number_manager, mensaje);
-
-            confirmarRecibo(number_manager);
-
+            Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(dataBooking[6])).get().first();
+            Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(Integer.parseInt(dataBooking[5]))).and(Bedroom.HOSTEL.eq(hostel)).get().first();
+            notificarNuevoBooking(dataBooking, showState, bedroom.getName(), hostel.getName(), context, number_manager);
         } else {
             StateBar stateBar = new StateBar();
             stateBar.BookingNotification(context, 1, "Error en la Reserva", "Mensaje de Error", number_manager, "La reserva ya existe, por favor sincronice su calendario.");
         }
     }
 
+    private void notificarNuevoBooking(String[] dataBooking, String showState, String bedroomName, String hostelName, Context context, String number_manager) {
+        LocalDateConverter localDateConverter = new LocalDateConverter();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
+        LocalDate localDateFin = LocalDate.parse(dataBooking[2], formatter);
+        localDateFin = localDateFin.plusDays(1);
+
+        String mensaje = "Nueva reserva gestionada." +
+                "\nEntrada: " + dataBooking[1] +
+                "\nSalida: " + localDateConverter.convertToPersisted(localDateFin) +
+                "\nTipo de Reserva: " + showState +
+                "\nHabitación: " + bedroomName +
+                "\nHostal: " + hostelName +
+                "\n" + dataBooking[7];
+
+        StateBar stateBar = new StateBar();
+        stateBar.BookingNotification(context, 1, "Nueva Reserva", "Reserva gestionada", number_manager, mensaje);
+        confirmarRecibo(number_manager);
+    }
+
     private void resolverEliminarBooking(String[] valores, Context context, String number_manager) {
 
         if (chequearFidelidadMensaje(context, valores[2], number_manager, valores[3])) {
-
             EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
-            int code = Integer.parseInt(valores[2]);
             String hostelCode = valores[3];
-
             Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(hostelCode)).get().first();
-            Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
-
+            Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(Integer.parseInt(valores[2]))).and(Bedroom.HOSTEL.eq(hostel)).get().first();
             Booking booking = borrarBooking(valores[1], valores[2], context);
-            LocalDateConverter localDateConverter = new LocalDateConverter();
-
-            String mensaje = "Reserva eliminada.\nEntrada: " + localDateConverter.convertToPersisted(booking.getCheckInDate()) + "\nSalida: " +
-                    localDateConverter.convertToPersisted(booking.getCheckOutDate()) + "\nHabitación: " + bedroom.getName() + "\nHostal " + hostel.getName();
-
-            StateBar stateBar = new StateBar();
-            stateBar.BookingNotification(context, 1, "Eliminación Reserva", "Reserva eliminada", number_manager, mensaje);
-            confirmarRecibo(number_manager);
+            notificarEliminarBooking(booking.getCheckInDate(), booking.getCheckOutDate(), bedroom.getName(), hostel.getName(), context, number_manager);
         }
     }
 
-    private void resolverActualizarBooking(String[] valores, Context context, String number_manager) {
+    private void notificarEliminarBooking(LocalDate checkInDate, LocalDate checkOutDate, String bedroomName, String hostelName, Context context, String number_manager) {
+        LocalDateConverter localDateConverter = new LocalDateConverter();
+        checkOutDate = checkOutDate.plusDays(1);
+        String mensaje = "Reserva eliminada." +
+                "\nEntrada: " + localDateConverter.convertToPersisted(checkInDate) +
+                "\nSalida: " + localDateConverter.convertToPersisted(checkOutDate) +
+                "\nHabitación: " + bedroomName +
+                "\nHostal " + hostelName;
 
-        if (chequearFidelidadMensaje(context, valores[6], number_manager, valores[7])) {
+        StateBar stateBar = new StateBar();
+        stateBar.BookingNotification(context, 1, "Eliminación Reserva", "Reserva eliminada", number_manager, mensaje);
+        confirmarRecibo(number_manager);
+    }
 
-            String showState = parssearBookingState(valores[5]);
-            actualizarBooking(valores[1], valores[2], valores[3], valores[4], valores[5], valores[6], valores[8], valores[7], context);
+    private void resolverActualizarBooking(String[] bookingData, Context context, String number_manager) {
 
-            int code = Integer.parseInt(valores[6]);
+        if (chequearFidelidadMensaje(context, bookingData[6], number_manager, bookingData[7])) {
+            String showState = parssearBookingState(bookingData[5]);
+            actualizarBooking(bookingData[1], bookingData[2], bookingData[3], bookingData[4], bookingData[5], bookingData[6], bookingData[8], bookingData[7], context);
+            int code = Integer.parseInt(bookingData[6]);
             EntityDataStore<Persistable> dataStore = DataStoreHolder.INSTANCE.getDataStore();
-            Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(valores[7])).get().first();
+            Hostel hostel = dataStore.select(Hostel.class).where(Hostel.CODE.eq(bookingData[7])).get().first();
             Bedroom bedroom = dataStore.select(Bedroom.class).where(Bedroom.CODE.eq(code)).and(Bedroom.HOSTEL.eq(hostel)).get().first();
-
-            String mensaje = "Actualización de reserva.\nEntrada: " + valores[2] + "\nSalida: " +
-                    valores[3] + "\nTipo de Reserva: " + showState + "\nHabitación: " + bedroom.getName() + "\nHostal: " + hostel.getName() + "\n" + valores[8];
-
-            StateBar stateBar = new StateBar();
-            stateBar.BookingNotification(context, 1, "Actualización de Reserva", "Reserva actualizada", number_manager, mensaje);
-            confirmarRecibo(number_manager);
+            notificarActualizarBooking(bookingData[2], bookingData[3], showState, bedroom.getName(), hostel.getName(), bookingData[8], context, number_manager);
         }
+    }
+
+    private void notificarActualizarBooking(String checkInDate, String checkOutDate, String showState, String bedroomName, String hostelName, String comment, Context context, String number_manager) {
+        LocalDateConverter localDateConverter = new LocalDateConverter();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-MM-dd");
+        LocalDate localDateFin = LocalDate.parse(checkOutDate, formatter);
+        localDateFin = localDateFin.plusDays(1);
+
+        String mensaje = "Actualización de reserva." +
+                "\nEntrada: " + checkInDate +
+                "\nSalida: " + localDateConverter.convertToPersisted(localDateFin) +
+                "\nTipo de Reserva: " + showState +
+                "\nHabitación: " + bedroomName +
+                "\nHostal: " + hostelName +
+                "\n" + comment;
+
+        StateBar stateBar = new StateBar();
+        stateBar.BookingNotification(context, 1, "Actualización de Reserva", "Reserva actualizada", number_manager, mensaje);
+        confirmarRecibo(number_manager);
     }
 
     private void resolverConfirmacion(Context context, String number_manager) {
