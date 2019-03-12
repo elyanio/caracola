@@ -8,7 +8,7 @@ import android.util.Log;
 import com.polymitasoft.caracola.CaracolaApplication;
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.DbPreference;
-import com.polymitasoft.caracola.drm.Drm;
+import com.polymitasoft.caracola.encoding.CoderUtils;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
@@ -58,15 +58,15 @@ public class Preferences {
 
     public static void setEncryptedPreference(String key, String value) {
         Editor editor = getPreferences().edit();
-        editor.putString(Drm.encryptTo64String(key), Drm.encryptTo64String(value + "|" + Drm.getDeviceId()));
+        editor.putString(CoderUtils.encryptTo64String(key), CoderUtils.encryptTo64String(value + "|" + CoderUtils.getDeviceId()));
         editor.apply();
     }
 
     public static String getEncryptedPreference(String key) {
-        String value = getPreferences().getString(Drm.encryptTo64String(key), "");
-        String plainValue = Drm.decryptFrom64String(value);
+        String value = getPreferences().getString(CoderUtils.encryptTo64String(key), "");
+        String plainValue = CoderUtils.decryptFrom64String(value);
         String[] results = plainValue.split("\\|");
-        if (results.length == 2 && results[1].equals(Drm.getDeviceId())) {
+        if (results.length == 2 && results[1].equals(CoderUtils.getDeviceId())) {
             return results[0];
         }
         return "";

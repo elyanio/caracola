@@ -1,4 +1,4 @@
-package com.polymitasoft.caracola.drm;
+package com.polymitasoft.caracola.encoding;
 
 import android.annotation.SuppressLint;
 import android.provider.Settings;
@@ -16,7 +16,7 @@ import static com.polymitasoft.activation.Coder.toByteArray;
  * @since 15/3/2017
  */
 
-public enum Drm {
+public enum CoderUtils {
     ; // no instance
 
     private static final String ENCRYPTION_KEY = "Toawtef_*blyWef2";

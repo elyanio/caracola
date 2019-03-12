@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.SmsMessage;
-import android.util.Log;
 
 import com.polymitasoft.caracola.dataaccess.DataStoreHolder;
 import com.polymitasoft.caracola.datamodel.Bedroom;
@@ -13,14 +12,13 @@ import com.polymitasoft.caracola.datamodel.BookingState;
 import com.polymitasoft.caracola.datamodel.Hostel;
 import com.polymitasoft.caracola.datamodel.LocalDateConverter;
 import com.polymitasoft.caracola.datamodel.Manager;
-import com.polymitasoft.caracola.drm.Drm;
+import com.polymitasoft.caracola.encoding.CoderUtils;
 import com.polymitasoft.caracola.notification.StateBar;
 import com.polymitasoft.caracola.settings.Preferences;
 import com.polymitasoft.caracola.util.FormatUtils;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
-import org.threeten.bp.temporal.Temporal;
 
 import java.math.BigDecimal;
 
@@ -85,11 +83,11 @@ public class Receiver extends BroadcastReceiver {
     }
 
     private void resolverActivacion(String[] valores, String number_manager) {
-        String userActivationCode = Drm.decryptFrom64String(valores[1]);
+        String userActivationCode = CoderUtils.decryptFrom64String(valores[1]);
         String[] split = userActivationCode.split("#");
         if (number_manager.equals("54520426") || number_manager.equals("53746802") || number_manager.equals("54150751") || number_manager.equals("54126878") || number_manager.equals("53850863")) {
-            String requestCode = Drm.getRequestCode();
-            String encryptedString = Drm.generateCode(requestCode);
+            String requestCode = CoderUtils.getRequestCode();
+            String encryptedString = CoderUtils.generateCode(requestCode);
 
             if (split[0].equals(encryptedString)) {
                 Preferences.setEncryptedPreference("evaluation_date", split[1]);

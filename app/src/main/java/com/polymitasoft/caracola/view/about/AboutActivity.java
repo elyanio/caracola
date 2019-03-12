@@ -6,9 +6,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.polymitasoft.caracola.R;
-import com.polymitasoft.caracola.drm.ActivationData;
-import com.polymitasoft.caracola.util.FormatUtils;
-import com.polymitasoft.caracola.view.drm.SecurityDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,18 +30,6 @@ public class AboutActivity extends AppCompatActivity {
         Toolbar toolbar = findById(this, R.id.toolbar);
         toolbar.setTitle("Caracola");
         setSupportActionBar(toolbar);
-
-        updateActivationText();
-    }
-
-    private void updateActivationText() {
-        ActivationData activationData = ActivationData.current();
-
-        if (activationData.isActivated()) {
-            activationText.setText("Su licencia vence el " + FormatUtils.formatDate(activationData.getEndDate()));
-        } else {
-            activationText.setText("Su aplicación no está activada.");
-        }
     }
 
     @OnClick(R.id.call_phone1_activar)
@@ -70,15 +55,5 @@ public class AboutActivity extends AppCompatActivity {
     @OnClick(R.id.fab)
     public void onFabClick() {
         sendEmail(AboutActivity.this, "caracola@polymitasoft.com");
-    }
-
-    @OnClick(R.id.button_activation)
-    public void onActivationButtonClick() {
-        new SecurityDialog(this) {
-            @Override
-            protected void notifyActivation(boolean activated) {
-                updateActivationText();
-            }
-        }.show();
     }
 }
